@@ -5,30 +5,41 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import Mapping, Optional
+from typing import Any, Mapping, Optional
 
 
-class GeneratedDocuments(BaseSDK):
-    def get(
+class FederalTaxDetailsSDK(BaseSDK):
+    def put_v1_companies_company_id_federal_tax_details(
         self,
         *,
-        document_type: models.DocumentType,
-        request_uuid: str,
+        company_id: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        legal_name: Optional[str] = None,
+        ein: Optional[str] = None,
+        tax_payer_type: Optional[models.TaxPayerType] = None,
+        filing_form: Optional[models.FilingForm] = None,
+        taxable_as_scorp: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GeneratedDocument:
-        r"""Get a generated document
+    ) -> models.FederalTaxDetails:
+        r"""Update Federal Tax Details
 
-        Get a document given the request_uuid. The response will include the generation request's status and urls to the document. A list of urls is returned as certain document types require several urls.
+        Updates attributes relevant for a company's federal taxes.
+        This information is required is to onboard a company for use with Gusto Embedded Payroll.
 
-        scope: `generated_documents:read`
+        scope: `company_federal_taxes:write`
 
-        :param document_type: The type of document being generated
-        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param company_id: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param legal_name: The legal name of the company
+        :param ein: The EIN of of the company
+        :param tax_payer_type: What type of tax entity the company is
+        :param filing_form: The form used by the company for federal tax filing. One of: - 941 (Quarterly federal tax return) - 944 (Annual federal tax return)
+        :param taxable_as_scorp: Whether this company should be taxed as an S-Corporation
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -42,25 +53,39 @@ class GeneratedDocuments(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
-            document_type=document_type,
-            request_uuid=request_uuid,
+        request = models.PutV1CompaniesCompanyIDFederalTaxDetailsRequest(
+            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1CompaniesCompanyIDFederalTaxDetailsRequestBody(
+                legal_name=legal_name,
+                ein=ein,
+                tax_payer_type=tax_payer_type,
+                filing_form=filing_form,
+                taxable_as_scorp=taxable_as_scorp,
+                version=version,
+            ),
         )
 
         req = self._build_request(
-            method="GET",
-            path="/v1/generated_documents/{document_type}/{request_uuid}",
+            method="PUT",
+            path="/v1/companies/{company_id}/federal_tax_details",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1CompaniesCompanyIDFederalTaxDetailsRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -74,19 +99,25 @@ class GeneratedDocuments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-generated_documents-document_type-request_uuid",
+                operation_id="put-v1-companies-company_id-federal_tax_details",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.GeneratedDocument)
+            return utils.unmarshal_json(http_res.text, models.FederalTaxDetails)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -107,26 +138,37 @@ class GeneratedDocuments(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def put_v1_companies_company_id_federal_tax_details_async(
         self,
         *,
-        document_type: models.DocumentType,
-        request_uuid: str,
+        company_id: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        legal_name: Optional[str] = None,
+        ein: Optional[str] = None,
+        tax_payer_type: Optional[models.TaxPayerType] = None,
+        filing_form: Optional[models.FilingForm] = None,
+        taxable_as_scorp: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GeneratedDocument:
-        r"""Get a generated document
+    ) -> models.FederalTaxDetails:
+        r"""Update Federal Tax Details
 
-        Get a document given the request_uuid. The response will include the generation request's status and urls to the document. A list of urls is returned as certain document types require several urls.
+        Updates attributes relevant for a company's federal taxes.
+        This information is required is to onboard a company for use with Gusto Embedded Payroll.
 
-        scope: `generated_documents:read`
+        scope: `company_federal_taxes:write`
 
-        :param document_type: The type of document being generated
-        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param company_id: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param legal_name: The legal name of the company
+        :param ein: The EIN of of the company
+        :param tax_payer_type: What type of tax entity the company is
+        :param filing_form: The form used by the company for federal tax filing. One of: - 941 (Quarterly federal tax return) - 944 (Annual federal tax return)
+        :param taxable_as_scorp: Whether this company should be taxed as an S-Corporation
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -140,25 +182,39 @@ class GeneratedDocuments(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
-            document_type=document_type,
-            request_uuid=request_uuid,
+        request = models.PutV1CompaniesCompanyIDFederalTaxDetailsRequest(
+            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1CompaniesCompanyIDFederalTaxDetailsRequestBody(
+                legal_name=legal_name,
+                ein=ein,
+                tax_payer_type=tax_payer_type,
+                filing_form=filing_form,
+                taxable_as_scorp=taxable_as_scorp,
+                version=version,
+            ),
         )
 
         req = self._build_request_async(
-            method="GET",
-            path="/v1/generated_documents/{document_type}/{request_uuid}",
+            method="PUT",
+            path="/v1/companies/{company_id}/federal_tax_details",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1CompaniesCompanyIDFederalTaxDetailsRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -172,19 +228,25 @@ class GeneratedDocuments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-generated_documents-document_type-request_uuid",
+                operation_id="put-v1-companies-company_id-federal_tax_details",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.GeneratedDocument)
+            return utils.unmarshal_json(http_res.text, models.FederalTaxDetails)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

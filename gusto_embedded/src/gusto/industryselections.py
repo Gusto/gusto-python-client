@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class IndustrySelections(BaseSDK):
-    def get(
+    def get_v1_company_industry(
         self,
         *,
         company_id: str,
@@ -104,7 +104,7 @@ class IndustrySelections(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_company_industry_async(
         self,
         *,
         company_id: str,
@@ -199,7 +199,7 @@ class IndustrySelections(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_company_industry(
         self,
         *,
         company_id: str,
@@ -318,7 +318,7 @@ class IndustrySelections(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_company_industry_async(
         self,
         *,
         company_id: str,

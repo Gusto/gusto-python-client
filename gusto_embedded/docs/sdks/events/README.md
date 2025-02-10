@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [list](#list) - Get all events
+* [get_events](#get_events) - Get all events
 
-## list
+## get_events
 
 Fetch all events, going back up to 30 days, that your partner application has the required scopes for. Note that a partner does NOT have to have verified webhook subscriptions in order to utilize this endpoint.
 
@@ -26,7 +26,7 @@ import os
 
 with Gusto() as g_client:
 
-    res = g_client.events.list(security=gusto.GetEventsSecurity(
+    res = g_client.events.get_events(security=gusto.GetEventsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), sort_order=gusto.SortOrder.ASC)
 

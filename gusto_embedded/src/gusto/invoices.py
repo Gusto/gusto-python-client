@@ -9,7 +9,7 @@ from typing import Any, Mapping, Optional, Union
 
 
 class Invoices(BaseSDK):
-    def get(
+    def get_invoices_invoice_period(
         self,
         *,
         security: Union[
@@ -128,7 +128,7 @@ class Invoices(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_invoices_invoice_period_async(
         self,
         *,
         security: Union[

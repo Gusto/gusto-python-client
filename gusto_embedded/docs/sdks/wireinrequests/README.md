@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [get](#get) - Get a single Wire In Request
+* [get_wire_in_requests_wire_in_request_uuid](#get_wire_in_requests_wire_in_request_uuid) - Get a single Wire In Request
 * [submit](#submit) - Submit a wire in request
 * [list](#list) - Get all Wire In Requests for a company
 
-## get
+## get_wire_in_requests_wire_in_request_uuid
 
 Fetch a Wire In Request.
 
@@ -25,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.wire_in_requests.get(wire_in_request_uuid="<id>")
+    res = g_client.wire_in_requests.get_wire_in_requests_wire_in_request_uuid(wire_in_request_uuid="<id>")
 
     # Handle response
     print(res)

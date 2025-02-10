@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [generate_printable_checks](#generate_printable_checks) - Generate printable payroll checks (pdf)
+* [post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks](#post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks) - Generate printable payroll checks (pdf)
 
-## generate_printable_checks
+## post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks
 
 This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
 
@@ -24,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.payrolls_documents.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto.PrintingFormat.BOTTOM)
+    res = g_client.payrolls_documents.post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks(payroll_uuid="<id>", printing_format=gusto.PrintingFormat.BOTTOM)
 
     # Handle response
     print(res)

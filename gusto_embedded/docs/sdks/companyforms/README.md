@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [list](#list) - Get all company forms
-* [get](#get) - Get a company form
-* [get_pdf](#get_pdf) - Get a company form pdf
-* [sign](#sign) - Sign a company form
+* [get_v1_company_forms](#get_v1_company_forms) - Get all company forms
+* [get_v1_company_form](#get_v1_company_form) - Get a company form
+* [get_v1_company_form_pdf](#get_v1_company_form_pdf) - Get a company form pdf
+* [put_v1_company_form_sign](#put_v1_company_form_sign) - Sign a company form
 
-## list
+## get_v1_company_forms
 
 Get a list of all company's forms
 
@@ -26,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_forms.list(company_id="<id>")
+    res = g_client.company_forms.get_v1_company_forms(company_id="<id>")
 
     # Handle response
     print(res)
@@ -51,7 +51,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get
+## get_v1_company_form
 
 Get a company form
 
@@ -67,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_forms.get(form_id="<id>")
+    res = g_client.company_forms.get_v1_company_form(form_id="<id>")
 
     # Handle response
     print(res)
@@ -92,7 +92,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_pdf
+## get_v1_company_form_pdf
 
 Get the link to the form PDF
 
@@ -108,7 +108,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_forms.get_pdf(form_id="<id>")
+    res = g_client.company_forms.get_v1_company_form_pdf(form_id="<id>")
 
     # Handle response
     print(res)
@@ -133,7 +133,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## sign
+## put_v1_company_form_sign
 
 Sign a company form. Company forms must be signed by the company signatory.
 
@@ -149,7 +149,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_forms.sign(form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = g_client.company_forms.put_v1_company_form_sign(form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
 
     # Handle response
     print(res)

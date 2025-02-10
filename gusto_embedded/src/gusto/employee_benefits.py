@@ -8,699 +8,64 @@ from gusto.utils import get_security_from_env
 from typing import Any, List, Mapping, Optional, Union
 
 
-class TimeOffPolicies(BaseSDK):
-    def get(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Get a time off policy
-
-        Get a time off policy
-
-        scope: `time_off_policies:read`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetTimeOffPoliciesTimeOffPolicyUUIDRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/time_off_policies/{time_off_policy_uuid}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-time_off_policies-time_off_policy_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_async(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Get a time off policy
-
-        Get a time off policy
-
-        scope: `time_off_policies:read`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetTimeOffPoliciesTimeOffPolicyUUIDRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/time_off_policies/{time_off_policy_uuid}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-time_off_policies-time_off_policy_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def update(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        name: Optional[str] = None,
-        accrual_method: Optional[models.AccrualMethod] = None,
-        accrual_rate: Optional[str] = None,
-        accrual_rate_unit: Optional[str] = None,
-        paid_out_on_termination: Optional[bool] = None,
-        accrual_waiting_period_days: Optional[int] = None,
-        carryover_limit_hours: Optional[str] = None,
-        max_accrual_hours_per_year: Optional[str] = None,
-        max_hours: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Update a time off policy
-
-        Update a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param name: Name of the time off policy
-        :param accrual_method: Accrual method of the time off policy
-        :param accrual_rate: The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\".
-        :param accrual_rate_unit: The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\".
-        :param paid_out_on_termination: Boolean representing if an employee's accrued time off hours will be paid out on termination
-        :param accrual_waiting_period_days: Number of days before an employee on the policy will begin accruing time off hours. If accrual_method is per_anniversary_year, per_calendar_year, or unlimited, then accrual_waiting_period_days should be 0.
-        :param carryover_limit_hours: The max number of hours an employee can carryover from one year to the next. If accrual_method is unlimited, then carryover_limit_hours must be blank.
-        :param max_accrual_hours_per_year: The max number of hours an employee can accrue in a year. If accrual_method is unlimited, then max_accrual_hours_per_year must be blank.
-        :param max_hours: The max number of hours an employee can accrue. If accrual_method is unlimited, then max_hours must be blank.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutTimeOffPoliciesTimeOffPolicyUUIDRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody(
-                name=name,
-                accrual_method=accrual_method,
-                accrual_rate=accrual_rate,
-                accrual_rate_unit=accrual_rate_unit,
-                paid_out_on_termination=paid_out_on_termination,
-                accrual_waiting_period_days=accrual_waiting_period_days,
-                carryover_limit_hours=carryover_limit_hours,
-                max_accrual_hours_per_year=max_accrual_hours_per_year,
-                max_hours=max_hours,
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="put-time_off_policies-time_off_policy_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def update_async(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        name: Optional[str] = None,
-        accrual_method: Optional[models.AccrualMethod] = None,
-        accrual_rate: Optional[str] = None,
-        accrual_rate_unit: Optional[str] = None,
-        paid_out_on_termination: Optional[bool] = None,
-        accrual_waiting_period_days: Optional[int] = None,
-        carryover_limit_hours: Optional[str] = None,
-        max_accrual_hours_per_year: Optional[str] = None,
-        max_hours: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Update a time off policy
-
-        Update a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param name: Name of the time off policy
-        :param accrual_method: Accrual method of the time off policy
-        :param accrual_rate: The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\".
-        :param accrual_rate_unit: The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\".
-        :param paid_out_on_termination: Boolean representing if an employee's accrued time off hours will be paid out on termination
-        :param accrual_waiting_period_days: Number of days before an employee on the policy will begin accruing time off hours. If accrual_method is per_anniversary_year, per_calendar_year, or unlimited, then accrual_waiting_period_days should be 0.
-        :param carryover_limit_hours: The max number of hours an employee can carryover from one year to the next. If accrual_method is unlimited, then carryover_limit_hours must be blank.
-        :param max_accrual_hours_per_year: The max number of hours an employee can accrue in a year. If accrual_method is unlimited, then max_accrual_hours_per_year must be blank.
-        :param max_hours: The max number of hours an employee can accrue. If accrual_method is unlimited, then max_hours must be blank.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutTimeOffPoliciesTimeOffPolicyUUIDRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody(
-                name=name,
-                accrual_method=accrual_method,
-                accrual_rate=accrual_rate,
-                accrual_rate_unit=accrual_rate_unit,
-                paid_out_on_termination=paid_out_on_termination,
-                accrual_waiting_period_days=accrual_waiting_period_days,
-                carryover_limit_hours=carryover_limit_hours,
-                max_accrual_hours_per_year=max_accrual_hours_per_year,
-                max_hours=max_hours,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="put-time_off_policies-time_off_policy_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def list(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.TimeOffPolicy]:
-        r"""Get all time off policies
-
-        Get all time off policies for a company
-
-        scope: `time_off_policies:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetCompaniesCompanyUUIDTimeOffPoliciesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/time_off_policies",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-companies-company_uuid-time_off_policies",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.TimeOffPolicy])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def list_async(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.TimeOffPolicy]:
-        r"""Get all time off policies
-
-        Get all time off policies for a company
-
-        scope: `time_off_policies:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetCompaniesCompanyUUIDTimeOffPoliciesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/time_off_policies",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-companies-company_uuid-time_off_policies",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.TimeOffPolicy])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
+class EmployeeBenefits(BaseSDK):
     def create(
         self,
         *,
-        company_uuid: str,
-        name: str,
-        policy_type: str,
-        accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
+        employee_id: str,
+        company_benefit_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        accrual_rate: Optional[str] = None,
-        accrual_rate_unit: Optional[str] = None,
-        paid_out_on_termination: Optional[bool] = None,
-        accrual_waiting_period_days: Optional[int] = None,
-        carryover_limit_hours: Optional[str] = None,
-        max_accrual_hours_per_year: Optional[str] = None,
-        max_hours: Optional[str] = None,
+        active: Optional[bool] = True,
+        employee_deduction: Optional[str] = "0.00",
+        deduct_as_percentage: Optional[bool] = False,
+        employee_deduction_annual_maximum: OptionalNullable[str] = UNSET,
+        contribution: Optional[
+            Union[
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsContribution,
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsContributionTypedDict,
+            ]
+        ] = None,
+        elective: Optional[bool] = False,
+        company_contribution_annual_maximum: OptionalNullable[str] = UNSET,
+        limit_option: OptionalNullable[
+            models.PostV1EmployeesEmployeeIDEmployeeBenefitsLimitOption
+        ] = UNSET,
+        catch_up: Optional[bool] = False,
+        coverage_amount: OptionalNullable[str] = UNSET,
+        coverage_salary_multiplier: Optional[str] = "0.00",
+        deduction_reduces_taxable_income: OptionalNullable[
+            models.PostV1EmployeesEmployeeIDEmployeeBenefitsDeductionReducesTaxableIncome
+        ] = UNSET,
+        company_contribution: Optional[str] = "0.00",
+        contribute_as_percentage: Optional[bool] = False,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Create a time off policy
+    ) -> models.EmployeeBenefit:
+        r"""Create an employee benefit
 
-        Create a time off policy
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
-        scope: `time_off_policies:write`
+        scope: `employee_benefits:write`
 
-        :param company_uuid: The UUID of the company
-        :param name: Name of the time off policy
-        :param policy_type: Type of the time off policy. Currently only \"vacation\" and \"sick\" are supported
-        :param accrual_method: Accrual method of the time off policy
+        :param employee_id: The UUID of the employee
+        :param company_benefit_uuid: The UUID of the company benefit.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param accrual_rate: The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\".
-        :param accrual_rate_unit: The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\".
-        :param paid_out_on_termination: Boolean representing if an employee's accrued time off hours will be paid out on termination
-        :param accrual_waiting_period_days: Number of days before an employee on the policy will begin accruing time off hours. If accrual_method is per_anniversary_year, per_calendar_year, or unlimited, then accrual_waiting_period_days should be 0.
-        :param carryover_limit_hours: The max number of hours an employee can carryover from one year to the next. If accrual_method is unlimited, then carryover_limit_hours must be blank.
-        :param max_accrual_hours_per_year: The max number of hours an employee can accrue in a year. If accrual_method is unlimited, then max_accrual_hours_per_year must be blank.
-        :param max_hours: The max number of hours an employee can accrue. If accrual_method is unlimited, then max_hours must be blank.
+        :param active: Whether the employee benefit is active.
+        :param employee_deduction: The amount to be deducted, per pay period, from the employee's pay.
+        :param deduct_as_percentage: Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll.
+        :param employee_deduction_annual_maximum: The maximum employee deduction amount per year. A null value signifies no limit.
+        :param contribution: An object representing the company contribution type and value.
+        :param elective: Whether the company contribution is elective (aka \"matching\"). For `tiered`, `elective_amount`, and `elective_percentage` contribution types this is ignored and assumed to be `true`.
+        :param company_contribution_annual_maximum: The maximum company contribution amount per year. A null value signifies no limit.
+        :param limit_option: Some benefits require additional information to determine their limit.  `Family` or `Individual`: Applicable to HSA benefit.  `Joint Filing or Single` or `Married and Filing Separately`: Applicable to Dependent Care FSA benefit.
+        :param catch_up: Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50.
+        :param coverage_amount: The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.
+        :param coverage_salary_multiplier: The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.
+        :param deduction_reduces_taxable_income: Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored.
+        :param company_contribution: The amount to be paid, per pay period, by the company.
+        :param contribute_as_percentage: Whether the company contribution amount should be treated as a percentage to be deducted from each payroll.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -714,26 +79,36 @@ class TimeOffPolicies(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostCompaniesCompanyUUIDTimeOffPoliciesRequest(
-            company_uuid=company_uuid,
+        request = models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostCompaniesCompanyUUIDTimeOffPoliciesRequestBody(
-                name=name,
-                policy_type=policy_type,
-                accrual_method=accrual_method,
-                accrual_rate=accrual_rate,
-                accrual_rate_unit=accrual_rate_unit,
-                paid_out_on_termination=paid_out_on_termination,
-                accrual_waiting_period_days=accrual_waiting_period_days,
-                carryover_limit_hours=carryover_limit_hours,
-                max_accrual_hours_per_year=max_accrual_hours_per_year,
-                max_hours=max_hours,
+            request_body=models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequestBody(
+                company_benefit_uuid=company_benefit_uuid,
+                active=active,
+                employee_deduction=employee_deduction,
+                deduct_as_percentage=deduct_as_percentage,
+                employee_deduction_annual_maximum=employee_deduction_annual_maximum,
+                contribution=utils.get_pydantic_model(
+                    contribution,
+                    Optional[
+                        models.PostV1EmployeesEmployeeIDEmployeeBenefitsContribution
+                    ],
+                ),
+                elective=elective,
+                company_contribution_annual_maximum=company_contribution_annual_maximum,
+                limit_option=limit_option,
+                catch_up=catch_up,
+                coverage_amount=coverage_amount,
+                coverage_salary_multiplier=coverage_salary_multiplier,
+                deduction_reduces_taxable_income=deduction_reduces_taxable_income,
+                company_contribution=company_contribution,
+                contribute_as_percentage=contribute_as_percentage,
             ),
         )
 
         req = self._build_request(
             method="POST",
-            path="/v1/companies/{company_uuid}/time_off_policies",
+            path="/v1/employees/{employee_id}/employee_benefits",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -749,7 +124,7 @@ class TimeOffPolicies(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostCompaniesCompanyUUIDTimeOffPoliciesRequestBody,
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -764,7 +139,7 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="post-companies-company_uuid-time_off_policies",
+                operation_id="post-v1-employees-employee_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -777,7 +152,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -806,41 +181,60 @@ class TimeOffPolicies(BaseSDK):
     async def create_async(
         self,
         *,
-        company_uuid: str,
-        name: str,
-        policy_type: str,
-        accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
+        employee_id: str,
+        company_benefit_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        accrual_rate: Optional[str] = None,
-        accrual_rate_unit: Optional[str] = None,
-        paid_out_on_termination: Optional[bool] = None,
-        accrual_waiting_period_days: Optional[int] = None,
-        carryover_limit_hours: Optional[str] = None,
-        max_accrual_hours_per_year: Optional[str] = None,
-        max_hours: Optional[str] = None,
+        active: Optional[bool] = True,
+        employee_deduction: Optional[str] = "0.00",
+        deduct_as_percentage: Optional[bool] = False,
+        employee_deduction_annual_maximum: OptionalNullable[str] = UNSET,
+        contribution: Optional[
+            Union[
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsContribution,
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsContributionTypedDict,
+            ]
+        ] = None,
+        elective: Optional[bool] = False,
+        company_contribution_annual_maximum: OptionalNullable[str] = UNSET,
+        limit_option: OptionalNullable[
+            models.PostV1EmployeesEmployeeIDEmployeeBenefitsLimitOption
+        ] = UNSET,
+        catch_up: Optional[bool] = False,
+        coverage_amount: OptionalNullable[str] = UNSET,
+        coverage_salary_multiplier: Optional[str] = "0.00",
+        deduction_reduces_taxable_income: OptionalNullable[
+            models.PostV1EmployeesEmployeeIDEmployeeBenefitsDeductionReducesTaxableIncome
+        ] = UNSET,
+        company_contribution: Optional[str] = "0.00",
+        contribute_as_percentage: Optional[bool] = False,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Create a time off policy
+    ) -> models.EmployeeBenefit:
+        r"""Create an employee benefit
 
-        Create a time off policy
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
-        scope: `time_off_policies:write`
+        scope: `employee_benefits:write`
 
-        :param company_uuid: The UUID of the company
-        :param name: Name of the time off policy
-        :param policy_type: Type of the time off policy. Currently only \"vacation\" and \"sick\" are supported
-        :param accrual_method: Accrual method of the time off policy
+        :param employee_id: The UUID of the employee
+        :param company_benefit_uuid: The UUID of the company benefit.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param accrual_rate: The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\".
-        :param accrual_rate_unit: The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\".
-        :param paid_out_on_termination: Boolean representing if an employee's accrued time off hours will be paid out on termination
-        :param accrual_waiting_period_days: Number of days before an employee on the policy will begin accruing time off hours. If accrual_method is per_anniversary_year, per_calendar_year, or unlimited, then accrual_waiting_period_days should be 0.
-        :param carryover_limit_hours: The max number of hours an employee can carryover from one year to the next. If accrual_method is unlimited, then carryover_limit_hours must be blank.
-        :param max_accrual_hours_per_year: The max number of hours an employee can accrue in a year. If accrual_method is unlimited, then max_accrual_hours_per_year must be blank.
-        :param max_hours: The max number of hours an employee can accrue. If accrual_method is unlimited, then max_hours must be blank.
+        :param active: Whether the employee benefit is active.
+        :param employee_deduction: The amount to be deducted, per pay period, from the employee's pay.
+        :param deduct_as_percentage: Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll.
+        :param employee_deduction_annual_maximum: The maximum employee deduction amount per year. A null value signifies no limit.
+        :param contribution: An object representing the company contribution type and value.
+        :param elective: Whether the company contribution is elective (aka \"matching\"). For `tiered`, `elective_amount`, and `elective_percentage` contribution types this is ignored and assumed to be `true`.
+        :param company_contribution_annual_maximum: The maximum company contribution amount per year. A null value signifies no limit.
+        :param limit_option: Some benefits require additional information to determine their limit.  `Family` or `Individual`: Applicable to HSA benefit.  `Joint Filing or Single` or `Married and Filing Separately`: Applicable to Dependent Care FSA benefit.
+        :param catch_up: Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50.
+        :param coverage_amount: The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.
+        :param coverage_salary_multiplier: The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.
+        :param deduction_reduces_taxable_income: Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored.
+        :param company_contribution: The amount to be paid, per pay period, by the company.
+        :param contribute_as_percentage: Whether the company contribution amount should be treated as a percentage to be deducted from each payroll.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -854,26 +248,36 @@ class TimeOffPolicies(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostCompaniesCompanyUUIDTimeOffPoliciesRequest(
-            company_uuid=company_uuid,
+        request = models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostCompaniesCompanyUUIDTimeOffPoliciesRequestBody(
-                name=name,
-                policy_type=policy_type,
-                accrual_method=accrual_method,
-                accrual_rate=accrual_rate,
-                accrual_rate_unit=accrual_rate_unit,
-                paid_out_on_termination=paid_out_on_termination,
-                accrual_waiting_period_days=accrual_waiting_period_days,
-                carryover_limit_hours=carryover_limit_hours,
-                max_accrual_hours_per_year=max_accrual_hours_per_year,
-                max_hours=max_hours,
+            request_body=models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequestBody(
+                company_benefit_uuid=company_benefit_uuid,
+                active=active,
+                employee_deduction=employee_deduction,
+                deduct_as_percentage=deduct_as_percentage,
+                employee_deduction_annual_maximum=employee_deduction_annual_maximum,
+                contribution=utils.get_pydantic_model(
+                    contribution,
+                    Optional[
+                        models.PostV1EmployeesEmployeeIDEmployeeBenefitsContribution
+                    ],
+                ),
+                elective=elective,
+                company_contribution_annual_maximum=company_contribution_annual_maximum,
+                limit_option=limit_option,
+                catch_up=catch_up,
+                coverage_amount=coverage_amount,
+                coverage_salary_multiplier=coverage_salary_multiplier,
+                deduction_reduces_taxable_income=deduction_reduces_taxable_income,
+                company_contribution=company_contribution,
+                contribute_as_percentage=contribute_as_percentage,
             ),
         )
 
         req = self._build_request_async(
             method="POST",
-            path="/v1/companies/{company_uuid}/time_off_policies",
+            path="/v1/employees/{employee_id}/employee_benefits",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -889,7 +293,7 @@ class TimeOffPolicies(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostCompaniesCompanyUUIDTimeOffPoliciesRequestBody,
+                models.PostV1EmployeesEmployeeIDEmployeeBenefitsRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -904,7 +308,7 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="post-companies-company_uuid-time_off_policies",
+                operation_id="post-v1-employees-employee_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -917,7 +321,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -943,793 +347,31 @@ class TimeOffPolicies(BaseSDK):
             http_res,
         )
 
-    def add_employees(
+    def get_v1_employees_employee_id_employee_benefits(
         self,
         *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
-                ],
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Add employees to a time off policy
-
-        Add employees to a time off policy. Employees are required to have at least one job to be added to a time off policy. Accepts starting balances for non-unlimited policies
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/add_employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="put-version-time_off_policies-time_off_policy_uuid-add_employees",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def add_employees_async(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
-                ],
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Add employees to a time off policy
-
-        Add employees to a time off policy. Employees are required to have at least one job to be added to a time off policy. Accepts starting balances for non-unlimited policies
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/add_employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="put-version-time_off_policies-time_off_policy_uuid-add_employees",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def remove_employees(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[
-                    models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployees
-                ],
-                List[
-                    models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Remove employees from a time off policy
-
-        Remove employees from a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/remove_employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="put-v1-time_off_policies-time_off_policy_uuid-remove_employees",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def remove_employees_async(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[
-                    models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployees
-                ],
-                List[
-                    models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Remove employees from a time off policy
-
-        Remove employees from a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/remove_employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="put-v1-time_off_policies-time_off_policy_uuid-remove_employees",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def update_balance(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Update employee time off hour balances
-
-        Updates time off hours balances for employees for a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/balance",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="put-version-time_off_policies-time_off_policy_uuid-balance",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def update_balance_async(
-        self,
-        *,
-        time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        employees: Optional[
-            Union[
-                List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
-                List[
-                    models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployeesTypedDict
-                ],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Update employee time off hour balances
-
-        Updates time off hours balances for employees for a time off policy
-
-        scope: `time_off_policies:write`
-
-        :param time_off_policy_uuid: The UUID of the company time off policy
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param employees:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequestBody(
-                employees=utils.get_pydantic_model(
-                    employees,
-                    Optional[
-                        List[
-                            models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees
-                        ]
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/balance",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="put-version-time_off_policies-time_off_policy_uuid-balance",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def deactivate(
-        self,
-        *,
-        time_off_policy_uuid: str,
+        employee_id: str,
+        page: Optional[float] = None,
+        per: Optional[float] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Deactivate a time off policy
+    ) -> List[models.EmployeeBenefit]:
+        r"""Get all benefits for an employee
 
-        Deactivate a time off policy
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
-        scope: `time_off_policies:write`
+        Returns an array of all employee benefits for this employee
 
-        :param time_off_policy_uuid: The UUID of the company time off policy
+        Benefits containing PHI are only visible to applications with the `employee_benefits:read:phi` scope.
+
+        scope: `employee_benefits:read`
+
+        :param employee_id: The UUID of the employee
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1744,14 +386,16 @@ class TimeOffPolicies(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDDeactivateRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
+        request = models.GetV1EmployeesEmployeeIDEmployeeBenefitsRequest(
+            employee_id=employee_id,
+            page=page,
+            per=per,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/deactivate",
+            method="GET",
+            path="/v1/employees/{employee_id}/employee_benefits",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1775,7 +419,467 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-time_off_policies-time_off_policy_uuid-deactivate",
+                operation_id="get-v1-employees-employee_id-employee_benefits",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.EmployeeBenefit])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_employees_employee_id_employee_benefits_async(
+        self,
+        *,
+        employee_id: str,
+        page: Optional[float] = None,
+        per: Optional[float] = None,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.EmployeeBenefit]:
+        r"""Get all benefits for an employee
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        Returns an array of all employee benefits for this employee
+
+        Benefits containing PHI are only visible to applications with the `employee_benefits:read:phi` scope.
+
+        scope: `employee_benefits:read`
+
+        :param employee_id: The UUID of the employee
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeesEmployeeIDEmployeeBenefitsRequest(
+            employee_id=employee_id,
+            page=page,
+            per=per,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employees/{employee_id}/employee_benefits",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employees-employee_id-employee_benefits",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.EmployeeBenefit])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_v1_employee_benefits_employee_benefit_id(
+        self,
+        *,
+        employee_benefit_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.EmployeeBenefit:
+        r"""Get an employee benefit
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        Benefits containing PHI are only visible to applications with the `employee_benefits:read:phi` scope.
+
+        scope: `employee_benefits:read`
+
+        :param employee_benefit_id: The UUID of the employee benefit.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employee_benefits-employee_benefit_id",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_employee_benefits_employee_benefit_id_async(
+        self,
+        *,
+        employee_benefit_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.EmployeeBenefit:
+        r"""Get an employee benefit
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        Benefits containing PHI are only visible to applications with the `employee_benefits:read:phi` scope.
+
+        scope: `employee_benefits:read`
+
+        :param employee_benefit_id: The UUID of the employee benefit.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employee_benefits-employee_benefit_id",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def put_v1_employee_benefits_employee_benefit_id(
+        self,
+        *,
+        employee_benefit_id: str,
+        version: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        active: Optional[bool] = None,
+        employee_deduction: Optional[str] = "0.00",
+        deduct_as_percentage: Optional[bool] = None,
+        employee_deduction_annual_maximum: OptionalNullable[str] = UNSET,
+        contribution: Optional[
+            Union[
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDContribution,
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDContributionTypedDict,
+            ]
+        ] = None,
+        elective: Optional[bool] = False,
+        company_contribution_annual_maximum: OptionalNullable[str] = UNSET,
+        limit_option: OptionalNullable[
+            models.PutV1EmployeeBenefitsEmployeeBenefitIDLimitOption
+        ] = UNSET,
+        catch_up: Optional[bool] = False,
+        coverage_amount: OptionalNullable[str] = UNSET,
+        deduction_reduces_taxable_income: OptionalNullable[
+            models.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome
+        ] = models.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET,
+        coverage_salary_multiplier: Optional[str] = "0.00",
+        company_contribution: Optional[str] = "0.00",
+        contribute_as_percentage: Optional[bool] = False,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.EmployeeBenefit:
+        r"""Update an employee benefit
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        scope: `employee_benefits:write`
+
+        :param employee_benefit_id: The UUID of the employee benefit.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param active: Whether the employee benefit is active.
+        :param employee_deduction: The amount to be deducted, per pay period, from the employee's pay.
+        :param deduct_as_percentage: Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll.
+        :param employee_deduction_annual_maximum: The maximum employee deduction amount per year. A null value signifies no limit.
+        :param contribution: An object representing the type and value of the company contribution.
+        :param elective: Whether the company contribution is elective (aka \"matching\"). For `tiered`, `elective_amount`, and `elective_percentage` contribution types this is ignored and assumed to be `true`.
+        :param company_contribution_annual_maximum: The maximum company contribution amount per year. A null value signifies no limit.
+        :param limit_option: Some benefits require additional information to determine their limit.  `Family` or `Individual`: Applicable to HSA benefit.  `Joint Filing or Single` or `Married and Filing Separately`: Applicable to Dependent Care FSA benefit.
+        :param catch_up: Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50.
+        :param coverage_amount: The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.
+        :param deduction_reduces_taxable_income: Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored.
+        :param coverage_salary_multiplier: The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.
+        :param company_contribution: The amount to be paid, per pay period, by the company.
+        :param contribute_as_percentage: Whether the company contribution amount should be treated as a percentage to be deducted from each payroll.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PutV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody(
+                version=version,
+                active=active,
+                employee_deduction=employee_deduction,
+                deduct_as_percentage=deduct_as_percentage,
+                employee_deduction_annual_maximum=employee_deduction_annual_maximum,
+                contribution=utils.get_pydantic_model(
+                    contribution,
+                    Optional[models.PutV1EmployeeBenefitsEmployeeBenefitIDContribution],
+                ),
+                elective=elective,
+                company_contribution_annual_maximum=company_contribution_annual_maximum,
+                limit_option=limit_option,
+                catch_up=catch_up,
+                coverage_amount=coverage_amount,
+                deduction_reduces_taxable_income=deduction_reduces_taxable_income,
+                coverage_salary_multiplier=coverage_salary_multiplier,
+                company_contribution=company_contribution,
+                contribute_as_percentage=contribute_as_percentage,
+            ),
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="put-v1-employee_benefits-employee_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1788,7 +892,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -1814,23 +918,190 @@ class TimeOffPolicies(BaseSDK):
             http_res,
         )
 
-    async def deactivate_async(
+    async def put_v1_employee_benefits_employee_benefit_id_async(
         self,
         *,
-        time_off_policy_uuid: str,
+        employee_benefit_id: str,
+        version: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        active: Optional[bool] = None,
+        employee_deduction: Optional[str] = "0.00",
+        deduct_as_percentage: Optional[bool] = None,
+        employee_deduction_annual_maximum: OptionalNullable[str] = UNSET,
+        contribution: Optional[
+            Union[
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDContribution,
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDContributionTypedDict,
+            ]
+        ] = None,
+        elective: Optional[bool] = False,
+        company_contribution_annual_maximum: OptionalNullable[str] = UNSET,
+        limit_option: OptionalNullable[
+            models.PutV1EmployeeBenefitsEmployeeBenefitIDLimitOption
+        ] = UNSET,
+        catch_up: Optional[bool] = False,
+        coverage_amount: OptionalNullable[str] = UNSET,
+        deduction_reduces_taxable_income: OptionalNullable[
+            models.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome
+        ] = models.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET,
+        coverage_salary_multiplier: Optional[str] = "0.00",
+        company_contribution: Optional[str] = "0.00",
+        contribute_as_percentage: Optional[bool] = False,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.EmployeeBenefit:
+        r"""Update an employee benefit
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        scope: `employee_benefits:write`
+
+        :param employee_benefit_id: The UUID of the employee benefit.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param active: Whether the employee benefit is active.
+        :param employee_deduction: The amount to be deducted, per pay period, from the employee's pay.
+        :param deduct_as_percentage: Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll.
+        :param employee_deduction_annual_maximum: The maximum employee deduction amount per year. A null value signifies no limit.
+        :param contribution: An object representing the type and value of the company contribution.
+        :param elective: Whether the company contribution is elective (aka \"matching\"). For `tiered`, `elective_amount`, and `elective_percentage` contribution types this is ignored and assumed to be `true`.
+        :param company_contribution_annual_maximum: The maximum company contribution amount per year. A null value signifies no limit.
+        :param limit_option: Some benefits require additional information to determine their limit.  `Family` or `Individual`: Applicable to HSA benefit.  `Joint Filing or Single` or `Married and Filing Separately`: Applicable to Dependent Care FSA benefit.
+        :param catch_up: Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50.
+        :param coverage_amount: The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.
+        :param deduction_reduces_taxable_income: Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored.
+        :param coverage_salary_multiplier: The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.
+        :param company_contribution: The amount to be paid, per pay period, by the company.
+        :param contribute_as_percentage: Whether the company contribution amount should be treated as a percentage to be deducted from each payroll.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PutV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody(
+                version=version,
+                active=active,
+                employee_deduction=employee_deduction,
+                deduct_as_percentage=deduct_as_percentage,
+                employee_deduction_annual_maximum=employee_deduction_annual_maximum,
+                contribution=utils.get_pydantic_model(
+                    contribution,
+                    Optional[models.PutV1EmployeeBenefitsEmployeeBenefitIDContribution],
+                ),
+                elective=elective,
+                company_contribution_annual_maximum=company_contribution_annual_maximum,
+                limit_option=limit_option,
+                catch_up=catch_up,
+                coverage_amount=coverage_amount,
+                deduction_reduces_taxable_income=deduction_reduces_taxable_income,
+                coverage_salary_multiplier=coverage_salary_multiplier,
+                company_contribution=company_contribution,
+                contribute_as_percentage=contribute_as_percentage,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="put-v1-employee_benefits-employee_benefit_id",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.EmployeeBenefit)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def delete_v1_employee_benefits_employee_benefit_id(
+        self,
+        *,
+        employee_benefit_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffPolicy:
-        r"""Deactivate a time off policy
+    ):
+        r"""Delete an employee benefit
 
-        Deactivate a time off policy
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
-        scope: `time_off_policies:write`
+        scope: `employee_benefits:write`
 
-        :param time_off_policy_uuid: The UUID of the company time off policy
+        :param employee_benefit_id: The UUID of the employee benefit.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1845,14 +1116,561 @@ class TimeOffPolicies(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDDeactivateRequest(
-            time_off_policy_uuid=time_off_policy_uuid,
+        request = models.DeleteV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="DELETE",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="*/*",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="delete-v1-employee_benefits-employee_benefit_id",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "204", "*"):
+            return
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def delete_v1_employee_benefits_employee_benefit_id_async(
+        self,
+        *,
+        employee_benefit_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Delete an employee benefit
+
+        Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+
+        scope: `employee_benefits:write`
+
+        :param employee_benefit_id: The UUID of the employee benefit.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.DeleteV1EmployeeBenefitsEmployeeBenefitIDRequest(
+            employee_benefit_id=employee_benefit_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
-            method="PUT",
-            path="/v1/time_off_policies/{time_off_policy_uuid}/deactivate",
+            method="DELETE",
+            path="/v1/employee_benefits/{employee_benefit_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="*/*",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="delete-v1-employee_benefits-employee_benefit_id",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "204", "*"):
+            return
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def create_ytd_benefit_amounts(
+        self,
+        *,
+        employee_id: str,
+        tax_year: float,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        benefit_type: Optional[float] = None,
+        ytd_employee_deduction_amount: Optional[str] = "0.00",
+        ytd_company_contribution_amount: Optional[str] = "0.00",
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Create year-to-date benefit amounts from a different company
+
+        Year-to-date benefit amounts from a different company represents the amount of money added to an employee's plan during a current year, made outside of the current contribution when they were employed at a different company.
+
+        This endpoint only supports passing outside contributions for 401(k) benefits.
+
+        scope: `employee_benefits:write`
+
+        :param employee_id: The UUID of the employee
+        :param tax_year: The tax year for which this amount applies.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param benefit_type: The benefit type supported by Gusto.
+        :param ytd_employee_deduction_amount: The year-to-date employee deduction made outside the current company.
+        :param ytd_company_contribution_amount: The year-to-date company contribution made outside the current company.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PostEmployeeYtdBenefitAmountsFromDifferentCompanyRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            post_employee_ytd_benefit_amounts_from_different_company=models.PostEmployeeYtdBenefitAmountsFromDifferentCompany(
+                benefit_type=benefit_type,
+                tax_year=tax_year,
+                ytd_employee_deduction_amount=ytd_employee_deduction_amount,
+                ytd_company_contribution_amount=ytd_company_contribution_amount,
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.post_employee_ytd_benefit_amounts_from_different_company,
+                False,
+                False,
+                "json",
+                models.PostEmployeeYtdBenefitAmountsFromDifferentCompany,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="post-employee-ytd-benefit-amounts-from-different-company",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "204", "*"):
+            return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def create_ytd_benefit_amounts_async(
+        self,
+        *,
+        employee_id: str,
+        tax_year: float,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        benefit_type: Optional[float] = None,
+        ytd_employee_deduction_amount: Optional[str] = "0.00",
+        ytd_company_contribution_amount: Optional[str] = "0.00",
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Create year-to-date benefit amounts from a different company
+
+        Year-to-date benefit amounts from a different company represents the amount of money added to an employee's plan during a current year, made outside of the current contribution when they were employed at a different company.
+
+        This endpoint only supports passing outside contributions for 401(k) benefits.
+
+        scope: `employee_benefits:write`
+
+        :param employee_id: The UUID of the employee
+        :param tax_year: The tax year for which this amount applies.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param benefit_type: The benefit type supported by Gusto.
+        :param ytd_employee_deduction_amount: The year-to-date employee deduction made outside the current company.
+        :param ytd_company_contribution_amount: The year-to-date company contribution made outside the current company.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PostEmployeeYtdBenefitAmountsFromDifferentCompanyRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            post_employee_ytd_benefit_amounts_from_different_company=models.PostEmployeeYtdBenefitAmountsFromDifferentCompany(
+                benefit_type=benefit_type,
+                tax_year=tax_year,
+                ytd_employee_deduction_amount=ytd_employee_deduction_amount,
+                ytd_company_contribution_amount=ytd_company_contribution_amount,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.post_employee_ytd_benefit_amounts_from_different_company,
+                False,
+                False,
+                "json",
+                models.PostEmployeeYtdBenefitAmountsFromDifferentCompany,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="post-employee-ytd-benefit-amounts-from-different-company",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "204", "*"):
+            return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_ytd_from_different_company(
+        self,
+        *,
+        employee_id: str,
+        tax_year: Optional[int] = None,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.YtdBenefitAmountsFromDifferentCompany]:
+        r"""Get year-to-date benefit amounts from a different company
+
+        Retrieves year-to-date benefit amounts that were contributed at a different company for the specified employee.
+        Returns benefit amounts for the requested tax year (defaults to current year if not specified).
+
+        This endpoint only supports retrieving outside contributions for 401(k) benefits.
+
+        scope: `employee_benefits:read`
+
+        :param employee_id: The UUID of the employee
+        :param tax_year: The tax year for which to retrieve YTD benefit amounts. Defaults to current year if not specified.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetEmployeeYtdBenefitAmountsFromDifferentCompanyRequest(
+            employee_id=employee_id,
+            tax_year=tax_year,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-employee-ytd-benefit-amounts-from-different-company",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(
+                http_res.text, List[models.YtdBenefitAmountsFromDifferentCompany]
+            )
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_ytd_from_different_company_async(
+        self,
+        *,
+        employee_id: str,
+        tax_year: Optional[int] = None,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.YtdBenefitAmountsFromDifferentCompany]:
+        r"""Get year-to-date benefit amounts from a different company
+
+        Retrieves year-to-date benefit amounts that were contributed at a different company for the specified employee.
+        Returns benefit amounts for the requested tax year (defaults to current year if not specified).
+
+        This endpoint only supports retrieving outside contributions for 401(k) benefits.
+
+        scope: `employee_benefits:read`
+
+        :param employee_id: The UUID of the employee
+        :param tax_year: The tax year for which to retrieve YTD benefit amounts. Defaults to current year if not specified.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetEmployeeYtdBenefitAmountsFromDifferentCompanyRequest(
+            employee_id=employee_id,
+            tax_year=tax_year,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1876,25 +1694,21 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-time_off_policies-time_off_policy_uuid-deactivate",
+                operation_id="get-employee-ytd-benefit-amounts-from-different-company",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
-        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffPolicy)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return utils.unmarshal_json(
+                http_res.text, List[models.YtdBenefitAmountsFromDifferentCompany]
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

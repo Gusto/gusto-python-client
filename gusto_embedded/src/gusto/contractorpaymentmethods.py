@@ -257,7 +257,7 @@ class ContractorPaymentMethods(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_contractors_contractor_uuid_payment_method(
         self,
         *,
         contractor_uuid: str,
@@ -354,7 +354,7 @@ class ContractorPaymentMethods(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_contractors_contractor_uuid_payment_method_async(
         self,
         *,
         contractor_uuid: str,

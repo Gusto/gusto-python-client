@@ -6,7 +6,7 @@
 ### Available Operations
 
 * [get_home](#get_home) - Get an employee's home addresses
-* [create](#create) - Create an employee's home address
+* [post_v1_employees_employee_id_home_addresses](#post_v1_employees_employee_id_home_addresses) - Create an employee's home address
 * [get](#get) - Get an employee's home address
 * [delete](#delete) - Delete an employee's home address
 * [list_work_addresses](#list_work_addresses) - Get an employee's work addresses
@@ -55,7 +55,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create
+## post_v1_employees_employee_id_home_addresses
 
 The home address of an employee is used to determine certain tax information about them. Addresses are geocoded on create and update to ensure validity.
 
@@ -74,7 +74,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_addresses.create(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
+    res = g_client.employee_addresses.post_v1_employees_employee_id_home_addresses(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
 
     # Handle response
     print(res)

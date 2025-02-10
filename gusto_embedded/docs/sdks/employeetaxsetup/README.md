@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [get_federal_taxes](#get_federal_taxes) - Get an employee's federal taxes
-* [update_federal_taxes](#update_federal_taxes) - Update an employee's federal taxes
-* [get_state_taxes](#get_state_taxes) - Get an employee's state taxes
+* [get_v1_employees_employee_id_federal_taxes](#get_v1_employees_employee_id_federal_taxes) - Get an employee's federal taxes
+* [put_v1_employees_employee_id_federal_taxes](#put_v1_employees_employee_id_federal_taxes) - Update an employee's federal taxes
+* [get_v1_employees_employee_id_state_taxes](#get_v1_employees_employee_id_state_taxes) - Get an employee's state taxes
 
-## get_federal_taxes
+## get_v1_employees_employee_id_federal_taxes
 
 Get attributes relevant for an employee's federal taxes.
 
@@ -25,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_tax_setup.get_federal_taxes(employee_uuid="<id>")
+    res = g_client.employee_tax_setup.get_v1_employees_employee_id_federal_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)
@@ -50,7 +50,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_federal_taxes
+## put_v1_employees_employee_id_federal_taxes
 
 Update attributes relevant for an employee's federal taxes.
 
@@ -66,7 +66,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_tax_setup.update_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
+    res = g_client.employee_tax_setup.put_v1_employees_employee_id_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
 
     # Handle response
     print(res)
@@ -100,7 +100,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_state_taxes
+## get_v1_employees_employee_id_state_taxes
 
 Get attributes relevant for an employee's state taxes.
 
@@ -128,7 +128,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_tax_setup.get_state_taxes(employee_uuid="<id>")
+    res = g_client.employee_tax_setup.get_v1_employees_employee_id_state_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)

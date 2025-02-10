@@ -5,14 +5,14 @@
 
 ### Available Operations
 
-* [create](#create) - Create a contractor payment group
-* [list](#list) - Get contractor payment groups for a company
-* [preview](#preview) - Preview a contractor payment group
-* [get](#get) - Fetch a contractor payment group
-* [delete](#delete) - Cancel a contractor payment group
-* [fund](#fund) - Fund a contractor payment group [DEMO]
+* [post_v1_companies_company_id_contractor_payment_groups](#post_v1_companies_company_id_contractor_payment_groups) - Create a contractor payment group
+* [get_v1_companies_company_id_contractor_payment_groups](#get_v1_companies_company_id_contractor_payment_groups) - Get contractor payment groups for a company
+* [post_v1_companies_company_id_contractor_payment_groups_preview](#post_v1_companies_company_id_contractor_payment_groups_preview) - Preview a contractor payment group
+* [get_v1_contractor_payment_groups_contractor_payment_group_id](#get_v1_contractor_payment_groups_contractor_payment_group_id) - Fetch a contractor payment group
+* [delete_v1_contractor_payment_groups_contractor_payment_group_id](#delete_v1_contractor_payment_groups_contractor_payment_group_id) - Cancel a contractor payment group
+* [put_v1_contractor_payment_groups_contractor_payment_group_id_fund](#put_v1_contractor_payment_groups_contractor_payment_group_id_fund) - Fund a contractor payment group [DEMO]
 
-## create
+## post_v1_companies_company_id_contractor_payment_groups
 
 Pay a group of contractors. Information needed depends on the contractor's wage type (hourly vs fixed)
 
@@ -29,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_groups.create(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = g_client.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,
@@ -65,7 +65,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list
+## get_v1_companies_company_id_contractor_payment_groups
 
 Returns a list of minimal contractor payment groups within a given time period, including totals but not associated contractor payments.
 
@@ -81,7 +81,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_groups.list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
+    res = g_client.contractor_payment_groups.get_v1_companies_company_id_contractor_payment_groups(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
 
     # Handle response
     print(res)
@@ -110,7 +110,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## preview
+## post_v1_companies_company_id_contractor_payment_groups_preview
 
 Preview a group of contractor payments. Request will validate inputs and return preview of the contractor payment group including the expected debit_date.  Uuid will be null in the response.
 
@@ -127,7 +127,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_groups.preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = g_client.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups_preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,
@@ -163,7 +163,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_v1_contractor_payment_groups_contractor_payment_group_id
 
 Returns a contractor payment group with all associated contractor payments.
 
@@ -179,7 +179,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_groups.get(contractor_payment_group_uuid="<id>")
+    res = g_client.contractor_payment_groups.get_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
 
     # Handle response
     print(res)
@@ -204,7 +204,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## delete
+## delete_v1_contractor_payment_groups_contractor_payment_group_id
 
 Cancels a contractor payment group and all associated contractor payments. All contractor payments must be cancellable, unfunded.
 
@@ -220,7 +220,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.contractor_payment_groups.delete(contractor_payment_group_uuid="<id>")
+    g_client.contractor_payment_groups.delete_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
 
     # Use the SDK ...
 
@@ -241,7 +241,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## fund
+## put_v1_contractor_payment_groups_contractor_payment_group_id_fund
 
 > 🚧 Demo action
 >
@@ -261,7 +261,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_groups.fund(contractor_payment_group_uuid="<id>")
+    res = g_client.contractor_payment_groups.put_v1_contractor_payment_groups_contractor_payment_group_id_fund(contractor_payment_group_uuid="<id>")
 
     # Handle response
     print(res)

@@ -10,7 +10,7 @@ from typing import Any, Mapping, Optional
 
 
 class WorkAddresses(BaseSDK):
-    def create(
+    def post_v1_employees_employee_id_work_addresses(
         self,
         *,
         employee_id: str,
@@ -126,7 +126,7 @@ class WorkAddresses(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_employees_employee_id_work_addresses_async(
         self,
         *,
         employee_id: str,
@@ -432,7 +432,7 @@ class WorkAddresses(BaseSDK):
             http_res,
         )
 
-    def delete(
+    def delete_v1_work_addresses_work_address_uuid(
         self,
         *,
         work_address_uuid: str,
@@ -533,7 +533,7 @@ class WorkAddresses(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_work_addresses_work_address_uuid_async(
         self,
         *,
         work_address_uuid: str,

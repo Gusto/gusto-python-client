@@ -5,315 +5,29 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, List, Mapping, Optional
 
 
-class Signatories(BaseSDK):
-    def post_v1_company_signatories(
+class EmployeeEmployments(BaseSDK):
+    def list_terminations(
         self,
         *,
-        company_uuid: str,
-        ssn: str,
-        first_name: str,
-        last_name: str,
-        email: str,
-        title: str,
-        phone: str,
-        birthday: str,
-        home_address: Union[
-            models.PostV1CompanySignatoriesHomeAddress,
-            models.PostV1CompanySignatoriesHomeAddressTypedDict,
-        ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        middle_initial: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Create a signatory
-
-        Create a company signatory with complete information.
-        A signatory can legally sign forms once the identity verification process is successful.
-        The signatory should be an officer, owner, general partner or LLC member manager, plan administrator, fiduciary, or an authorized representative who is designated to sign agreements on the company's behalf. An officer is the president, vice president, treasurer, chief accounting officer, etc. There can only be a single primary signatory in a company.
-
-        scope: `signatories:manage`
-
-        :param company_uuid: The UUID of the company
-        :param ssn:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :param title:
-        :param phone:
-        :param birthday:
-        :param home_address: The signatory's home address
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompanySignatoriesRequestBody(
-                ssn=ssn,
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                email=email,
-                title=title,
-                phone=phone,
-                birthday=birthday,
-                home_address=utils.get_pydantic_model(
-                    home_address, models.PostV1CompanySignatoriesHomeAddress
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/companies/{company_uuid}/signatories",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1CompanySignatoriesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="post-v1-company-signatories",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def post_v1_company_signatories_async(
-        self,
-        *,
-        company_uuid: str,
-        ssn: str,
-        first_name: str,
-        last_name: str,
-        email: str,
-        title: str,
-        phone: str,
-        birthday: str,
-        home_address: Union[
-            models.PostV1CompanySignatoriesHomeAddress,
-            models.PostV1CompanySignatoriesHomeAddressTypedDict,
-        ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        middle_initial: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Create a signatory
-
-        Create a company signatory with complete information.
-        A signatory can legally sign forms once the identity verification process is successful.
-        The signatory should be an officer, owner, general partner or LLC member manager, plan administrator, fiduciary, or an authorized representative who is designated to sign agreements on the company's behalf. An officer is the president, vice president, treasurer, chief accounting officer, etc. There can only be a single primary signatory in a company.
-
-        scope: `signatories:manage`
-
-        :param company_uuid: The UUID of the company
-        :param ssn:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :param title:
-        :param phone:
-        :param birthday:
-        :param home_address: The signatory's home address
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial:
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompanySignatoriesRequestBody(
-                ssn=ssn,
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                email=email,
-                title=title,
-                phone=phone,
-                birthday=birthday,
-                home_address=utils.get_pydantic_model(
-                    home_address, models.PostV1CompanySignatoriesHomeAddress
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/companies/{company_uuid}/signatories",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1CompanySignatoriesRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="post-v1-company-signatories",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get_v1_companies_company_uuid_signatories(
-        self,
-        *,
-        company_uuid: str,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Signatory]:
-        r"""Get all company signatories
+    ) -> List[models.Termination]:
+        r"""Get terminations for an employee
 
-        Returns company signatories. Currently we only support a single signatory per company.
+        Terminations are created whenever an employee is scheduled to leave the company. The only things required are an effective date (their last day of work) and whether they should receive their wages in a one-off termination payroll or with the rest of the company.
 
-        scope: `signatories:read`
+        Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
 
-        :param company_uuid: The UUID of the company
+        scope: `employments:read`
+
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -328,14 +42,14 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
+        request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/companies/{company_uuid}/signatories",
+            path="/v1/employees/{employee_id}/terminations",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -359,7 +73,7 @@ class Signatories(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-companies-company_uuid-signatories",
+                operation_id="get-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -371,7 +85,7 @@ class Signatories(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Signatory])
+            return utils.unmarshal_json(http_res.text, List[models.Termination])
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -392,23 +106,25 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def get_v1_companies_company_uuid_signatories_async(
+    async def list_terminations_async(
         self,
         *,
-        company_uuid: str,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Signatory]:
-        r"""Get all company signatories
+    ) -> List[models.Termination]:
+        r"""Get terminations for an employee
 
-        Returns company signatories. Currently we only support a single signatory per company.
+        Terminations are created whenever an employee is scheduled to leave the company. The only things required are an effective date (their last day of work) and whether they should receive their wages in a one-off termination payroll or with the rest of the company.
 
-        scope: `signatories:read`
+        Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
 
-        :param company_uuid: The UUID of the company
+        scope: `employments:read`
+
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -423,14 +139,14 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
+        request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/companies/{company_uuid}/signatories",
+            path="/v1/employees/{employee_id}/terminations",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -454,7 +170,7 @@ class Signatories(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-companies-company_uuid-signatories",
+                operation_id="get-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -466,7 +182,7 @@ class Signatories(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Signatory])
+            return utils.unmarshal_json(http_res.text, List[models.Termination])
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -487,30 +203,32 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def post_v1_companies_company_uuid_signatories_invite(
+    def put_v1_terminations_employee_id(
         self,
         *,
-        company_uuid: str,
-        email: str,
+        employee_id: str,
+        version: str,
+        effective_date: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        title: Optional[str] = None,
+        run_termination_payroll: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Invite a signatory
+    ) -> models.Termination:
+        r"""Update an employee termination
 
-        Create a signatory with minimal information. This signatory can be invited to provide more information through the `PUT /v1/companies/{company_uuid}/signatories/{signatory_uuid}` endpoint. This will start the identity verification process and allow the signatory to be verified to sign documents.
+        Terminations are created whenever an employee is scheduled to leave the company. The only things required are an effective date (their last day of work) and whether they should receive their wages in a one-off termination payroll or with the rest of the company.
 
-        :param company_uuid: The UUID of the company
-        :param email:
+        Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
+
+        scope: `employments:write`
+
+        :param employee_id: The UUID of the employee
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
+        :param effective_date: The employee's last day of work.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param first_name:
-        :param last_name:
-        :param title:
+        :param run_termination_payroll: If true, the employee should receive their final wages via an off-cycle payroll. If false, they should receive their final wages on their current pay schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -524,20 +242,19 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
+        request = models.PutV1TerminationsEmployeeIDRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequestBody(
-                first_name=first_name,
-                last_name=last_name,
-                title=title,
-                email=email,
+            request_body=models.PutV1TerminationsEmployeeIDRequestBody(
+                version=version,
+                effective_date=effective_date,
+                run_termination_payroll=run_termination_payroll,
             ),
         )
 
         req = self._build_request(
-            method="POST",
-            path="/v1/companies/{company_uuid}/signatories/invite",
+            method="PUT",
+            path="/v1/terminations/{employee_id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -553,7 +270,7 @@ class Signatories(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequestBody,
+                models.PutV1TerminationsEmployeeIDRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -568,7 +285,7 @@ class Signatories(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="post-v1-companies-company_uuid-signatories-invite",
+                operation_id="put-v1-terminations-employee_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -580,14 +297,14 @@ class Signatories(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Termination)
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -607,30 +324,32 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def post_v1_companies_company_uuid_signatories_invite_async(
+    async def put_v1_terminations_employee_id_async(
         self,
         *,
-        company_uuid: str,
-        email: str,
+        employee_id: str,
+        version: str,
+        effective_date: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        title: Optional[str] = None,
+        run_termination_payroll: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Invite a signatory
+    ) -> models.Termination:
+        r"""Update an employee termination
 
-        Create a signatory with minimal information. This signatory can be invited to provide more information through the `PUT /v1/companies/{company_uuid}/signatories/{signatory_uuid}` endpoint. This will start the identity verification process and allow the signatory to be verified to sign documents.
+        Terminations are created whenever an employee is scheduled to leave the company. The only things required are an effective date (their last day of work) and whether they should receive their wages in a one-off termination payroll or with the rest of the company.
 
-        :param company_uuid: The UUID of the company
-        :param email:
+        Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
+
+        scope: `employments:write`
+
+        :param employee_id: The UUID of the employee
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
+        :param effective_date: The employee's last day of work.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param first_name:
-        :param last_name:
-        :param title:
+        :param run_termination_payroll: If true, the employee should receive their final wages via an off-cycle payroll. If false, they should receive their final wages on their current pay schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -644,20 +363,19 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
+        request = models.PutV1TerminationsEmployeeIDRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequestBody(
-                first_name=first_name,
-                last_name=last_name,
-                title=title,
-                email=email,
+            request_body=models.PutV1TerminationsEmployeeIDRequestBody(
+                version=version,
+                effective_date=effective_date,
+                run_termination_payroll=run_termination_payroll,
             ),
         )
 
         req = self._build_request_async(
-            method="POST",
-            path="/v1/companies/{company_uuid}/signatories/invite",
+            method="PUT",
+            path="/v1/terminations/{employee_id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -673,7 +391,7 @@ class Signatories(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequestBody,
+                models.PutV1TerminationsEmployeeIDRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -688,7 +406,7 @@ class Signatories(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="post-v1-companies-company_uuid-signatories-invite",
+                operation_id="put-v1-terminations-employee_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -700,14 +418,14 @@ class Signatories(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Termination)
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -727,49 +445,38 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def put_v1_companies_company_uuid_signatories_signatory_uuid(
+    def put_v1_employees_employee_id_rehire(
         self,
         *,
-        company_uuid: str,
-        signatory_uuid: str,
+        employee_id: str,
+        version: str,
+        effective_date: str,
+        file_new_hire_report: bool,
+        work_location_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        version: Optional[str] = None,
-        first_name: Optional[str] = None,
-        middle_initial: Optional[str] = None,
-        last_name: Optional[str] = None,
-        title: Optional[str] = None,
-        phone: Optional[str] = None,
-        birthday: Optional[str] = None,
-        ssn: Optional[str] = None,
-        home_address: Optional[
-            Union[
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress,
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddressTypedDict,
-            ]
+        employment_status: Optional[
+            models.PutV1EmployeesEmployeeIDRehireEmploymentStatus
         ] = None,
+        two_percent_shareholder: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Update a signatory
+    ) -> models.Rehire:
+        r"""Update an employee rehire
 
-        Update a signatory that has been either invited or created. If the signatory has been created with minimal information through the `POST /v1/companies/{company_uuid}/signatories/invite` endpoint, then the first update must contain all attributes specified in the request body in order to start the identity verification process.
+        Update an employee's rehire.
 
-        scope: `signatories:write`
+        scope: `employments:write`
 
-        :param company_uuid: The UUID of the company
-        :param signatory_uuid: The UUID of the signatory
+        :param employee_id: The UUID of the employee
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
+        :param effective_date: The day when the employee returns to work.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the employee.
+        :param work_location_uuid: The uuid of the employee's work location.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param version: The current version of the object. See the versioning guide for information on how to use this field.
-        :param first_name:
-        :param middle_initial:
-        :param last_name:
-        :param title:
-        :param phone:
-        :param birthday:
-        :param ssn:
-        :param home_address:
+        :param employment_status: The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*.
+        :param two_percent_shareholder: Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -783,31 +490,22 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
-            company_uuid=company_uuid,
-            signatory_uuid=signatory_uuid,
+        request = models.PutV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequestBody(
+            request_body=models.PutV1EmployeesEmployeeIDRehireRequestBody(
                 version=version,
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                title=title,
-                phone=phone,
-                birthday=birthday,
-                ssn=ssn,
-                home_address=utils.get_pydantic_model(
-                    home_address,
-                    Optional[
-                        models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress
-                    ],
-                ),
+                effective_date=effective_date,
+                file_new_hire_report=file_new_hire_report,
+                work_location_uuid=work_location_uuid,
+                employment_status=employment_status,
+                two_percent_shareholder=two_percent_shareholder,
             ),
         )
 
         req = self._build_request(
             method="PUT",
-            path="/v1/companies/{company_uuid}/signatories/{signatory_uuid}",
+            path="/v1/employees/{employee_id}/rehire",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -823,7 +521,7 @@ class Signatories(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequestBody,
+                models.PutV1EmployeesEmployeeIDRehireRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -838,7 +536,7 @@ class Signatories(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-companies-company_uuid-signatories-signatory_uuid",
+                operation_id="put-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -851,13 +549,13 @@ class Signatories(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Rehire)
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -877,49 +575,38 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def put_v1_companies_company_uuid_signatories_signatory_uuid_async(
+    async def put_v1_employees_employee_id_rehire_async(
         self,
         *,
-        company_uuid: str,
-        signatory_uuid: str,
+        employee_id: str,
+        version: str,
+        effective_date: str,
+        file_new_hire_report: bool,
+        work_location_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        version: Optional[str] = None,
-        first_name: Optional[str] = None,
-        middle_initial: Optional[str] = None,
-        last_name: Optional[str] = None,
-        title: Optional[str] = None,
-        phone: Optional[str] = None,
-        birthday: Optional[str] = None,
-        ssn: Optional[str] = None,
-        home_address: Optional[
-            Union[
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress,
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddressTypedDict,
-            ]
+        employment_status: Optional[
+            models.PutV1EmployeesEmployeeIDRehireEmploymentStatus
         ] = None,
+        two_percent_shareholder: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Signatory:
-        r"""Update a signatory
+    ) -> models.Rehire:
+        r"""Update an employee rehire
 
-        Update a signatory that has been either invited or created. If the signatory has been created with minimal information through the `POST /v1/companies/{company_uuid}/signatories/invite` endpoint, then the first update must contain all attributes specified in the request body in order to start the identity verification process.
+        Update an employee's rehire.
 
-        scope: `signatories:write`
+        scope: `employments:write`
 
-        :param company_uuid: The UUID of the company
-        :param signatory_uuid: The UUID of the signatory
+        :param employee_id: The UUID of the employee
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
+        :param effective_date: The day when the employee returns to work.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the employee.
+        :param work_location_uuid: The uuid of the employee's work location.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param version: The current version of the object. See the versioning guide for information on how to use this field.
-        :param first_name:
-        :param middle_initial:
-        :param last_name:
-        :param title:
-        :param phone:
-        :param birthday:
-        :param ssn:
-        :param home_address:
+        :param employment_status: The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*.
+        :param two_percent_shareholder: Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -933,31 +620,22 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
-            company_uuid=company_uuid,
-            signatory_uuid=signatory_uuid,
+        request = models.PutV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequestBody(
+            request_body=models.PutV1EmployeesEmployeeIDRehireRequestBody(
                 version=version,
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                title=title,
-                phone=phone,
-                birthday=birthday,
-                ssn=ssn,
-                home_address=utils.get_pydantic_model(
-                    home_address,
-                    Optional[
-                        models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress
-                    ],
-                ),
+                effective_date=effective_date,
+                file_new_hire_report=file_new_hire_report,
+                work_location_uuid=work_location_uuid,
+                employment_status=employment_status,
+                two_percent_shareholder=two_percent_shareholder,
             ),
         )
 
         req = self._build_request_async(
             method="PUT",
-            path="/v1/companies/{company_uuid}/signatories/{signatory_uuid}",
+            path="/v1/employees/{employee_id}/rehire",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -973,7 +651,7 @@ class Signatories(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequestBody,
+                models.PutV1EmployeesEmployeeIDRehireRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -988,7 +666,7 @@ class Signatories(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-companies-company_uuid-signatories-signatory_uuid",
+                operation_id="put-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1001,13 +679,13 @@ class Signatories(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Signatory)
-        if utils.match_response(http_res, "422", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Rehire)
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1027,25 +705,225 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def delete_v1_companies_company_uuid_signatories_signatory_uuid(
+    def get_v1_employees_employee_id_rehire(
         self,
         *,
-        company_uuid: str,
-        signatory_uuid: str,
+        employee_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Rehire:
+        r"""Get an employee rehire
+
+        Retrieve an employee's rehire, which contains information on when the employee returns to work.
+
+        scope: `employments:read`
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employees/{employee_id}/rehire",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employees-employee_id-rehire",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Rehire)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_employees_employee_id_rehire_async(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Rehire:
+        r"""Get an employee rehire
+
+        Retrieve an employee's rehire, which contains information on when the employee returns to work.
+
+        scope: `employments:read`
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employees/{employee_id}/rehire",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employees-employee_id-rehire",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.Rehire)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def delete_v1_employees_employee_id_rehire(
+        self,
+        *,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ):
-        r"""Delete a signatory
+        r"""Delete an employee rehire
 
-        Delete a company signatory.
+        Delete an employee rehire. An employee rehire cannot be deleted if it's active (past effective date).
 
-        scope: `signatories:manage`
+        scope: `employments:write`
 
-        :param company_uuid: The UUID of the company
-        :param signatory_uuid: The UUID of the signatory
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1060,15 +938,14 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
-            company_uuid=company_uuid,
-            signatory_uuid=signatory_uuid,
+        request = models.DeleteV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="DELETE",
-            path="/v1/companies/{company_uuid}/signatories/{signatory_uuid}",
+            path="/v1/employees/{employee_id}/rehire",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1076,7 +953,7 @@ class Signatories(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             timeout_ms=timeout_ms,
@@ -1092,7 +969,7 @@ class Signatories(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="delete-v1-companies-company_uuid-signatories-signatory_uuid",
+                operation_id="delete-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1103,8 +980,212 @@ class Signatories(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def delete_v1_employees_employee_id_rehire_async(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Delete an employee rehire
+
+        Delete an employee rehire. An employee rehire cannot be deleted if it's active (past effective date).
+
+        scope: `employments:write`
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.DeleteV1EmployeesEmployeeIDRehireRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="DELETE",
+            path="/v1/employees/{employee_id}/rehire",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="delete-v1-employees-employee_id-rehire",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "204", "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_v1_employees_employee_id_employment_history(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.EmploymentHistoryList]:
+        r"""Get employment history for an employee
+
+        Retrieve the employment history for a given employee, which includes termination and rehire.
+
+        scope: `employments:read`
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1EmployeesEmployeeIDEmploymentHistoryRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employees/{employee_id}/employment_history",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-employees-employee_id-employment_history",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(
+                http_res.text, List[models.EmploymentHistoryList]
+            )
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -1125,25 +1206,23 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def delete_v1_companies_company_uuid_signatories_signatory_uuid_async(
+    async def get_v1_employees_employee_id_employment_history_async(
         self,
         *,
-        company_uuid: str,
-        signatory_uuid: str,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Delete a signatory
+    ) -> List[models.EmploymentHistoryList]:
+        r"""Get employment history for an employee
 
-        Delete a company signatory.
+        Retrieve the employment history for a given employee, which includes termination and rehire.
 
-        scope: `signatories:manage`
+        scope: `employments:read`
 
-        :param company_uuid: The UUID of the company
-        :param signatory_uuid: The UUID of the signatory
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1158,15 +1237,14 @@ class Signatories(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
-            company_uuid=company_uuid,
-            signatory_uuid=signatory_uuid,
+        request = models.GetV1EmployeesEmployeeIDEmploymentHistoryRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
-            method="DELETE",
-            path="/v1/companies/{company_uuid}/signatories/{signatory_uuid}",
+            method="GET",
+            path="/v1/employees/{employee_id}/employment_history",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1174,7 +1252,7 @@ class Signatories(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             timeout_ms=timeout_ms,
@@ -1190,7 +1268,7 @@ class Signatories(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="delete-v1-companies-company_uuid-signatories-signatory_uuid",
+                operation_id="get-v1-employees-employee_id-employment_history",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1201,8 +1279,10 @@ class Signatories(BaseSDK):
             retry_config=retry_config,
         )
 
-        if utils.match_response(http_res, "204", "*"):
-            return
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(
+                http_res.text, List[models.EmploymentHistoryList]
+            )
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

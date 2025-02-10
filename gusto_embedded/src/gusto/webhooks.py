@@ -701,7 +701,7 @@ class Webhooks(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_webhook_subscription_uuid(
         self,
         *,
         security: Union[
@@ -806,7 +806,7 @@ class Webhooks(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_webhook_subscription_uuid_async(
         self,
         *,
         security: Union[

@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [create_or_update](#create_or_update) - Create or update an employee's I-9 authorization
-* [get_documents](#get_documents) - Get an employee's I-9 verification documents
-* [delete_document](#delete_document) - Delete an employee's I-9 verification document
+* [put_v1_employees_employee_id_i9_authorization](#put_v1_employees_employee_id_i9_authorization) - Create or update an employee's I-9 authorization
+* [get_v1_employees_employee_id_i9_authorization_documents](#get_v1_employees_employee_id_i9_authorization_documents) - Get an employee's I-9 verification documents
+* [delete_v1_employees_employee_id_i9_authorization_documents_document_id](#delete_v1_employees_employee_id_i9_authorization_documents_document_id) - Delete an employee's I-9 verification document
 
-## create_or_update
+## put_v1_employees_employee_id_i9_authorization
 
 An employee's I-9 authorization stores information about an employee's authorization status, as well as signatures and other information required to complete the Form I-9 for employment eligibility verification.
 
@@ -44,7 +44,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_authorizations.create_or_update(employee_id="<id>", authorization_status=gusto.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, version="52b7c567242cb7452e89ba2bc02cb476")
+    res = g_client.i9_authorizations.put_v1_employees_employee_id_i9_authorization(employee_id="<id>", authorization_status=gusto.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, version="52b7c567242cb7452e89ba2bc02cb476")
 
     # Handle response
     print(res)
@@ -76,7 +76,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_documents
+## get_v1_employees_employee_id_i9_authorization_documents
 
 An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
@@ -92,7 +92,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_authorizations.get_documents(employee_id="<id>")
+    res = g_client.i9_authorizations.get_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -117,7 +117,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## delete_document
+## delete_v1_employees_employee_id_i9_authorization_documents_document_id
 
 An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint deletes a specific verification document.
 
@@ -133,7 +133,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.i9_authorizations.delete_document(employee_id="<id>", document_id="<id>")
+    g_client.i9_authorizations.delete_v1_employees_employee_id_i9_authorization_documents_document_id(employee_id="<id>", document_id="<id>")
 
     # Use the SDK ...
 

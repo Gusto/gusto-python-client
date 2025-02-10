@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [delete](#delete) - Delete a webhook subscription
-* [request_verification_token](#request_verification_token) - Request the webhook subscription verification_token
+* [delete_v1_webhook_subscription_uuid](#delete_v1_webhook_subscription_uuid) - Delete a webhook subscription
+* [get_v1_webhook_subscription_verification_token_uuid](#get_v1_webhook_subscription_verification_token_uuid) - Request the webhook subscription verification_token
 
-## delete
+## delete_v1_webhook_subscription_uuid
 
 Deletes the Webhook Subscription associated with the provided UUID.
 
@@ -28,7 +28,7 @@ import os
 
 with Gusto() as g_client:
 
-    g_client.webhook_subscriptions.delete(security=gusto.DeleteV1WebhookSubscriptionUUIDSecurity(
+    g_client.webhook_subscriptions.delete_v1_webhook_subscription_uuid(security=gusto.DeleteV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 
@@ -51,7 +51,7 @@ with Gusto() as g_client:
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## request_verification_token
+## get_v1_webhook_subscription_verification_token_uuid
 
 Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
 
@@ -71,7 +71,7 @@ import os
 
 with Gusto() as g_client:
 
-    g_client.webhook_subscriptions.request_verification_token(security=gusto.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
+    g_client.webhook_subscriptions.get_v1_webhook_subscription_verification_token_uuid(security=gusto.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 

@@ -6,13 +6,13 @@
 ### Available Operations
 
 * [get](#get) - Get a time off policy
-* [update](#update) - Update a time off policy
+* [put_time_off_policies_time_off_policy_uuid](#put_time_off_policies_time_off_policy_uuid) - Update a time off policy
 * [list](#list) - Get all time off policies
-* [create](#create) - Create a time off policy
-* [add_employees](#add_employees) - Add employees to a time off policy
-* [remove_employees](#remove_employees) - Remove employees from a time off policy
-* [update_balance](#update_balance) - Update employee time off hour balances
-* [deactivate](#deactivate) - Deactivate a time off policy
+* [post_companies_company_uuid_time_off_policies](#post_companies_company_uuid_time_off_policies) - Create a time off policy
+* [put_version_time_off_policies_time_off_policy_uuid_add_employees](#put_version_time_off_policies_time_off_policy_uuid_add_employees) - Add employees to a time off policy
+* [put_v1_time_off_policies_time_off_policy_uuid_remove_employees](#put_v1_time_off_policies_time_off_policy_uuid_remove_employees) - Remove employees from a time off policy
+* [put_version_time_off_policies_time_off_policy_uuid_balance](#put_version_time_off_policies_time_off_policy_uuid_balance) - Update employee time off hour balances
+* [put_v1_time_off_policies_time_off_policy_uuid_deactivate](#put_v1_time_off_policies_time_off_policy_uuid_deactivate) - Deactivate a time off policy
 
 ## get
 
@@ -55,7 +55,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_time_off_policies_time_off_policy_uuid
 
 Update a time off policy
 
@@ -72,7 +72,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.update(time_off_policy_uuid="<id>", name="Hourly Vacation Policy", accrual_method=gusto.AccrualMethod.PER_HOUR_PAID, accrual_rate="4.0", accrual_rate_unit="80.0", paid_out_on_termination=True, accrual_waiting_period_days=30, carryover_limit_hours="200.0", max_accrual_hours_per_year="120.0", max_hours="240.0")
+    res = g_client.time_off_policies.put_time_off_policies_time_off_policy_uuid(time_off_policy_uuid="<id>", name="Hourly Vacation Policy", accrual_method=gusto.AccrualMethod.PER_HOUR_PAID, accrual_rate="4.0", accrual_rate_unit="80.0", paid_out_on_termination=True, accrual_waiting_period_days=30, carryover_limit_hours="200.0", max_accrual_hours_per_year="120.0", max_hours="240.0")
 
     # Handle response
     print(res)
@@ -148,7 +148,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create
+## post_companies_company_uuid_time_off_policies
 
 Create a time off policy
 
@@ -165,7 +165,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.create(company_uuid="<id>", name="Unlimited Vacation Policy", policy_type="vacation", accrual_method=gusto.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod.UNLIMITED)
+    res = g_client.time_off_policies.post_companies_company_uuid_time_off_policies(company_uuid="<id>", name="Unlimited Vacation Policy", policy_type="vacation", accrual_method=gusto.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod.UNLIMITED)
 
     # Handle response
     print(res)
@@ -201,7 +201,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## add_employees
+## put_version_time_off_policies_time_off_policy_uuid_add_employees
 
 Add employees to a time off policy. Employees are required to have at least one job to be added to a time off policy. Accepts starting balances for non-unlimited policies
 
@@ -217,7 +217,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.add_employees(time_off_policy_uuid="<id>")
+    res = g_client.time_off_policies.put_version_time_off_policies_time_off_policy_uuid_add_employees(time_off_policy_uuid="<id>")
 
     # Handle response
     print(res)
@@ -244,7 +244,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## remove_employees
+## put_v1_time_off_policies_time_off_policy_uuid_remove_employees
 
 Remove employees from a time off policy
 
@@ -260,7 +260,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.remove_employees(time_off_policy_uuid="<id>")
+    res = g_client.time_off_policies.put_v1_time_off_policies_time_off_policy_uuid_remove_employees(time_off_policy_uuid="<id>")
 
     # Handle response
     print(res)
@@ -287,7 +287,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## update_balance
+## put_version_time_off_policies_time_off_policy_uuid_balance
 
 Updates time off hours balances for employees for a time off policy
 
@@ -303,7 +303,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.update_balance(time_off_policy_uuid="<id>")
+    res = g_client.time_off_policies.put_version_time_off_policies_time_off_policy_uuid_balance(time_off_policy_uuid="<id>")
 
     # Handle response
     print(res)
@@ -330,7 +330,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## deactivate
+## put_v1_time_off_policies_time_off_policy_uuid_deactivate
 
 Deactivate a time off policy
 
@@ -346,7 +346,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.time_off_policies.deactivate(time_off_policy_uuid="<id>")
+    res = g_client.time_off_policies.put_v1_time_off_policies_time_off_policy_uuid_deactivate(time_off_policy_uuid="<id>")
 
     # Handle response
     print(res)

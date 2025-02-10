@@ -5,18 +5,19 @@
 
 ### Available Operations
 
-* [create](#create) - Create a company benefit
-* [get](#get) - Get a company benefit
-* [update](#update) - Update a company benefit
-* [delete](#delete) - Delete a company benefit
-* [get_all](#get_all) - Get all benefits supported by Gusto
-* [get_supported_benefit](#get_supported_benefit) - Get a supported benefit by ID
-* [get_summary](#get_summary) - Get company benefit summary by company benefit id.
-* [get_employee_benefits](#get_employee_benefits) - Get all employee benefits for a company benefit
+* [post_v1_companies_company_id_company_benefits](#post_v1_companies_company_id_company_benefits) - Create a company benefit
+* [get_v1_companies_company_id_company_benefits](#get_v1_companies_company_id_company_benefits) - Get benefits for a company
+* [get_v1_company_benefits_company_benefit_id](#get_v1_company_benefits_company_benefit_id) - Get a company benefit
+* [put_v1_company_benefits_company_benefit_id](#put_v1_company_benefits_company_benefit_id) - Update a company benefit
+* [delete_v1_company_benefits_company_benefit_id](#delete_v1_company_benefits_company_benefit_id) - Delete a company benefit
+* [get_v1_benefits](#get_v1_benefits) - Get all benefits supported by Gusto
+* [get_v1_benefits_benefit_id](#get_v1_benefits_benefit_id) - Get a supported benefit by ID
+* [get_v1_benefits_company_benefit_id_summary](#get_v1_benefits_company_benefit_id_summary) - Get company benefit summary by company benefit id.
+* [get_v1_company_benefits_company_benefit_id_employee_benefits](#get_v1_company_benefits_company_benefit_id_employee_benefits) - Get all employee benefits for a company benefit
 * [bulk_update](#bulk_update) - Bulk update employee benefits for a company benefit
-* [get_requirements](#get_requirements) - Get benefit fields requirements by ID
+* [get_v1_benefits_benefits_id_requirements](#get_v1_benefits_benefits_id_requirements) - Get benefit fields requirements by ID
 
-## create
+## post_v1_companies_company_id_company_benefits
 
 Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
 
@@ -34,7 +35,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = g_client.company_benefits.post_v1_companies_company_id_company_benefits(company_id="<id>", description="yuck vice between gee ugh ha")
 
     # Handle response
     print(res)
@@ -65,7 +66,53 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_v1_companies_company_id_company_benefits
+
+Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
+
+Note that company benefits can be deactivated only when no employees are enrolled.
+
+Benefits containing PHI are only visible to applications with the `company_benefits:read:phi` scope.
+
+scope: `company_benefits:read`
+
+### Example Usage
+
+```python
+from gusto import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as g_client:
+
+    res = g_client.company_benefits.get_v1_companies_company_id_company_benefits(company_id="<id>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `enrollment_count`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether to return employee enrollment count                                                                                                                                                                                  |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.CompanyBenefit]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_v1_company_benefits_company_benefit_id
 
 Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
 
@@ -85,7 +132,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get(company_benefit_id="<id>")
+    res = g_client.company_benefits.get_v1_company_benefits_company_benefit_id(company_benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -111,7 +158,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_company_benefits_company_benefit_id
 
 Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
 
@@ -129,7 +176,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", active=False)
+    res = g_client.company_benefits.put_v1_company_benefits_company_benefit_id(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", active=False)
 
     # Handle response
     print(res)
@@ -158,7 +205,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_v1_company_benefits_company_benefit_id
 
 The following must be true in order to delete a company benefit
   - There are no employee benefits associated with the company benefit
@@ -177,7 +224,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.company_benefits.delete(company_benefit_id="<id>")
+    g_client.company_benefits.delete_v1_company_benefits_company_benefit_id(company_benefit_id="<id>")
 
     # Use the SDK ...
 
@@ -198,7 +245,7 @@ with Gusto(
 | models.DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody | 422                                                        | application/json                                           |
 | models.APIError                                            | 4XX, 5XX                                                   | \*/\*                                                      |
 
-## get_all
+## get_v1_benefits
 
 Returns all benefits supported by Gusto.
 
@@ -216,7 +263,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get_all()
+    res = g_client.company_benefits.get_v1_benefits()
 
     # Handle response
     print(res)
@@ -240,7 +287,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_supported_benefit
+## get_v1_benefits_benefit_id
 
 Returns a benefit supported by Gusto.
 
@@ -258,7 +305,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get_supported_benefit(benefit_id="<id>")
+    res = g_client.company_benefits.get_v1_benefits_benefit_id(benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -283,7 +330,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_summary
+## get_v1_benefits_company_benefit_id_summary
 
 Returns summary benefit data for the requested company benefit id.
 
@@ -301,7 +348,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31")
+    res = g_client.company_benefits.get_v1_benefits_company_benefit_id_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31")
 
     # Handle response
     print(res)
@@ -329,7 +376,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_employee_benefits
+## get_v1_company_benefits_company_benefit_id_employee_benefits
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -349,7 +396,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get_employee_benefits(company_benefit_id="<id>")
+    res = g_client.company_benefits.get_v1_company_benefits_company_benefit_id_employee_benefits(company_benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -428,7 +475,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_requirements
+## get_v1_benefits_benefits_id_requirements
 
 Returns field requirements for the requested benefit type.
 
@@ -444,7 +491,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_benefits.get_requirements(benefit_id="<id>")
+    res = g_client.company_benefits.get_v1_benefits_benefits_id_requirements(benefit_id="<id>")
 
     # Handle response
     print(res)

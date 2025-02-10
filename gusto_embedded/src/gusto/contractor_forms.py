@@ -5,27 +5,29 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import Any, List, Mapping, Optional
+from typing import Any, Mapping, Optional
 
 
-class WireInRequests(BaseSDK):
-    def get(
+class ContractorForms(BaseSDK):
+    def get_v1_contractor_form(
         self,
         *,
-        wire_in_request_uuid: str,
+        contractor_uuid: str,
+        form_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WireInRequest:
-        r"""Get a single Wire In Request
+    ) -> models.Form1099:
+        r"""Get a contractor form
 
-        Fetch a Wire In Request.
+        Get a contractor form
 
-        scope: `payrolls:read`
+        scope: `contractor_forms:read`
 
-        :param wire_in_request_uuid: The UUID of the Wire In Request
+        :param contractor_uuid: The UUID of the contractor
+        :param form_id: The UUID of the form
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -40,14 +42,15 @@ class WireInRequests(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
+        request = models.GetV1ContractorFormRequest(
+            contractor_uuid=contractor_uuid,
+            form_id=form_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/wire_in_requests/{wire_in_request_uuid}",
+            path="/v1/contractors/{contractor_uuid}/forms/{form_id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -71,7 +74,7 @@ class WireInRequests(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-wire_in_requests-wire_in_request_uuid",
+                operation_id="get-v1-contractor-form",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -83,7 +86,7 @@ class WireInRequests(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.WireInRequest)
+            return utils.unmarshal_json(http_res.text, models.Form1099)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -104,23 +107,25 @@ class WireInRequests(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_contractor_form_async(
         self,
         *,
-        wire_in_request_uuid: str,
+        contractor_uuid: str,
+        form_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WireInRequest:
-        r"""Get a single Wire In Request
+    ) -> models.Form1099:
+        r"""Get a contractor form
 
-        Fetch a Wire In Request.
+        Get a contractor form
 
-        scope: `payrolls:read`
+        scope: `contractor_forms:read`
 
-        :param wire_in_request_uuid: The UUID of the Wire In Request
+        :param contractor_uuid: The UUID of the contractor
+        :param form_id: The UUID of the form
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -135,14 +140,15 @@ class WireInRequests(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
+        request = models.GetV1ContractorFormRequest(
+            contractor_uuid=contractor_uuid,
+            form_id=form_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/wire_in_requests/{wire_in_request_uuid}",
+            path="/v1/contractors/{contractor_uuid}/forms/{form_id}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -166,7 +172,7 @@ class WireInRequests(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-wire_in_requests-wire_in_request_uuid",
+                operation_id="get-v1-contractor-form",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -178,7 +184,7 @@ class WireInRequests(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.WireInRequest)
+            return utils.unmarshal_json(http_res.text, models.Form1099)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -199,32 +205,26 @@ class WireInRequests(BaseSDK):
             http_res,
         )
 
-    def submit(
+    def get_v1_contractor_form_pdf(
         self,
         *,
-        wire_in_request_uuid: str,
-        date_sent: str,
-        bank_name: str,
-        amount_sent: str,
+        contractor_uuid: str,
+        form_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        additional_notes: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WireInRequest:
-        r"""Submit a wire in request
+    ) -> models.FormPdf:
+        r"""Get the contractor form pdf
 
-        Submit a wire in request for a payment
+        Get the link to the form PDF
 
-        scope: `payrolls:run`
+        scope: `contractor_forms:read`
 
-        :param wire_in_request_uuid: The UUID of the Wire In Request
-        :param date_sent: The date the wire was sent
-        :param bank_name: Name of the bank sending the wire
-        :param amount_sent: Amount of money sent
+        :param contractor_uuid: The UUID of the contractor
+        :param form_id: The UUID of the form
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param additional_notes: Additional notes
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -238,25 +238,222 @@ class WireInRequests(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
+        request = models.GetV1ContractorFormPdfRequest(
+            contractor_uuid=contractor_uuid,
+            form_id=form_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutWireInRequestsWireInRequestUUIDRequestBody(
-                date_sent=date_sent,
-                bank_name=bank_name,
-                amount_sent=amount_sent,
-                additional_notes=additional_notes,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/contractors/{contractor_uuid}/forms/{form_id}/pdf",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-contractor-form-pdf",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.FormPdf)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_contractor_form_pdf_async(
+        self,
+        *,
+        contractor_uuid: str,
+        form_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.FormPdf:
+        r"""Get the contractor form pdf
+
+        Get the link to the form PDF
+
+        scope: `contractor_forms:read`
+
+        :param contractor_uuid: The UUID of the contractor
+        :param form_id: The UUID of the form
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1ContractorFormPdfRequest(
+            contractor_uuid=contractor_uuid,
+            form_id=form_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/contractors/{contractor_uuid}/forms/{form_id}/pdf",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-contractor-form-pdf",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.FormPdf)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def post_v1_sandbox_generate_1099(
+        self,
+        *,
+        contractor_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        year: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Form1099:
+        r"""Generate a 1099 form [DEMO]
+
+        > 🚧 Demo action
+        >
+        > This action is only available in the Demo environment
+
+        Generates a 1099 document for testing purposes.
+
+        scope: `contractors:write`
+
+        :param contractor_id: The contractor UUID.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param year: Must be equal to or more recent than 2015. If not specified, defaults to the previous year.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PostV1SandboxGenerate1099Request(
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PostV1SandboxGenerate1099RequestBody(
+                contractor_id=contractor_id,
+                year=year,
             ),
         )
 
         req = self._build_request(
-            method="PUT",
-            path="/v1/wire_in_requests/{wire_in_request_uuid}",
+            method="POST",
+            path="/v1/sandbox/generate_1099",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=True,
+            request_has_path_params=False,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
@@ -267,7 +464,7 @@ class WireInRequests(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutWireInRequestsWireInRequestUUIDRequestBody,
+                models.PostV1SandboxGenerate1099RequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -282,7 +479,7 @@ class WireInRequests(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-wire_in_requests-wire_in_request_uuid",
+                operation_id="post-v1-sandbox-generate_1099",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -295,7 +492,7 @@ class WireInRequests(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.WireInRequest)
+            return utils.unmarshal_json(http_res.text, models.Form1099)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -321,32 +518,30 @@ class WireInRequests(BaseSDK):
             http_res,
         )
 
-    async def submit_async(
+    async def post_v1_sandbox_generate_1099_async(
         self,
         *,
-        wire_in_request_uuid: str,
-        date_sent: str,
-        bank_name: str,
-        amount_sent: str,
+        contractor_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        additional_notes: Optional[str] = None,
+        year: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WireInRequest:
-        r"""Submit a wire in request
+    ) -> models.Form1099:
+        r"""Generate a 1099 form [DEMO]
 
-        Submit a wire in request for a payment
+        > 🚧 Demo action
+        >
+        > This action is only available in the Demo environment
 
-        scope: `payrolls:run`
+        Generates a 1099 document for testing purposes.
 
-        :param wire_in_request_uuid: The UUID of the Wire In Request
-        :param date_sent: The date the wire was sent
-        :param bank_name: Name of the bank sending the wire
-        :param amount_sent: Amount of money sent
+        scope: `contractors:write`
+
+        :param contractor_id: The contractor UUID.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param additional_notes: Additional notes
+        :param year: Must be equal to or more recent than 2015. If not specified, defaults to the previous year.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -360,25 +555,22 @@ class WireInRequests(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
+        request = models.PostV1SandboxGenerate1099Request(
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutWireInRequestsWireInRequestUUIDRequestBody(
-                date_sent=date_sent,
-                bank_name=bank_name,
-                amount_sent=amount_sent,
-                additional_notes=additional_notes,
+            request_body=models.PostV1SandboxGenerate1099RequestBody(
+                contractor_id=contractor_id,
+                year=year,
             ),
         )
 
         req = self._build_request_async(
-            method="PUT",
-            path="/v1/wire_in_requests/{wire_in_request_uuid}",
+            method="POST",
+            path="/v1/sandbox/generate_1099",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=True,
+            request_has_path_params=False,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
@@ -389,7 +581,7 @@ class WireInRequests(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutWireInRequestsWireInRequestUUIDRequestBody,
+                models.PostV1SandboxGenerate1099RequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -404,7 +596,7 @@ class WireInRequests(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-wire_in_requests-wire_in_request_uuid",
+                operation_id="post-v1-sandbox-generate_1099",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -417,203 +609,13 @@ class WireInRequests(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.WireInRequest)
+            return utils.unmarshal_json(http_res.text, models.Form1099)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def list(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.WireInRequest]:
-        r"""Get all Wire In Requests for a company
-
-        Fetches all Wire In Requests for a company.
-
-        scope: `payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/wire_in_requests",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-companies-company_uuid-wire_in_request_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.WireInRequest])
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def list_async(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.WireInRequest]:
-        r"""Get all Wire In Requests for a company
-
-        Fetches all Wire In Requests for a company.
-
-        scope: `payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/wire_in_requests",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-companies-company_uuid-wire_in_request_uuid",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.WireInRequest])
-        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res

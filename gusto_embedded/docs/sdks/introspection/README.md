@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [get_token_info](#get_token_info) - Get info about the current access token
+* [get_v1_token_info](#get_v1_token_info) - Get info about the current access token
 * [refresh_access_token](#refresh_access_token) - Refresh access token
 
-## get_token_info
+## get_v1_token_info
 
 Returns scope and resource information associated with the current access token.
 
@@ -22,7 +22,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)

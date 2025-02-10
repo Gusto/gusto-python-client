@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [get](#get) - Get a contractor form
-* [get_pdf](#get_pdf) - Get the contractor form pdf
-* [generate1099](#generate1099) - Generate a 1099 form [DEMO]
+* [get_v1_contractor_form](#get_v1_contractor_form) - Get a contractor form
+* [get_v1_contractor_form_pdf](#get_v1_contractor_form_pdf) - Get the contractor form pdf
+* [post_v1_sandbox_generate_1099](#post_v1_sandbox_generate_1099) - Generate a 1099 form [DEMO]
 
-## get
+## get_v1_contractor_form
 
 Get a contractor form
 
@@ -25,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_forms.get(contractor_uuid="<id>", form_id="<id>")
+    res = g_client.contractor_forms.get_v1_contractor_form(contractor_uuid="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -51,7 +51,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_pdf
+## get_v1_contractor_form_pdf
 
 Get the link to the form PDF
 
@@ -67,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_forms.get_pdf(contractor_uuid="<id>", form_id="<id>")
+    res = g_client.contractor_forms.get_v1_contractor_form_pdf(contractor_uuid="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -93,7 +93,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## generate1099
+## post_v1_sandbox_generate_1099
 
 > 🚧 Demo action
 >
@@ -113,7 +113,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_forms.generate1099(contractor_id="<id>")
+    res = g_client.contractor_forms.post_v1_sandbox_generate_1099(contractor_id="<id>")
 
     # Handle response
     print(res)

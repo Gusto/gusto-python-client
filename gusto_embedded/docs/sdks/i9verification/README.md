@@ -1,16 +1,16 @@
 # I9Verification
-(*i9_verification*)
+(*i_9_verification*)
 
 ## Overview
 
 ### Available Operations
 
-* [get_authorization](#get_authorization) - Get an employee's I-9 authorization
-* [get_document_options](#get_document_options) - Get an employee's I-9 verification document options
-* [create_documents](#create_documents) - Create an employee's I-9 authorization verification documents
-* [employer_sign](#employer_sign) - Employer sign an employee's Form I-9
+* [get_v1_employees_employee_id_i9_authorization](#get_v1_employees_employee_id_i9_authorization) - Get an employee's I-9 authorization
+* [get_v1_employees_employee_id_i9_authorization_document_options](#get_v1_employees_employee_id_i9_authorization_document_options) - Get an employee's I-9 verification document options
+* [put_v1_employees_employee_id_i9_authorization_documents](#put_v1_employees_employee_id_i9_authorization_documents) - Create an employee's I-9 authorization verification documents
+* [put_v1_employees_employee_id_i9_authorization_employer_sign](#put_v1_employees_employee_id_i9_authorization_employer_sign) - Employer sign an employee's Form I-9
 
-## get_authorization
+## get_v1_employees_employee_id_i9_authorization
 
 An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to filled out the Form I-9 for employment eligibility verification.
 
@@ -28,7 +28,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_verification.get_authorization(employee_id="<id>")
+    res = g_client.i_9_verification.get_v1_employees_employee_id_i9_authorization(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -53,7 +53,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_document_options
+## get_v1_employees_employee_id_i9_authorization_document_options
 
 An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint returns the possible document options based on the employee's authorization status. These options can then be used to create the I-9 verification documents.
 
@@ -69,7 +69,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_verification.get_document_options(employee_id="<id>")
+    res = g_client.i_9_verification.get_v1_employees_employee_id_i9_authorization_document_options(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -94,7 +94,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create_documents
+## put_v1_employees_employee_id_i9_authorization_documents
 
 An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
@@ -117,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_verification.create_documents(employee_id="<id>", documents=[
+    res = g_client.i_9_verification.put_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>", documents=[
         {
             "document_type": "us_passport",
             "document_title": "US Passport",
@@ -152,7 +152,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## employer_sign
+## put_v1_employees_employee_id_i9_authorization_employer_sign
 
 Sign an employee's Form I-9 as an employer. Once the form is signed, the employee's I-9 authorization is considered complete and cannot be modified.
 
@@ -168,7 +168,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.i9_verification.employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", signed_by_ip_address="<value>", agree=False)
+    res = g_client.i_9_verification.put_v1_employees_employee_id_i9_authorization_employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", signed_by_ip_address="<value>", agree=True)
 
     # Handle response
     print(res)

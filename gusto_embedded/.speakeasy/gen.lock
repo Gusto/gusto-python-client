@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: f70034eb-4870-4b8d-aeb4-4c71b6c1ec45
 management:
-  docChecksum: afe5132c55de9b95abbdd810276a837c
+  docChecksum: 74ac5c3a594ac7b28ada47c9d8730e63
   docVersion: "2024-04-01"
   speakeasyVersion: 1.488.0
   generationVersion: 2.506.0
-  releaseVersion: 0.0.3
-  configChecksum: c57cd547e849792c456ca8156b46819b
+  releaseVersion: 0.0.4
+  configChecksum: 096eab96163d3932c4cce59ec7f4e13f
 features:
   python:
     additionalDependencies: 1.0.0
@@ -63,7 +63,7 @@ generatedFiles:
   - docs/models/authentication.md
   - docs/models/authorizationstatus.md
   - docs/models/base.md
-  - docs/models/benefitsmodel.md
+  - docs/models/benefits.md
   - docs/models/benefitsummary.md
   - docs/models/benefitsummaryemployees.md
   - docs/models/benefitsummarypayperiod.md
@@ -915,9 +915,7 @@ generatedFiles:
   - docs/models/ytdbenefitamountsfromdifferentcompany.md
   - docs/sdks/achtransactions/README.md
   - docs/sdks/bankaccounts/README.md
-  - docs/sdks/benefits/README.md
   - docs/sdks/companies/README.md
-  - docs/sdks/companyattachments/README.md
   - docs/sdks/companyattachmentsdk/README.md
   - docs/sdks/companybenefits/README.md
   - docs/sdks/companyfederaltaxes/README.md
@@ -990,55 +988,53 @@ generatedFiles:
   - src/gusto/_hooks/sdkhooks.py
   - src/gusto/_hooks/types.py
   - src/gusto/_version.py
-  - src/gusto/achtransactions.py
-  - src/gusto/bankaccounts.py
+  - src/gusto/ach_transactions.py
+  - src/gusto/bank_accounts.py
   - src/gusto/basesdk.py
-  - src/gusto/benefits.py
   - src/gusto/companies.py
-  - src/gusto/companyattachment_sdk.py
-  - src/gusto/companyattachments.py
-  - src/gusto/companybenefits.py
+  - src/gusto/company_attachment_sdk.py
+  - src/gusto/company_benefits.py
   - src/gusto/companyfederaltaxes.py
   - src/gusto/companyforms.py
   - src/gusto/compensations.py
-  - src/gusto/contractordocuments.py
-  - src/gusto/contractorforms.py
-  - src/gusto/contractorpaymentgroups.py
-  - src/gusto/contractorpaymentmethod_sdk.py
+  - src/gusto/contractor_documents.py
+  - src/gusto/contractor_forms.py
+  - src/gusto/contractor_payment_groups.py
+  - src/gusto/contractor_payment_method_sdk.py
+  - src/gusto/contractor_payments.py
   - src/gusto/contractorpaymentmethods.py
-  - src/gusto/contractorpayments.py
   - src/gusto/contractors.py
   - src/gusto/departments.py
-  - src/gusto/earningtypes.py
-  - src/gusto/employeeaddresses.py
+  - src/gusto/earning_types.py
+  - src/gusto/employee_addresses.py
+  - src/gusto/employee_benefits.py
+  - src/gusto/employee_employments.py
+  - src/gusto/employee_forms.py
+  - src/gusto/employee_payment_method_sdk.py
+  - src/gusto/employee_tax_setup.py
   - src/gusto/employeebankaccounts.py
-  - src/gusto/employeebenefits.py
-  - src/gusto/employeeemployments.py
-  - src/gusto/employeeforms.py
   - src/gusto/employeeonboarding.py
-  - src/gusto/employeepaymentmethod_sdk.py
   - src/gusto/employeepaymentmethods.py
   - src/gusto/employees.py
   - src/gusto/employeetaxes.py
-  - src/gusto/employeetaxsetup.py
   - src/gusto/employeeterminations.py
   - src/gusto/events.py
-  - src/gusto/externalpayrolls.py
-  - src/gusto/federaltaxdetails_sdk.py
+  - src/gusto/external_payrolls.py
+  - src/gusto/federal_tax_details_sdk.py
   - src/gusto/flows.py
   - src/gusto/garnishments.py
-  - src/gusto/generateddocuments.py
-  - src/gusto/holidaypaypolicies.py
+  - src/gusto/generated_documents.py
+  - src/gusto/holiday_pay_policies.py
   - src/gusto/homeaddresses.py
   - src/gusto/httpclient.py
   - src/gusto/i9authorizations.py
-  - src/gusto/i9verification.py
+  - src/gusto/i_9_verification.py
   - src/gusto/industryselections.py
   - src/gusto/introspection.py
   - src/gusto/invoices.py
   - src/gusto/jobcompensations.py
   - src/gusto/jobs.py
-  - src/gusto/jobsandcompensations.py
+  - src/gusto/jobs_and_compensations.py
   - src/gusto/locations.py
   - src/gusto/models/__init__.py
   - src/gusto/models/accruing_time_off_hour.py
@@ -1436,21 +1432,21 @@ generatedFiles:
   - src/gusto/models/wire_in_request.py
   - src/gusto/models/ytd_benefit_amounts_from_different_company.py
   - src/gusto/notifications.py
-  - src/gusto/paymentconfigs_sdk.py
+  - src/gusto/pay_schedules.py
+  - src/gusto/payment_configs_sdk.py
   - src/gusto/payrolls.py
   - src/gusto/payrollsdocuments.py
-  - src/gusto/payschedules.py
   - src/gusto/paystubs.py
   - src/gusto/py.typed
-  - src/gusto/recoverycases.py
+  - src/gusto/recovery_cases.py
   - src/gusto/reports.py
   - src/gusto/reporttemplates.py
   - src/gusto/sdk.py
   - src/gusto/sdkconfiguration.py
   - src/gusto/signatories.py
-  - src/gusto/taxrequirements.py
+  - src/gusto/tax_requirements.py
   - src/gusto/terminations.py
-  - src/gusto/timeoffpolicies.py
+  - src/gusto/time_off_policies.py
   - src/gusto/types/__init__.py
   - src/gusto/types/basemodel.py
   - src/gusto/utils/__init__.py
@@ -1470,7 +1466,7 @@ generatedFiles:
   - src/gusto/utils/values.py
   - src/gusto/webhooks.py
   - src/gusto/webhooksubscriptions.py
-  - src/gusto/wireinrequests.py
+  - src/gusto/wire_in_requests.py
   - src/gusto/workaddresses.py
 examples:
   get-v1-token-info:
@@ -5247,7 +5243,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: [{"payroll_deadline": "2021-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": true, "processed_date": "2021-02-18", "calculated_at": "2021-02-18T12:00:00Z", "uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "totals": {"company_debit": "121747.71", "net_pay_debit": "79283.80", "tax_debit": "42463.91", "reimbursement_debit": "0.00", "child_support_debit": "0.00", "reimbursements": "0.00", "net_pay": "81752.94", "gross_pay": "130635.89", "employee_bonuses": "0.00", "employee_commissions": "18536.37", "employee_cash_tips": "0.00", "employee_paycheck_tips": "0.00", "additional_earnings": "0.00", "owners_draw": "0.00", "check_amount": "2469.14", "employer_taxes": "6917.19", "employee_taxes": "35546.72", "benefits": "0.00", "employee_benefits_deductions": "13336.23", "imputed_pay": "0.00", "deferred_payroll_taxes": "0.00", "other_deductions": "240.00"}, "created_at": "2021-02-01T22:00:00Z"}, {"payroll_deadline": "2021-02-28", "check_date": "2021-03-01", "processed": false, "processed_date": "nil", "calculated_at": "nil", "uuid": "709a0790-cc23-4f27-84a6-4b0d278a6af5", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-16", "end_date": "2021-03-01", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "created_at": "2022-02-01T22:00:00Z"}]
+          application/json: [{"payroll_deadline": "2021-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": true, "processed_date": "2021-02-18", "calculated_at": "2021-02-18T12:00:00Z", "uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "totals": {"company_debit": "121747.71", "net_pay_debit": "79283.80", "tax_debit": "42463.91", "reimbursement_debit": "0.00", "child_support_debit": "0.00", "reimbursements": "0.00", "net_pay": "81752.94", "gross_pay": "130635.89", "employee_bonuses": "0.00", "employee_commissions": "18536.37", "employee_cash_tips": "0.00", "employee_paycheck_tips": "0.00", "additional_earnings": "0.00", "owners_draw": "0.00", "check_amount": "2469.14", "employer_taxes": "6917.19", "employee_taxes": "35546.72", "benefits": "0.00", "employee_benefits_deductions": "13336.23", "imputed_pay": "0.00", "deferred_payroll_taxes": "0.00", "other_deductions": "240.00"}, "created_at": "2021-02-01T22:00:00Z"}, {"payroll_deadline": "2021-02-28", "check_date": "2021-03-01", "processed": false, "processed_date": "nil", "calculated_at": "nil", "uuid": "8f3e928f-9052-4ee2-81a3-bebf63d0c8f4", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-16", "end_date": "2021-03-01", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "created_at": "2022-02-01T22:00:00Z"}]
   get-v1-companies-company_id-payroll_reversals:
     Example:
       parameters:
@@ -5599,7 +5595,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "Unlimited Vacation Policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 857478, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": []}
+          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "Unlimited Vacation Policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 423291, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": []}
     Hourly Vacation Policy:
       parameters:
         path:
@@ -5681,7 +5677,7 @@ examples:
         application/json: {"name": "<value>", "policy_type": "<value>", "accrual_method": "per_hour_paid_no_overtime"}
       responses:
         "201":
-          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "Unlimited Vacation Policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 486589, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": []}
+          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "Unlimited Vacation Policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 404824, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": []}
     Hourly Vacation Policy:
       parameters:
         path:
@@ -5732,7 +5728,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 556955, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
+          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 784667, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
     Fixed/Hourly Policy:
       parameters:
         path:
@@ -5794,7 +5790,7 @@ examples:
         application/json: {}
       responses:
         "200":
-          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 75298, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
+          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 717805, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": true, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
     Basic:
       parameters:
         path:
@@ -5874,7 +5870,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 340065, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": false, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
+          application/json: {"uuid": "3f746cd0-dd08-408f-b712-8180c7c621e9", "company_uuid": "de83cff2-8e7a-448e-a28c-14258a9971c3", "name": "test policy", "policy_type": "vacation", "accrual_method": "unlimited", "accrual_rate": "<value>", "accrual_rate_unit": "<value>", "paid_out_on_termination": false, "accrual_waiting_period_days": 444444, "carryover_limit_hours": "<value>", "max_accrual_hours_per_year": "<value>", "max_hours": "<value>", "complete": true, "is_active": false, "employees": [{"uuid": "05ed3150-591e-4f8b-bfd5-55d478edd2d8"}]}
     Basic:
       parameters:
         path:
@@ -6393,7 +6389,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "description": "Kaiser Permanente", "deletable": true, "supports_percentage_amounts": true, "responsible_for_employer_taxes": false, "responsible_for_employee_w2": false, "employee_benefits": [{"employee_uuid": "ae44a0b2-3c89-41e1-91c8-5f8224a779ca", "company_benefit_uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "deduct_as_percentage": false, "employee_deduction": "3", "company_contribution": "0", "uuid": "9988f241-9aee-4383-bfca-eac79cf58135", "contribution": {"type": "amount", "value": {}}}]}
+          application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "description": "Kaiser Permanente", "deletable": true, "supports_percentage_amounts": true, "responsible_for_employer_taxes": false, "responsible_for_employee_w2": false, "employee_benefits": [{"employee_uuid": "ae44a0b2-3c89-41e1-91c8-5f8224a779ca", "company_benefit_uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "deduct_as_percentage": false, "employee_deduction": "3", "company_contribution": "0", "uuid": "9988f241-9aee-4383-bfca-eac79cf58135", "contribution": {"type": "amount", "value": "<value>"}}]}
   put-v1-company_benefits-company_benefit_id:
     Example:
       parameters:
@@ -6529,7 +6525,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: {"employee_deduction": {"required": true, "editable": true, "choices": ["<value>"]}, "contribution": {"required": true, "editable": true, "default_value": {"value": "2", "type": "percentage"}, "choices": ["percentage"]}, "deduct_as_percentage": {"required": true, "editable": true, "choices": ["<value>", "<value>", "<value>"]}, "catch_up": {"required": true, "editable": true, "choices": ["<value>"]}, "limit_option": {"required": false, "editable": false, "choices": ["<value>"]}, "company_contribution_annual_maximum": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}, "coverage_salary_multiplier": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}, "coverage_amount": {"required": false, "editable": false, "choices": ["<value>", "<value>", "<value>"]}}
+          application/json: {"employee_deduction": {"required": true, "editable": true, "choices": ["<value>", "<value>", "<value>"]}, "contribution": {"required": true, "editable": true, "default_value": {"value": "2", "type": "percentage"}, "choices": ["percentage"]}, "deduct_as_percentage": {"required": true, "editable": true, "choices": ["<value>"]}, "catch_up": {"required": true, "editable": true, "choices": ["<value>", "<value>", "<value>"]}, "limit_option": {"required": false, "editable": false, "choices": ["<value>", "<value>", "<value>"]}, "company_contribution_annual_maximum": {"required": false, "editable": false, "choices": ["<value>", "<value>", "<value>"]}, "coverage_salary_multiplier": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}, "coverage_amount": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}}
   post-v1-employees-employee_id-employee_benefits:
     Example:
       parameters:
@@ -6767,7 +6763,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: [{"uuid": "b888f774-3e7c-4135-a18c-6b985523c4bc", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}, {"uuid": "e50f7622-81da-484b-9c66-1c8a99c6b71b", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}]
+          application/json: [{"uuid": "8cc25186-419d-4042-a2cc-60dfc1569dec", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}, {"uuid": "f534a7d5-8261-4dd8-b0a3-ca30c2e0b93d", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}]
   get-v1-garnishments-garnishment_id:
     Example:
       parameters:
@@ -6845,7 +6841,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: {"uuid": "7fe28e4d-1e30-4ebb-8d22-aae768170b82", "version": "<value>", "authorization_status": "permanent_resident", "employer_signed": false, "employee_signed": false}
+          application/json: {"uuid": "26dbcbea-0749-40dc-b49a-c60cd9a44413", "version": "<value>", "authorization_status": "citizen", "employer_signed": true, "employee_signed": true}
   put-v1-employees-employee_id-i9_authorization:
     Example:
       parameters:
@@ -6856,7 +6852,7 @@ examples:
         application/json: {"authorization_status": "citizen", "version": "52b7c567242cb7452e89ba2bc02cb476"}
       responses:
         "200":
-          application/json: {"uuid": "4113bed5-50ae-4daa-a9a5-8a55ddb5a141", "version": "<value>", "authorization_status": "citizen", "employer_signed": false, "employee_signed": true}
+          application/json: {"uuid": "201131a1-4e54-40bb-8454-d760ad4f0a34", "version": "<value>", "authorization_status": "permanent_resident", "employer_signed": true, "employee_signed": true}
     Basic:
       parameters:
         path:
@@ -6960,10 +6956,10 @@ examples:
           employee_id: "<id>"
         header: {}
       requestBody:
-        application/json: {"signature_text": "<value>", "signer_title": "<value>", "signed_by_ip_address": "<value>", "agree": false}
+        application/json: {"signature_text": "<value>", "signer_title": "<value>", "signed_by_ip_address": "<value>", "agree": true}
       responses:
         "200":
-          application/json: {"uuid": "ab18cec1-6568-4d93-b2ad-8deafd3f650c", "version": "<value>", "authorization_status": "alien", "employer_signed": true, "employee_signed": true}
+          application/json: {"uuid": "e641021c-e706-466c-a98a-908fb0db9604", "version": "<value>", "authorization_status": "noncitizen", "employer_signed": false, "employee_signed": true}
     Basic:
       parameters:
         path:
@@ -7342,7 +7338,7 @@ examples:
         header: {}
       responses:
         "200":
-          application/json: [{"uuid": "e83d273e-4ae9-4b61-9c71-4030c2f73093", "company_uuid": "c5e3e3e9-732f-4762-849e-20b5cec9036f", "status": "open", "latest_error_code": "R01", "original_debit_date": "2023-10-11T00:00:00Z", "check_date": "2023-10-13T00:00:00Z", "payroll_uuid": "210f2034-fb4a-4059-b109-6c3b5efe499d", "contractor_payment_uuids": ["<value>", "<value>"], "amount_outstanding": "10499.43", "event_total_amount": "5912.07"}]
+          application/json: [{"uuid": "e83d273e-4ae9-4b61-9c71-4030c2f73093", "company_uuid": "c5e3e3e9-732f-4762-849e-20b5cec9036f", "status": "open", "latest_error_code": "R01", "original_debit_date": "2023-10-11T00:00:00Z", "check_date": "2023-10-13T00:00:00Z", "payroll_uuid": "210f2034-fb4a-4059-b109-6c3b5efe499d", "contractor_payment_uuids": ["<value>"], "amount_outstanding": "10499.43", "event_total_amount": "5912.07"}]
   redebit-recovery-case:
     Basic:
       parameters:

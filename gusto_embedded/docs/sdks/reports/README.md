@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [create](#create) - Create a custom report
-* [get](#get) - Get a report
+* [post_companies_company_uuid_reports](#post_companies_company_uuid_reports) - Create a custom report
+* [get_reports_report_uuid](#get_reports_report_uuid) - Get a report
 
-## create
+## post_companies_company_uuid_reports
 
 Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the report GET endpoint.
 
@@ -26,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.reports.create(company_uuid="<id>", columns=[
+    res = g_client.reports.post_companies_company_uuid_reports(company_uuid="<id>", columns=[
         gusto.Columns.NET_PAY,
     ], groupings=[
         gusto.Groupings.PAYROLL,
@@ -71,7 +71,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_reports_report_uuid
 
 Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
 
@@ -87,7 +87,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.reports.get(report_uuid="<id>")
+    res = g_client.reports.get_reports_report_uuid(report_uuid="<id>")
 
     # Handle response
     print(res)

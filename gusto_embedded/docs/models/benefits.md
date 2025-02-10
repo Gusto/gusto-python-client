@@ -1,4 +1,4 @@
-# BenefitsModel
+# Benefits
 
 
 ## Fields

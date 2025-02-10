@@ -5,21 +5,21 @@
 
 ### Available Operations
 
-* [create](#create) - Create an employee
+* [post_v1_employees](#post_v1_employees) - Create an employee
 * [list](#list) - Get employees of a company
-* [create_historical](#create_historical) - Create a historical employee
+* [post_v1_historical_employees](#post_v1_historical_employees) - Create a historical employee
 * [update_historical_employee](#update_historical_employee) - Update a historical employee
 * [get](#get) - Get an employee
-* [update](#update) - Update an employee
-* [delete](#delete) - Delete an onboarding employee
-* [get_custom_fields](#get_custom_fields) - Get an employee's custom fields
-* [get_onboarding_status](#get_onboarding_status) - Get the employee's onboarding status
-* [update_onboarding_status](#update_onboarding_status) - Update the employee's onboarding status
-* [get_time_off_activities](#get_time_off_activities) - Get employee time off activities
-* [create_rehire](#create_rehire) - Create an employee rehire
+* [put_v1_employees](#put_v1_employees) - Update an employee
+* [delete_v1_employee](#delete_v1_employee) - Delete an onboarding employee
+* [get_v1_employees_employee_id_custom_fields](#get_v1_employees_employee_id_custom_fields) - Get an employee's custom fields
+* [get_v1_employees_employee_id_onboarding_status](#get_v1_employees_employee_id_onboarding_status) - Get the employee's onboarding status
+* [put_v1_employees_employee_id_onboarding_status](#put_v1_employees_employee_id_onboarding_status) - Update the employee's onboarding status
+* [get_version_employees_time_off_activities](#get_version_employees_time_off_activities) - Get employee time off activities
+* [post_v1_employees_employee_id_rehire](#post_v1_employees_employee_id_rehire) - Create an employee rehire
 * [calculate_accruing_time_off_hours](#calculate_accruing_time_off_hours) - Calculate accruing time off hours
 
-## create
+## post_v1_employees
 
 Create an employee.
 
@@ -35,7 +35,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.create(company_id="<id>", first_name="Soren", last_name="Kierkegaard", middle_initial="A", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294")
+    res = g_client.employees.post_v1_employees(company_id="<id>", first_name="Soren", last_name="Kierkegaard", middle_initial="A", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294")
 
     # Handle response
     print(res)
@@ -115,7 +115,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create_historical
+## post_v1_historical_employees
 
 Create a historical employee, an employee that was previously dismissed from the company in the current year.
 
@@ -132,7 +132,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.create_historical(company_uuid="<id>", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
+    res = g_client.employees.post_v1_historical_employees(company_uuid="<id>", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
         "location_uuid": "1da85d35-1910-4d5e-8e94-39e8cdfe8c9a",
     }, home_address={
         "street_1": "300 3rd Street",
@@ -299,7 +299,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_employees
 
 Update an employee.
 
@@ -315,7 +315,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.update(employee_id="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", middle_initial="A", last_name="Kierkegaard", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294", two_percent_shareholder=False)
+    res = g_client.employees.put_v1_employees(employee_id="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", middle_initial="A", last_name="Kierkegaard", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294", two_percent_shareholder=False)
 
     # Handle response
     print(res)
@@ -350,7 +350,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_v1_employee
 
 Use this endpoint to delete an employee who is in onboarding. Deleting
 an onboarded employee is not allowed and will return a 422 response. Please check out the Terminations api
@@ -368,7 +368,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.employees.delete(employee_id="<id>")
+    g_client.employees.delete_v1_employee(employee_id="<id>")
 
     # Use the SDK ...
 
@@ -389,7 +389,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_custom_fields
+## get_v1_employees_employee_id_custom_fields
 
 Returns a list of the employee's custom fields.
 
@@ -405,7 +405,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.get_custom_fields(employee_id="<id>")
+    res = g_client.employees.get_v1_employees_employee_id_custom_fields(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -432,7 +432,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_onboarding_status
+## get_v1_employees_employee_id_onboarding_status
 
 # Description
 Retrieves an employee's onboarding status. The data returned helps inform the required onboarding steps and respective completion status.
@@ -484,7 +484,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.get_onboarding_status(employee_id="<id>")
+    res = g_client.employees.get_v1_employees_employee_id_onboarding_status(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -509,7 +509,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_onboarding_status
+## put_v1_employees_employee_id_onboarding_status
 
 scope: `employees:manage`
 
@@ -534,7 +534,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.update_onboarding_status(employee_id="<id>", onboarding_status="<value>")
+    res = g_client.employees.put_v1_employees_employee_id_onboarding_status(employee_id="<id>", onboarding_status="<value>")
 
     # Handle response
     print(res)
@@ -561,7 +561,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_time_off_activities
+## get_version_employees_time_off_activities
 
 Get employee time off activities.
 
@@ -577,7 +577,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
+    res = g_client.employees.get_version_employees_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
 
     # Handle response
     print(res)
@@ -603,7 +603,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create_rehire
+## post_v1_employees_employee_id_rehire
 
 Rehire is created whenever an employee is scheduled to return to the company.
 
@@ -619,7 +619,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employees.create_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = g_client.employees.post_v1_employees_employee_id_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
 
     # Handle response
     print(res)

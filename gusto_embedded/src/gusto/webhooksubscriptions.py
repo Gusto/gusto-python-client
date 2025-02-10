@@ -9,7 +9,7 @@ from typing import Mapping, Optional, Union
 
 
 class WebhookSubscriptions(BaseSDK):
-    def delete(
+    def delete_v1_webhook_subscription_uuid(
         self,
         *,
         security: Union[
@@ -114,7 +114,7 @@ class WebhookSubscriptions(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_webhook_subscription_uuid_async(
         self,
         *,
         security: Union[
@@ -219,7 +219,7 @@ class WebhookSubscriptions(BaseSDK):
             http_res,
         )
 
-    def request_verification_token(
+    def get_v1_webhook_subscription_verification_token_uuid(
         self,
         *,
         security: Union[
@@ -324,7 +324,7 @@ class WebhookSubscriptions(BaseSDK):
             http_res,
         )
 
-    async def request_verification_token_async(
+    async def get_v1_webhook_subscription_verification_token_uuid_async(
         self,
         *,
         security: Union[

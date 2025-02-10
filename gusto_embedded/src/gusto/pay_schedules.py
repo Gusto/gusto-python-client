@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class PaySchedules(BaseSDK):
-    def create(
+    def post_v1_companies_company_id_pay_schedules(
         self,
         *,
         company_id: str,
@@ -141,7 +141,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_id_pay_schedules_async(
         self,
         *,
         company_id: str,
@@ -475,7 +475,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def preview(
+    def get_v1_companies_company_id_pay_schedules_preview(
         self,
         *,
         company_id: str,
@@ -588,7 +588,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def preview_async(
+    async def get_v1_companies_company_id_pay_schedules_preview_async(
         self,
         *,
         company_id: str,
@@ -701,7 +701,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_companies_company_id_pay_schedules_pay_schedule_id(
         self,
         *,
         company_id: str,
@@ -799,7 +799,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_companies_company_id_pay_schedules_pay_schedule_id_async(
         self,
         *,
         company_id: str,
@@ -897,7 +897,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_companies_company_id_pay_schedules_pay_schedule_id(
         self,
         *,
         company_id: str,
@@ -1036,7 +1036,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_companies_company_id_pay_schedules_pay_schedule_id_async(
         self,
         *,
         company_id: str,
@@ -1391,7 +1391,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def list_unprocessed_termination_periods(
+    def get_v1_companies_company_id_unprocessed_termination_pay_periods(
         self,
         *,
         company_id: str,
@@ -1490,7 +1490,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def list_unprocessed_termination_periods_async(
+    async def get_v1_companies_company_id_unprocessed_termination_pay_periods_async(
         self,
         *,
         company_id: str,
@@ -1589,7 +1589,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def get_assignments(
+    def get_v1_companies_company_id_pay_schedules_assignments(
         self,
         *,
         company_id: str,
@@ -1684,7 +1684,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def get_assignments_async(
+    async def get_v1_companies_company_id_pay_schedules_assignments_async(
         self,
         *,
         company_id: str,
@@ -1779,7 +1779,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def preview_assignment(
+    def post_v1_companies_company_id_pay_schedules_assignment_preview(
         self,
         *,
         company_id: str,
@@ -1920,7 +1920,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def preview_assignment_async(
+    async def post_v1_companies_company_id_pay_schedules_assignment_preview_async(
         self,
         *,
         company_id: str,
@@ -2061,7 +2061,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    def assign(
+    def post_v1_companies_company_id_pay_schedules_assign(
         self,
         *,
         company_id: str,
@@ -2201,7 +2201,7 @@ class PaySchedules(BaseSDK):
             http_res,
         )
 
-    async def assign_async(
+    async def post_v1_companies_company_id_pay_schedules_assign_async(
         self,
         *,
         company_id: str,

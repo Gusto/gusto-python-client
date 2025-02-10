@@ -5,15 +5,15 @@
 
 ### Available Operations
 
-* [get_receipt](#get_receipt) - Get a single contractor payment receipt
-* [fund](#fund) - Fund a contractor payment [DEMO]
-* [create](#create) - Create a contractor payment
+* [get_v1_contractor_payments_contractor_payment_uuid_receipt](#get_v1_contractor_payments_contractor_payment_uuid_receipt) - Get a single contractor payment receipt
+* [get_v1_contractor_payments_contractor_payment_uuid_fund](#get_v1_contractor_payments_contractor_payment_uuid_fund) - Fund a contractor payment [DEMO]
+* [post_v1_companies_company_id_contractor_payments](#post_v1_companies_company_id_contractor_payments) - Create a contractor payment
 * [get](#get) - Get contractor payments for a company
 * [get_by_id](#get_by_id) - Get a single contractor payment
 * [delete](#delete) - Cancel a contractor payment
-* [preview](#preview) - Preview contractor payment debit date
+* [get_companies_company_uuid_contractor_payments_preview](#get_companies_company_uuid_contractor_payments_preview) - Preview contractor payment debit date
 
-## get_receipt
+## get_v1_contractor_payments_contractor_payment_uuid_receipt
 
 Returns a contractor payment receipt.
 
@@ -36,7 +36,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payments.get_receipt(contractor_payment_uuid="<id>")
+    res = g_client.contractor_payments.get_v1_contractor_payments_contractor_payment_uuid_receipt(contractor_payment_uuid="<id>")
 
     # Handle response
     print(res)
@@ -61,7 +61,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## fund
+## get_v1_contractor_payments_contractor_payment_uuid_fund
 
 > 🚧 Demo action
 >
@@ -81,7 +81,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payments.fund(contractor_payment_uuid="<id>")
+    res = g_client.contractor_payments.get_v1_contractor_payments_contractor_payment_uuid_fund(contractor_payment_uuid="<id>")
 
     # Handle response
     print(res)
@@ -107,7 +107,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## create
+## post_v1_companies_company_id_contractor_payments
 
 Pay a contractor. Information needed depends on the contractor's wage type (hourly vs fixed)
 
@@ -124,7 +124,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payments.create(company_id="<id>", contractor_uuid="<id>", date_=dateutil.parser.parse("2020-01-01").date(), wage=5000, hours=40, bonus=500, reimbursement=20)
+    res = g_client.contractor_payments.post_v1_companies_company_id_contractor_payments(company_id="<id>", contractor_uuid="<id>", date_=dateutil.parser.parse("2020-01-01").date(), wage=5000, hours=40, bonus=500, reimbursement=20)
 
     # Handle response
     print(res)
@@ -283,7 +283,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## preview
+## get_companies_company_uuid_contractor_payments_preview
 
 Returns a debit_date dependent on the ACH payment speed of the company.
 
@@ -301,7 +301,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payments.preview(company_uuid="<id>", contractor_payments=[
+    res = g_client.contractor_payments.get_companies_company_uuid_contractor_payments_preview(company_uuid="<id>", contractor_payments=[
         {},
     ])
 

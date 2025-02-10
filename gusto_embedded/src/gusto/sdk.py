@@ -7,70 +7,69 @@ from .utils.logger import Logger, get_default_logger
 from .utils.retries import RetryConfig
 from gusto import models, utils
 from gusto._hooks import SDKHooks
-from gusto.achtransactions import AchTransactions
-from gusto.bankaccounts import BankAccounts
+from gusto.ach_transactions import ACHTransactions
+from gusto.bank_accounts import BankAccounts
 from gusto.companies import Companies
-from gusto.companyattachment_sdk import CompanyAttachmentSDK
-from gusto.companyattachments import CompanyAttachments
-from gusto.companybenefits import CompanyBenefits
+from gusto.company_attachment_sdk import CompanyAttachmentSDK
+from gusto.company_benefits import CompanyBenefits
 from gusto.companyfederaltaxes import CompanyFederalTaxes
 from gusto.companyforms import CompanyForms
 from gusto.compensations import Compensations
-from gusto.contractordocuments import ContractorDocuments
-from gusto.contractorforms import ContractorForms
-from gusto.contractorpaymentgroups import ContractorPaymentGroups
-from gusto.contractorpaymentmethod_sdk import ContractorPaymentMethodSDK
+from gusto.contractor_documents import ContractorDocuments
+from gusto.contractor_forms import ContractorForms
+from gusto.contractor_payment_groups import ContractorPaymentGroups
+from gusto.contractor_payment_method_sdk import ContractorPaymentMethodSDK
+from gusto.contractor_payments import ContractorPayments
 from gusto.contractorpaymentmethods import ContractorPaymentMethods
-from gusto.contractorpayments import ContractorPayments
 from gusto.contractors import Contractors
 from gusto.departments import Departments
-from gusto.earningtypes import EarningTypes
-from gusto.employeeaddresses import EmployeeAddresses
+from gusto.earning_types import EarningTypes
+from gusto.employee_addresses import EmployeeAddresses
+from gusto.employee_benefits import EmployeeBenefits
+from gusto.employee_employments import EmployeeEmployments
+from gusto.employee_forms import EmployeeForms
+from gusto.employee_payment_method_sdk import EmployeePaymentMethodSDK
+from gusto.employee_tax_setup import EmployeeTaxSetup
 from gusto.employeebankaccounts import EmployeeBankAccounts
-from gusto.employeebenefits import EmployeeBenefits
-from gusto.employeeemployments import EmployeeEmployments
-from gusto.employeeforms import EmployeeForms
 from gusto.employeeonboarding import EmployeeOnboarding
-from gusto.employeepaymentmethod_sdk import EmployeePaymentMethodSDK
 from gusto.employeepaymentmethods import EmployeePaymentMethods
 from gusto.employees import Employees
 from gusto.employeetaxes import EmployeeTaxes
-from gusto.employeetaxsetup import EmployeeTaxSetup
 from gusto.employeeterminations import EmployeeTerminations
 from gusto.events import Events
-from gusto.externalpayrolls import ExternalPayrolls
-from gusto.federaltaxdetails_sdk import FederalTaxDetailsSDK
+from gusto.external_payrolls import ExternalPayrolls
+from gusto.federal_tax_details_sdk import FederalTaxDetailsSDK
 from gusto.flows import Flows
 from gusto.garnishments import Garnishments
-from gusto.generateddocuments import GeneratedDocuments
-from gusto.holidaypaypolicies import HolidayPayPolicies
+from gusto.generated_documents import GeneratedDocuments
+from gusto.holiday_pay_policies import HolidayPayPolicies
 from gusto.homeaddresses import HomeAddresses
 from gusto.i9authorizations import I9Authorizations
-from gusto.i9verification import I9Verification
+from gusto.i_9_verification import I9Verification
 from gusto.industryselections import IndustrySelections
 from gusto.introspection import Introspection
 from gusto.invoices import Invoices
 from gusto.jobcompensations import JobCompensations
 from gusto.jobs import Jobs
-from gusto.jobsandcompensations import JobsAndCompensations
+from gusto.jobs_and_compensations import JobsAndCompensations
 from gusto.locations import Locations
 from gusto.notifications import Notifications
-from gusto.paymentconfigs_sdk import PaymentConfigsSDK
+from gusto.pay_schedules import PaySchedules
+from gusto.payment_configs_sdk import PaymentConfigsSDK
 from gusto.payrolls import Payrolls
 from gusto.payrollsdocuments import PayrollsDocuments
-from gusto.payschedules import PaySchedules
 from gusto.paystubs import PayStubs
-from gusto.recoverycases import RecoveryCases
+from gusto.recovery_cases import RecoveryCases
 from gusto.reports import Reports
 from gusto.reporttemplates import ReportTemplates
 from gusto.signatories import Signatories
-from gusto.taxrequirements import TaxRequirements
+from gusto.tax_requirements import TaxRequirements
 from gusto.terminations import Terminations
-from gusto.timeoffpolicies import TimeOffPolicies
+from gusto.time_off_policies import TimeOffPolicies
 from gusto.types import OptionalNullable, UNSET
 from gusto.webhooks import Webhooks
 from gusto.webhooksubscriptions import WebhookSubscriptions
-from gusto.wireinrequests import WireInRequests
+from gusto.wire_in_requests import WireInRequests
 from gusto.workaddresses import WorkAddresses
 import httpx
 from typing import Any, Callable, Dict, Optional, Union, cast
@@ -83,7 +82,6 @@ class Gusto(BaseSDK):
     introspection: Introspection
     companies: Companies
     invoices: Invoices
-    company_attachments: CompanyAttachments
     company_attachment: CompanyAttachmentSDK
     company_federal_taxes: CompanyFederalTaxes
     federal_tax_details: FederalTaxDetailsSDK
@@ -107,8 +105,8 @@ class Gusto(BaseSDK):
     employee_tax_setup: EmployeeTaxSetup
     employee_taxes: EmployeeTaxes
     employee_payment_methods: EmployeePaymentMethods
-    employee_bank_accounts: EmployeeBankAccounts
     employee_payment_method: EmployeePaymentMethodSDK
+    employee_bank_accounts: EmployeeBankAccounts
     jobs_and_compensations: JobsAndCompensations
     jobs: Jobs
     job_compensations: JobCompensations
@@ -134,7 +132,7 @@ class Gusto(BaseSDK):
     company_benefits: CompanyBenefits
     employee_benefits: EmployeeBenefits
     garnishments: Garnishments
-    i9_verification: I9Verification
+    i_9_verification: I9Verification
     i9_authorizations: I9Authorizations
     tax_requirements: TaxRequirements
     time_off_policies: TimeOffPolicies
@@ -142,7 +140,7 @@ class Gusto(BaseSDK):
     notifications: Notifications
     events: Events
     recovery_cases: RecoveryCases
-    ach_transactions: AchTransactions
+    ach_transactions: ACHTransactions
     wire_in_requests: WireInRequests
 
     def __init__(
@@ -240,7 +238,6 @@ class Gusto(BaseSDK):
         self.introspection = Introspection(self.sdk_configuration)
         self.companies = Companies(self.sdk_configuration)
         self.invoices = Invoices(self.sdk_configuration)
-        self.company_attachments = CompanyAttachments(self.sdk_configuration)
         self.company_attachment = CompanyAttachmentSDK(self.sdk_configuration)
         self.company_federal_taxes = CompanyFederalTaxes(self.sdk_configuration)
         self.federal_tax_details = FederalTaxDetailsSDK(self.sdk_configuration)
@@ -264,8 +261,8 @@ class Gusto(BaseSDK):
         self.employee_tax_setup = EmployeeTaxSetup(self.sdk_configuration)
         self.employee_taxes = EmployeeTaxes(self.sdk_configuration)
         self.employee_payment_methods = EmployeePaymentMethods(self.sdk_configuration)
-        self.employee_bank_accounts = EmployeeBankAccounts(self.sdk_configuration)
         self.employee_payment_method = EmployeePaymentMethodSDK(self.sdk_configuration)
+        self.employee_bank_accounts = EmployeeBankAccounts(self.sdk_configuration)
         self.jobs_and_compensations = JobsAndCompensations(self.sdk_configuration)
         self.jobs = Jobs(self.sdk_configuration)
         self.job_compensations = JobCompensations(self.sdk_configuration)
@@ -295,7 +292,7 @@ class Gusto(BaseSDK):
         self.company_benefits = CompanyBenefits(self.sdk_configuration)
         self.employee_benefits = EmployeeBenefits(self.sdk_configuration)
         self.garnishments = Garnishments(self.sdk_configuration)
-        self.i9_verification = I9Verification(self.sdk_configuration)
+        self.i_9_verification = I9Verification(self.sdk_configuration)
         self.i9_authorizations = I9Authorizations(self.sdk_configuration)
         self.tax_requirements = TaxRequirements(self.sdk_configuration)
         self.time_off_policies = TimeOffPolicies(self.sdk_configuration)
@@ -303,7 +300,7 @@ class Gusto(BaseSDK):
         self.notifications = Notifications(self.sdk_configuration)
         self.events = Events(self.sdk_configuration)
         self.recovery_cases = RecoveryCases(self.sdk_configuration)
-        self.ach_transactions = AchTransactions(self.sdk_configuration)
+        self.ach_transactions = ACHTransactions(self.sdk_configuration)
         self.wire_in_requests = WireInRequests(self.sdk_configuration)
 
     def __enter__(self):

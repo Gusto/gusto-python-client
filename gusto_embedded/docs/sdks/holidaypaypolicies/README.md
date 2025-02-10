@@ -5,15 +5,15 @@
 
 ### Available Operations
 
-* [get](#get) - Get a company's holiday pay policy
-* [create](#create) - Create a holiday pay policy for a company
-* [update](#update) - Update a company's holiday pay policy
-* [delete](#delete) - Delete a company's holiday pay policy
-* [add_employees](#add_employees) - Add employees to a company's holiday pay policy
-* [remove_employees](#remove_employees) - Remove employees from a company's holiday pay policy
-* [preview_holidays](#preview_holidays) - Preview a company's paid holidays
+* [get_companies_company_uuid_holiday_pay_policy](#get_companies_company_uuid_holiday_pay_policy) - Get a company's holiday pay policy
+* [post_companies_company_uuid_holiday_pay_policy](#post_companies_company_uuid_holiday_pay_policy) - Create a holiday pay policy for a company
+* [put_companies_company_uuid_holiday_pay_policy](#put_companies_company_uuid_holiday_pay_policy) - Update a company's holiday pay policy
+* [delete_companies_company_uuid_holiday_pay_policy](#delete_companies_company_uuid_holiday_pay_policy) - Delete a company's holiday pay policy
+* [put_companies_company_uuid_holiday_pay_policy_add](#put_companies_company_uuid_holiday_pay_policy_add) - Add employees to a company's holiday pay policy
+* [put_companies_company_uuid_holiday_pay_policy_remove](#put_companies_company_uuid_holiday_pay_policy_remove) - Remove employees from a company's holiday pay policy
+* [get_companies_company_uuid_paid_holidays](#get_companies_company_uuid_paid_holidays) - Preview a company's paid holidays
 
-## get
+## get_companies_company_uuid_holiday_pay_policy
 
 Get a company's holiday pay policy
 
@@ -29,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.get(company_uuid="<id>")
+    res = g_client.holiday_pay_policies.get_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -54,7 +54,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create
+## post_companies_company_uuid_holiday_pay_policy
 
 Create a holiday pay policy for a company
 
@@ -70,7 +70,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.create(company_uuid="<id>", federal_holidays={
+    res = g_client.holiday_pay_policies.post_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", federal_holidays={
         "mlk_day": {
             "selected": True,
         },
@@ -116,7 +116,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## update
+## put_companies_company_uuid_holiday_pay_policy
 
 Update a company's holiday pay policy
 
@@ -132,7 +132,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.update(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", federal_holidays={
+    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", federal_holidays={
         "mlk_day": {
             "selected": True,
         },
@@ -179,7 +179,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_companies_company_uuid_holiday_pay_policy
 
 Delete a company's holiday pay policy
 
@@ -195,7 +195,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.holiday_pay_policies.delete(company_uuid="<id>")
+    g_client.holiday_pay_policies.delete_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
 
     # Use the SDK ...
 
@@ -216,7 +216,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## add_employees
+## put_companies_company_uuid_holiday_pay_policy_add
 
 Add employees to a company's holiday pay policy
 
@@ -232,7 +232,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.add_employees(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
+    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_add(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
         {
             "uuid": "1ca3cd25-3eda-48c6-ac88-f0e7fb91a15a",
         },
@@ -267,7 +267,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## remove_employees
+## put_companies_company_uuid_holiday_pay_policy_remove
 
 Remove employees from a company's holiday pay policy
 
@@ -283,7 +283,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.remove_employees(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
+    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_remove(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
         {
             "uuid": "1ca3cd25-3eda-48c6-ac88-f0e7fb91a15a",
         },
@@ -318,7 +318,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## preview_holidays
+## get_companies_company_uuid_paid_holidays
 
 Preview a company's paid holidays
 
@@ -334,7 +334,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.holiday_pay_policies.preview_holidays(company_uuid="<id>", year="2023")
+    res = g_client.holiday_pay_policies.get_companies_company_uuid_paid_holidays(company_uuid="<id>", year="2023")
 
     # Handle response
     print(res)

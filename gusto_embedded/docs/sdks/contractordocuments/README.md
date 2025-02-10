@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [list](#list) - Get all contractor documents
-* [get](#get) - Get a contractor document
-* [get_pdf](#get_pdf) - Get the contractor document pdf
-* [sign](#sign) - Sign a contractor document
+* [get_v1_contractor_documents](#get_v1_contractor_documents) - Get all contractor documents
+* [get_v1_contractor_document](#get_v1_contractor_document) - Get a contractor document
+* [get_v1_contractor_document_pdf](#get_v1_contractor_document_pdf) - Get the contractor document pdf
+* [put_v1_contractor_document_sign](#put_v1_contractor_document_sign) - Sign a contractor document
 
-## list
+## get_v1_contractor_documents
 
 Get a list of all contractor's documents
 
@@ -26,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_documents.list(contractor_uuid="<id>")
+    res = g_client.contractor_documents.get_v1_contractor_documents(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -51,7 +51,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get
+## get_v1_contractor_document
 
 Get a contractor document.
 
@@ -67,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_documents.get(document_uuid="<id>")
+    res = g_client.contractor_documents.get_v1_contractor_document(document_uuid="<id>")
 
     # Handle response
     print(res)
@@ -92,7 +92,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_pdf
+## get_v1_contractor_document_pdf
 
 Get the contractor document pdf.
 
@@ -108,7 +108,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_documents.get_pdf(document_uuid="<id>")
+    res = g_client.contractor_documents.get_v1_contractor_document_pdf(document_uuid="<id>")
 
     # Handle response
     print(res)
@@ -133,7 +133,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## sign
+## put_v1_contractor_document_sign
 
 Sign a contractor document.
 
@@ -149,7 +149,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_documents.sign(document_uuid="<id>", fields=[
+    res = g_client.contractor_documents.put_v1_contractor_document_sign(document_uuid="<id>", fields=[
         {},
         {},
         {},

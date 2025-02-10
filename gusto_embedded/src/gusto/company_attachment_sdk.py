@@ -5,34 +5,30 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import Any, List, Mapping, Optional
+from typing import Any, List, Mapping, Optional, Union
 
 
-class EmployeeForms(BaseSDK):
-    def generate_w2(
+class CompanyAttachmentSDK(BaseSDK):
+    def get_v1_companies_attachment(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        company_attachment_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        year: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PostV1SandboxGenerateW2Form:
-        r"""Generate a W2 form [DEMO]
+    ) -> models.CompanyAttachment:
+        r"""Get Company Attachment Details
 
-        > 🚧 Demo action
-        >
-        > This action is only available in the Demo environment
+        Retrieve the detail of an attachment uploaded by the company.
 
-        Generates a W2 document for testing purposes.
+        scope: `company_attachments:read`
 
-        scope: `employees:write`
-
-        :param employee_id: The employee UUID.
+        :param company_id: The UUID of the company
+        :param company_attachment_uuid: The UUID of the company attachment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param year: Must be equal to or more recent than 2015. If not specified, defaults to the previous year.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -46,22 +42,620 @@ class EmployeeForms(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1SandboxGenerateW2Request(
+        request = models.GetV1CompaniesAttachmentRequest(
+            company_id=company_id,
+            company_attachment_uuid=company_attachment_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1SandboxGenerateW2RequestBody(
-                employee_id=employee_id,
-                year=year,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachment",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_companies_attachment_async(
+        self,
+        *,
+        company_id: str,
+        company_attachment_uuid: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CompanyAttachment:
+        r"""Get Company Attachment Details
+
+        Retrieve the detail of an attachment uploaded by the company.
+
+        scope: `company_attachments:read`
+
+        :param company_id: The UUID of the company
+        :param company_attachment_uuid: The UUID of the company attachment
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesAttachmentRequest(
+            company_id=company_id,
+            company_attachment_uuid=company_attachment_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachment",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_v1_companies_attachment_url(
+        self,
+        *,
+        company_id: str,
+        company_attachment_uuid: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GetV1CompaniesAttachmentURLResponseBody:
+        r"""Get a temporary url to download the Company Attachment file
+
+        Retrieve a temporary url to download a attachment file uploaded
+        by the company.
+
+        scope: `company_attachments:read`
+
+        :param company_id: The UUID of the company
+        :param company_attachment_uuid: The UUID of the company attachment
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesAttachmentURLRequest(
+            company_id=company_id,
+            company_attachment_uuid=company_attachment_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}/download_url",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachment-url",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(
+                http_res.text, models.GetV1CompaniesAttachmentURLResponseBody
+            )
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_companies_attachment_url_async(
+        self,
+        *,
+        company_id: str,
+        company_attachment_uuid: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GetV1CompaniesAttachmentURLResponseBody:
+        r"""Get a temporary url to download the Company Attachment file
+
+        Retrieve a temporary url to download a attachment file uploaded
+        by the company.
+
+        scope: `company_attachments:read`
+
+        :param company_id: The UUID of the company
+        :param company_attachment_uuid: The UUID of the company attachment
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesAttachmentURLRequest(
+            company_id=company_id,
+            company_attachment_uuid=company_attachment_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}/download_url",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachment-url",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(
+                http_res.text, models.GetV1CompaniesAttachmentURLResponseBody
+            )
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_v1_companies_attachments(
+        self,
+        *,
+        company_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.CompanyAttachment]:
+        r"""Get List of Company Attachments
+
+        Retrieve a list of all the attachments uploaded by the company.
+
+        scope: `company_attachments:read`
+
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesAttachmentsRequest(
+            company_id=company_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachments",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.CompanyAttachment])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_companies_attachments_async(
+        self,
+        *,
+        company_id: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.CompanyAttachment]:
+        r"""Get List of Company Attachments
+
+        Retrieve a list of all the attachments uploaded by the company.
+
+        scope: `company_attachments:read`
+
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesAttachmentsRequest(
+            company_id=company_id,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/attachments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-attachments",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.CompanyAttachment])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def post_v1_companies_attachment(
+        self,
+        *,
+        company_id: str,
+        document: Union[
+            models.PostV1CompaniesAttachmentDocument,
+            models.PostV1CompaniesAttachmentDocumentTypedDict,
+        ],
+        category: models.PostV1CompaniesAttachmentCategory,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CompanyAttachment:
+        r"""Create Company Attachment and Upload File
+
+        Upload a file and create a company attachment. We recommend uploading
+        PDF files for optimal compatibility. However, the following file types are
+        allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
+
+        scope: `company_attachments:write`
+
+        :param company_id: The UUID of the company
+        :param document: The binary payload of the file to be uploaded.
+        :param category: The category of a company attachment.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PostV1CompaniesAttachmentRequest(
+            company_id=company_id,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PostV1CompaniesAttachmentRequestBody(
+                document=utils.get_pydantic_model(
+                    document, models.PostV1CompaniesAttachmentDocument
+                ),
+                category=category,
             ),
         )
 
         req = self._build_request(
             method="POST",
-            path="/v1/sandbox/generate_w2",
+            path="/v1/companies/{company_id}/attachments",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=False,
+            request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
@@ -71,8 +665,8 @@ class EmployeeForms(BaseSDK):
                 request.request_body,
                 False,
                 False,
-                "json",
-                models.PostV1SandboxGenerateW2RequestBody,
+                "multipart",
+                models.PostV1CompaniesAttachmentRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -87,7 +681,7 @@ class EmployeeForms(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="post-v1-sandbox-generate_w2",
+                operation_id="post-v1-companies-attachment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -99,10 +693,8 @@ class EmployeeForms(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, models.PostV1SandboxGenerateW2Form
-            )
+        if utils.match_response(http_res, "201", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -128,30 +720,33 @@ class EmployeeForms(BaseSDK):
             http_res,
         )
 
-    async def generate_w2_async(
+    async def post_v1_companies_attachment_async(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        document: Union[
+            models.PostV1CompaniesAttachmentDocument,
+            models.PostV1CompaniesAttachmentDocumentTypedDict,
+        ],
+        category: models.PostV1CompaniesAttachmentCategory,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        year: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PostV1SandboxGenerateW2Form:
-        r"""Generate a W2 form [DEMO]
+    ) -> models.CompanyAttachment:
+        r"""Create Company Attachment and Upload File
 
-        > 🚧 Demo action
-        >
-        > This action is only available in the Demo environment
+        Upload a file and create a company attachment. We recommend uploading
+        PDF files for optimal compatibility. However, the following file types are
+        allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
 
-        Generates a W2 document for testing purposes.
+        scope: `company_attachments:write`
 
-        scope: `employees:write`
-
-        :param employee_id: The employee UUID.
+        :param company_id: The UUID of the company
+        :param document: The binary payload of the file to be uploaded.
+        :param category: The category of a company attachment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param year: Must be equal to or more recent than 2015. If not specified, defaults to the previous year.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -165,834 +760,20 @@ class EmployeeForms(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1SandboxGenerateW2Request(
+        request = models.PostV1CompaniesAttachmentRequest(
+            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1SandboxGenerateW2RequestBody(
-                employee_id=employee_id,
-                year=year,
+            request_body=models.PostV1CompaniesAttachmentRequestBody(
+                document=utils.get_pydantic_model(
+                    document, models.PostV1CompaniesAttachmentDocument
+                ),
+                category=category,
             ),
         )
 
         req = self._build_request_async(
             method="POST",
-            path="/v1/sandbox/generate_w2",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=False,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1SandboxGenerateW2RequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="post-v1-sandbox-generate_w2",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, models.PostV1SandboxGenerateW2Form
-            )
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get_all(
-        self,
-        *,
-        employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Form]:
-        r"""Get all employee forms
-
-        Get a list of all employee's forms
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormsRequest(
-            employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-forms",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Form])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_all_async(
-        self,
-        *,
-        employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Form]:
-        r"""Get all employee forms
-
-        Get a list of all employee's forms
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormsRequest(
-            employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-forms",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Form])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Form:
-        r"""Get an employee form
-
-        Get an employee form
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms/{form_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-form",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Form)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_async(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Form:
-        r"""Get an employee form
-
-        Get an employee form
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms/{form_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-form",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Form)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get_pdf(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.FormPdf:
-        r"""Get the employee form pdf
-
-        Get the link to the employee form PDF
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormPdfRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms/{form_id}/pdf",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-form-pdf",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.FormPdf)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_pdf_async(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.FormPdf:
-        r"""Get the employee form pdf
-
-        Get the link to the employee form PDF
-
-        scope: `employee_forms:read`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1EmployeeFormPdfRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_id}/forms/{form_id}/pdf",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-employee-form-pdf",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.FormPdf)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def sign(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        signature_text: str,
-        agree: bool,
-        signed_by_ip_address: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        preparer: Optional[bool] = None,
-        preparer_first_name: Optional[str] = None,
-        preparer_last_name: Optional[str] = None,
-        preparer_street_1: Optional[str] = None,
-        preparer_street_2: Optional[str] = None,
-        preparer_city: Optional[str] = None,
-        preparer_state: Optional[str] = None,
-        preparer_zip: Optional[str] = None,
-        preparer_agree: Optional[str] = None,
-        preparer2: Optional[bool] = None,
-        preparer2_first_name: Optional[str] = None,
-        preparer2_last_name: Optional[str] = None,
-        preparer2_street_1: Optional[str] = None,
-        preparer2_street_2: Optional[str] = None,
-        preparer2_city: Optional[str] = None,
-        preparer2_state: Optional[str] = None,
-        preparer2_zip: Optional[str] = None,
-        preparer2_agree: Optional[str] = None,
-        preparer3: Optional[bool] = None,
-        preparer3_first_name: Optional[str] = None,
-        preparer3_last_name: Optional[str] = None,
-        preparer3_street_1: Optional[str] = None,
-        preparer3_street_2: Optional[str] = None,
-        preparer3_city: Optional[str] = None,
-        preparer3_state: Optional[str] = None,
-        preparer3_zip: Optional[str] = None,
-        preparer3_agree: Optional[str] = None,
-        preparer4: Optional[bool] = None,
-        preparer4_first_name: Optional[str] = None,
-        preparer4_last_name: Optional[str] = None,
-        preparer4_street_1: Optional[str] = None,
-        preparer4_street_2: Optional[str] = None,
-        preparer4_city: Optional[str] = None,
-        preparer4_state: Optional[str] = None,
-        preparer4_zip: Optional[str] = None,
-        preparer4_agree: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Form:
-        r"""Sign an employee form
-
-        Sign an employee form.
-
-        The optional preparer attributes are only valid for I-9 form. When a preparer is used, the
-        first name, last name, street address, city, state, and zip for that preparer are all required.
-
-        scope: `employee_forms:sign`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param signature_text: The signature
-        :param agree: Whether you agree to sign electronically
-        :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param preparer: Whether there is a preparer
-        :param preparer_first_name:
-        :param preparer_last_name:
-        :param preparer_street_1:
-        :param preparer_street_2:
-        :param preparer_city:
-        :param preparer_state:
-        :param preparer_zip:
-        :param preparer_agree: Whether preparer agrees to sign electronically
-        :param preparer2: Whether there is a 2nd preparer
-        :param preparer2_first_name:
-        :param preparer2_last_name:
-        :param preparer2_street_1:
-        :param preparer2_street_2:
-        :param preparer2_city:
-        :param preparer2_state:
-        :param preparer2_zip:
-        :param preparer2_agree: Whether 2nd preparer agrees to sign electronically
-        :param preparer3: Whether there is a 3rd preparer
-        :param preparer3_first_name:
-        :param preparer3_last_name:
-        :param preparer3_street_1:
-        :param preparer3_street_2:
-        :param preparer3_city:
-        :param preparer3_state:
-        :param preparer3_zip:
-        :param preparer3_agree: Whether 3rd preparer agrees to sign electronically
-        :param preparer4: Whether there is a 4th preparer
-        :param preparer4_first_name:
-        :param preparer4_last_name:
-        :param preparer4_street_1:
-        :param preparer4_street_2:
-        :param preparer4_city:
-        :param preparer4_state:
-        :param preparer4_zip:
-        :param preparer4_agree: Whether 4th preparer agrees to sign electronically
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutV1EmployeeFormSignRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeeFormSignRequestBody(
-                signature_text=signature_text,
-                agree=agree,
-                signed_by_ip_address=signed_by_ip_address,
-                preparer=preparer,
-                preparer_first_name=preparer_first_name,
-                preparer_last_name=preparer_last_name,
-                preparer_street_1=preparer_street_1,
-                preparer_street_2=preparer_street_2,
-                preparer_city=preparer_city,
-                preparer_state=preparer_state,
-                preparer_zip=preparer_zip,
-                preparer_agree=preparer_agree,
-                preparer2=preparer2,
-                preparer2_first_name=preparer2_first_name,
-                preparer2_last_name=preparer2_last_name,
-                preparer2_street_1=preparer2_street_1,
-                preparer2_street_2=preparer2_street_2,
-                preparer2_city=preparer2_city,
-                preparer2_state=preparer2_state,
-                preparer2_zip=preparer2_zip,
-                preparer2_agree=preparer2_agree,
-                preparer3=preparer3,
-                preparer3_first_name=preparer3_first_name,
-                preparer3_last_name=preparer3_last_name,
-                preparer3_street_1=preparer3_street_1,
-                preparer3_street_2=preparer3_street_2,
-                preparer3_city=preparer3_city,
-                preparer3_state=preparer3_state,
-                preparer3_zip=preparer3_zip,
-                preparer3_agree=preparer3_agree,
-                preparer4=preparer4,
-                preparer4_first_name=preparer4_first_name,
-                preparer4_last_name=preparer4_last_name,
-                preparer4_street_1=preparer4_street_1,
-                preparer4_street_2=preparer4_street_2,
-                preparer4_city=preparer4_city,
-                preparer4_state=preparer4_state,
-                preparer4_zip=preparer4_zip,
-                preparer4_agree=preparer4_agree,
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/employees/{employee_id}/forms/{form_id}/sign",
+            path="/v1/companies/{company_id}/attachments",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1007,241 +788,8 @@ class EmployeeForms(BaseSDK):
                 request.request_body,
                 False,
                 False,
-                "json",
-                models.PutV1EmployeeFormSignRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="put-v1-employee-form-sign",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Form)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def sign_async(
-        self,
-        *,
-        employee_id: str,
-        form_id: str,
-        signature_text: str,
-        agree: bool,
-        signed_by_ip_address: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        preparer: Optional[bool] = None,
-        preparer_first_name: Optional[str] = None,
-        preparer_last_name: Optional[str] = None,
-        preparer_street_1: Optional[str] = None,
-        preparer_street_2: Optional[str] = None,
-        preparer_city: Optional[str] = None,
-        preparer_state: Optional[str] = None,
-        preparer_zip: Optional[str] = None,
-        preparer_agree: Optional[str] = None,
-        preparer2: Optional[bool] = None,
-        preparer2_first_name: Optional[str] = None,
-        preparer2_last_name: Optional[str] = None,
-        preparer2_street_1: Optional[str] = None,
-        preparer2_street_2: Optional[str] = None,
-        preparer2_city: Optional[str] = None,
-        preparer2_state: Optional[str] = None,
-        preparer2_zip: Optional[str] = None,
-        preparer2_agree: Optional[str] = None,
-        preparer3: Optional[bool] = None,
-        preparer3_first_name: Optional[str] = None,
-        preparer3_last_name: Optional[str] = None,
-        preparer3_street_1: Optional[str] = None,
-        preparer3_street_2: Optional[str] = None,
-        preparer3_city: Optional[str] = None,
-        preparer3_state: Optional[str] = None,
-        preparer3_zip: Optional[str] = None,
-        preparer3_agree: Optional[str] = None,
-        preparer4: Optional[bool] = None,
-        preparer4_first_name: Optional[str] = None,
-        preparer4_last_name: Optional[str] = None,
-        preparer4_street_1: Optional[str] = None,
-        preparer4_street_2: Optional[str] = None,
-        preparer4_city: Optional[str] = None,
-        preparer4_state: Optional[str] = None,
-        preparer4_zip: Optional[str] = None,
-        preparer4_agree: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Form:
-        r"""Sign an employee form
-
-        Sign an employee form.
-
-        The optional preparer attributes are only valid for I-9 form. When a preparer is used, the
-        first name, last name, street address, city, state, and zip for that preparer are all required.
-
-        scope: `employee_forms:sign`
-
-        :param employee_id: The UUID of the employee
-        :param form_id: The UUID of the form
-        :param signature_text: The signature
-        :param agree: Whether you agree to sign electronically
-        :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param preparer: Whether there is a preparer
-        :param preparer_first_name:
-        :param preparer_last_name:
-        :param preparer_street_1:
-        :param preparer_street_2:
-        :param preparer_city:
-        :param preparer_state:
-        :param preparer_zip:
-        :param preparer_agree: Whether preparer agrees to sign electronically
-        :param preparer2: Whether there is a 2nd preparer
-        :param preparer2_first_name:
-        :param preparer2_last_name:
-        :param preparer2_street_1:
-        :param preparer2_street_2:
-        :param preparer2_city:
-        :param preparer2_state:
-        :param preparer2_zip:
-        :param preparer2_agree: Whether 2nd preparer agrees to sign electronically
-        :param preparer3: Whether there is a 3rd preparer
-        :param preparer3_first_name:
-        :param preparer3_last_name:
-        :param preparer3_street_1:
-        :param preparer3_street_2:
-        :param preparer3_city:
-        :param preparer3_state:
-        :param preparer3_zip:
-        :param preparer3_agree: Whether 3rd preparer agrees to sign electronically
-        :param preparer4: Whether there is a 4th preparer
-        :param preparer4_first_name:
-        :param preparer4_last_name:
-        :param preparer4_street_1:
-        :param preparer4_street_2:
-        :param preparer4_city:
-        :param preparer4_state:
-        :param preparer4_zip:
-        :param preparer4_agree: Whether 4th preparer agrees to sign electronically
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PutV1EmployeeFormSignRequest(
-            employee_id=employee_id,
-            form_id=form_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeeFormSignRequestBody(
-                signature_text=signature_text,
-                agree=agree,
-                signed_by_ip_address=signed_by_ip_address,
-                preparer=preparer,
-                preparer_first_name=preparer_first_name,
-                preparer_last_name=preparer_last_name,
-                preparer_street_1=preparer_street_1,
-                preparer_street_2=preparer_street_2,
-                preparer_city=preparer_city,
-                preparer_state=preparer_state,
-                preparer_zip=preparer_zip,
-                preparer_agree=preparer_agree,
-                preparer2=preparer2,
-                preparer2_first_name=preparer2_first_name,
-                preparer2_last_name=preparer2_last_name,
-                preparer2_street_1=preparer2_street_1,
-                preparer2_street_2=preparer2_street_2,
-                preparer2_city=preparer2_city,
-                preparer2_state=preparer2_state,
-                preparer2_zip=preparer2_zip,
-                preparer2_agree=preparer2_agree,
-                preparer3=preparer3,
-                preparer3_first_name=preparer3_first_name,
-                preparer3_last_name=preparer3_last_name,
-                preparer3_street_1=preparer3_street_1,
-                preparer3_street_2=preparer3_street_2,
-                preparer3_city=preparer3_city,
-                preparer3_state=preparer3_state,
-                preparer3_zip=preparer3_zip,
-                preparer3_agree=preparer3_agree,
-                preparer4=preparer4,
-                preparer4_first_name=preparer4_first_name,
-                preparer4_last_name=preparer4_last_name,
-                preparer4_street_1=preparer4_street_1,
-                preparer4_street_2=preparer4_street_2,
-                preparer4_city=preparer4_city,
-                preparer4_state=preparer4_state,
-                preparer4_zip=preparer4_zip,
-                preparer4_agree=preparer4_agree,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/employees/{employee_id}/forms/{form_id}/sign",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutV1EmployeeFormSignRequestBody,
+                "multipart",
+                models.PostV1CompaniesAttachmentRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -1256,7 +804,7 @@ class EmployeeForms(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-employee-form-sign",
+                operation_id="post-v1-companies-attachment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1268,8 +816,8 @@ class EmployeeForms(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Form)
+        if utils.match_response(http_res, "201", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData

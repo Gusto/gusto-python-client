@@ -128,7 +128,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -148,7 +148,7 @@ async def main():
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
     ) as g_client:
 
-        res = await g_client.introspection.get_token_info_async()
+        res = await g_client.introspection.get_v1_token_info_async()
 
         # Handle response
         print(res)
@@ -177,7 +177,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -194,7 +194,7 @@ import os
 
 with Gusto() as g_client:
 
-    res = g_client.companies.create_partner_managed(security=gusto.PostV1PartnerManagedCompaniesSecurity(
+    res = g_client.companies.post_v1_partner_managed_companies(security=gusto.PostV1PartnerManagedCompaniesSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), user={
         "first_name": "Frank",
@@ -226,51 +226,45 @@ with Gusto() as g_client:
 
 ### [bank_accounts](docs/sdks/bankaccounts/README.md)
 
-* [create](docs/sdks/bankaccounts/README.md#create) - Create a company bank account
-* [list](docs/sdks/bankaccounts/README.md#list) - Get all company bank accounts
-* [verify](docs/sdks/bankaccounts/README.md#verify) - Verify a company bank account
-* [create_from_processor_token](docs/sdks/bankaccounts/README.md#create_from_processor_token) - Create a bank account from a plaid processor token
+* [post_v1_companies_company_id_bank_accounts](docs/sdks/bankaccounts/README.md#post_v1_companies_company_id_bank_accounts) - Create a company bank account
+* [get_v1_companies_company_id_bank_accounts](docs/sdks/bankaccounts/README.md#get_v1_companies_company_id_bank_accounts) - Get all company bank accounts
+* [put_v1_companies_company_id_bank_accounts_verify](docs/sdks/bankaccounts/README.md#put_v1_companies_company_id_bank_accounts_verify) - Verify a company bank account
+* [post_v1_plaid_processor_token](docs/sdks/bankaccounts/README.md#post_v1_plaid_processor_token) - Create a bank account from a plaid processor token
 
 ### [companies](docs/sdks/companies/README.md)
 
-* [create_partner_managed](docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
-* [get](docs/sdks/companies/README.md#get) - Get a company
-* [update](docs/sdks/companies/README.md#update) - Update a company
-* [migrate](docs/sdks/companies/README.md#migrate) - Migrate company to embedded payroll
-* [accept_terms_of_service](docs/sdks/companies/README.md#accept_terms_of_service) - Accept terms of service for a company user
-* [retrieve_terms_of_service](docs/sdks/companies/README.md#retrieve_terms_of_service) - Retrieve terms of service status for a company user
-* [create_admin](docs/sdks/companies/README.md#create_admin) - Create an admin for the company
-* [get_admins](docs/sdks/companies/README.md#get_admins) - Get all the admins at a company
-* [get_onboarding_status](docs/sdks/companies/README.md#get_onboarding_status) - Get the company's onboarding status
-* [finish_onboarding](docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
-* [get_custom_fields](docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
-
-#### [companies.benefits](docs/sdks/benefits/README.md)
-
-* [list](docs/sdks/benefits/README.md#list) - Get benefits for a company
+* [post_v1_partner_managed_companies](docs/sdks/companies/README.md#post_v1_partner_managed_companies) - Create a partner managed company
+* [get_v1_companies](docs/sdks/companies/README.md#get_v1_companies) - Get a company
+* [put_v1_companies](docs/sdks/companies/README.md#put_v1_companies) - Update a company
+* [put_v1_partner_managed_companies_company_uuid_migrate](docs/sdks/companies/README.md#put_v1_partner_managed_companies_company_uuid_migrate) - Migrate company to embedded payroll
+* [post_partner_managed_companies_company_uuid_accept_terms_of_service](docs/sdks/companies/README.md#post_partner_managed_companies_company_uuid_accept_terms_of_service) - Accept terms of service for a company user
+* [post_partner_managed_companies_company_uuid_retrieve_terms_of_service](docs/sdks/companies/README.md#post_partner_managed_companies_company_uuid_retrieve_terms_of_service) - Retrieve terms of service status for a company user
+* [post_v1_companies_company_id_admins](docs/sdks/companies/README.md#post_v1_companies_company_id_admins) - Create an admin for the company
+* [get_v1_companies_company_id_admins](docs/sdks/companies/README.md#get_v1_companies_company_id_admins) - Get all the admins at a company
+* [get_v1_company_onboarding_status](docs/sdks/companies/README.md#get_v1_company_onboarding_status) - Get the company's onboarding status
+* [get_v1_company_finish_onboarding](docs/sdks/companies/README.md#get_v1_company_finish_onboarding) - Finish company onboarding
+* [get_v1_companies_company_id_custom_fields](docs/sdks/companies/README.md#get_v1_companies_company_id_custom_fields) - Get the custom fields of a company
 
 ### [company_attachment](docs/sdks/companyattachmentsdk/README.md)
 
-* [get_download_url](docs/sdks/companyattachmentsdk/README.md#get_download_url) - Get a temporary url to download the Company Attachment file
-
-### [company_attachments](docs/sdks/companyattachments/README.md)
-
-* [get_details](docs/sdks/companyattachments/README.md#get_details) - Get Company Attachment Details
-* [get_all](docs/sdks/companyattachments/README.md#get_all) - Get List of Company Attachments
-* [create](docs/sdks/companyattachments/README.md#create) - Create Company Attachment and Upload File
+* [get_v1_companies_attachment](docs/sdks/companyattachmentsdk/README.md#get_v1_companies_attachment) - Get Company Attachment Details
+* [get_v1_companies_attachment_url](docs/sdks/companyattachmentsdk/README.md#get_v1_companies_attachment_url) - Get a temporary url to download the Company Attachment file
+* [get_v1_companies_attachments](docs/sdks/companyattachmentsdk/README.md#get_v1_companies_attachments) - Get List of Company Attachments
+* [post_v1_companies_attachment](docs/sdks/companyattachmentsdk/README.md#post_v1_companies_attachment) - Create Company Attachment and Upload File
 
 ### [company_benefits](docs/sdks/companybenefits/README.md)
 
-* [create](docs/sdks/companybenefits/README.md#create) - Create a company benefit
-* [get](docs/sdks/companybenefits/README.md#get) - Get a company benefit
-* [update](docs/sdks/companybenefits/README.md#update) - Update a company benefit
-* [delete](docs/sdks/companybenefits/README.md#delete) - Delete a company benefit
-* [get_all](docs/sdks/companybenefits/README.md#get_all) - Get all benefits supported by Gusto
-* [get_supported_benefit](docs/sdks/companybenefits/README.md#get_supported_benefit) - Get a supported benefit by ID
-* [get_summary](docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
-* [get_employee_benefits](docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
+* [post_v1_companies_company_id_company_benefits](docs/sdks/companybenefits/README.md#post_v1_companies_company_id_company_benefits) - Create a company benefit
+* [get_v1_companies_company_id_company_benefits](docs/sdks/companybenefits/README.md#get_v1_companies_company_id_company_benefits) - Get benefits for a company
+* [get_v1_company_benefits_company_benefit_id](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id) - Get a company benefit
+* [put_v1_company_benefits_company_benefit_id](docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id) - Update a company benefit
+* [delete_v1_company_benefits_company_benefit_id](docs/sdks/companybenefits/README.md#delete_v1_company_benefits_company_benefit_id) - Delete a company benefit
+* [get_v1_benefits](docs/sdks/companybenefits/README.md#get_v1_benefits) - Get all benefits supported by Gusto
+* [get_v1_benefits_benefit_id](docs/sdks/companybenefits/README.md#get_v1_benefits_benefit_id) - Get a supported benefit by ID
+* [get_v1_benefits_company_benefit_id_summary](docs/sdks/companybenefits/README.md#get_v1_benefits_company_benefit_id_summary) - Get company benefit summary by company benefit id.
+* [get_v1_company_benefits_company_benefit_id_employee_benefits](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_employee_benefits) - Get all employee benefits for a company benefit
 * [bulk_update](docs/sdks/companybenefits/README.md#bulk_update) - Bulk update employee benefits for a company benefit
-* [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by ID
+* [get_v1_benefits_benefits_id_requirements](docs/sdks/companybenefits/README.md#get_v1_benefits_benefits_id_requirements) - Get benefit fields requirements by ID
 
 ### [company_federal_taxes](docs/sdks/companyfederaltaxes/README.md)
 
@@ -278,10 +272,10 @@ with Gusto() as g_client:
 
 ### [company_forms](docs/sdks/companyforms/README.md)
 
-* [list](docs/sdks/companyforms/README.md#list) - Get all company forms
-* [get](docs/sdks/companyforms/README.md#get) - Get a company form
-* [get_pdf](docs/sdks/companyforms/README.md#get_pdf) - Get a company form pdf
-* [sign](docs/sdks/companyforms/README.md#sign) - Sign a company form
+* [get_v1_company_forms](docs/sdks/companyforms/README.md#get_v1_company_forms) - Get all company forms
+* [get_v1_company_form](docs/sdks/companyforms/README.md#get_v1_company_form) - Get a company form
+* [get_v1_company_form_pdf](docs/sdks/companyforms/README.md#get_v1_company_form_pdf) - Get a company form pdf
+* [put_v1_company_form_sign](docs/sdks/companyforms/README.md#put_v1_company_form_sign) - Sign a company form
 
 ### [compensations](docs/sdks/compensations/README.md)
 
@@ -290,25 +284,25 @@ with Gusto() as g_client:
 
 ### [contractor_documents](docs/sdks/contractordocuments/README.md)
 
-* [list](docs/sdks/contractordocuments/README.md#list) - Get all contractor documents
-* [get](docs/sdks/contractordocuments/README.md#get) - Get a contractor document
-* [get_pdf](docs/sdks/contractordocuments/README.md#get_pdf) - Get the contractor document pdf
-* [sign](docs/sdks/contractordocuments/README.md#sign) - Sign a contractor document
+* [get_v1_contractor_documents](docs/sdks/contractordocuments/README.md#get_v1_contractor_documents) - Get all contractor documents
+* [get_v1_contractor_document](docs/sdks/contractordocuments/README.md#get_v1_contractor_document) - Get a contractor document
+* [get_v1_contractor_document_pdf](docs/sdks/contractordocuments/README.md#get_v1_contractor_document_pdf) - Get the contractor document pdf
+* [put_v1_contractor_document_sign](docs/sdks/contractordocuments/README.md#put_v1_contractor_document_sign) - Sign a contractor document
 
 ### [contractor_forms](docs/sdks/contractorforms/README.md)
 
-* [get](docs/sdks/contractorforms/README.md#get) - Get a contractor form
-* [get_pdf](docs/sdks/contractorforms/README.md#get_pdf) - Get the contractor form pdf
-* [generate1099](docs/sdks/contractorforms/README.md#generate1099) - Generate a 1099 form [DEMO]
+* [get_v1_contractor_form](docs/sdks/contractorforms/README.md#get_v1_contractor_form) - Get a contractor form
+* [get_v1_contractor_form_pdf](docs/sdks/contractorforms/README.md#get_v1_contractor_form_pdf) - Get the contractor form pdf
+* [post_v1_sandbox_generate_1099](docs/sdks/contractorforms/README.md#post_v1_sandbox_generate_1099) - Generate a 1099 form [DEMO]
 
 ### [contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md)
 
-* [create](docs/sdks/contractorpaymentgroups/README.md#create) - Create a contractor payment group
-* [list](docs/sdks/contractorpaymentgroups/README.md#list) - Get contractor payment groups for a company
-* [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
-* [get](docs/sdks/contractorpaymentgroups/README.md#get) - Fetch a contractor payment group
-* [delete](docs/sdks/contractorpaymentgroups/README.md#delete) - Cancel a contractor payment group
-* [fund](docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
+* [post_v1_companies_company_id_contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md#post_v1_companies_company_id_contractor_payment_groups) - Create a contractor payment group
+* [get_v1_companies_company_id_contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md#get_v1_companies_company_id_contractor_payment_groups) - Get contractor payment groups for a company
+* [post_v1_companies_company_id_contractor_payment_groups_preview](docs/sdks/contractorpaymentgroups/README.md#post_v1_companies_company_id_contractor_payment_groups_preview) - Preview a contractor payment group
+* [get_v1_contractor_payment_groups_contractor_payment_group_id](docs/sdks/contractorpaymentgroups/README.md#get_v1_contractor_payment_groups_contractor_payment_group_id) - Fetch a contractor payment group
+* [delete_v1_contractor_payment_groups_contractor_payment_group_id](docs/sdks/contractorpaymentgroups/README.md#delete_v1_contractor_payment_groups_contractor_payment_group_id) - Cancel a contractor payment group
+* [put_v1_contractor_payment_groups_contractor_payment_group_id_fund](docs/sdks/contractorpaymentgroups/README.md#put_v1_contractor_payment_groups_contractor_payment_group_id_fund) - Fund a contractor payment group [DEMO]
 
 ### [contractor_payment_method](docs/sdks/contractorpaymentmethodsdk/README.md)
 
@@ -317,53 +311,53 @@ with Gusto() as g_client:
 ### [contractor_payment_methods](docs/sdks/contractorpaymentmethods/README.md)
 
 * [create](docs/sdks/contractorpaymentmethods/README.md#create) - Create a contractor bank account
-* [get](docs/sdks/contractorpaymentmethods/README.md#get) - Get a contractor's payment method
+* [get_v1_contractors_contractor_uuid_payment_method](docs/sdks/contractorpaymentmethods/README.md#get_v1_contractors_contractor_uuid_payment_method) - Get a contractor's payment method
 
 ### [contractor_payments](docs/sdks/contractorpayments/README.md)
 
-* [get_receipt](docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
-* [fund](docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
-* [create](docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
+* [get_v1_contractor_payments_contractor_payment_uuid_receipt](docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_uuid_receipt) - Get a single contractor payment receipt
+* [get_v1_contractor_payments_contractor_payment_uuid_fund](docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_uuid_fund) - Fund a contractor payment [DEMO]
+* [post_v1_companies_company_id_contractor_payments](docs/sdks/contractorpayments/README.md#post_v1_companies_company_id_contractor_payments) - Create a contractor payment
 * [get](docs/sdks/contractorpayments/README.md#get) - Get contractor payments for a company
 * [get_by_id](docs/sdks/contractorpayments/README.md#get_by_id) - Get a single contractor payment
 * [delete](docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
-* [preview](docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
+* [get_companies_company_uuid_contractor_payments_preview](docs/sdks/contractorpayments/README.md#get_companies_company_uuid_contractor_payments_preview) - Preview contractor payment debit date
 
 ### [contractors](docs/sdks/contractors/README.md)
 
-* [create](docs/sdks/contractors/README.md#create) - Create a contractor
-* [list](docs/sdks/contractors/README.md#list) - Get contractors of a company
-* [get](docs/sdks/contractors/README.md#get) - Get a contractor
-* [update](docs/sdks/contractors/README.md#update) - Update a contractor
-* [delete](docs/sdks/contractors/README.md#delete) - Delete a contractor
-* [get_onboarding_status](docs/sdks/contractors/README.md#get_onboarding_status) - Get the contractor's onboarding status
-* [update_onboarding_status](docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
-* [get_address](docs/sdks/contractors/README.md#get_address) - Get a contractor address
-* [update_address](docs/sdks/contractors/README.md#update_address) - Update a contractor's address
+* [post_v1_companies_company_uuid_contractors](docs/sdks/contractors/README.md#post_v1_companies_company_uuid_contractors) - Create a contractor
+* [get_v1_companies_company_uuid_contractors](docs/sdks/contractors/README.md#get_v1_companies_company_uuid_contractors) - Get contractors of a company
+* [get_v1_contractors_contractor_uuid](docs/sdks/contractors/README.md#get_v1_contractors_contractor_uuid) - Get a contractor
+* [put_v1_contractors_contractor_uuid](docs/sdks/contractors/README.md#put_v1_contractors_contractor_uuid) - Update a contractor
+* [delete_v1_contractors_contractor_uuid](docs/sdks/contractors/README.md#delete_v1_contractors_contractor_uuid) - Delete a contractor
+* [get_v1_contractors_contractor_uuid_onboarding_status](docs/sdks/contractors/README.md#get_v1_contractors_contractor_uuid_onboarding_status) - Get the contractor's onboarding status
+* [put_v1_contractors_contractor_uuid_onboarding_status](docs/sdks/contractors/README.md#put_v1_contractors_contractor_uuid_onboarding_status) - Change the contractor's onboarding status
+* [get_v1_contractors_contractor_uuid_address](docs/sdks/contractors/README.md#get_v1_contractors_contractor_uuid_address) - Get a contractor address
+* [put_v1_contractors_contractor_uuid_address](docs/sdks/contractors/README.md#put_v1_contractors_contractor_uuid_address) - Update a contractor's address
 * [get_forms](docs/sdks/contractors/README.md#get_forms) - Get all contractor forms
-* [update_payment_method](docs/sdks/contractors/README.md#update_payment_method) - Update a contractor's payment method
+* [put_v1_contractors_contractor_id_payment_method](docs/sdks/contractors/README.md#put_v1_contractors_contractor_id_payment_method) - Update a contractor's payment method
 
 ### [departments](docs/sdks/departments/README.md)
 
-* [create](docs/sdks/departments/README.md#create) - Create a department
-* [list](docs/sdks/departments/README.md#list) - Get all departments of a company
-* [get](docs/sdks/departments/README.md#get) - Get a department
-* [update](docs/sdks/departments/README.md#update) - Update a department
-* [delete](docs/sdks/departments/README.md#delete) - Delete a department
-* [add_people](docs/sdks/departments/README.md#add_people) - Add people to a department
-* [remove_people](docs/sdks/departments/README.md#remove_people) - Remove people from a department
+* [post_departments](docs/sdks/departments/README.md#post_departments) - Create a department
+* [get_companies_departments](docs/sdks/departments/README.md#get_companies_departments) - Get all departments of a company
+* [get_department](docs/sdks/departments/README.md#get_department) - Get a department
+* [put_departments](docs/sdks/departments/README.md#put_departments) - Update a department
+* [delete_department](docs/sdks/departments/README.md#delete_department) - Delete a department
+* [put_add_people_to_department](docs/sdks/departments/README.md#put_add_people_to_department) - Add people to a department
+* [put_remove_people_from_department](docs/sdks/departments/README.md#put_remove_people_from_department) - Remove people from a department
 
 ### [earning_types](docs/sdks/earningtypes/README.md)
 
-* [create](docs/sdks/earningtypes/README.md#create) - Create a custom earning type
-* [get_all](docs/sdks/earningtypes/README.md#get_all) - Get all earning types for a company
-* [update](docs/sdks/earningtypes/README.md#update) - Update an earning type
-* [deactivate](docs/sdks/earningtypes/README.md#deactivate) - Deactivate an earning type
+* [post_v1_companies_company_id_earning_types](docs/sdks/earningtypes/README.md#post_v1_companies_company_id_earning_types) - Create a custom earning type
+* [get_v1_companies_company_id_earning_types](docs/sdks/earningtypes/README.md#get_v1_companies_company_id_earning_types) - Get all earning types for a company
+* [put_v1_companies_company_id_earning_types_earning_type_uuid](docs/sdks/earningtypes/README.md#put_v1_companies_company_id_earning_types_earning_type_uuid) - Update an earning type
+* [delete_v1_companies_company_id_earning_types_earning_type_uuid](docs/sdks/earningtypes/README.md#delete_v1_companies_company_id_earning_types_earning_type_uuid) - Deactivate an earning type
 
 ### [employee_addresses](docs/sdks/employeeaddresses/README.md)
 
 * [get_home](docs/sdks/employeeaddresses/README.md#get_home) - Get an employee's home addresses
-* [create](docs/sdks/employeeaddresses/README.md#create) - Create an employee's home address
+* [post_v1_employees_employee_id_home_addresses](docs/sdks/employeeaddresses/README.md#post_v1_employees_employee_id_home_addresses) - Create an employee's home address
 * [get](docs/sdks/employeeaddresses/README.md#get) - Get an employee's home address
 * [delete](docs/sdks/employeeaddresses/README.md#delete) - Delete an employee's home address
 * [list_work_addresses](docs/sdks/employeeaddresses/README.md#list_work_addresses) - Get an employee's work addresses
@@ -376,29 +370,29 @@ with Gusto() as g_client:
 ### [employee_benefits](docs/sdks/employeebenefits/README.md)
 
 * [create](docs/sdks/employeebenefits/README.md#create) - Create an employee benefit
-* [get_all](docs/sdks/employeebenefits/README.md#get_all) - Get all benefits for an employee
-* [get](docs/sdks/employeebenefits/README.md#get) - Get an employee benefit
-* [update](docs/sdks/employeebenefits/README.md#update) - Update an employee benefit
-* [delete](docs/sdks/employeebenefits/README.md#delete) - Delete an employee benefit
-* [get_ytd_from_different_company](docs/sdks/employeebenefits/README.md#get_ytd_from_different_company) - Get year-to-date benefit amounts from a different company
+* [get_v1_employees_employee_id_employee_benefits](docs/sdks/employeebenefits/README.md#get_v1_employees_employee_id_employee_benefits) - Get all benefits for an employee
+* [get_v1_employee_benefits_employee_benefit_id](docs/sdks/employeebenefits/README.md#get_v1_employee_benefits_employee_benefit_id) - Get an employee benefit
+* [put_v1_employee_benefits_employee_benefit_id](docs/sdks/employeebenefits/README.md#put_v1_employee_benefits_employee_benefit_id) - Update an employee benefit
+* [delete_v1_employee_benefits_employee_benefit_id](docs/sdks/employeebenefits/README.md#delete_v1_employee_benefits_employee_benefit_id) - Delete an employee benefit
 * [create_ytd_benefit_amounts](docs/sdks/employeebenefits/README.md#create_ytd_benefit_amounts) - Create year-to-date benefit amounts from a different company
+* [get_ytd_from_different_company](docs/sdks/employeebenefits/README.md#get_ytd_from_different_company) - Get year-to-date benefit amounts from a different company
 
 ### [employee_employments](docs/sdks/employeeemployments/README.md)
 
 * [list_terminations](docs/sdks/employeeemployments/README.md#list_terminations) - Get terminations for an employee
-* [update_termination](docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
-* [update_rehire](docs/sdks/employeeemployments/README.md#update_rehire) - Update an employee rehire
-* [get_rehire](docs/sdks/employeeemployments/README.md#get_rehire) - Get an employee rehire
-* [delete_rehire](docs/sdks/employeeemployments/README.md#delete_rehire) - Delete an employee rehire
-* [get_history](docs/sdks/employeeemployments/README.md#get_history) - Get employment history for an employee
+* [put_v1_terminations_employee_id](docs/sdks/employeeemployments/README.md#put_v1_terminations_employee_id) - Update an employee termination
+* [put_v1_employees_employee_id_rehire](docs/sdks/employeeemployments/README.md#put_v1_employees_employee_id_rehire) - Update an employee rehire
+* [get_v1_employees_employee_id_rehire](docs/sdks/employeeemployments/README.md#get_v1_employees_employee_id_rehire) - Get an employee rehire
+* [delete_v1_employees_employee_id_rehire](docs/sdks/employeeemployments/README.md#delete_v1_employees_employee_id_rehire) - Delete an employee rehire
+* [get_v1_employees_employee_id_employment_history](docs/sdks/employeeemployments/README.md#get_v1_employees_employee_id_employment_history) - Get employment history for an employee
 
 ### [employee_forms](docs/sdks/employeeforms/README.md)
 
-* [generate_w2](docs/sdks/employeeforms/README.md#generate_w2) - Generate a W2 form [DEMO]
-* [get_all](docs/sdks/employeeforms/README.md#get_all) - Get all employee forms
+* [post_v1_sandbox_generate_w2](docs/sdks/employeeforms/README.md#post_v1_sandbox_generate_w2) - Generate a W2 form [DEMO]
+* [get_v1_employee_forms](docs/sdks/employeeforms/README.md#get_v1_employee_forms) - Get all employee forms
 * [get](docs/sdks/employeeforms/README.md#get) - Get an employee form
-* [get_pdf](docs/sdks/employeeforms/README.md#get_pdf) - Get the employee form pdf
-* [sign](docs/sdks/employeeforms/README.md#sign) - Sign an employee form
+* [get_v1_employee_form_pdf](docs/sdks/employeeforms/README.md#get_v1_employee_form_pdf) - Get the employee form pdf
+* [put_v1_employee_form_sign](docs/sdks/employeeforms/README.md#put_v1_employee_form_sign) - Sign an employee form
 
 ### [employee_onboarding](docs/sdks/employeeonboarding/README.md)
 
@@ -406,20 +400,20 @@ with Gusto() as g_client:
 
 ### [employee_payment_method](docs/sdks/employeepaymentmethodsdk/README.md)
 
-* [update](docs/sdks/employeepaymentmethodsdk/README.md#update) - Update an employee's payment method
+* [get_all](docs/sdks/employeepaymentmethodsdk/README.md#get_all) - Get all employee bank accounts
+* [put_v1_employees_employee_id_payment_method](docs/sdks/employeepaymentmethodsdk/README.md#put_v1_employees_employee_id_payment_method) - Update an employee's payment method
 
 ### [employee_payment_methods](docs/sdks/employeepaymentmethods/README.md)
 
-* [create_bank_account](docs/sdks/employeepaymentmethods/README.md#create_bank_account) - Create an employee bank account
-* [get_all](docs/sdks/employeepaymentmethods/README.md#get_all) - Get all employee bank accounts
+* [post_v1_employees_employee_id_bank_accounts](docs/sdks/employeepaymentmethods/README.md#post_v1_employees_employee_id_bank_accounts) - Create an employee bank account
 * [update](docs/sdks/employeepaymentmethods/README.md#update) - Update an employee bank account
-* [get](docs/sdks/employeepaymentmethods/README.md#get) - Get an employee's payment method
+* [get_v1_employees_employee_id_payment_method](docs/sdks/employeepaymentmethods/README.md#get_v1_employees_employee_id_payment_method) - Get an employee's payment method
 
 ### [employee_tax_setup](docs/sdks/employeetaxsetup/README.md)
 
-* [get_federal_taxes](docs/sdks/employeetaxsetup/README.md#get_federal_taxes) - Get an employee's federal taxes
-* [update_federal_taxes](docs/sdks/employeetaxsetup/README.md#update_federal_taxes) - Update an employee's federal taxes
-* [get_state_taxes](docs/sdks/employeetaxsetup/README.md#get_state_taxes) - Get an employee's state taxes
+* [get_v1_employees_employee_id_federal_taxes](docs/sdks/employeetaxsetup/README.md#get_v1_employees_employee_id_federal_taxes) - Get an employee's federal taxes
+* [put_v1_employees_employee_id_federal_taxes](docs/sdks/employeetaxsetup/README.md#put_v1_employees_employee_id_federal_taxes) - Update an employee's federal taxes
+* [get_v1_employees_employee_id_state_taxes](docs/sdks/employeetaxsetup/README.md#get_v1_employees_employee_id_state_taxes) - Get an employee's state taxes
 
 ### [employee_taxes](docs/sdks/employeetaxes/README.md)
 
@@ -431,97 +425,97 @@ with Gusto() as g_client:
 
 ### [employees](docs/sdks/employees/README.md)
 
-* [create](docs/sdks/employees/README.md#create) - Create an employee
+* [post_v1_employees](docs/sdks/employees/README.md#post_v1_employees) - Create an employee
 * [list](docs/sdks/employees/README.md#list) - Get employees of a company
-* [create_historical](docs/sdks/employees/README.md#create_historical) - Create a historical employee
+* [post_v1_historical_employees](docs/sdks/employees/README.md#post_v1_historical_employees) - Create a historical employee
 * [update_historical_employee](docs/sdks/employees/README.md#update_historical_employee) - Update a historical employee
 * [get](docs/sdks/employees/README.md#get) - Get an employee
-* [update](docs/sdks/employees/README.md#update) - Update an employee
-* [delete](docs/sdks/employees/README.md#delete) - Delete an onboarding employee
-* [get_custom_fields](docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
-* [get_onboarding_status](docs/sdks/employees/README.md#get_onboarding_status) - Get the employee's onboarding status
-* [update_onboarding_status](docs/sdks/employees/README.md#update_onboarding_status) - Update the employee's onboarding status
-* [get_time_off_activities](docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
-* [create_rehire](docs/sdks/employees/README.md#create_rehire) - Create an employee rehire
+* [put_v1_employees](docs/sdks/employees/README.md#put_v1_employees) - Update an employee
+* [delete_v1_employee](docs/sdks/employees/README.md#delete_v1_employee) - Delete an onboarding employee
+* [get_v1_employees_employee_id_custom_fields](docs/sdks/employees/README.md#get_v1_employees_employee_id_custom_fields) - Get an employee's custom fields
+* [get_v1_employees_employee_id_onboarding_status](docs/sdks/employees/README.md#get_v1_employees_employee_id_onboarding_status) - Get the employee's onboarding status
+* [put_v1_employees_employee_id_onboarding_status](docs/sdks/employees/README.md#put_v1_employees_employee_id_onboarding_status) - Update the employee's onboarding status
+* [get_version_employees_time_off_activities](docs/sdks/employees/README.md#get_version_employees_time_off_activities) - Get employee time off activities
+* [post_v1_employees_employee_id_rehire](docs/sdks/employees/README.md#post_v1_employees_employee_id_rehire) - Create an employee rehire
 * [calculate_accruing_time_off_hours](docs/sdks/employees/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
 
 ### [events](docs/sdks/events/README.md)
 
-* [list](docs/sdks/events/README.md#list) - Get all events
+* [get_events](docs/sdks/events/README.md#get_events) - Get all events
 
 ### [external_payrolls](docs/sdks/externalpayrolls/README.md)
 
-* [create](docs/sdks/externalpayrolls/README.md#create) - Create a new external payroll for a company
-* [list](docs/sdks/externalpayrolls/README.md#list) - Get external payrolls for a company
-* [get](docs/sdks/externalpayrolls/README.md#get) - Get an external payroll
-* [delete](docs/sdks/externalpayrolls/README.md#delete) - Delete an external payroll
-* [update](docs/sdks/externalpayrolls/README.md#update) - Update an external payroll
-* [get_tax_suggestions](docs/sdks/externalpayrolls/README.md#get_tax_suggestions) - Get tax suggestions for an external payroll
-* [get_tax_liabilities](docs/sdks/externalpayrolls/README.md#get_tax_liabilities) - Get tax liabilities
-* [update_tax_liabilities](docs/sdks/externalpayrolls/README.md#update_tax_liabilities) - Update tax liabilities
-* [finalize_tax_liabilities](docs/sdks/externalpayrolls/README.md#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
+* [post_v1_external_payroll](docs/sdks/externalpayrolls/README.md#post_v1_external_payroll) - Create a new external payroll for a company
+* [get_v1_company_external_payrolls](docs/sdks/externalpayrolls/README.md#get_v1_company_external_payrolls) - Get external payrolls for a company
+* [get_v1_external_payroll](docs/sdks/externalpayrolls/README.md#get_v1_external_payroll) - Get an external payroll
+* [delete_v1_external_payroll](docs/sdks/externalpayrolls/README.md#delete_v1_external_payroll) - Delete an external payroll
+* [put_v1_external_payroll](docs/sdks/externalpayrolls/README.md#put_v1_external_payroll) - Update an external payroll
+* [get_v1_external_payroll_calculate_taxes](docs/sdks/externalpayrolls/README.md#get_v1_external_payroll_calculate_taxes) - Get tax suggestions for an external payroll
+* [get_v1_tax_liabilities](docs/sdks/externalpayrolls/README.md#get_v1_tax_liabilities) - Get tax liabilities
+* [put_v1_tax_liabilities](docs/sdks/externalpayrolls/README.md#put_v1_tax_liabilities) - Update tax liabilities
+* [put_v1_tax_liabilities_finish](docs/sdks/externalpayrolls/README.md#put_v1_tax_liabilities_finish) - Finalize tax liabilities options and convert into processed payrolls
 
 ### [federal_tax_details](docs/sdks/federaltaxdetailssdk/README.md)
 
-* [update](docs/sdks/federaltaxdetailssdk/README.md#update) - Update Federal Tax Details
+* [put_v1_companies_company_id_federal_tax_details](docs/sdks/federaltaxdetailssdk/README.md#put_v1_companies_company_id_federal_tax_details) - Update Federal Tax Details
 
 ### [flows](docs/sdks/flows/README.md)
 
-* [create](docs/sdks/flows/README.md#create) - Create a flow
+* [post_v1_company_flows](docs/sdks/flows/README.md#post_v1_company_flows) - Create a flow
 
 ### [garnishments](docs/sdks/garnishments/README.md)
 
-* [create](docs/sdks/garnishments/README.md#create) - Create a garnishment
-* [get](docs/sdks/garnishments/README.md#get) - Get garnishments for an employee
+* [post_v1_employees_employee_id_garnishments](docs/sdks/garnishments/README.md#post_v1_employees_employee_id_garnishments) - Create a garnishment
+* [get_v1_employees_employee_id_garnishments](docs/sdks/garnishments/README.md#get_v1_employees_employee_id_garnishments) - Get garnishments for an employee
 * [get_by_id](docs/sdks/garnishments/README.md#get_by_id) - Get a garnishment
-* [update](docs/sdks/garnishments/README.md#update) - Update a garnishment
-* [get_child_support](docs/sdks/garnishments/README.md#get_child_support) - Get child support garnishment data
+* [put_v1_garnishments_garnishment_id](docs/sdks/garnishments/README.md#put_v1_garnishments_garnishment_id) - Update a garnishment
+* [get_v1_garnishments_child_support](docs/sdks/garnishments/README.md#get_v1_garnishments_child_support) - Get child support garnishment data
 
 ### [generated_documents](docs/sdks/generateddocuments/README.md)
 
-* [get](docs/sdks/generateddocuments/README.md#get) - Get a generated document
+* [get_v1_generated_documents_document_type_request_uuid](docs/sdks/generateddocuments/README.md#get_v1_generated_documents_document_type_request_uuid) - Get a generated document
 
 
 ### [holiday_pay_policies](docs/sdks/holidaypaypolicies/README.md)
 
-* [get](docs/sdks/holidaypaypolicies/README.md#get) - Get a company's holiday pay policy
-* [create](docs/sdks/holidaypaypolicies/README.md#create) - Create a holiday pay policy for a company
-* [update](docs/sdks/holidaypaypolicies/README.md#update) - Update a company's holiday pay policy
-* [delete](docs/sdks/holidaypaypolicies/README.md#delete) - Delete a company's holiday pay policy
-* [add_employees](docs/sdks/holidaypaypolicies/README.md#add_employees) - Add employees to a company's holiday pay policy
-* [remove_employees](docs/sdks/holidaypaypolicies/README.md#remove_employees) - Remove employees from a company's holiday pay policy
-* [preview_holidays](docs/sdks/holidaypaypolicies/README.md#preview_holidays) - Preview a company's paid holidays
+* [get_companies_company_uuid_holiday_pay_policy](docs/sdks/holidaypaypolicies/README.md#get_companies_company_uuid_holiday_pay_policy) - Get a company's holiday pay policy
+* [post_companies_company_uuid_holiday_pay_policy](docs/sdks/holidaypaypolicies/README.md#post_companies_company_uuid_holiday_pay_policy) - Create a holiday pay policy for a company
+* [put_companies_company_uuid_holiday_pay_policy](docs/sdks/holidaypaypolicies/README.md#put_companies_company_uuid_holiday_pay_policy) - Update a company's holiday pay policy
+* [delete_companies_company_uuid_holiday_pay_policy](docs/sdks/holidaypaypolicies/README.md#delete_companies_company_uuid_holiday_pay_policy) - Delete a company's holiday pay policy
+* [put_companies_company_uuid_holiday_pay_policy_add](docs/sdks/holidaypaypolicies/README.md#put_companies_company_uuid_holiday_pay_policy_add) - Add employees to a company's holiday pay policy
+* [put_companies_company_uuid_holiday_pay_policy_remove](docs/sdks/holidaypaypolicies/README.md#put_companies_company_uuid_holiday_pay_policy_remove) - Remove employees from a company's holiday pay policy
+* [get_companies_company_uuid_paid_holidays](docs/sdks/holidaypaypolicies/README.md#get_companies_company_uuid_paid_holidays) - Preview a company's paid holidays
 
 ### [home_addresses](docs/sdks/homeaddresses/README.md)
 
 * [update](docs/sdks/homeaddresses/README.md#update) - Update an employee's home address
 
+### [i_9_verification](docs/sdks/i9verification/README.md)
+
+* [get_v1_employees_employee_id_i9_authorization](docs/sdks/i9verification/README.md#get_v1_employees_employee_id_i9_authorization) - Get an employee's I-9 authorization
+* [get_v1_employees_employee_id_i9_authorization_document_options](docs/sdks/i9verification/README.md#get_v1_employees_employee_id_i9_authorization_document_options) - Get an employee's I-9 verification document options
+* [put_v1_employees_employee_id_i9_authorization_documents](docs/sdks/i9verification/README.md#put_v1_employees_employee_id_i9_authorization_documents) - Create an employee's I-9 authorization verification documents
+* [put_v1_employees_employee_id_i9_authorization_employer_sign](docs/sdks/i9verification/README.md#put_v1_employees_employee_id_i9_authorization_employer_sign) - Employer sign an employee's Form I-9
+
 ### [i9_authorizations](docs/sdks/i9authorizations/README.md)
 
-* [create_or_update](docs/sdks/i9authorizations/README.md#create_or_update) - Create or update an employee's I-9 authorization
-* [get_documents](docs/sdks/i9authorizations/README.md#get_documents) - Get an employee's I-9 verification documents
-* [delete_document](docs/sdks/i9authorizations/README.md#delete_document) - Delete an employee's I-9 verification document
-
-### [i9_verification](docs/sdks/i9verification/README.md)
-
-* [get_authorization](docs/sdks/i9verification/README.md#get_authorization) - Get an employee's I-9 authorization
-* [get_document_options](docs/sdks/i9verification/README.md#get_document_options) - Get an employee's I-9 verification document options
-* [create_documents](docs/sdks/i9verification/README.md#create_documents) - Create an employee's I-9 authorization verification documents
-* [employer_sign](docs/sdks/i9verification/README.md#employer_sign) - Employer sign an employee's Form I-9
+* [put_v1_employees_employee_id_i9_authorization](docs/sdks/i9authorizations/README.md#put_v1_employees_employee_id_i9_authorization) - Create or update an employee's I-9 authorization
+* [get_v1_employees_employee_id_i9_authorization_documents](docs/sdks/i9authorizations/README.md#get_v1_employees_employee_id_i9_authorization_documents) - Get an employee's I-9 verification documents
+* [delete_v1_employees_employee_id_i9_authorization_documents_document_id](docs/sdks/i9authorizations/README.md#delete_v1_employees_employee_id_i9_authorization_documents_document_id) - Delete an employee's I-9 verification document
 
 ### [industry_selections](docs/sdks/industryselections/README.md)
 
-* [get](docs/sdks/industryselections/README.md#get) - Get a company industry selection
-* [update](docs/sdks/industryselections/README.md#update) - Update a company industry selection
+* [get_v1_company_industry](docs/sdks/industryselections/README.md#get_v1_company_industry) - Get a company industry selection
+* [put_v1_company_industry](docs/sdks/industryselections/README.md#put_v1_company_industry) - Update a company industry selection
 
 ### [introspection](docs/sdks/introspection/README.md)
 
-* [get_token_info](docs/sdks/introspection/README.md#get_token_info) - Get info about the current access token
+* [get_v1_token_info](docs/sdks/introspection/README.md#get_v1_token_info) - Get info about the current access token
 * [refresh_access_token](docs/sdks/introspection/README.md#refresh_access_token) - Refresh access token
 
 ### [invoices](docs/sdks/invoices/README.md)
 
-* [get](docs/sdks/invoices/README.md#get) - Retrieve invoicing data for companies
+* [get_invoices_invoice_period](docs/sdks/invoices/README.md#get_invoices_invoice_period) - Retrieve invoicing data for companies
 
 ### [job_compensations](docs/sdks/jobcompensations/README.md)
 
@@ -530,40 +524,40 @@ with Gusto() as g_client:
 ### [jobs](docs/sdks/jobs/README.md)
 
 * [get](docs/sdks/jobs/README.md#get) - Get a job
-* [update](docs/sdks/jobs/README.md#update) - Update a job
+* [put_v1_jobs_job_id](docs/sdks/jobs/README.md#put_v1_jobs_job_id) - Update a job
 * [delete](docs/sdks/jobs/README.md#delete) - Delete an individual job
-* [get_compensations](docs/sdks/jobs/README.md#get_compensations) - Get compensations for a job
+* [get_v1_jobs_job_id_compensations](docs/sdks/jobs/README.md#get_v1_jobs_job_id_compensations) - Get compensations for a job
 
 ### [jobs_and_compensations](docs/sdks/jobsandcompensations/README.md)
 
 * [create](docs/sdks/jobsandcompensations/README.md#create) - Create a job
 * [list](docs/sdks/jobsandcompensations/README.md#list) - Get jobs for an employee
-* [get_compensation](docs/sdks/jobsandcompensations/README.md#get_compensation) - Get a compensation
+* [get_v1_compensations_compensation_id](docs/sdks/jobsandcompensations/README.md#get_v1_compensations_compensation_id) - Get a compensation
 
 ### [locations](docs/sdks/locations/README.md)
 
-* [create](docs/sdks/locations/README.md#create) - Create a company location
+* [post_v1_companies_company_id_locations](docs/sdks/locations/README.md#post_v1_companies_company_id_locations) - Create a company location
 * [list](docs/sdks/locations/README.md#list) - Get company locations
-* [get](docs/sdks/locations/README.md#get) - Get a location
-* [update](docs/sdks/locations/README.md#update) - Update a location
-* [get_minimum_wages](docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
+* [get_v1_locations_location_id](docs/sdks/locations/README.md#get_v1_locations_location_id) - Get a location
+* [put_v1_locations_location_id](docs/sdks/locations/README.md#put_v1_locations_location_id) - Update a location
+* [get_v1_locations_location_uuid_minimum_wages](docs/sdks/locations/README.md#get_v1_locations_location_uuid_minimum_wages) - Get minimum wages for a location
 
 ### [notifications](docs/sdks/notifications/README.md)
 
-* [get](docs/sdks/notifications/README.md#get) - Get a notification's details
+* [get_notifications_notification_uuid](docs/sdks/notifications/README.md#get_notifications_notification_uuid) - Get a notification's details
 
 ### [pay_schedules](docs/sdks/payschedules/README.md)
 
-* [create](docs/sdks/payschedules/README.md#create) - Create a new pay schedule
+* [post_v1_companies_company_id_pay_schedules](docs/sdks/payschedules/README.md#post_v1_companies_company_id_pay_schedules) - Create a new pay schedule
 * [list](docs/sdks/payschedules/README.md#list) - Get the pay schedules for a company
-* [preview](docs/sdks/payschedules/README.md#preview) - Preview pay schedule dates
-* [get](docs/sdks/payschedules/README.md#get) - Get a pay schedule
-* [update](docs/sdks/payschedules/README.md#update) - Update a pay schedule
+* [get_v1_companies_company_id_pay_schedules_preview](docs/sdks/payschedules/README.md#get_v1_companies_company_id_pay_schedules_preview) - Preview pay schedule dates
+* [get_v1_companies_company_id_pay_schedules_pay_schedule_id](docs/sdks/payschedules/README.md#get_v1_companies_company_id_pay_schedules_pay_schedule_id) - Get a pay schedule
+* [put_v1_companies_company_id_pay_schedules_pay_schedule_id](docs/sdks/payschedules/README.md#put_v1_companies_company_id_pay_schedules_pay_schedule_id) - Update a pay schedule
 * [list_pay_periods](docs/sdks/payschedules/README.md#list_pay_periods) - Get pay periods for a company
-* [list_unprocessed_termination_periods](docs/sdks/payschedules/README.md#list_unprocessed_termination_periods) - Get termination pay periods for a company
-* [get_assignments](docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
-* [preview_assignment](docs/sdks/payschedules/README.md#preview_assignment) - Preview pay schedule assignments for a company
-* [assign](docs/sdks/payschedules/README.md#assign) - Assign pay schedules for a company
+* [get_v1_companies_company_id_unprocessed_termination_pay_periods](docs/sdks/payschedules/README.md#get_v1_companies_company_id_unprocessed_termination_pay_periods) - Get termination pay periods for a company
+* [get_v1_companies_company_id_pay_schedules_assignments](docs/sdks/payschedules/README.md#get_v1_companies_company_id_pay_schedules_assignments) - Get pay schedule assignments for a company
+* [post_v1_companies_company_id_pay_schedules_assignment_preview](docs/sdks/payschedules/README.md#post_v1_companies_company_id_pay_schedules_assignment_preview) - Preview pay schedule assignments for a company
+* [post_v1_companies_company_id_pay_schedules_assign](docs/sdks/payschedules/README.md#post_v1_companies_company_id_pay_schedules_assign) - Assign pay schedules for a company
 
 ### [pay_stubs](docs/sdks/paystubs/README.md)
 
@@ -571,35 +565,35 @@ with Gusto() as g_client:
 
 ### [payment_configs](docs/sdks/paymentconfigssdk/README.md)
 
-* [get](docs/sdks/paymentconfigssdk/README.md#get) - Get a company's payment configs
-* [update](docs/sdks/paymentconfigssdk/README.md#update) - Update a company's payment configs
+* [get_v1_company_payment_configs](docs/sdks/paymentconfigssdk/README.md#get_v1_company_payment_configs) - Get a company's payment configs
+* [put_v1_company_payment_configs](docs/sdks/paymentconfigssdk/README.md#put_v1_company_payment_configs) - Update a company's payment configs
 
 ### [payrolls](docs/sdks/payrolls/README.md)
 
-* [create](docs/sdks/payrolls/README.md#create) - Create an off-cycle payroll
-* [get_all](docs/sdks/payrolls/README.md#get_all) - Get all payrolls for a company
-* [get_reversals](docs/sdks/payrolls/README.md#get_reversals) - Get approved payroll reversals
-* [get](docs/sdks/payrolls/README.md#get) - Get a single payroll
-* [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
-* [delete](docs/sdks/payrolls/README.md#delete) - Delete a payroll
-* [prepare_for_update](docs/sdks/payrolls/README.md#prepare_for_update) - Prepare a payroll for update
-* [get_receipt](docs/sdks/payrolls/README.md#get_receipt) - Get a single payroll receipt
+* [post_v1_companies_company_id_payrolls](docs/sdks/payrolls/README.md#post_v1_companies_company_id_payrolls) - Create an off-cycle payroll
+* [get_v1_companies_company_id_payrolls](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls) - Get all payrolls for a company
+* [get_v1_companies_company_id_payroll_reversals](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payroll_reversals) - Get approved payroll reversals
+* [get_v1_companies_company_id_payrolls_payroll_id](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_payroll_id) - Get a single payroll
+* [put_v1_companies_company_id_payrolls](docs/sdks/payrolls/README.md#put_v1_companies_company_id_payrolls) - Update a payroll by ID
+* [delete_v1_companies_company_id_payrolls](docs/sdks/payrolls/README.md#delete_v1_companies_company_id_payrolls) - Delete a payroll
+* [put_v1_companies_company_id_payrolls_payroll_id_prepare](docs/sdks/payrolls/README.md#put_v1_companies_company_id_payrolls_payroll_id_prepare) - Prepare a payroll for update
+* [get_v1_payment_receipts_payrolls_payroll_uuid](docs/sdks/payrolls/README.md#get_v1_payment_receipts_payrolls_payroll_uuid) - Get a single payroll receipt
 * [list_blockers](docs/sdks/payrolls/README.md#list_blockers) - Get all payroll blockers for a company
-* [skip](docs/sdks/payrolls/README.md#skip) - Skip a payroll
-* [calculate_gross_up](docs/sdks/payrolls/README.md#calculate_gross_up) - Calculate gross up
-* [calculate](docs/sdks/payrolls/README.md#calculate) - Calculate a payroll
-* [submit](docs/sdks/payrolls/README.md#submit) - Submit payroll
-* [cancel](docs/sdks/payrolls/README.md#cancel) - Cancel a payroll
-* [get_pay_stub](docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
+* [post_companies_payroll_skip_company_uuid](docs/sdks/payrolls/README.md#post_companies_payroll_skip_company_uuid) - Skip a payroll
+* [post_payrolls_gross_up_payroll_uuid](docs/sdks/payrolls/README.md#post_payrolls_gross_up_payroll_uuid) - Calculate gross up
+* [put_v1_companies_company_id_payrolls_payroll_id_calculate](docs/sdks/payrolls/README.md#put_v1_companies_company_id_payrolls_payroll_id_calculate) - Calculate a payroll
+* [put_v1_companies_company_id_payrolls_payroll_id_submit](docs/sdks/payrolls/README.md#put_v1_companies_company_id_payrolls_payroll_id_submit) - Submit payroll
+* [put_api_v1_companies_company_id_payrolls_payroll_id_cancel](docs/sdks/payrolls/README.md#put_api_v1_companies_company_id_payrolls_payroll_id_cancel) - Cancel a payroll
+* [get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub](docs/sdks/payrolls/README.md#get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub) - Get an employee pay stub (pdf)
 
 ### [payrolls_documents](docs/sdks/payrollsdocuments/README.md)
 
-* [generate_printable_checks](docs/sdks/payrollsdocuments/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
+* [post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks](docs/sdks/payrollsdocuments/README.md#post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks) - Generate printable payroll checks (pdf)
 
 ### [recovery_cases](docs/sdks/recoverycases/README.md)
 
-* [get_all](docs/sdks/recoverycases/README.md#get_all) - Get all recovery cases for a company
-* [redebit](docs/sdks/recoverycases/README.md#redebit) - Initiate a redebit for a recovery case
+* [get_recovery_cases](docs/sdks/recoverycases/README.md#get_recovery_cases) - Get all recovery cases for a company
+* [redebit_recovery_case](docs/sdks/recoverycases/README.md#redebit_recovery_case) - Initiate a redebit for a recovery case
 
 ### [report_templates](docs/sdks/reporttemplates/README.md)
 
@@ -607,22 +601,22 @@ with Gusto() as g_client:
 
 ### [reports](docs/sdks/reports/README.md)
 
-* [create](docs/sdks/reports/README.md#create) - Create a custom report
-* [get](docs/sdks/reports/README.md#get) - Get a report
+* [post_companies_company_uuid_reports](docs/sdks/reports/README.md#post_companies_company_uuid_reports) - Create a custom report
+* [get_reports_report_uuid](docs/sdks/reports/README.md#get_reports_report_uuid) - Get a report
 
 ### [signatories](docs/sdks/signatories/README.md)
 
-* [create](docs/sdks/signatories/README.md#create) - Create a signatory
-* [get](docs/sdks/signatories/README.md#get) - Get all company signatories
-* [invite](docs/sdks/signatories/README.md#invite) - Invite a signatory
-* [update](docs/sdks/signatories/README.md#update) - Update a signatory
-* [delete](docs/sdks/signatories/README.md#delete) - Delete a signatory
+* [post_v1_company_signatories](docs/sdks/signatories/README.md#post_v1_company_signatories) - Create a signatory
+* [get_v1_companies_company_uuid_signatories](docs/sdks/signatories/README.md#get_v1_companies_company_uuid_signatories) - Get all company signatories
+* [post_v1_companies_company_uuid_signatories_invite](docs/sdks/signatories/README.md#post_v1_companies_company_uuid_signatories_invite) - Invite a signatory
+* [put_v1_companies_company_uuid_signatories_signatory_uuid](docs/sdks/signatories/README.md#put_v1_companies_company_uuid_signatories_signatory_uuid) - Update a signatory
+* [delete_v1_companies_company_uuid_signatories_signatory_uuid](docs/sdks/signatories/README.md#delete_v1_companies_company_uuid_signatories_signatory_uuid) - Delete a signatory
 
 ### [tax_requirements](docs/sdks/taxrequirements/README.md)
 
 * [get_state_requirements](docs/sdks/taxrequirements/README.md#get_state_requirements) - Get State Tax Requirements
-* [update](docs/sdks/taxrequirements/README.md#update) - Update State Tax Requirements
-* [get_all](docs/sdks/taxrequirements/README.md#get_all) - Get All Tax Requirement States
+* [put_v1_companies_company_uuid_tax_requirements_state](docs/sdks/taxrequirements/README.md#put_v1_companies_company_uuid_tax_requirements_state) - Update State Tax Requirements
+* [get_v1_companies_company_uuid_tax_requirements](docs/sdks/taxrequirements/README.md#get_v1_companies_company_uuid_tax_requirements) - Get All Tax Requirement States
 
 ### [terminations](docs/sdks/terminations/README.md)
 
@@ -631,38 +625,38 @@ with Gusto() as g_client:
 ### [time_off_policies](docs/sdks/timeoffpolicies/README.md)
 
 * [get](docs/sdks/timeoffpolicies/README.md#get) - Get a time off policy
-* [update](docs/sdks/timeoffpolicies/README.md#update) - Update a time off policy
+* [put_time_off_policies_time_off_policy_uuid](docs/sdks/timeoffpolicies/README.md#put_time_off_policies_time_off_policy_uuid) - Update a time off policy
 * [list](docs/sdks/timeoffpolicies/README.md#list) - Get all time off policies
-* [create](docs/sdks/timeoffpolicies/README.md#create) - Create a time off policy
-* [add_employees](docs/sdks/timeoffpolicies/README.md#add_employees) - Add employees to a time off policy
-* [remove_employees](docs/sdks/timeoffpolicies/README.md#remove_employees) - Remove employees from a time off policy
-* [update_balance](docs/sdks/timeoffpolicies/README.md#update_balance) - Update employee time off hour balances
-* [deactivate](docs/sdks/timeoffpolicies/README.md#deactivate) - Deactivate a time off policy
+* [post_companies_company_uuid_time_off_policies](docs/sdks/timeoffpolicies/README.md#post_companies_company_uuid_time_off_policies) - Create a time off policy
+* [put_version_time_off_policies_time_off_policy_uuid_add_employees](docs/sdks/timeoffpolicies/README.md#put_version_time_off_policies_time_off_policy_uuid_add_employees) - Add employees to a time off policy
+* [put_v1_time_off_policies_time_off_policy_uuid_remove_employees](docs/sdks/timeoffpolicies/README.md#put_v1_time_off_policies_time_off_policy_uuid_remove_employees) - Remove employees from a time off policy
+* [put_version_time_off_policies_time_off_policy_uuid_balance](docs/sdks/timeoffpolicies/README.md#put_version_time_off_policies_time_off_policy_uuid_balance) - Update employee time off hour balances
+* [put_v1_time_off_policies_time_off_policy_uuid_deactivate](docs/sdks/timeoffpolicies/README.md#put_v1_time_off_policies_time_off_policy_uuid_deactivate) - Deactivate a time off policy
 
 ### [webhook_subscriptions](docs/sdks/webhooksubscriptions/README.md)
 
-* [delete](docs/sdks/webhooksubscriptions/README.md#delete) - Delete a webhook subscription
-* [request_verification_token](docs/sdks/webhooksubscriptions/README.md#request_verification_token) - Request the webhook subscription verification_token
+* [delete_v1_webhook_subscription_uuid](docs/sdks/webhooksubscriptions/README.md#delete_v1_webhook_subscription_uuid) - Delete a webhook subscription
+* [get_v1_webhook_subscription_verification_token_uuid](docs/sdks/webhooksubscriptions/README.md#get_v1_webhook_subscription_verification_token_uuid) - Request the webhook subscription verification_token
 
 ### [webhooks](docs/sdks/webhooks/README.md)
 
 * [create](docs/sdks/webhooks/README.md#create) - Create a webhook subscription
 * [list](docs/sdks/webhooks/README.md#list) - List webhook subscriptions
 * [update](docs/sdks/webhooks/README.md#update) - Update a webhook subscription
-* [get](docs/sdks/webhooks/README.md#get) - Get a webhook subscription
+* [get_v1_webhook_subscription_uuid](docs/sdks/webhooks/README.md#get_v1_webhook_subscription_uuid) - Get a webhook subscription
 * [verify](docs/sdks/webhooks/README.md#verify) - Verify the webhook subscription
 
 ### [wire_in_requests](docs/sdks/wireinrequests/README.md)
 
-* [get](docs/sdks/wireinrequests/README.md#get) - Get a single Wire In Request
+* [get_wire_in_requests_wire_in_request_uuid](docs/sdks/wireinrequests/README.md#get_wire_in_requests_wire_in_request_uuid) - Get a single Wire In Request
 * [submit](docs/sdks/wireinrequests/README.md#submit) - Submit a wire in request
 * [list](docs/sdks/wireinrequests/README.md#list) - Get all Wire In Requests for a company
 
 ### [work_addresses](docs/sdks/workaddresses/README.md)
 
-* [create](docs/sdks/workaddresses/README.md#create) - Create an employee work address
+* [post_v1_employees_employee_id_work_addresses](docs/sdks/workaddresses/README.md#post_v1_employees_employee_id_work_addresses) - Create an employee work address
 * [get](docs/sdks/workaddresses/README.md#get) - Get an employee work address
-* [delete](docs/sdks/workaddresses/README.md#delete) - Delete an employee's work address
+* [delete_v1_work_addresses_work_address_uuid](docs/sdks/workaddresses/README.md#delete_v1_work_addresses_work_address_uuid) - Delete an employee's work address
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -686,7 +680,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.company_attachments.create(company_id="<id>", document={
+    res = g_client.company_attachment.post_v1_companies_attachment(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
     }, category=gusto.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
@@ -712,7 +706,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info(,
+    res = g_client.introspection.get_v1_token_info(,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -731,7 +725,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -753,7 +747,7 @@ By default, an API error will raise a models.APIError exception, which has the f
 | `.raw_response` | *httpx.Response* | The raw HTTP response |
 | `.body`         | *str*            | The response content  |
 
-When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `create_partner_managed_async` method may raise the following exceptions:
+When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `post_v1_partner_managed_companies_async` method may raise the following exceptions:
 
 | Error Type                            | Status Code | Content Type     |
 | ------------------------------------- | ----------- | ---------------- |
@@ -771,7 +765,7 @@ with Gusto() as g_client:
     res = None
     try:
 
-        res = g_client.companies.create_partner_managed(security=gusto.PostV1PartnerManagedCompaniesSecurity(
+        res = g_client.companies.post_v1_partner_managed_companies(security=gusto.PostV1PartnerManagedCompaniesSecurity(
             system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
         ), user={
             "first_name": "Frank",
@@ -820,7 +814,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -839,7 +833,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.introspection.get_token_info()
+    res = g_client.introspection.get_v1_token_info()
 
     # Handle response
     print(res)

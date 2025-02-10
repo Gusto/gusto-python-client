@@ -205,7 +205,7 @@ class Jobs(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_jobs_job_id(
         self,
         *,
         job_id: str,
@@ -333,7 +333,7 @@ class Jobs(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_jobs_job_id_async(
         self,
         *,
         job_id: str,
@@ -651,7 +651,7 @@ class Jobs(BaseSDK):
             http_res,
         )
 
-    def get_compensations(
+    def get_v1_jobs_job_id_compensations(
         self,
         *,
         job_id: str,
@@ -759,7 +759,7 @@ class Jobs(BaseSDK):
             http_res,
         )
 
-    async def get_compensations_async(
+    async def get_v1_jobs_job_id_compensations_async(
         self,
         *,
         job_id: str,

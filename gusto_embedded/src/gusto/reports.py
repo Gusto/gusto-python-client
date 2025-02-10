@@ -10,7 +10,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class Reports(BaseSDK):
-    def create(
+    def post_companies_company_uuid_reports(
         self,
         *,
         company_uuid: str,
@@ -169,7 +169,7 @@ class Reports(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_companies_company_uuid_reports_async(
         self,
         *,
         company_uuid: str,
@@ -328,7 +328,7 @@ class Reports(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_reports_report_uuid(
         self,
         *,
         report_uuid: str,
@@ -423,7 +423,7 @@ class Reports(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_reports_report_uuid_async(
         self,
         *,
         report_uuid: str,

@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [get](#get) - Retrieve invoicing data for companies
+* [get_invoices_invoice_period](#get_invoices_invoice_period) - Retrieve invoicing data for companies
 
-## get
+## get_invoices_invoice_period
 
 Retrieve data for active companies used to calculate invoices for Gusto Embedded Payroll. A company is considered active for an invoice period if they are an active partner managed company, have run payroll or created contractor payments since becoming a partner managed company, and are not suspended at any point during the invoice period.  This endpoint forces pagination, with 100 results returned at a time. You can learn more about our pagination here: [pagination guide](https://docs.gusto.com/embedded-payroll/docs/pagination) 
 
@@ -26,7 +26,7 @@ import os
 
 with Gusto() as g_client:
 
-    res = g_client.invoices.get(security=gusto.GetInvoicesInvoicePeriodSecurity(
+    res = g_client.invoices.get_invoices_invoice_period(security=gusto.GetInvoicesInvoicePeriodSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), invoice_period="2020-01")
 

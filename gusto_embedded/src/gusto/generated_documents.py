@@ -5,39 +5,29 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import List, Mapping, Optional
+from typing import Mapping, Optional
 
 
-class AchTransactions(BaseSDK):
-    def list(
+class GeneratedDocuments(BaseSDK):
+    def get_v1_generated_documents_document_type_request_uuid(
         self,
         *,
-        company_uuid: str,
-        contractor_payment_uuid: Optional[str] = None,
-        payroll_uuid: Optional[str] = None,
-        transaction_type: Optional[str] = None,
-        payment_direction: Optional[str] = None,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        document_type: models.DocumentType,
+        request_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AchTransaction]:
-        r"""Get all ACH transactions for a company
+    ) -> models.GeneratedDocument:
+        r"""Get a generated document
 
-        Fetches all ACH transactions for a company.
+        Get a document given the request_uuid. The response will include the generation request's status and urls to the document. A list of urls is returned as certain document types require several urls.
 
-        scope: `ach_transactions:read`
+        scope: `generated_documents:read`
 
-        :param company_uuid: The UUID of the company
-        :param contractor_payment_uuid: The UUID of the contractor payment
-        :param payroll_uuid: The UUID of the payroll
-        :param transaction_type: Used to filter the ACH transactions to only include those with a specific transaction type, such as \"Credit employee pay\".
-        :param payment_direction: Used to filter the ACH transactions to only include those with a specific payment direction, either \"credit\" or \"debit\".
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param document_type: The type of document being generated
+        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -52,20 +42,15 @@ class AchTransactions(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetAchTransactionsRequest(
-            company_uuid=company_uuid,
-            contractor_payment_uuid=contractor_payment_uuid,
-            payroll_uuid=payroll_uuid,
-            transaction_type=transaction_type,
-            payment_direction=payment_direction,
-            page=page,
-            per=per,
+        request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
+            document_type=document_type,
+            request_uuid=request_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/companies/{company_uuid}/ach_transactions",
+            path="/v1/generated_documents/{document_type}/{request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -89,7 +74,7 @@ class AchTransactions(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-ach-transactions",
+                operation_id="get-v1-generated_documents-document_type-request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -101,7 +86,7 @@ class AchTransactions(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AchTransaction])
+            return utils.unmarshal_json(http_res.text, models.GeneratedDocument)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -122,35 +107,25 @@ class AchTransactions(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def get_v1_generated_documents_document_type_request_uuid_async(
         self,
         *,
-        company_uuid: str,
-        contractor_payment_uuid: Optional[str] = None,
-        payroll_uuid: Optional[str] = None,
-        transaction_type: Optional[str] = None,
-        payment_direction: Optional[str] = None,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        document_type: models.DocumentType,
+        request_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AchTransaction]:
-        r"""Get all ACH transactions for a company
+    ) -> models.GeneratedDocument:
+        r"""Get a generated document
 
-        Fetches all ACH transactions for a company.
+        Get a document given the request_uuid. The response will include the generation request's status and urls to the document. A list of urls is returned as certain document types require several urls.
 
-        scope: `ach_transactions:read`
+        scope: `generated_documents:read`
 
-        :param company_uuid: The UUID of the company
-        :param contractor_payment_uuid: The UUID of the contractor payment
-        :param payroll_uuid: The UUID of the payroll
-        :param transaction_type: Used to filter the ACH transactions to only include those with a specific transaction type, such as \"Credit employee pay\".
-        :param payment_direction: Used to filter the ACH transactions to only include those with a specific payment direction, either \"credit\" or \"debit\".
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param document_type: The type of document being generated
+        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -165,20 +140,15 @@ class AchTransactions(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetAchTransactionsRequest(
-            company_uuid=company_uuid,
-            contractor_payment_uuid=contractor_payment_uuid,
-            payroll_uuid=payroll_uuid,
-            transaction_type=transaction_type,
-            payment_direction=payment_direction,
-            page=page,
-            per=per,
+        request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
+            document_type=document_type,
+            request_uuid=request_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/companies/{company_uuid}/ach_transactions",
+            path="/v1/generated_documents/{document_type}/{request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -202,7 +172,7 @@ class AchTransactions(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-ach-transactions",
+                operation_id="get-v1-generated_documents-document_type-request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -214,7 +184,7 @@ class AchTransactions(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AchTransaction])
+            return utils.unmarshal_json(http_res.text, models.GeneratedDocument)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

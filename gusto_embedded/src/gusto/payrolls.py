@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Payrolls(BaseSDK):
-    def create(
+    def post_v1_companies_company_id_payrolls(
         self,
         *,
         company_id: str,
@@ -156,7 +156,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_id_payrolls_async(
         self,
         *,
         company_id: str,
@@ -303,7 +303,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def get_all(
+    def get_v1_companies_company_id_payrolls(
         self,
         *,
         company_id: str,
@@ -424,7 +424,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def get_all_async(
+    async def get_v1_companies_company_id_payrolls_async(
         self,
         *,
         company_id: str,
@@ -545,7 +545,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def get_reversals(
+    def get_v1_companies_company_id_payroll_reversals(
         self,
         *,
         company_id: str,
@@ -646,7 +646,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def get_reversals_async(
+    async def get_v1_companies_company_id_payroll_reversals_async(
         self,
         *,
         company_id: str,
@@ -747,7 +747,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_companies_company_id_payrolls_payroll_id(
         self,
         *,
         company_id: str,
@@ -858,7 +858,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_companies_company_id_payrolls_payroll_id_async(
         self,
         *,
         company_id: str,
@@ -969,7 +969,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_companies_company_id_payrolls(
         self,
         *,
         company_id: str,
@@ -1094,7 +1094,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_companies_company_id_payrolls_async(
         self,
         *,
         company_id: str,
@@ -1219,7 +1219,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def delete(
+    def delete_v1_companies_company_id_payrolls(
         self,
         *,
         company_id: str,
@@ -1322,7 +1322,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_companies_company_id_payrolls_async(
         self,
         *,
         company_id: str,
@@ -1425,7 +1425,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def prepare_for_update(
+    def put_v1_companies_company_id_payrolls_payroll_id_prepare(
         self,
         *,
         company_id: str,
@@ -1527,7 +1527,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def prepare_for_update_async(
+    async def put_v1_companies_company_id_payrolls_payroll_id_prepare_async(
         self,
         *,
         company_id: str,
@@ -1629,7 +1629,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def get_receipt(
+    def get_v1_payment_receipts_payrolls_payroll_uuid(
         self,
         *,
         payroll_uuid: str,
@@ -1729,7 +1729,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def get_receipt_async(
+    async def get_v1_payment_receipts_payrolls_payroll_uuid_async(
         self,
         *,
         payroll_uuid: str,
@@ -2023,7 +2023,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def skip(
+    def post_companies_payroll_skip_company_uuid(
         self,
         *,
         company_uuid: str,
@@ -2153,7 +2153,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def skip_async(
+    async def post_companies_payroll_skip_company_uuid_async(
         self,
         *,
         company_uuid: str,
@@ -2283,7 +2283,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def calculate_gross_up(
+    def post_payrolls_gross_up_payroll_uuid(
         self,
         *,
         payroll_uuid: str,
@@ -2401,7 +2401,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def calculate_gross_up_async(
+    async def post_payrolls_gross_up_payroll_uuid_async(
         self,
         *,
         payroll_uuid: str,
@@ -2519,7 +2519,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def calculate(
+    def put_v1_companies_company_id_payrolls_payroll_id_calculate(
         self,
         *,
         company_id: str,
@@ -2629,7 +2629,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def calculate_async(
+    async def put_v1_companies_company_id_payrolls_payroll_id_calculate_async(
         self,
         *,
         company_id: str,
@@ -2739,7 +2739,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def submit(
+    def put_v1_companies_company_id_payrolls_payroll_id_submit(
         self,
         *,
         company_id: str,
@@ -2869,7 +2869,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def submit_async(
+    async def put_v1_companies_company_id_payrolls_payroll_id_submit_async(
         self,
         *,
         company_id: str,
@@ -2999,7 +2999,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def cancel(
+    def put_api_v1_companies_company_id_payrolls_payroll_id_cancel(
         self,
         *,
         company_id: str,
@@ -3106,7 +3106,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def cancel_async(
+    async def put_api_v1_companies_company_id_payrolls_payroll_id_cancel_async(
         self,
         *,
         company_id: str,
@@ -3213,7 +3213,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    def get_pay_stub(
+    def get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub(
         self,
         *,
         payroll_id: str,
@@ -3311,7 +3311,7 @@ class Payrolls(BaseSDK):
             http_res,
         )
 
-    async def get_pay_stub_async(
+    async def get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub_async(
         self,
         *,
         payroll_id: str,

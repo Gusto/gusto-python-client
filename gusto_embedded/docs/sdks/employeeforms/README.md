@@ -5,13 +5,13 @@
 
 ### Available Operations
 
-* [generate_w2](#generate_w2) - Generate a W2 form [DEMO]
-* [get_all](#get_all) - Get all employee forms
+* [post_v1_sandbox_generate_w2](#post_v1_sandbox_generate_w2) - Generate a W2 form [DEMO]
+* [get_v1_employee_forms](#get_v1_employee_forms) - Get all employee forms
 * [get](#get) - Get an employee form
-* [get_pdf](#get_pdf) - Get the employee form pdf
-* [sign](#sign) - Sign an employee form
+* [get_v1_employee_form_pdf](#get_v1_employee_form_pdf) - Get the employee form pdf
+* [put_v1_employee_form_sign](#put_v1_employee_form_sign) - Sign an employee form
 
-## generate_w2
+## post_v1_sandbox_generate_w2
 
 > 🚧 Demo action
 >
@@ -31,7 +31,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_forms.generate_w2(employee_id="<id>")
+    res = g_client.employee_forms.post_v1_sandbox_generate_w2(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -58,7 +58,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_all
+## get_v1_employee_forms
 
 Get a list of all employee's forms
 
@@ -74,7 +74,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_forms.get_all(employee_id="<id>")
+    res = g_client.employee_forms.get_v1_employee_forms(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -141,7 +141,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_pdf
+## get_v1_employee_form_pdf
 
 Get the link to the employee form PDF
 
@@ -157,7 +157,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_forms.get_pdf(employee_id="<id>", form_id="<id>")
+    res = g_client.employee_forms.get_v1_employee_form_pdf(employee_id="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -183,7 +183,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## sign
+## put_v1_employee_form_sign
 
 Sign an employee form.
 
@@ -202,7 +202,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = g_client.employee_forms.put_v1_employee_form_sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
 
     # Handle response
     print(res)

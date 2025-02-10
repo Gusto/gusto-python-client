@@ -9,7 +9,7 @@ from typing import Mapping, Optional
 
 
 class Introspection(BaseSDK):
-    def get_token_info(
+    def get_v1_token_info(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
@@ -101,7 +101,7 @@ class Introspection(BaseSDK):
             http_res,
         )
 
-    async def get_token_info_async(
+    async def get_v1_token_info_async(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,

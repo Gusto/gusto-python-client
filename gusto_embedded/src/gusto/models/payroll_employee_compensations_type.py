@@ -85,14 +85,14 @@ class PayrollEmployeeCompensationsTypePaidTimeOff(BaseModel):
     r"""The outstanding hours paid upon termination. This field is only applicable for termination payrolls."""
 
 
-class BenefitsModelTypedDict(TypedDict):
+class BenefitsTypedDict(TypedDict):
     name: NotRequired[str]
     employee_deduction: NotRequired[float]
     company_contribution: NotRequired[float]
     imputed: NotRequired[bool]
 
 
-class BenefitsModel(BaseModel):
+class Benefits(BaseModel):
     name: Optional[str] = None
 
     employee_deduction: Optional[float] = None
@@ -152,7 +152,7 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
         List[PayrollEmployeeCompensationsTypePaidTimeOffTypedDict]
     ]
     r"""An array of all paid time off the employee is eligible for this pay period."""
-    benefits: NotRequired[List[BenefitsModelTypedDict]]
+    benefits: NotRequired[List[BenefitsTypedDict]]
     r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
     deductions: NotRequired[List[DeductionsTypedDict]]
     r"""An array of employee deductions for the pay period. Deductions are only included for processed payroll when the include parameter is present."""
@@ -196,7 +196,7 @@ class PayrollEmployeeCompensationsType(BaseModel):
     paid_time_off: Optional[List[PayrollEmployeeCompensationsTypePaidTimeOff]] = None
     r"""An array of all paid time off the employee is eligible for this pay period."""
 
-    benefits: Optional[List[BenefitsModel]] = None
+    benefits: Optional[List[Benefits]] = None
     r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
 
     deductions: Optional[List[Deductions]] = None

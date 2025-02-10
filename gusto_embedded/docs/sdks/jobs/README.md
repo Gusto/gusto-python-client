@@ -6,9 +6,9 @@
 ### Available Operations
 
 * [get](#get) - Get a job
-* [update](#update) - Update a job
+* [put_v1_jobs_job_id](#put_v1_jobs_job_id) - Update a job
 * [delete](#delete) - Delete an individual job
-* [get_compensations](#get_compensations) - Get compensations for a job
+* [get_v1_jobs_job_id_compensations](#get_v1_jobs_job_id_compensations) - Get compensations for a job
 
 ## get
 
@@ -52,7 +52,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_jobs_job_id
 
 Update a job.
 
@@ -68,7 +68,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.jobs.update(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
+    res = g_client.jobs.put_v1_jobs_job_id(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
 
     # Handle response
     print(res)
@@ -136,7 +136,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_compensations
+## get_v1_jobs_job_id_compensations
 
 Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`. By default the API returns only the current compensation - see the `include` query parameter for retrieving all compensations.
 
@@ -156,7 +156,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.jobs.get_compensations(job_id="<id>")
+    res = g_client.jobs.get_v1_jobs_job_id_compensations(job_id="<id>")
 
     # Handle response
     print(res)

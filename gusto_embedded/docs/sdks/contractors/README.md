@@ -5,19 +5,19 @@
 
 ### Available Operations
 
-* [create](#create) - Create a contractor
-* [list](#list) - Get contractors of a company
-* [get](#get) - Get a contractor
-* [update](#update) - Update a contractor
-* [delete](#delete) - Delete a contractor
-* [get_onboarding_status](#get_onboarding_status) - Get the contractor's onboarding status
-* [update_onboarding_status](#update_onboarding_status) - Change the contractor's onboarding status
-* [get_address](#get_address) - Get a contractor address
-* [update_address](#update_address) - Update a contractor's address
+* [post_v1_companies_company_uuid_contractors](#post_v1_companies_company_uuid_contractors) - Create a contractor
+* [get_v1_companies_company_uuid_contractors](#get_v1_companies_company_uuid_contractors) - Get contractors of a company
+* [get_v1_contractors_contractor_uuid](#get_v1_contractors_contractor_uuid) - Get a contractor
+* [put_v1_contractors_contractor_uuid](#put_v1_contractors_contractor_uuid) - Update a contractor
+* [delete_v1_contractors_contractor_uuid](#delete_v1_contractors_contractor_uuid) - Delete a contractor
+* [get_v1_contractors_contractor_uuid_onboarding_status](#get_v1_contractors_contractor_uuid_onboarding_status) - Get the contractor's onboarding status
+* [put_v1_contractors_contractor_uuid_onboarding_status](#put_v1_contractors_contractor_uuid_onboarding_status) - Change the contractor's onboarding status
+* [get_v1_contractors_contractor_uuid_address](#get_v1_contractors_contractor_uuid_address) - Get a contractor address
+* [put_v1_contractors_contractor_uuid_address](#put_v1_contractors_contractor_uuid_address) - Update a contractor's address
 * [get_forms](#get_forms) - Get all contractor forms
-* [update_payment_method](#update_payment_method) - Update a contractor's payment method
+* [put_v1_contractors_contractor_id_payment_method](#put_v1_contractors_contractor_id_payment_method) - Update a contractor's payment method
 
-## create
+## post_v1_companies_company_uuid_contractors
 
 Create an individual or business contractor.
 
@@ -34,7 +34,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.create(company_uuid="<id>", wage_type=gusto.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = g_client.contractors.post_v1_companies_company_uuid_contractors(company_uuid="<id>", wage_type=gusto.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
 
     # Handle response
     print(res)
@@ -75,7 +75,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list
+## get_v1_companies_company_uuid_contractors
 
 Get all contractors, active and inactive, individual and business, for a company.
 
@@ -91,7 +91,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.list(company_uuid="<id>")
+    res = g_client.contractors.get_v1_companies_company_uuid_contractors(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -119,7 +119,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get
+## get_v1_contractors_contractor_uuid
 
 Get a contractor.
 
@@ -135,7 +135,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.get(contractor_uuid="<id>")
+    res = g_client.contractors.get_v1_contractors_contractor_uuid(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -160,7 +160,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_contractors_contractor_uuid
 
 Update a contractor.
 
@@ -181,7 +181,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = g_client.contractors.put_v1_contractors_contractor_uuid(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
 
     # Handle response
     print(res)
@@ -223,7 +223,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_v1_contractors_contractor_uuid
 
 A contractor can only be deleted when there are no contractor payments.
 
@@ -239,7 +239,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.contractors.delete(contractor_uuid="<id>")
+    g_client.contractors.delete_v1_contractors_contractor_uuid(contractor_uuid="<id>")
 
     # Use the SDK ...
 
@@ -259,7 +259,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_onboarding_status
+## get_v1_contractors_contractor_uuid_onboarding_status
 
 Retrieves a contractor's onboarding status. The data returned helps inform the required onboarding steps and respective completion status.
 
@@ -306,7 +306,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.get_onboarding_status(contractor_uuid="<id>")
+    res = g_client.contractors.get_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -331,7 +331,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_onboarding_status
+## put_v1_contractors_contractor_uuid_onboarding_status
 
 Updates a contractor's onboarding status.
 
@@ -357,7 +357,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.update_onboarding_status(contractor_uuid="<id>")
+    res = g_client.contractors.put_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -384,7 +384,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_address
+## get_v1_contractors_contractor_uuid_address
 
 The address of a contractor is used to determine certain tax information about them. Addresses are geocoded on create and update to ensure validity.
 
@@ -400,7 +400,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.get_address(contractor_uuid="<id>")
+    res = g_client.contractors.get_v1_contractors_contractor_uuid_address(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -425,7 +425,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_address
+## put_v1_contractors_contractor_uuid_address
 
 The address of a contractor is used to determine certain tax information about them. Addresses are geocoded on create and update to ensure validity.
 
@@ -441,7 +441,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.update_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip="94107")
+    res = g_client.contractors.put_v1_contractors_contractor_uuid_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip="94107")
 
     # Handle response
     print(res)
@@ -514,7 +514,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_payment_method
+## put_v1_contractors_contractor_id_payment_method
 
 Updates a contractor's payment method. Note that creating a contractor
 bank account will also update the contractor's payment method.
@@ -532,7 +532,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractors.update_payment_method(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
+    res = g_client.contractors.put_v1_contractors_contractor_id_payment_method(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
 
     # Handle response
     print(res)

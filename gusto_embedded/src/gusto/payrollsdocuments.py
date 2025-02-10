@@ -9,7 +9,7 @@ from typing import Any, Mapping, Optional
 
 
 class PayrollsDocuments(BaseSDK):
-    def generate_printable_checks(
+    def post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks(
         self,
         *,
         payroll_uuid: str,
@@ -125,7 +125,7 @@ class PayrollsDocuments(BaseSDK):
             http_res,
         )
 
-    async def generate_printable_checks_async(
+    async def post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks_async(
         self,
         *,
         payroll_uuid: str,

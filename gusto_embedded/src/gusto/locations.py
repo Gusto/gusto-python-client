@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class Locations(BaseSDK):
-    def create(
+    def post_v1_companies_company_id_locations(
         self,
         *,
         company_id: str,
@@ -145,7 +145,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_id_locations_async(
         self,
         *,
         company_id: str,
@@ -487,7 +487,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_locations_location_id(
         self,
         *,
         location_id: str,
@@ -582,7 +582,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_locations_location_id_async(
         self,
         *,
         location_id: str,
@@ -677,7 +677,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_locations_location_id(
         self,
         *,
         location_id: str,
@@ -817,7 +817,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_locations_location_id_async(
         self,
         *,
         location_id: str,
@@ -957,7 +957,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def get_minimum_wages(
+    def get_v1_locations_location_uuid_minimum_wages(
         self,
         *,
         location_uuid: str,
@@ -1055,7 +1055,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def get_minimum_wages_async(
+    async def get_v1_locations_location_uuid_minimum_wages_async(
         self,
         *,
         location_uuid: str,

@@ -8,7 +8,7 @@
 * [create](#create) - Create a webhook subscription
 * [list](#list) - List webhook subscriptions
 * [update](#update) - Update a webhook subscription
-* [get](#get) - Get a webhook subscription
+* [get_v1_webhook_subscription_uuid](#get_v1_webhook_subscription_uuid) - Get a webhook subscription
 * [verify](#verify) - Verify the webhook subscription
 
 ## create
@@ -162,7 +162,7 @@ with Gusto() as g_client:
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_v1_webhook_subscription_uuid
 
 Returns the Webhook Subscription associated with the provided UUID.
 
@@ -182,7 +182,7 @@ import os
 
 with Gusto() as g_client:
 
-    res = g_client.webhooks.get(security=gusto.GetV1WebhookSubscriptionUUIDSecurity(
+    res = g_client.webhooks.get_v1_webhook_subscription_uuid(security=gusto.GetV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 

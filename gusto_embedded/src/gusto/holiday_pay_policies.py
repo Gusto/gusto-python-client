@@ -8,30 +8,24 @@ from gusto.utils import get_security_from_env
 from typing import Any, List, Mapping, Optional, Union
 
 
-class ExternalPayrolls(BaseSDK):
-    def create(
+class HolidayPayPolicies(BaseSDK):
+    def get_companies_company_uuid_holiday_pay_policy(
         self,
         *,
         company_uuid: str,
-        check_date: str,
-        payment_period_start_date: str,
-        payment_period_end_date: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Create a new external payroll for a company
+    ) -> models.HolidayPayPolicy:
+        r"""Get a company's holiday pay policy
 
-        Creates a new external payroll for the company.
+        Get a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:read`
 
         :param company_uuid: The UUID of the company
-        :param check_date: External payroll's check date.
-        :param payment_period_start_date: External payroll's pay period start date.
-        :param payment_period_end_date: External payroll's pay period end date.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -46,19 +40,219 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1ExternalPayrollRequest(
+        request = models.GetCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1ExternalPayrollRequestBody(
-                check_date=check_date,
-                payment_period_start_date=payment_period_start_date,
-                payment_period_end_date=payment_period_end_date,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-companies-company_uuid-holiday_pay_policy",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_companies_company_uuid_holiday_pay_policy_async(
+        self,
+        *,
+        company_uuid: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.HolidayPayPolicy:
+        r"""Get a company's holiday pay policy
+
+        Get a company's holiday pay policy
+
+        scope: `holiday_pay_policies:read`
+
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetCompaniesCompanyUUIDHolidayPayPolicyRequest(
+            company_uuid=company_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-companies-company_uuid-holiday_pay_policy",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def post_companies_company_uuid_holiday_pay_policy(
+        self,
+        *,
+        company_uuid: str,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        federal_holidays: Optional[
+            Union[
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays,
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidaysTypedDict,
+            ]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.HolidayPayPolicy:
+        r"""Create a holiday pay policy for a company
+
+        Create a holiday pay policy for a company
+
+        scope: `holiday_pay_policies:write`
+
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param federal_holidays: An object containing federal holiday objects, each containing a boolean selected property.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PostCompaniesCompanyUUIDHolidayPayPolicyRequest(
+            company_uuid=company_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PostCompaniesCompanyUUIDHolidayPayPolicyRequestBody(
+                federal_holidays=utils.get_pydantic_model(
+                    federal_holidays,
+                    Optional[
+                        models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays
+                    ],
+                ),
             ),
         )
 
         req = self._build_request(
             method="POST",
-            path="/v1/companies/{company_uuid}/external_payrolls",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -74,7 +268,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1ExternalPayrollRequestBody,
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -89,7 +283,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="post-v1-external-payroll",
+                operation_id="post-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -102,7 +296,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -128,30 +322,31 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_companies_company_uuid_holiday_pay_policy_async(
         self,
         *,
         company_uuid: str,
-        check_date: str,
-        payment_period_start_date: str,
-        payment_period_end_date: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        federal_holidays: Optional[
+            Union[
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays,
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidaysTypedDict,
+            ]
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Create a new external payroll for a company
+    ) -> models.HolidayPayPolicy:
+        r"""Create a holiday pay policy for a company
 
-        Creates a new external payroll for the company.
+        Create a holiday pay policy for a company
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
-        :param check_date: External payroll's check date.
-        :param payment_period_start_date: External payroll's pay period start date.
-        :param payment_period_end_date: External payroll's pay period end date.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param federal_holidays: An object containing federal holiday objects, each containing a boolean selected property.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -165,19 +360,22 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1ExternalPayrollRequest(
+        request = models.PostCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1ExternalPayrollRequestBody(
-                check_date=check_date,
-                payment_period_start_date=payment_period_start_date,
-                payment_period_end_date=payment_period_end_date,
+            request_body=models.PostCompaniesCompanyUUIDHolidayPayPolicyRequestBody(
+                federal_holidays=utils.get_pydantic_model(
+                    federal_holidays,
+                    Optional[
+                        models.PostCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays
+                    ],
+                ),
             ),
         )
 
         req = self._build_request_async(
             method="POST",
-            path="/v1/companies/{company_uuid}/external_payrolls",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -193,7 +391,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1ExternalPayrollRequestBody,
+                models.PostCompaniesCompanyUUIDHolidayPayPolicyRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -208,7 +406,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="post-v1-external-payroll",
+                operation_id="post-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -221,7 +419,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -247,24 +445,33 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    def list(
+    def put_companies_company_uuid_holiday_pay_policy(
         self,
         *,
         company_uuid: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        federal_holidays: Optional[
+            Union[
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidaysTypedDict,
+            ]
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ExternalPayrollBasic]:
-        r"""Get external payrolls for a company
+    ) -> models.HolidayPayPolicy:
+        r"""Update a company's holiday pay policy
 
-        Get an external payroll for a given company.
+        Update a company's holiday pay policy
 
-        scope: `external_payrolls:read`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param federal_holidays: An object containing federal holiday objects, each containing a boolean selected property.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -278,24 +485,40 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompanyExternalPayrollsRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyRequestBody(
+                version=version,
+                federal_holidays=utils.get_pydantic_model(
+                    federal_holidays,
+                    Optional[
+                        models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays
+                    ],
+                ),
+            ),
         )
 
         req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls",
+            method="PUT",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -309,21 +532,25 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-company-external-payrolls",
+                operation_id="put-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.ExternalPayrollBasic]
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
             )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -344,24 +571,33 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def put_companies_company_uuid_holiday_pay_policy_async(
         self,
         *,
         company_uuid: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        federal_holidays: Optional[
+            Union[
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidaysTypedDict,
+            ]
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ExternalPayrollBasic]:
-        r"""Get external payrolls for a company
+    ) -> models.HolidayPayPolicy:
+        r"""Update a company's holiday pay policy
 
-        Get an external payroll for a given company.
+        Update a company's holiday pay policy
 
-        scope: `external_payrolls:read`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param federal_holidays: An object containing federal holiday objects, each containing a boolean selected property.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -375,24 +611,40 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompanyExternalPayrollsRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyRequestBody(
+                version=version,
+                federal_holidays=utils.get_pydantic_model(
+                    federal_holidays,
+                    Optional[
+                        models.PutCompaniesCompanyUUIDHolidayPayPolicyFederalHolidays
+                    ],
+                ),
+            ),
         )
 
         req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls",
+            method="PUT",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -406,21 +658,25 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-company-external-payrolls",
+                operation_id="put-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.ExternalPayrollBasic]
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
             )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -441,221 +697,23 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    def get(
+    def delete_companies_company_uuid_holiday_pay_policy(
         self,
         *,
         company_uuid: str,
-        external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Get an external payroll
-
-        Get an external payroll for a given company.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1ExternalPayrollRequest(
-            company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-external-payroll",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_async(
-        self,
-        *,
-        company_uuid: str,
-        external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Get an external payroll
-
-        Get an external payroll for a given company.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1ExternalPayrollRequest(
-            company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-external-payroll",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def delete(
-        self,
-        *,
-        company_uuid: str,
-        external_payroll_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ):
-        r"""Delete an external payroll
+        r"""Delete a company's holiday pay policy
 
-        Delete an external payroll.
+        Delete a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -670,15 +728,14 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.DeleteV1ExternalPayrollRequest(
+        request = models.DeleteCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="DELETE",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -686,7 +743,7 @@ class ExternalPayrolls(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             timeout_ms=timeout_ms,
@@ -702,19 +759,25 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="delete-v1-external-payroll",
+                operation_id="delete-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -735,25 +798,23 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_companies_company_uuid_holiday_pay_policy_async(
         self,
         *,
         company_uuid: str,
-        external_payroll_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ):
-        r"""Delete an external payroll
+        r"""Delete a company's holiday pay policy
 
-        Delete an external payroll.
+        Delete a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -768,15 +829,14 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.DeleteV1ExternalPayrollRequest(
+        request = models.DeleteCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="DELETE",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -784,7 +844,7 @@ class ExternalPayrolls(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             timeout_ms=timeout_ms,
@@ -800,19 +860,25 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="delete-v1-external-payroll",
+                operation_id="delete-companies-company_uuid-holiday_pay_policy",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -833,35 +899,35 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_companies_company_uuid_holiday_pay_policy_add(
         self,
         *,
         company_uuid: str,
-        external_payroll_id: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        replace_fields: Optional[bool] = None,
-        external_payroll_items: Optional[
+        employees: Optional[
             Union[
-                List[models.PutV1ExternalPayrollExternalPayrollItems],
-                List[models.PutV1ExternalPayrollExternalPayrollItemsTypedDict],
+                List[models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
+                List[
+                    models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict
+                ],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Update an external payroll
+    ) -> models.HolidayPayPolicy:
+        r"""Add employees to a company's holiday pay policy
 
-        Update an external payroll with a list of external payroll items
+        Add employees to a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param replace_fields: Patch update external payroll items when set to true, otherwise it will overwrite the previous changes.
-        :param external_payroll_items:
+        :param employees: An array of employee objects, each containing an employee_uuid.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -875,22 +941,23 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1ExternalPayrollRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequest(
             company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1ExternalPayrollRequestBody(
-                replace_fields=replace_fields,
-                external_payroll_items=utils.get_pydantic_model(
-                    external_payroll_items,
-                    Optional[List[models.PutV1ExternalPayrollExternalPayrollItems]],
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequestBody(
+                version=version,
+                employees=utils.get_pydantic_model(
+                    employees,
+                    Optional[
+                        List[models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployees]
+                    ],
                 ),
             ),
         )
 
         req = self._build_request(
             method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy/add",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -906,7 +973,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1ExternalPayrollRequestBody,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -921,7 +988,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-external-payroll",
+                operation_id="put-companies-company_uuid-holiday_pay_policy-add",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -934,7 +1001,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -960,35 +1027,35 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_companies_company_uuid_holiday_pay_policy_add_async(
         self,
         *,
         company_uuid: str,
-        external_payroll_id: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        replace_fields: Optional[bool] = None,
-        external_payroll_items: Optional[
+        employees: Optional[
             Union[
-                List[models.PutV1ExternalPayrollExternalPayrollItems],
-                List[models.PutV1ExternalPayrollExternalPayrollItemsTypedDict],
+                List[models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
+                List[
+                    models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict
+                ],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ExternalPayroll:
-        r"""Update an external payroll
+    ) -> models.HolidayPayPolicy:
+        r"""Add employees to a company's holiday pay policy
 
-        Update an external payroll with a list of external payroll items
+        Add employees to a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param replace_fields: Patch update external payroll items when set to true, otherwise it will overwrite the previous changes.
-        :param external_payroll_items:
+        :param employees: An array of employee objects, each containing an employee_uuid.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1002,22 +1069,23 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1ExternalPayrollRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequest(
             company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1ExternalPayrollRequestBody(
-                replace_fields=replace_fields,
-                external_payroll_items=utils.get_pydantic_model(
-                    external_payroll_items,
-                    Optional[List[models.PutV1ExternalPayrollExternalPayrollItems]],
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequestBody(
+                version=version,
+                employees=utils.get_pydantic_model(
+                    employees,
+                    Optional[
+                        List[models.PutCompaniesCompanyUUIDHolidayPayPolicyAddEmployees]
+                    ],
                 ),
             ),
         )
 
         req = self._build_request_async(
             method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy/add",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1033,7 +1101,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1ExternalPayrollRequestBody,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -1048,7 +1116,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-external-payroll",
+                operation_id="put-companies-company_uuid-holiday_pay_policy-add",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1061,7 +1129,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ExternalPayroll)
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -1087,429 +1155,35 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    def get_tax_suggestions(
+    def put_companies_company_uuid_holiday_pay_policy_remove(
         self,
         *,
         company_uuid: str,
-        external_payroll_id: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ExternalPayrollTaxSuggestions]:
-        r"""Get tax suggestions for an external payroll
-
-        Get tax suggestions for an external payroll. Earnings and/or benefits
-        data must be saved prior to the calculation in order to retrieve accurate
-        tax calculation.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1ExternalPayrollCalculateTaxesRequest(
-            company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}/calculate_taxes",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-external-payroll-calculate-taxes",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.ExternalPayrollTaxSuggestions]
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_tax_suggestions_async(
-        self,
-        *,
-        company_uuid: str,
-        external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ExternalPayrollTaxSuggestions]:
-        r"""Get tax suggestions for an external payroll
-
-        Get tax suggestions for an external payroll. Earnings and/or benefits
-        data must be saved prior to the calculation in order to retrieve accurate
-        tax calculation.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param external_payroll_id: The UUID of the external payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1ExternalPayrollCalculateTaxesRequest(
-            company_uuid=company_uuid,
-            external_payroll_id=external_payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/{external_payroll_id}/calculate_taxes",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-external-payroll-calculate-taxes",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.ExternalPayrollTaxSuggestions]
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get_tax_liabilities(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[List[models.TaxLiabilitiesSelections]]:
-        r"""Get tax liabilities
-
-        Get tax liabilities from aggregate external payrolls for a company.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1TaxLiabilitiesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="get-v1-tax-liabilities",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[List[models.TaxLiabilitiesSelections]]
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_tax_liabilities_async(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[List[models.TaxLiabilitiesSelections]]:
-        r"""Get tax liabilities
-
-        Get tax liabilities from aggregate external payrolls for a company.
-
-        scope: `external_payrolls:read`
-
-        :param company_uuid: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.GetV1TaxLiabilitiesRequest(
-            company_uuid=company_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="get-v1-tax-liabilities",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[List[models.TaxLiabilitiesSelections]]
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def update_tax_liabilities(
-        self,
-        *,
-        company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        liability_selections: Optional[
+        employees: Optional[
             Union[
-                List[models.LiabilitySelections],
-                List[models.LiabilitySelectionsTypedDict],
+                List[models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
+                List[
+                    models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployeesTypedDict
+                ],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[List[models.TaxLiabilitiesSelections]]:
-        r"""Update tax liabilities
+    ) -> models.HolidayPayPolicy:
+        r"""Remove employees from a company's holiday pay policy
 
-        Update tax liabilities for a company.
+        Remove employees from a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param liability_selections:
+        :param employees: An array of employee objects, each containing an employee_uuid.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1523,19 +1197,25 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TaxLiabilitiesRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1TaxLiabilitiesRequestBody(
-                liability_selections=utils.get_pydantic_model(
-                    liability_selections, Optional[List[models.LiabilitySelections]]
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequestBody(
+                version=version,
+                employees=utils.get_pydantic_model(
+                    employees,
+                    Optional[
+                        List[
+                            models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees
+                        ]
+                    ],
                 ),
             ),
         )
 
         req = self._build_request(
             method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy/remove",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1551,7 +1231,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1TaxLiabilitiesRequestBody,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -1566,7 +1246,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-tax-liabilities",
+                operation_id="put-companies-company_uuid-holiday_pay_policy-remove",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1579,9 +1259,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[List[models.TaxLiabilitiesSelections]]
-            )
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -1607,31 +1285,35 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def update_tax_liabilities_async(
+    async def put_companies_company_uuid_holiday_pay_policy_remove_async(
         self,
         *,
         company_uuid: str,
+        version: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        liability_selections: Optional[
+        employees: Optional[
             Union[
-                List[models.LiabilitySelections],
-                List[models.LiabilitySelectionsTypedDict],
+                List[models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
+                List[
+                    models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployeesTypedDict
+                ],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[List[models.TaxLiabilitiesSelections]]:
-        r"""Update tax liabilities
+    ) -> models.HolidayPayPolicy:
+        r"""Remove employees from a company's holiday pay policy
 
-        Update tax liabilities for a company.
+        Remove employees from a company's holiday pay policy
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:write`
 
         :param company_uuid: The UUID of the company
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param liability_selections:
+        :param employees: An array of employee objects, each containing an employee_uuid.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1645,19 +1327,25 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TaxLiabilitiesRequest(
+        request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1TaxLiabilitiesRequestBody(
-                liability_selections=utils.get_pydantic_model(
-                    liability_selections, Optional[List[models.LiabilitySelections]]
+            request_body=models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequestBody(
+                version=version,
+                employees=utils.get_pydantic_model(
+                    employees,
+                    Optional[
+                        List[
+                            models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees
+                        ]
+                    ],
                 ),
             ),
         )
 
         req = self._build_request_async(
             method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities",
+            path="/v1/companies/{company_uuid}/holiday_pay_policy/remove",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1673,7 +1361,7 @@ class ExternalPayrolls(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1TaxLiabilitiesRequestBody,
+                models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -1688,7 +1376,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-tax-liabilities",
+                operation_id="put-companies-company_uuid-holiday_pay_policy-remove",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1701,9 +1389,7 @@ class ExternalPayrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[List[models.TaxLiabilitiesSelections]]
-            )
+            return utils.unmarshal_json(http_res.text, models.HolidayPayPolicy)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -1729,24 +1415,26 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    def finalize_tax_liabilities(
+    def get_companies_company_uuid_paid_holidays(
         self,
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        year: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Finalize tax liabilities options and convert into processed payrolls
+    ) -> models.PaidHolidays:
+        r"""Preview a company's paid holidays
 
-        Finalizes tax liabilities for a company. All external payrolls edit action will be disabled.
+        Preview a company's paid holidays
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:read`
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param year: If a year is passed, paid holidays for that year will be returned. Otherwise, paid holidays for the next three years will be returned.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1760,24 +1448,34 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TaxLiabilitiesFinishRequest(
+        request = models.GetCompaniesCompanyUUIDPaidHolidaysRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.GetCompaniesCompanyUUIDPaidHolidaysRequestBody(
+                year=year,
+            ),
         )
 
         req = self._build_request(
-            method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities/finish",
+            method="GET",
+            path="/v1/companies/{company_uuid}/paid_holidays",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.GetCompaniesCompanyUUIDPaidHolidaysRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -1791,7 +1489,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-tax-liabilities-finish",
+                operation_id="get-companies-company_uuid-paid_holidays",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1803,8 +1501,8 @@ class ExternalPayrolls(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.PaidHolidays)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -1830,24 +1528,26 @@ class ExternalPayrolls(BaseSDK):
             http_res,
         )
 
-    async def finalize_tax_liabilities_async(
+    async def get_companies_company_uuid_paid_holidays_async(
         self,
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
+        year: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Finalize tax liabilities options and convert into processed payrolls
+    ) -> models.PaidHolidays:
+        r"""Preview a company's paid holidays
 
-        Finalizes tax liabilities for a company. All external payrolls edit action will be disabled.
+        Preview a company's paid holidays
 
-        scope: `external_payrolls:write`
+        scope: `holiday_pay_policies:read`
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param year: If a year is passed, paid holidays for that year will be returned. Otherwise, paid holidays for the next three years will be returned.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1861,24 +1561,34 @@ class ExternalPayrolls(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1TaxLiabilitiesFinishRequest(
+        request = models.GetCompaniesCompanyUUIDPaidHolidaysRequest(
             company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.GetCompaniesCompanyUUIDPaidHolidaysRequestBody(
+                year=year,
+            ),
         )
 
         req = self._build_request_async(
-            method="PUT",
-            path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities/finish",
+            method="GET",
+            path="/v1/companies/{company_uuid}/paid_holidays",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.GetCompaniesCompanyUUIDPaidHolidaysRequestBody,
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -1892,7 +1602,7 @@ class ExternalPayrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-tax-liabilities-finish",
+                operation_id="get-companies-company_uuid-paid_holidays",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -1904,8 +1614,8 @@ class ExternalPayrolls(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.PaidHolidays)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData

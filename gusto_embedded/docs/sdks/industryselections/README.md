@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [get](#get) - Get a company industry selection
-* [update](#update) - Update a company industry selection
+* [get_v1_company_industry](#get_v1_company_industry) - Get a company industry selection
+* [put_v1_company_industry](#put_v1_company_industry) - Update a company industry selection
 
-## get
+## get_v1_company_industry
 
 Get industry selection for the company.
 
@@ -24,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.industry_selections.get(company_id="<id>")
+    res = g_client.industry_selections.get_v1_company_industry(company_id="<id>")
 
     # Handle response
     print(res)
@@ -49,7 +49,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_company_industry
 
 Update the company industry selection by passing in industry classification codes: [NAICS code](https://www.naics.com), [SICS code](https://siccode.com/) and industry title. Our UI is leveraging [Middesk API](https://docs.middesk.com/reference/introduction) to determine industry classification codes.
 
@@ -65,7 +65,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.industry_selections.update(company_id="<id>", naics_code="611420", title="Computer Training", sic_codes=[
+    res = g_client.industry_selections.put_v1_company_industry(company_id="<id>", naics_code="611420", title="Computer Training", sic_codes=[
         "8243",
     ])
 

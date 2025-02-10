@@ -9,7 +9,7 @@ from typing import Any, Mapping, Optional
 
 
 class EarningTypes(BaseSDK):
-    def create(
+    def post_v1_companies_company_id_earning_types(
         self,
         *,
         company_id: str,
@@ -124,7 +124,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_id_earning_types_async(
         self,
         *,
         company_id: str,
@@ -239,7 +239,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    def get_all(
+    def get_v1_companies_company_id_earning_types(
         self,
         *,
         company_id: str,
@@ -340,7 +340,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    async def get_all_async(
+    async def get_v1_companies_company_id_earning_types_async(
         self,
         *,
         company_id: str,
@@ -441,7 +441,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_companies_company_id_earning_types_earning_type_uuid(
         self,
         *,
         company_id: str,
@@ -557,7 +557,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_companies_company_id_earning_types_earning_type_uuid_async(
         self,
         *,
         company_id: str,
@@ -673,7 +673,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    def deactivate(
+    def delete_v1_companies_company_id_earning_types_earning_type_uuid(
         self,
         *,
         company_id: str,
@@ -771,7 +771,7 @@ class EarningTypes(BaseSDK):
             http_res,
         )
 
-    async def deactivate_async(
+    async def delete_v1_companies_company_id_earning_types_earning_type_uuid_async(
         self,
         *,
         company_id: str,

@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class RecoveryCases(BaseSDK):
-    def get_all(
+    def get_recovery_cases(
         self,
         *,
         company_uuid: str,
@@ -104,7 +104,7 @@ class RecoveryCases(BaseSDK):
             http_res,
         )
 
-    async def get_all_async(
+    async def get_recovery_cases_async(
         self,
         *,
         company_uuid: str,
@@ -199,7 +199,7 @@ class RecoveryCases(BaseSDK):
             http_res,
         )
 
-    def redebit(
+    def redebit_recovery_case(
         self,
         *,
         recovery_case_uuid: str,
@@ -304,7 +304,7 @@ class RecoveryCases(BaseSDK):
             http_res,
         )
 
-    async def redebit_async(
+    async def redebit_recovery_case_async(
         self,
         *,
         recovery_case_uuid: str,

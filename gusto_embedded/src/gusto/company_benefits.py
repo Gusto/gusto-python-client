@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class CompanyBenefits(BaseSDK):
-    def create(
+    def post_v1_companies_company_id_company_benefits(
         self,
         *,
         company_id: str,
@@ -136,7 +136,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_id_company_benefits_async(
         self,
         *,
         company_id: str,
@@ -263,7 +263,211 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_companies_company_id_company_benefits(
+        self,
+        *,
+        company_id: str,
+        enrollment_count: Optional[bool] = None,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.CompanyBenefit]:
+        r"""Get benefits for a company
+
+        Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
+
+        Note that company benefits can be deactivated only when no employees are enrolled.
+
+        Benefits containing PHI are only visible to applications with the `company_benefits:read:phi` scope.
+
+        scope: `company_benefits:read`
+
+        :param company_id: The UUID of the company
+        :param enrollment_count: Whether to return employee enrollment count
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
+            company_id=company_id,
+            enrollment_count=enrollment_count,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/company_benefits",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-company_id-company_benefits",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.CompanyBenefit])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def get_v1_companies_company_id_company_benefits_async(
+        self,
+        *,
+        company_id: str,
+        enrollment_count: Optional[bool] = None,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.CompanyBenefit]:
+        r"""Get benefits for a company
+
+        Company benefits represent the benefits that a company is offering to employees. This ties together a particular supported benefit with the company-specific information for the offering of that benefit.
+
+        Note that company benefits can be deactivated only when no employees are enrolled.
+
+        Benefits containing PHI are only visible to applications with the `company_benefits:read:phi` scope.
+
+        scope: `company_benefits:read`
+
+        :param company_id: The UUID of the company
+        :param enrollment_count: Whether to return employee enrollment count
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
+            company_id=company_id,
+            enrollment_count=enrollment_count,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/company_benefits",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="get-v1-companies-company_id-company_benefits",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, List[models.CompanyBenefit])
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def get_v1_company_benefits_company_benefit_id(
         self,
         *,
         company_benefit_id: str,
@@ -367,7 +571,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_company_benefits_company_benefit_id_async(
         self,
         *,
         company_benefit_id: str,
@@ -471,7 +675,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_company_benefits_company_benefit_id(
         self,
         *,
         company_benefit_id: str,
@@ -592,7 +796,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_company_benefits_company_benefit_id_async(
         self,
         *,
         company_benefit_id: str,
@@ -713,7 +917,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def delete(
+    def delete_v1_company_benefits_company_benefit_id(
         self,
         *,
         company_benefit_id: str,
@@ -820,7 +1024,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_company_benefits_company_benefit_id_async(
         self,
         *,
         company_benefit_id: str,
@@ -927,7 +1131,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get_all(
+    def get_v1_benefits(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
@@ -1021,7 +1225,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_all_async(
+    async def get_v1_benefits_async(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
@@ -1115,7 +1319,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get_supported_benefit(
+    def get_v1_benefits_benefit_id(
         self,
         *,
         benefit_id: str,
@@ -1212,7 +1416,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_supported_benefit_async(
+    async def get_v1_benefits_benefit_id_async(
         self,
         *,
         benefit_id: str,
@@ -1309,7 +1513,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get_summary(
+    def get_v1_benefits_company_benefit_id_summary(
         self,
         *,
         company_benefit_id: str,
@@ -1415,7 +1619,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_summary_async(
+    async def get_v1_benefits_company_benefit_id_summary_async(
         self,
         *,
         company_benefit_id: str,
@@ -1521,7 +1725,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get_employee_benefits(
+    def get_v1_company_benefits_company_benefit_id_employee_benefits(
         self,
         *,
         company_benefit_id: str,
@@ -1626,7 +1830,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_employee_benefits_async(
+    async def get_v1_company_benefits_company_benefit_id_employee_benefits_async(
         self,
         *,
         company_benefit_id: str,
@@ -1975,7 +2179,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    def get_requirements(
+    def get_v1_benefits_benefits_id_requirements(
         self,
         *,
         benefit_id: str,
@@ -2070,7 +2274,7 @@ class CompanyBenefits(BaseSDK):
             http_res,
         )
 
-    async def get_requirements_async(
+    async def get_v1_benefits_benefits_id_requirements_async(
         self,
         *,
         benefit_id: str,

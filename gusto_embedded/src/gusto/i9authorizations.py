@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class I9Authorizations(BaseSDK):
-    def create_or_update(
+    def put_v1_employees_employee_id_i9_authorization(
         self,
         *,
         employee_id: str,
@@ -157,7 +157,7 @@ class I9Authorizations(BaseSDK):
             http_res,
         )
 
-    async def create_or_update_async(
+    async def put_v1_employees_employee_id_i9_authorization_async(
         self,
         *,
         employee_id: str,
@@ -305,7 +305,7 @@ class I9Authorizations(BaseSDK):
             http_res,
         )
 
-    def get_documents(
+    def get_v1_employees_employee_id_i9_authorization_documents(
         self,
         *,
         employee_id: str,
@@ -402,7 +402,7 @@ class I9Authorizations(BaseSDK):
             http_res,
         )
 
-    async def get_documents_async(
+    async def get_v1_employees_employee_id_i9_authorization_documents_async(
         self,
         *,
         employee_id: str,
@@ -499,7 +499,7 @@ class I9Authorizations(BaseSDK):
             http_res,
         )
 
-    def delete_document(
+    def delete_v1_employees_employee_id_i9_authorization_documents_document_id(
         self,
         *,
         employee_id: str,
@@ -599,7 +599,7 @@ class I9Authorizations(BaseSDK):
             http_res,
         )
 
-    async def delete_document_async(
+    async def delete_v1_employees_employee_id_i9_authorization_documents_document_id_async(
         self,
         *,
         employee_id: str,

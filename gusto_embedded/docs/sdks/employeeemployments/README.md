@@ -6,11 +6,11 @@
 ### Available Operations
 
 * [list_terminations](#list_terminations) - Get terminations for an employee
-* [update_termination](#update_termination) - Update an employee termination
-* [update_rehire](#update_rehire) - Update an employee rehire
-* [get_rehire](#get_rehire) - Get an employee rehire
-* [delete_rehire](#delete_rehire) - Delete an employee rehire
-* [get_history](#get_history) - Get employment history for an employee
+* [put_v1_terminations_employee_id](#put_v1_terminations_employee_id) - Update an employee termination
+* [put_v1_employees_employee_id_rehire](#put_v1_employees_employee_id_rehire) - Update an employee rehire
+* [get_v1_employees_employee_id_rehire](#get_v1_employees_employee_id_rehire) - Get an employee rehire
+* [delete_v1_employees_employee_id_rehire](#delete_v1_employees_employee_id_rehire) - Delete an employee rehire
+* [get_v1_employees_employee_id_employment_history](#get_v1_employees_employee_id_employment_history) - Get employment history for an employee
 
 ## list_terminations
 
@@ -55,7 +55,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update_termination
+## put_v1_terminations_employee_id
 
 Terminations are created whenever an employee is scheduled to leave the company. The only things required are an effective date (their last day of work) and whether they should receive their wages in a one-off termination payroll or with the rest of the company.
 
@@ -73,7 +73,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_employments.update_termination(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
+    res = g_client.employee_employments.put_v1_terminations_employee_id(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
 
     # Handle response
     print(res)
@@ -102,7 +102,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## update_rehire
+## put_v1_employees_employee_id_rehire
 
 Update an employee's rehire.
 
@@ -118,7 +118,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_employments.update_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = g_client.employee_employments.put_v1_employees_employee_id_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
 
     # Handle response
     print(res)
@@ -150,7 +150,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_rehire
+## get_v1_employees_employee_id_rehire
 
 Retrieve an employee's rehire, which contains information on when the employee returns to work.
 
@@ -166,7 +166,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_employments.get_rehire(employee_id="<id>")
+    res = g_client.employee_employments.get_v1_employees_employee_id_rehire(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -192,7 +192,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 404                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_rehire
+## delete_v1_employees_employee_id_rehire
 
 Delete an employee rehire. An employee rehire cannot be deleted if it's active (past effective date).
 
@@ -208,7 +208,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.employee_employments.delete_rehire(employee_id="<id>")
+    g_client.employee_employments.delete_v1_employees_employee_id_rehire(employee_id="<id>")
 
     # Use the SDK ...
 
@@ -229,7 +229,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 404                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_history
+## get_v1_employees_employee_id_employment_history
 
 Retrieve the employment history for a given employee, which includes termination and rehire.
 
@@ -245,7 +245,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_employments.get_history(employee_id="<id>")
+    res = g_client.employee_employments.get_v1_employees_employee_id_employment_history(employee_id="<id>")
 
     # Handle response
     print(res)

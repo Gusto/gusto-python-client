@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [create](#create) - Create an employee work address
+* [post_v1_employees_employee_id_work_addresses](#post_v1_employees_employee_id_work_addresses) - Create an employee work address
 * [get](#get) - Get an employee work address
-* [delete](#delete) - Delete an employee's work address
+* [delete_v1_work_addresses_work_address_uuid](#delete_v1_work_addresses_work_address_uuid) - Delete an employee's work address
 
-## create
+## post_v1_employees_employee_id_work_addresses
 
 The work address of an employee describes when an employee began working at an associated company location.
 
@@ -26,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.work_addresses.create(employee_id="<id>", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
+    res = g_client.work_addresses.post_v1_employees_employee_id_work_addresses(employee_id="<id>", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
 
     # Handle response
     print(res)
@@ -95,7 +95,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## delete
+## delete_v1_work_addresses_work_address_uuid
 
 Used for deleting an employee's work address.  Cannot delete the employee's active work address.
 
@@ -111,7 +111,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.work_addresses.delete(work_address_uuid="<id>")
+    g_client.work_addresses.delete_v1_work_addresses_work_address_uuid(work_address_uuid="<id>")
 
     # Use the SDK ...
 

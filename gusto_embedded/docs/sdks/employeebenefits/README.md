@@ -6,12 +6,12 @@
 ### Available Operations
 
 * [create](#create) - Create an employee benefit
-* [get_all](#get_all) - Get all benefits for an employee
-* [get](#get) - Get an employee benefit
-* [update](#update) - Update an employee benefit
-* [delete](#delete) - Delete an employee benefit
-* [get_ytd_from_different_company](#get_ytd_from_different_company) - Get year-to-date benefit amounts from a different company
+* [get_v1_employees_employee_id_employee_benefits](#get_v1_employees_employee_id_employee_benefits) - Get all benefits for an employee
+* [get_v1_employee_benefits_employee_benefit_id](#get_v1_employee_benefits_employee_benefit_id) - Get an employee benefit
+* [put_v1_employee_benefits_employee_benefit_id](#put_v1_employee_benefits_employee_benefit_id) - Update an employee benefit
+* [delete_v1_employee_benefits_employee_benefit_id](#delete_v1_employee_benefits_employee_benefit_id) - Delete an employee benefit
 * [create_ytd_benefit_amounts](#create_ytd_benefit_amounts) - Create year-to-date benefit amounts from a different company
+* [get_ytd_from_different_company](#get_ytd_from_different_company) - Get year-to-date benefit amounts from a different company
 
 ## create
 
@@ -74,7 +74,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_all
+## get_v1_employees_employee_id_employee_benefits
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -94,7 +94,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_benefits.get_all(employee_id="<id>")
+    res = g_client.employee_benefits.get_v1_employees_employee_id_employee_benefits(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -121,7 +121,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get
+## get_v1_employee_benefits_employee_benefit_id
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -139,7 +139,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_benefits.get(employee_benefit_id="<id>")
+    res = g_client.employee_benefits.get_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -164,7 +164,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## update
+## put_v1_employee_benefits_employee_benefit_id
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -180,7 +180,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = g_client.employee_benefits.put_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
 
     # Handle response
     print(res)
@@ -221,7 +221,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_v1_employee_benefits_employee_benefit_id
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -237,7 +237,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.employee_benefits.delete(employee_benefit_id="<id>")
+    g_client.employee_benefits.delete_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
 
     # Use the SDK ...
 
@@ -250,51 +250,6 @@ with Gusto(
 | `employee_benefit_id`                                                                                                                                                                                                        | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee benefit.                                                                                                                                                                                            |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
-
-## get_ytd_from_different_company
-
-Retrieves year-to-date benefit amounts that were contributed at a different company for the specified employee.
-Returns benefit amounts for the requested tax year (defaults to current year if not specified).
-
-This endpoint only supports retrieving outside contributions for 401(k) benefits.
-
-scope: `employee_benefits:read`
-
-### Example Usage
-
-```python
-from gusto import Gusto
-import os
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
-
-    res = g_client.employee_benefits.get_ytd_from_different_company(employee_id="<id>", tax_year=2024)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
-| `tax_year`                                                                                                                                                                                                                   | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The tax year for which to retrieve YTD benefit amounts. Defaults to current year if not specified.                                                                                                                           | 2024                                                                                                                                                                                                                         |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
-
-### Response
-
-**[List[models.YtdBenefitAmountsFromDifferentCompany]](../../models/.md)**
 
 ### Errors
 
@@ -344,3 +299,48 @@ with Gusto(
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_ytd_from_different_company
+
+Retrieves year-to-date benefit amounts that were contributed at a different company for the specified employee.
+Returns benefit amounts for the requested tax year (defaults to current year if not specified).
+
+This endpoint only supports retrieving outside contributions for 401(k) benefits.
+
+scope: `employee_benefits:read`
+
+### Example Usage
+
+```python
+from gusto import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as g_client:
+
+    res = g_client.employee_benefits.get_ytd_from_different_company(employee_id="<id>", tax_year=2024)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `tax_year`                                                                                                                                                                                                                   | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The tax year for which to retrieve YTD benefit amounts. Defaults to current year if not specified.                                                                                                                           | 2024                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[List[models.YtdBenefitAmountsFromDifferentCompany]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |

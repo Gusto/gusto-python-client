@@ -9,7 +9,7 @@ from typing import List, Mapping, Optional, Union
 
 
 class Events(BaseSDK):
-    def list(
+    def get_events(
         self,
         *,
         security: Union[models.GetEventsSecurity, models.GetEventsSecurityTypedDict],
@@ -120,7 +120,7 @@ class Events(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def get_events_async(
         self,
         *,
         security: Union[models.GetEventsSecurity, models.GetEventsSecurityTypedDict],

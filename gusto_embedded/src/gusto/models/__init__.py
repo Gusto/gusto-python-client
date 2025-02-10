@@ -1179,8 +1179,8 @@ from .payroll_credit_blockers_type import (
     PayrollCreditBlockersTypeUnblockOptionsTypedDict,
 )
 from .payroll_employee_compensations_type import (
-    BenefitsModel,
-    BenefitsModelTypedDict,
+    Benefits,
+    BenefitsTypedDict,
     Deductions,
     DeductionsTypedDict,
     FixedCompensations,
@@ -2236,8 +2236,8 @@ __all__ = [
     "BenefitTypeRequirementsLimitOptionDefaultValue",
     "BenefitTypeRequirementsLimitOptionDefaultValueTypedDict",
     "BenefitTypeRequirementsTypedDict",
-    "BenefitsModel",
-    "BenefitsModelTypedDict",
+    "Benefits",
+    "BenefitsTypedDict",
     "CatchUp",
     "CatchUpTypedDict",
     "Category",

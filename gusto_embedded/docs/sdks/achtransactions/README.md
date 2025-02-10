@@ -1,4 +1,4 @@
-# AchTransactions
+# ACHTransactions
 (*ach_transactions*)
 
 ## Overview

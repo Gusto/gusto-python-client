@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [get](#get) - Get a generated document
+* [get_v1_generated_documents_document_type_request_uuid](#get_v1_generated_documents_document_type_request_uuid) - Get a generated document
 
-## get
+## get_v1_generated_documents_document_type_request_uuid
 
 Get a document given the request_uuid. The response will include the generation request's status and urls to the document. A list of urls is returned as certain document types require several urls.
 
@@ -24,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.generated_documents.get(document_type=gusto.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
+    res = g_client.generated_documents.get_v1_generated_documents_document_type_request_uuid(document_type=gusto.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
 
     # Handle response
     print(res)

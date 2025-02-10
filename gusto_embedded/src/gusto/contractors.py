@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class Contractors(BaseSDK):
-    def create(
+    def post_v1_companies_company_uuid_contractors(
         self,
         *,
         company_uuid: str,
@@ -166,7 +166,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_companies_company_uuid_contractors_async(
         self,
         *,
         company_uuid: str,
@@ -323,7 +323,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def list(
+    def get_v1_companies_company_uuid_contractors(
         self,
         *,
         company_uuid: str,
@@ -427,7 +427,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def get_v1_companies_company_uuid_contractors_async(
         self,
         *,
         company_uuid: str,
@@ -531,7 +531,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def get(
+    def get_v1_contractors_contractor_uuid(
         self,
         *,
         contractor_uuid: str,
@@ -626,7 +626,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def get_async(
+    async def get_v1_contractors_contractor_uuid_async(
         self,
         *,
         contractor_uuid: str,
@@ -721,7 +721,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_contractors_contractor_uuid(
         self,
         *,
         contractor_uuid: str,
@@ -885,7 +885,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_contractors_contractor_uuid_async(
         self,
         *,
         contractor_uuid: str,
@@ -1049,7 +1049,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def delete(
+    def delete_v1_contractors_contractor_uuid(
         self,
         *,
         contractor_uuid: str,
@@ -1144,7 +1144,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_contractors_contractor_uuid_async(
         self,
         *,
         contractor_uuid: str,
@@ -1239,7 +1239,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def get_onboarding_status(
+    def get_v1_contractors_contractor_uuid_onboarding_status(
         self,
         *,
         contractor_uuid: str,
@@ -1367,7 +1367,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def get_onboarding_status_async(
+    async def get_v1_contractors_contractor_uuid_onboarding_status_async(
         self,
         *,
         contractor_uuid: str,
@@ -1495,7 +1495,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def update_onboarding_status(
+    def put_v1_contractors_contractor_uuid_onboarding_status(
         self,
         *,
         contractor_uuid: str,
@@ -1622,7 +1622,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def update_onboarding_status_async(
+    async def put_v1_contractors_contractor_uuid_onboarding_status_async(
         self,
         *,
         contractor_uuid: str,
@@ -1749,7 +1749,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def get_address(
+    def get_v1_contractors_contractor_uuid_address(
         self,
         *,
         contractor_uuid: str,
@@ -1844,7 +1844,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def get_address_async(
+    async def get_v1_contractors_contractor_uuid_address_async(
         self,
         *,
         contractor_uuid: str,
@@ -1939,7 +1939,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def update_address(
+    def put_v1_contractors_contractor_uuid_address(
         self,
         *,
         contractor_uuid: str,
@@ -2067,7 +2067,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def update_address_async(
+    async def put_v1_contractors_contractor_uuid_address_async(
         self,
         *,
         contractor_uuid: str,
@@ -2385,7 +2385,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    def update_payment_method(
+    def put_v1_contractors_contractor_id_payment_method(
         self,
         *,
         contractor_uuid: str,
@@ -2502,7 +2502,7 @@ class Contractors(BaseSDK):
             http_res,
         )
 
-    async def update_payment_method_async(
+    async def put_v1_contractors_contractor_id_payment_method_async(
         self,
         *,
         contractor_uuid: str,

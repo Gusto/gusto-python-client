@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Employees(BaseSDK):
-    def create(
+    def post_v1_employees(
         self,
         *,
         company_id: str,
@@ -143,7 +143,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def create_async(
+    async def post_v1_employees_async(
         self,
         *,
         company_id: str,
@@ -497,7 +497,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def create_historical(
+    def post_v1_historical_employees(
         self,
         *,
         company_uuid: str,
@@ -659,7 +659,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def create_historical_async(
+    async def post_v1_historical_employees_async(
         self,
         *,
         company_uuid: str,
@@ -1363,7 +1363,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def update(
+    def put_v1_employees(
         self,
         *,
         employee_id: str,
@@ -1500,7 +1500,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def update_async(
+    async def put_v1_employees_async(
         self,
         *,
         employee_id: str,
@@ -1637,7 +1637,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def delete(
+    def delete_v1_employee(
         self,
         *,
         employee_id: str,
@@ -1740,7 +1740,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def delete_async(
+    async def delete_v1_employee_async(
         self,
         *,
         employee_id: str,
@@ -1843,7 +1843,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def get_custom_fields(
+    def get_v1_employees_employee_id_custom_fields(
         self,
         *,
         employee_id: str,
@@ -1946,7 +1946,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def get_custom_fields_async(
+    async def get_v1_employees_employee_id_custom_fields_async(
         self,
         *,
         employee_id: str,
@@ -2049,7 +2049,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def get_onboarding_status(
+    def get_v1_employees_employee_id_onboarding_status(
         self,
         *,
         employee_id: str,
@@ -2180,7 +2180,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def get_onboarding_status_async(
+    async def get_v1_employees_employee_id_onboarding_status_async(
         self,
         *,
         employee_id: str,
@@ -2311,7 +2311,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def update_onboarding_status(
+    def put_v1_employees_employee_id_onboarding_status(
         self,
         *,
         employee_id: str,
@@ -2433,7 +2433,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def update_onboarding_status_async(
+    async def put_v1_employees_employee_id_onboarding_status_async(
         self,
         *,
         employee_id: str,
@@ -2555,7 +2555,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def get_time_off_activities(
+    def get_version_employees_time_off_activities(
         self,
         *,
         employee_uuid: str,
@@ -2653,7 +2653,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def get_time_off_activities_async(
+    async def get_version_employees_time_off_activities_async(
         self,
         *,
         employee_uuid: str,
@@ -2751,7 +2751,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    def create_rehire(
+    def post_v1_employees_employee_id_rehire(
         self,
         *,
         employee_id: str,
@@ -2872,7 +2872,7 @@ class Employees(BaseSDK):
             http_res,
         )
 
-    async def create_rehire_async(
+    async def post_v1_employees_employee_id_rehire_async(
         self,
         *,
         employee_id: str,

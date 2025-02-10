@@ -6,7 +6,7 @@
 ### Available Operations
 
 * [create](#create) - Create a contractor bank account
-* [get](#get) - Get a contractor's payment method
+* [get_v1_contractors_contractor_uuid_payment_method](#get_v1_contractors_contractor_uuid_payment_method) - Get a contractor's payment method
 
 ## create
 
@@ -57,7 +57,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_v1_contractors_contractor_uuid_payment_method
 
 Fetches a contractor's payment method. A contractor payment method
 describes how the payment should be split across the contractor's associated
@@ -75,7 +75,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.contractor_payment_methods.get(contractor_uuid="<id>")
+    res = g_client.contractor_payment_methods.get_v1_contractors_contractor_uuid_payment_method(contractor_uuid="<id>")
 
     # Handle response
     print(res)

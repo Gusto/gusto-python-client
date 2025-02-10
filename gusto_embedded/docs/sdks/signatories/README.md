@@ -5,13 +5,13 @@
 
 ### Available Operations
 
-* [create](#create) - Create a signatory
-* [get](#get) - Get all company signatories
-* [invite](#invite) - Invite a signatory
-* [update](#update) - Update a signatory
-* [delete](#delete) - Delete a signatory
+* [post_v1_company_signatories](#post_v1_company_signatories) - Create a signatory
+* [get_v1_companies_company_uuid_signatories](#get_v1_companies_company_uuid_signatories) - Get all company signatories
+* [post_v1_companies_company_uuid_signatories_invite](#post_v1_companies_company_uuid_signatories_invite) - Invite a signatory
+* [put_v1_companies_company_uuid_signatories_signatory_uuid](#put_v1_companies_company_uuid_signatories_signatory_uuid) - Update a signatory
+* [delete_v1_companies_company_uuid_signatories_signatory_uuid](#delete_v1_companies_company_uuid_signatories_signatory_uuid) - Delete a signatory
 
-## create
+## post_v1_company_signatories
 
 Create a company signatory with complete information.
 A signatory can legally sign forms once the identity verification process is successful.
@@ -29,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.signatories.create(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
+    res = g_client.signatories.post_v1_company_signatories(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
         "street_1": "<value>",
         "city": "North Lilly",
         "state": "North Carolina",
@@ -69,7 +69,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get
+## get_v1_companies_company_uuid_signatories
 
 Returns company signatories. Currently we only support a single signatory per company.
 
@@ -85,7 +85,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.signatories.get(company_uuid="<id>")
+    res = g_client.signatories.get_v1_companies_company_uuid_signatories(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -110,7 +110,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## invite
+## post_v1_companies_company_uuid_signatories_invite
 
 Create a signatory with minimal information. This signatory can be invited to provide more information through the `PUT /v1/companies/{company_uuid}/signatories/{signatory_uuid}` endpoint. This will start the identity verification process and allow the signatory to be verified to sign documents.
 
@@ -124,7 +124,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.signatories.invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
+    res = g_client.signatories.post_v1_companies_company_uuid_signatories_invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
 
     # Handle response
     print(res)
@@ -154,7 +154,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## update
+## put_v1_companies_company_uuid_signatories_signatory_uuid
 
 Update a signatory that has been either invited or created. If the signatory has been created with minimal information through the `POST /v1/companies/{company_uuid}/signatories/invite` endpoint, then the first update must contain all attributes specified in the request body in order to start the identity verification process.
 
@@ -170,7 +170,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.signatories.update(company_uuid="<id>", signatory_uuid="<id>")
+    res = g_client.signatories.put_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
 
     # Handle response
     print(res)
@@ -206,7 +206,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete
+## delete_v1_companies_company_uuid_signatories_signatory_uuid
 
 Delete a company signatory.
 
@@ -222,7 +222,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    g_client.signatories.delete(company_uuid="<id>", signatory_uuid="<id>")
+    g_client.signatories.delete_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
 
     # Use the SDK ...
 

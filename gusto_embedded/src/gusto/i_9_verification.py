@@ -5,287 +5,29 @@ from gusto import models, utils
 from gusto._hooks import HookContext
 from gusto.types import OptionalNullable, UNSET
 from gusto.utils import get_security_from_env
-from typing import Any, List, Mapping, Optional
+from typing import Any, List, Mapping, Optional, Union
 
 
-class BankAccounts(BaseSDK):
-    def create(
+class I9Verification(BaseSDK):
+    def get_v1_employees_employee_id_i9_authorization(
         self,
         *,
-        company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        routing_number: Optional[str] = None,
-        account_number: Optional[str] = None,
-        account_type: Optional[
-            models.PostV1CompaniesCompanyIDBankAccountsAccountType
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CompanyBankAccount:
-        r"""Create a company bank account
-
-        This endpoint creates a new company bank account.
-
-        Upon being created, two verification deposits are automatically sent to the bank account, and the bank account's verification_status is 'awaiting_deposits'.
-
-        When the deposits are successfully transferred, the verification_status changes to 'ready_for_verification', at which point the verify endpoint can be used to verify the bank account.
-        After successful verification, the bank account's verification_status is 'verified'.
-
-        scope: `company_bank_accounts:write`
-
-        > 🚧 Warning
-        >
-        > If a default bank account exists, it will be disabled and the new bank account will replace it as the company's default funding method.
-
-        :param company_id: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param routing_number: The bank routing number
-        :param account_number: The bank account number
-        :param account_type: The bank account type
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PostV1CompaniesCompanyIDBankAccountsRequest(
-            company_id=company_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyIDBankAccountsRequestBody(
-                routing_number=routing_number,
-                account_number=account_number,
-                account_type=account_type,
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/companies/{company_id}/bank_accounts",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1CompaniesCompanyIDBankAccountsRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                operation_id="post-v1-companies-company_id-bank-accounts",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyBankAccount)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def create_async(
-        self,
-        *,
-        company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
-        routing_number: Optional[str] = None,
-        account_number: Optional[str] = None,
-        account_type: Optional[
-            models.PostV1CompaniesCompanyIDBankAccountsAccountType
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CompanyBankAccount:
-        r"""Create a company bank account
-
-        This endpoint creates a new company bank account.
-
-        Upon being created, two verification deposits are automatically sent to the bank account, and the bank account's verification_status is 'awaiting_deposits'.
-
-        When the deposits are successfully transferred, the verification_status changes to 'ready_for_verification', at which point the verify endpoint can be used to verify the bank account.
-        After successful verification, the bank account's verification_status is 'verified'.
-
-        scope: `company_bank_accounts:write`
-
-        > 🚧 Warning
-        >
-        > If a default bank account exists, it will be disabled and the new bank account will replace it as the company's default funding method.
-
-        :param company_id: The UUID of the company
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param routing_number: The bank routing number
-        :param account_number: The bank account number
-        :param account_type: The bank account type
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-
-        request = models.PostV1CompaniesCompanyIDBankAccountsRequest(
-            company_id=company_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyIDBankAccountsRequestBody(
-                routing_number=routing_number,
-                account_number=account_number,
-                account_type=account_type,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/companies/{company_id}/bank_accounts",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1CompaniesCompanyIDBankAccountsRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                operation_id="post-v1-companies-company_id-bank-accounts",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyBankAccount)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
-            )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def list(
-        self,
-        *,
-        company_id: str,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.CompanyBankAccount]:
-        r"""Get all company bank accounts
+    ) -> models.I9Authorization:
+        r"""Get an employee's I-9 authorization
 
-        Returns company bank accounts. Currently, we only support a single default bank account per company.
+        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to filled out the Form I-9 for employment eligibility verification.
 
-        scope: `company_bank_accounts:read`
+        **NOTE:** The `form_uuid` in responses from this endpoint can be used to retrieve the PDF version of the I-9. See the \"get employee form PDF\" request for more details.
 
-        :param company_id: The UUID of the company
+        scope: `i9_authorizations:read`
+
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -300,14 +42,14 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompaniesCompanyIDBankAccountsRequest(
-            company_id=company_id,
+        request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/companies/{company_id}/bank_accounts",
+            path="/v1/employees/{employee_id}/i9_authorization",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -331,7 +73,7 @@ class BankAccounts(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-companies-company_id-bank-accounts",
+                operation_id="get-v1-employees-employee_id-i9_authorization",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -343,7 +85,7 @@ class BankAccounts(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanyBankAccount])
+            return utils.unmarshal_json(http_res.text, models.I9Authorization)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -364,23 +106,25 @@ class BankAccounts(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def get_v1_employees_employee_id_i9_authorization_async(
         self,
         *,
-        company_id: str,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.CompanyBankAccount]:
-        r"""Get all company bank accounts
+    ) -> models.I9Authorization:
+        r"""Get an employee's I-9 authorization
 
-        Returns company bank accounts. Currently, we only support a single default bank account per company.
+        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to filled out the Form I-9 for employment eligibility verification.
 
-        scope: `company_bank_accounts:read`
+        **NOTE:** The `form_uuid` in responses from this endpoint can be used to retrieve the PDF version of the I-9. See the \"get employee form PDF\" request for more details.
 
-        :param company_id: The UUID of the company
+        scope: `i9_authorizations:read`
+
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -395,14 +139,14 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1CompaniesCompanyIDBankAccountsRequest(
-            company_id=company_id,
+        request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/companies/{company_id}/bank_accounts",
+            path="/v1/employees/{employee_id}/i9_authorization",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -426,7 +170,7 @@ class BankAccounts(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-companies-company_id-bank-accounts",
+                operation_id="get-v1-employees-employee_id-i9_authorization",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -438,7 +182,7 @@ class BankAccounts(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanyBankAccount])
+            return utils.unmarshal_json(http_res.text, models.I9Authorization)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -459,42 +203,23 @@ class BankAccounts(BaseSDK):
             http_res,
         )
 
-    def verify(
+    def get_v1_employees_employee_id_i9_authorization_document_options(
         self,
         *,
-        bank_account_uuid: str,
-        company_id: str,
-        deposit_1: float,
-        deposit_2: float,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CompanyBankAccount:
-        r"""Verify a company bank account
+    ) -> List[models.I9AuthorizationDocumentOption]:
+        r"""Get an employee's I-9 verification document options
 
-        Verify a company bank account by confirming the two micro-deposits sent to the bank account. Note that the order of the two deposits specified in request parameters does not matter. There's a maximum of 5 verification attempts, after which we will automatically initiate a new set of micro-deposits and require the bank account to be verified with the new micro-deposits.
+        An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint returns the possible document options based on the employee's authorization status. These options can then be used to create the I-9 verification documents.
 
-        ### Bank account verification in demo
+        scope: `i9_authorizations:read`
 
-        We provide the endpoint `POST '/v1/companies/{company_id}/bank_accounts/{bank_account_uuid}/send_test_deposits'` to facilitate bank account verification in the demo environment. This endpoint simulates the micro-deposits transfer and returns them in the response. You can call this endpoint as many times as you wish to retrieve the values of the two micro deposits.
-
-        ```
-        POST '/v1/companies/89771af8-b964-472e-8064-554dfbcb56d9/bank_accounts/ade55e57-4800-4059-9ecd-fa29cfeb6dd2/send_test_deposits'
-
-        {
-        \"deposit_1\": 0.02,
-        \"deposit_2\": 0.42
-        }
-        ```
-
-        scope: `company_bank_accounts:write`
-
-        :param bank_account_uuid: The UUID of the bank account
-        :param company_id: The UUID of the company
-        :param deposit_1: The dollar amount of the first micro-deposit
-        :param deposit_2: The dollar amount of the second micro-deposit
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -509,36 +234,24 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1CompaniesCompanyIDBankAccountsVerifyRequest(
-            bank_account_uuid=bank_account_uuid,
-            company_id=company_id,
+        request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompaniesCompanyIDBankAccountsVerifyRequestBody(
-                deposit_1=deposit_1,
-                deposit_2=deposit_2,
-            ),
         )
 
         req = self._build_request(
-            method="PUT",
-            path="/v1/companies/{company_id}/bank_accounts/{bank_account_uuid}/verify",
+            method="GET",
+            path="/v1/employees/{employee_id}/i9_authorization/document_options",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutV1CompaniesCompanyIDBankAccountsVerifyRequestBody,
-            ),
             timeout_ms=timeout_ms,
         )
 
@@ -552,25 +265,21 @@ class BankAccounts(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-companies-company_id-bank-accounts-verify",
+                operation_id="get-v1-employees-employee_id-i9_authorization-document_options",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
-        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyBankAccount)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return utils.unmarshal_json(
+                http_res.text, List[models.I9AuthorizationDocumentOption]
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -591,42 +300,23 @@ class BankAccounts(BaseSDK):
             http_res,
         )
 
-    async def verify_async(
+    async def get_v1_employees_employee_id_i9_authorization_document_options_async(
         self,
         *,
-        bank_account_uuid: str,
-        company_id: str,
-        deposit_1: float,
-        deposit_2: float,
+        employee_id: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CompanyBankAccount:
-        r"""Verify a company bank account
+    ) -> List[models.I9AuthorizationDocumentOption]:
+        r"""Get an employee's I-9 verification document options
 
-        Verify a company bank account by confirming the two micro-deposits sent to the bank account. Note that the order of the two deposits specified in request parameters does not matter. There's a maximum of 5 verification attempts, after which we will automatically initiate a new set of micro-deposits and require the bank account to be verified with the new micro-deposits.
+        An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint returns the possible document options based on the employee's authorization status. These options can then be used to create the I-9 verification documents.
 
-        ### Bank account verification in demo
+        scope: `i9_authorizations:read`
 
-        We provide the endpoint `POST '/v1/companies/{company_id}/bank_accounts/{bank_account_uuid}/send_test_deposits'` to facilitate bank account verification in the demo environment. This endpoint simulates the micro-deposits transfer and returns them in the response. You can call this endpoint as many times as you wish to retrieve the values of the two micro deposits.
-
-        ```
-        POST '/v1/companies/89771af8-b964-472e-8064-554dfbcb56d9/bank_accounts/ade55e57-4800-4059-9ecd-fa29cfeb6dd2/send_test_deposits'
-
-        {
-        \"deposit_1\": 0.02,
-        \"deposit_2\": 0.42
-        }
-        ```
-
-        scope: `company_bank_accounts:write`
-
-        :param bank_account_uuid: The UUID of the bank account
-        :param company_id: The UUID of the company
-        :param deposit_1: The dollar amount of the first micro-deposit
-        :param deposit_2: The dollar amount of the second micro-deposit
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -641,36 +331,24 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1CompaniesCompanyIDBankAccountsVerifyRequest(
-            bank_account_uuid=bank_account_uuid,
-            company_id=company_id,
+        request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompaniesCompanyIDBankAccountsVerifyRequestBody(
-                deposit_1=deposit_1,
-                deposit_2=deposit_2,
-            ),
         )
 
         req = self._build_request_async(
-            method="PUT",
-            path="/v1/companies/{company_id}/bank_accounts/{bank_account_uuid}/verify",
+            method="GET",
+            path="/v1/employees/{employee_id}/i9_authorization/document_options",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PutV1CompaniesCompanyIDBankAccountsVerifyRequestBody,
-            ),
             timeout_ms=timeout_ms,
         )
 
@@ -684,25 +362,21 @@ class BankAccounts(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-companies-company_id-bank-accounts-verify",
+                operation_id="get-v1-employees-employee_id-i9_authorization-document_options",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
-        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyBankAccount)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return utils.unmarshal_json(
+                http_res.text, List[models.I9AuthorizationDocumentOption]
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -723,34 +397,32 @@ class BankAccounts(BaseSDK):
             http_res,
         )
 
-    def create_from_processor_token(
+    def put_v1_employees_employee_id_i9_authorization_documents(
         self,
         *,
-        owner_type: models.OwnerType,
-        owner_id: str,
-        processor_token: str,
+        employee_id: str,
+        documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PostV1PlaidProcessorTokenResponseBody:
-        r"""Create a bank account from a plaid processor token
+    ) -> List[models.I9AuthorizationDocument]:
+        r"""Create an employee's I-9 authorization verification documents
 
-        This endpoint creates a new **verified** bank account by using a plaid processor token to retrieve its information.
+        An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
-        scope: `plaid_processor:write`
+        Use the document options endpoint to get the possible document types and titles, which can vary depending on the employee's authorization status.
 
-        > 📘
-        > To create a token please use the [plaid api](https://plaid.com/docs/api/processors/#processortokencreate) and select \"gusto\" as processor.
-
-        > 🚧 Warning - Company Bank Accounts
+        > 🚧 Every request must contain the complete list of documents for the Employee.
         >
-        > If a default company bank account exists, it will be disabled and the new bank account will replace it as the company's default funding method.
+        > Every request to this endpoint removes any previous verification document records for the employee.
 
-        :param owner_type: The owner type of the bank account
-        :param owner_id: The owner UUID of the bank account
-        :param processor_token: The Plaid processor token
+        scope: `i9_authorizations:manage`
+
+
+        :param employee_id: The UUID of the employee
+        :param documents: An array of I-9 verification documents
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -765,23 +437,22 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1PlaidProcessorTokenRequest(
+        request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1PlaidProcessorTokenRequestBody(
-                owner_type=owner_type,
-                owner_id=owner_id,
-                processor_token=processor_token,
+            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody(
+                documents=utils.get_pydantic_model(documents, List[models.Documents]),
             ),
         )
 
         req = self._build_request(
-            method="POST",
-            path="/v1/plaid/processor_token",
+            method="PUT",
+            path="/v1/employees/{employee_id}/i9_authorization/documents",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=False,
+            request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
@@ -792,7 +463,7 @@ class BankAccounts(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1PlaidProcessorTokenRequestBody,
+                models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -807,7 +478,7 @@ class BankAccounts(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="post-v1-plaid-processor_token",
+                operation_id="put-v1-employees-employee_id-i9_authorization-documents",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -819,9 +490,9 @@ class BankAccounts(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(
-                http_res.text, models.PostV1PlaidProcessorTokenResponseBody
+                http_res.text, List[models.I9AuthorizationDocument]
             )
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
@@ -848,34 +519,32 @@ class BankAccounts(BaseSDK):
             http_res,
         )
 
-    async def create_from_processor_token_async(
+    async def put_v1_employees_employee_id_i9_authorization_documents_async(
         self,
         *,
-        owner_type: models.OwnerType,
-        owner_id: str,
-        processor_token: str,
+        employee_id: str,
+        documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PostV1PlaidProcessorTokenResponseBody:
-        r"""Create a bank account from a plaid processor token
+    ) -> List[models.I9AuthorizationDocument]:
+        r"""Create an employee's I-9 authorization verification documents
 
-        This endpoint creates a new **verified** bank account by using a plaid processor token to retrieve its information.
+        An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
-        scope: `plaid_processor:write`
+        Use the document options endpoint to get the possible document types and titles, which can vary depending on the employee's authorization status.
 
-        > 📘
-        > To create a token please use the [plaid api](https://plaid.com/docs/api/processors/#processortokencreate) and select \"gusto\" as processor.
-
-        > 🚧 Warning - Company Bank Accounts
+        > 🚧 Every request must contain the complete list of documents for the Employee.
         >
-        > If a default company bank account exists, it will be disabled and the new bank account will replace it as the company's default funding method.
+        > Every request to this endpoint removes any previous verification document records for the employee.
 
-        :param owner_type: The owner type of the bank account
-        :param owner_id: The owner UUID of the bank account
-        :param processor_token: The Plaid processor token
+        scope: `i9_authorizations:manage`
+
+
+        :param employee_id: The UUID of the employee
+        :param documents: An array of I-9 verification documents
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -890,23 +559,22 @@ class BankAccounts(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PostV1PlaidProcessorTokenRequest(
+        request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
+            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1PlaidProcessorTokenRequestBody(
-                owner_type=owner_type,
-                owner_id=owner_id,
-                processor_token=processor_token,
+            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody(
+                documents=utils.get_pydantic_model(documents, List[models.Documents]),
             ),
         )
 
         req = self._build_request_async(
-            method="POST",
-            path="/v1/plaid/processor_token",
+            method="PUT",
+            path="/v1/employees/{employee_id}/i9_authorization/documents",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=False,
+            request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
@@ -917,7 +585,7 @@ class BankAccounts(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1PlaidProcessorTokenRequestBody,
+                models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -932,7 +600,7 @@ class BankAccounts(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="post-v1-plaid-processor_token",
+                operation_id="put-v1-employees-employee_id-i9_authorization-documents",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -944,10 +612,266 @@ class BankAccounts(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(
-                http_res.text, models.PostV1PlaidProcessorTokenResponseBody
+                http_res.text, List[models.I9AuthorizationDocument]
             )
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    def put_v1_employees_employee_id_i9_authorization_employer_sign(
+        self,
+        *,
+        employee_id: str,
+        signature_text: str,
+        signer_title: str,
+        signed_by_ip_address: str,
+        agree: bool,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        additional_info: Optional[str] = None,
+        alt_procedure: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.I9Authorization:
+        r"""Employer sign an employee's Form I-9
+
+        Sign an employee's Form I-9 as an employer. Once the form is signed, the employee's I-9 authorization is considered complete and cannot be modified.
+
+        scope: `i9_authorizations:manage`
+
+        :param employee_id: The UUID of the employee
+        :param signature_text: The signature
+        :param signer_title: The signer's job title
+        :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported.
+        :param agree: Whether you agree to sign electronically
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_info: Any additional notes
+        :param alt_procedure: Whether an alternative procedure authorized by DHS to examine documents was used
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody(
+                signature_text=signature_text,
+                signer_title=signer_title,
+                signed_by_ip_address=signed_by_ip_address,
+                agree=agree,
+                additional_info=additional_info,
+                alt_procedure=alt_procedure,
+            ),
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/employees/{employee_id}/i9_authorization/employer_sign",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                operation_id="put-v1-employees-employee_id-i9_authorization-employer_sign",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.I9Authorization)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError(
+                "API error occurred", http_res.status_code, http_res_text, http_res
+            )
+
+        content_type = http_res.headers.get("Content-Type")
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError(
+            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
+            http_res.status_code,
+            http_res_text,
+            http_res,
+        )
+
+    async def put_v1_employees_employee_id_i9_authorization_employer_sign_async(
+        self,
+        *,
+        employee_id: str,
+        signature_text: str,
+        signer_title: str,
+        signed_by_ip_address: str,
+        agree: bool,
+        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        additional_info: Optional[str] = None,
+        alt_procedure: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.I9Authorization:
+        r"""Employer sign an employee's Form I-9
+
+        Sign an employee's Form I-9 as an employer. Once the form is signed, the employee's I-9 authorization is considered complete and cannot be modified.
+
+        scope: `i9_authorizations:manage`
+
+        :param employee_id: The UUID of the employee
+        :param signature_text: The signature
+        :param signer_title: The signer's job title
+        :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported.
+        :param agree: Whether you agree to sign electronically
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_info: Any additional notes
+        :param alt_procedure: Whether an alternative procedure authorized by DHS to examine documents was used
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+
+        request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody(
+                signature_text=signature_text,
+                signer_title=signer_title,
+                signed_by_ip_address=signed_by_ip_address,
+                agree=agree,
+                additional_info=additional_info,
+                alt_procedure=alt_procedure,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/employees/{employee_id}/i9_authorization/employer_sign",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody,
+            ),
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                operation_id="put-v1-employees-employee_id-i9_authorization-employer_sign",
+                oauth2_scopes=[],
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return utils.unmarshal_json(http_res.text, models.I9Authorization)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData

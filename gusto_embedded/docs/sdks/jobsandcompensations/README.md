@@ -7,7 +7,7 @@
 
 * [create](#create) - Create a job
 * [list](#list) - Get jobs for an employee
-* [get_compensation](#get_compensation) - Get a compensation
+* [get_v1_compensations_compensation_id](#get_v1_compensations_compensation_id) - Get a compensation
 
 ## create
 
@@ -100,7 +100,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_compensation
+## get_v1_compensations_compensation_id
 
 Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
@@ -117,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as g_client:
 
-    res = g_client.jobs_and_compensations.get_compensation(compensation_id="<id>")
+    res = g_client.jobs_and_compensations.get_v1_compensations_compensation_id(compensation_id="<id>")
 
     # Handle response
     print(res)

@@ -8,24 +8,24 @@ from gusto.utils import get_security_from_env
 from typing import Any, List, Mapping, Optional
 
 
-class EmployeeTaxSetup(BaseSDK):
-    def get_federal_taxes(
+class WireInRequests(BaseSDK):
+    def get_wire_in_requests_wire_in_request_uuid(
         self,
         *,
-        employee_uuid: str,
+        wire_in_request_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeFederalTax:
-        r"""Get an employee's federal taxes
+    ) -> models.WireInRequest:
+        r"""Get a single Wire In Request
 
-        Get attributes relevant for an employee's federal taxes.
+        Fetch a Wire In Request.
 
-        scope: `employee_federal_taxes:read`
+        scope: `payrolls:read`
 
-        :param employee_uuid: The UUID of the employee
+        :param wire_in_request_uuid: The UUID of the Wire In Request
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -40,14 +40,14 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.GetWireInRequestsWireInRequestUUIDRequest(
+            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/employees/{employee_uuid}/federal_taxes",
+            path="/v1/wire_in_requests/{wire_in_request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -71,7 +71,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-employees-employee_id-federal_taxes",
+                operation_id="get-wire_in_requests-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -83,7 +83,7 @@ class EmployeeTaxSetup(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
+            return utils.unmarshal_json(http_res.text, models.WireInRequest)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -104,23 +104,23 @@ class EmployeeTaxSetup(BaseSDK):
             http_res,
         )
 
-    async def get_federal_taxes_async(
+    async def get_wire_in_requests_wire_in_request_uuid_async(
         self,
         *,
-        employee_uuid: str,
+        wire_in_request_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeFederalTax:
-        r"""Get an employee's federal taxes
+    ) -> models.WireInRequest:
+        r"""Get a single Wire In Request
 
-        Get attributes relevant for an employee's federal taxes.
+        Fetch a Wire In Request.
 
-        scope: `employee_federal_taxes:read`
+        scope: `payrolls:read`
 
-        :param employee_uuid: The UUID of the employee
+        :param wire_in_request_uuid: The UUID of the Wire In Request
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -135,14 +135,14 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.GetWireInRequestsWireInRequestUUIDRequest(
+            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/employees/{employee_uuid}/federal_taxes",
+            path="/v1/wire_in_requests/{wire_in_request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -166,7 +166,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-employees-employee_id-federal_taxes",
+                operation_id="get-wire_in_requests-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -178,7 +178,7 @@ class EmployeeTaxSetup(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
+            return utils.unmarshal_json(http_res.text, models.WireInRequest)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -199,40 +199,32 @@ class EmployeeTaxSetup(BaseSDK):
             http_res,
         )
 
-    def update_federal_taxes(
+    def submit(
         self,
         *,
-        employee_uuid: str,
-        version: str,
+        wire_in_request_uuid: str,
+        date_sent: str,
+        bank_name: str,
+        amount_sent: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        filing_status: Optional[str] = None,
-        extra_withholding: OptionalNullable[str] = UNSET,
-        two_jobs: Optional[bool] = None,
-        dependents_amount: Optional[str] = None,
-        other_income: Optional[str] = None,
-        deductions: Optional[str] = None,
-        w4_data_type: Optional[str] = None,
+        additional_notes: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeFederalTax:
-        r"""Update an employee's federal taxes
+    ) -> models.WireInRequest:
+        r"""Submit a wire in request
 
-        Update attributes relevant for an employee's federal taxes.
+        Submit a wire in request for a payment
 
-        scope: `employee_federal_taxes:write`
+        scope: `payrolls:run`
 
-        :param employee_uuid: The UUID of the employee
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param wire_in_request_uuid: The UUID of the Wire In Request
+        :param date_sent: The date the wire was sent
+        :param bank_name: Name of the bank sending the wire
+        :param amount_sent: Amount of money sent
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param filing_status:
-        :param extra_withholding:
-        :param two_jobs:
-        :param dependents_amount:
-        :param other_income:
-        :param deductions:
-        :param w4_data_type:
+        :param additional_notes: Additional notes
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -246,24 +238,20 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.PutWireInRequestsWireInRequestUUIDRequest(
+            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody(
-                version=version,
-                filing_status=filing_status,
-                extra_withholding=extra_withholding,
-                two_jobs=two_jobs,
-                dependents_amount=dependents_amount,
-                other_income=other_income,
-                deductions=deductions,
-                w4_data_type=w4_data_type,
+            request_body=models.PutWireInRequestsWireInRequestUUIDRequestBody(
+                date_sent=date_sent,
+                bank_name=bank_name,
+                amount_sent=amount_sent,
+                additional_notes=additional_notes,
             ),
         )
 
         req = self._build_request(
             method="PUT",
-            path="/v1/employees/{employee_uuid}/federal_taxes",
+            path="/v1/wire_in_requests/{wire_in_request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -279,7 +267,7 @@ class EmployeeTaxSetup(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody,
+                models.PutWireInRequestsWireInRequestUUIDRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -294,7 +282,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="put-v1-employees-employee_id-federal_taxes",
+                operation_id="put-wire_in_requests-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -307,7 +295,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
+            return utils.unmarshal_json(http_res.text, models.WireInRequest)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -333,40 +321,32 @@ class EmployeeTaxSetup(BaseSDK):
             http_res,
         )
 
-    async def update_federal_taxes_async(
+    async def submit_async(
         self,
         *,
-        employee_uuid: str,
-        version: str,
+        wire_in_request_uuid: str,
+        date_sent: str,
+        bank_name: str,
+        amount_sent: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        filing_status: Optional[str] = None,
-        extra_withholding: OptionalNullable[str] = UNSET,
-        two_jobs: Optional[bool] = None,
-        dependents_amount: Optional[str] = None,
-        other_income: Optional[str] = None,
-        deductions: Optional[str] = None,
-        w4_data_type: Optional[str] = None,
+        additional_notes: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeFederalTax:
-        r"""Update an employee's federal taxes
+    ) -> models.WireInRequest:
+        r"""Submit a wire in request
 
-        Update attributes relevant for an employee's federal taxes.
+        Submit a wire in request for a payment
 
-        scope: `employee_federal_taxes:write`
+        scope: `payrolls:run`
 
-        :param employee_uuid: The UUID of the employee
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param wire_in_request_uuid: The UUID of the Wire In Request
+        :param date_sent: The date the wire was sent
+        :param bank_name: Name of the bank sending the wire
+        :param amount_sent: Amount of money sent
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param filing_status:
-        :param extra_withholding:
-        :param two_jobs:
-        :param dependents_amount:
-        :param other_income:
-        :param deductions:
-        :param w4_data_type:
+        :param additional_notes: Additional notes
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -380,24 +360,20 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.PutWireInRequestsWireInRequestUUIDRequest(
+            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody(
-                version=version,
-                filing_status=filing_status,
-                extra_withholding=extra_withholding,
-                two_jobs=two_jobs,
-                dependents_amount=dependents_amount,
-                other_income=other_income,
-                deductions=deductions,
-                w4_data_type=w4_data_type,
+            request_body=models.PutWireInRequestsWireInRequestUUIDRequestBody(
+                date_sent=date_sent,
+                bank_name=bank_name,
+                amount_sent=amount_sent,
+                additional_notes=additional_notes,
             ),
         )
 
         req = self._build_request_async(
             method="PUT",
-            path="/v1/employees/{employee_uuid}/federal_taxes",
+            path="/v1/wire_in_requests/{wire_in_request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -413,7 +389,7 @@ class EmployeeTaxSetup(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody,
+                models.PutWireInRequestsWireInRequestUUIDRequestBody,
             ),
             timeout_ms=timeout_ms,
         )
@@ -428,7 +404,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="put-v1-employees-employee_id-federal_taxes",
+                operation_id="put-wire_in_requests-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
@@ -441,7 +417,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
+            return utils.unmarshal_json(http_res.text, models.WireInRequest)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -467,35 +443,23 @@ class EmployeeTaxSetup(BaseSDK):
             http_res,
         )
 
-    def get_state_taxes(
+    def list(
         self,
         *,
-        employee_uuid: str,
+        company_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
-        r"""Get an employee's state taxes
+    ) -> List[models.WireInRequest]:
+        r"""Get all Wire In Requests for a company
 
-        Get attributes relevant for an employee's state taxes.
+        Fetches all Wire In Requests for a company.
 
-        The data required to correctly calculate an employee's state taxes varies by both home and work location. This API returns information about each question that must be answered grouped by state. Mostly commonly, an employee lives and works in the same state and will only have questions for a single state. The response contains metadata about each question, the type of answer expected, and the current answer stored in Gusto for that question.
+        scope: `payrolls:read`
 
-        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. Until effective dated answers are supported, the `valid_from` and `valid_up_to` must always be `\"2010-01-01\"` and `null` respectively.
-
-        ## About filing new hire reports
-        Payroll Admins are responsible for filing a new hire report for each Employee. The `file_new_hire_report` question will only be listed if:
-        - the `employee.onboarding_status` is one of the following:
-        - `admin_onboarding_incomplete`
-        - `self_onboarding_awaiting_admin_review`
-        - that employee's work state requires filing a new hire report
-
-        scope: `employee_state_taxes:read`
-
-
-        :param employee_uuid: The UUID of the employee
+        :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -510,14 +474,14 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
+            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/employees/{employee_uuid}/state_taxes",
+            path="/v1/companies/{company_uuid}/wire_in_requests",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -541,20 +505,20 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
-                operation_id="get-v1-employees-employee_id-state_taxes",
+                operation_id="get-companies-company_uuid-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["4XX", "5XX"],
             retry_config=retry_config,
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return utils.unmarshal_json(http_res.text, List[models.WireInRequest])
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -574,35 +538,23 @@ class EmployeeTaxSetup(BaseSDK):
             http_res,
         )
 
-    async def get_state_taxes_async(
+    async def list_async(
         self,
         *,
-        employee_uuid: str,
+        company_uuid: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
-        r"""Get an employee's state taxes
+    ) -> List[models.WireInRequest]:
+        r"""Get all Wire In Requests for a company
 
-        Get attributes relevant for an employee's state taxes.
+        Fetches all Wire In Requests for a company.
 
-        The data required to correctly calculate an employee's state taxes varies by both home and work location. This API returns information about each question that must be answered grouped by state. Mostly commonly, an employee lives and works in the same state and will only have questions for a single state. The response contains metadata about each question, the type of answer expected, and the current answer stored in Gusto for that question.
+        scope: `payrolls:read`
 
-        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. Until effective dated answers are supported, the `valid_from` and `valid_up_to` must always be `\"2010-01-01\"` and `null` respectively.
-
-        ## About filing new hire reports
-        Payroll Admins are responsible for filing a new hire report for each Employee. The `file_new_hire_report` question will only be listed if:
-        - the `employee.onboarding_status` is one of the following:
-        - `admin_onboarding_incomplete`
-        - `self_onboarding_awaiting_admin_review`
-        - that employee's work state requires filing a new hire report
-
-        scope: `employee_state_taxes:read`
-
-
-        :param employee_uuid: The UUID of the employee
+        :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -617,14 +569,14 @@ class EmployeeTaxSetup(BaseSDK):
         if server_url is not None:
             base_url = server_url
 
-        request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
+        request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
+            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/employees/{employee_uuid}/state_taxes",
+            path="/v1/companies/{company_uuid}/wire_in_requests",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -648,20 +600,20 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
-                operation_id="get-v1-employees-employee_id-state_taxes",
+                operation_id="get-companies-company_uuid-wire_in_request_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["4XX", "5XX"],
             retry_config=retry_config,
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return utils.unmarshal_json(http_res.text, List[models.WireInRequest])
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
