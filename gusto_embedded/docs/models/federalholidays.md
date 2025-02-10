@@ -1,0 +1,17 @@
+# FederalHolidays
+
+
+## Fields
+
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `new_years_day`                                                  | [Optional[models.NewYearsDay]](../models/newyearsday.md)         | :heavy_minus_sign:                                               | N/A                                                              |
+| `mlk_day`                                                        | [Optional[models.MlkDay]](../models/mlkday.md)                   | :heavy_minus_sign:                                               | N/A                                                              |
+| `presidents_day`                                                 | [Optional[models.PresidentsDay]](../models/presidentsday.md)     | :heavy_minus_sign:                                               | N/A                                                              |
+| `memorial_day`                                                   | [Optional[models.MemorialDay]](../models/memorialday.md)         | :heavy_minus_sign:                                               | N/A                                                              |
+| `juneteenth`                                                     | [Optional[models.Juneteenth]](../models/juneteenth.md)           | :heavy_minus_sign:                                               | N/A                                                              |
+| `independence_day`                                               | [Optional[models.IndependenceDay]](../models/independenceday.md) | :heavy_minus_sign:                                               | N/A                                                              |
+| `labor_day`                                                      | [Optional[models.LaborDay]](../models/laborday.md)               | :heavy_minus_sign:                                               | N/A                                                              |
+| `columbus_day`                                                   | [Optional[models.ColumbusDay]](../models/columbusday.md)         | :heavy_minus_sign:                                               | N/A                                                              |
+| `veterans_day`                                                   | [Optional[models.VeteransDay]](../models/veteransday.md)         | :heavy_minus_sign:                                               | N/A                                                              |
+| `thanksgiving`                                                   | [Optional[models.Thanksgiving]](../models/thanksgiving.md)       | :heavy_minus_sign:                                               | N/A                                                              |

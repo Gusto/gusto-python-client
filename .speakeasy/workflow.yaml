@@ -1,0 +1,23 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    Gusto-OAS:
+        inputs:
+          - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
+            authHeader: Authorization
+            authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas
+targets:
+    gusto:
+        target: python
+        source: Gusto-OAS
+        output: ./gusto_embedded
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false

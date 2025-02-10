@@ -1,0 +1,12 @@
+# ContractorOnboardingStatus
+
+The representation of an contractor's onboarding status.
+
+
+## Fields
+
+| Field                                                                                                                  | Type                                                                                                                   | Required                                                                                                               | Description                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `uuid`                                                                                                                 | *str*                                                                                                                  | :heavy_check_mark:                                                                                                     | Unique identifier for this contractor.                                                                                 |
+| `onboarding_status`                                                                                                    | [Optional[models.ContractorOnboardingStatusOnboardingStatus]](../models/contractoronboardingstatusonboardingstatus.md) | :heavy_minus_sign:                                                                                                     | One of the "onboarding_status" enum values.                                                                            |
+| `onboarding_steps`                                                                                                     | List[[models.ContractorOnboardingStatusOnboardingStep](../models/contractoronboardingstatusonboardingstep.md)]         | :heavy_minus_sign:                                                                                                     | List of steps required to onboard a contractor.                                                                        |

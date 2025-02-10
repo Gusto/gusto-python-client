@@ -1,0 +1,10 @@
+# EmployeeStateTaxAnswer
+
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `value`                                                                                    | [OptionalNullable[models.Value]](../models/value.md)                                       | :heavy_minus_sign:                                                                         | The answer to the corresponding question - this may be a string, number, boolean, or null. |
+| `valid_from`                                                                               | *Optional[str]*                                                                            | :heavy_minus_sign:                                                                         | The effective date of the answer - currently always “2010-01-01”.                          |
+| `valid_up_to`                                                                              | *OptionalNullable[Any]*                                                                    | :heavy_minus_sign:                                                                         | The effective end date of the answer - currently always null.                              |

@@ -1,0 +1,9 @@
+# ApplicableIf
+
+
+## Fields
+
+| Field                                                                                           | Type                                                                                            | Required                                                                                        | Description                                                                                     |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `key`                                                                                           | *Optional[str]*                                                                                 | :heavy_minus_sign:                                                                              | An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set. |
+| `value`                                                                                         | [OptionalNullable[models.TaxRequirementValue]](../models/taxrequirementvalue.md)                | :heavy_minus_sign:                                                                              | The required value of the requirement identified by `key`                                       |

@@ -1,0 +1,12 @@
+# PutV1CompaniesCompanyIDPayrollsFixedCompensations
+
+An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements.
+
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `name`                                                                                                    | *Optional[str]*                                                                                           | :heavy_minus_sign:                                                                                        | The name of the compensation. This also serves as the unique, immutable identifier for this compensation. |
+| `amount`                                                                                                  | *Optional[str]*                                                                                           | :heavy_minus_sign:                                                                                        | The amount of the compensation for the pay period.                                                        |
+| `job_uuid`                                                                                                | *Optional[str]*                                                                                           | :heavy_minus_sign:                                                                                        | The UUID of the job for the compensation.                                                                 |

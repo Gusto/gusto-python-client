@@ -1,0 +1,11 @@
+# PayrollBlockersErrorErrors
+
+
+## Fields
+
+| Field                                                                                      | Type                                                                                       | Required                                                                                   | Description                                                                                |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `error_key`                                                                                | *Optional[str]*                                                                            | :heavy_minus_sign:                                                                         | The string "base"                                                                          |
+| `category`                                                                                 | *Optional[str]*                                                                            | :heavy_minus_sign:                                                                         | The string "payroll_blocker"                                                               |
+| `message`                                                                                  | *Optional[str]*                                                                            | :heavy_minus_sign:                                                                         | Human readable description of the payroll blocker                                          |
+| `metadata`                                                                                 | [Optional[models.PayrollBlockersErrorMetadata]](../models/payrollblockerserrormetadata.md) | :heavy_minus_sign:                                                                         | N/A                                                                                        |

@@ -1,0 +1,9 @@
+# Options
+
+
+## Fields
+
+| Field                                                                                                              | Type                                                                                                               | Required                                                                                                           | Description                                                                                                        |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `label`                                                                                                            | *str*                                                                                                              | :heavy_check_mark:                                                                                                 | A display label that corresponds to the answer value                                                               |
+| `value`                                                                                                            | [Optional[models.EmployeeStateTaxInputQuestionFormatValue]](../models/employeestatetaxinputquestionformatvalue.md) | :heavy_minus_sign:                                                                                                 | An allowed value to answer the question                                                                            |

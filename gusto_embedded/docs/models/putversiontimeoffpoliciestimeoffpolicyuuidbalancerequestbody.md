@@ -1,0 +1,10 @@
+# PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequestBody
+
+A list of employee objects containing the employee uuid and time off hours balance
+
+
+## Fields
+
+| Field                                                                                                                                              | Type                                                                                                                                               | Required                                                                                                                                           | Description                                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employees`                                                                                                                                        | List[[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees](../models/putversiontimeoffpoliciestimeoffpolicyuuidbalanceemployees.md)] | :heavy_minus_sign:                                                                                                                                 | N/A                                                                                                                                                |

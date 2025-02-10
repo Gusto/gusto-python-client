@@ -1,0 +1,10 @@
+# TaxRequirementsState
+
+
+## Fields
+
+| Field                                                                                                   | Type                                                                                                    | Required                                                                                                | Description                                                                                             |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                          | *Optional[str]*                                                                                         | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |
+| `state`                                                                                                 | *Optional[str]*                                                                                         | :heavy_minus_sign:                                                                                      | One of the two-letter state abbreviations for the fifty United States and the District of Columbia (DC) |
+| `requirement_sets`                                                                                      | List[[models.TaxRequirementSet](../models/taxrequirementset.md)]                                        | :heavy_minus_sign:                                                                                      | N/A                                                                                                     |

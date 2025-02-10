@@ -1,0 +1,10 @@
+# PutV1ContractorDocumentSignRequestBody
+
+
+## Fields
+
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `fields`                                                                                         | List[[models.PutV1ContractorDocumentSignFields](../models/putv1contractordocumentsignfields.md)] | :heavy_check_mark:                                                                               | List of fields and the values they will be set to.                                               |
+| `agree`                                                                                          | *bool*                                                                                           | :heavy_check_mark:                                                                               | Whether you agree to sign electronically                                                         |
+| `signed_by_ip_address`                                                                           | *str*                                                                                            | :heavy_check_mark:                                                                               | The IP address of the signatory who signed the form.                                             |
