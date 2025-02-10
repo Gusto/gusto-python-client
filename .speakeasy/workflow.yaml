@@ -3,9 +3,9 @@ speakeasyVersion: latest
 sources:
     Gusto-OAS:
         inputs:
-          - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
-            authHeader: Authorization
-            authSecret: $openapi_doc_auth_token
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
         overlays:
             - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
         registry:
