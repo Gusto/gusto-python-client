@@ -13,6 +13,9 @@ actions:
       - url: https://api.gusto.com
         description: Prod
         x-speakeasy-server-id: prod
+  - target: $.paths..schema..zip
+    update:
+      x-speakeasy-name-override: zip_code
   - target: $["paths"]["/v1/companies/{company_id}/contractor_payments/{contractor_payment_id}"]["get"]
     update:
       x-speakeasy-name-override: getById
