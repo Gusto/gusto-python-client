@@ -21,7 +21,7 @@ class PutV1ContractorsContractorUUIDAddressRequestBodyTypedDict(TypedDict):
     street_2: NotRequired[str]
     city: NotRequired[str]
     state: NotRequired[str]
-    zip: NotRequired[str]
+    zip_code: NotRequired[str]
 
 
 class PutV1ContractorsContractorUUIDAddressRequestBody(BaseModel):
@@ -36,7 +36,7 @@ class PutV1ContractorsContractorUUIDAddressRequestBody(BaseModel):
 
     state: Optional[str] = None
 
-    zip: Optional[str] = None
+    zip_code: Annotated[Optional[str], pydantic.Field(alias="zip")] = None
 
 
 class PutV1ContractorsContractorUUIDAddressRequestTypedDict(TypedDict):

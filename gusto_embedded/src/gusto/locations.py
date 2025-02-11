@@ -17,7 +17,7 @@ class Locations(BaseSDK):
         street_1: str,
         city: str,
         state: str,
-        zip: str,
+        zip_code: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         street_2: OptionalNullable[str] = UNSET,
         mailing_address: Optional[bool] = None,
@@ -40,7 +40,7 @@ class Locations(BaseSDK):
         :param street_1:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param street_2:
         :param mailing_address: Specify if this location is the company's mailing address.
@@ -67,7 +67,7 @@ class Locations(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 mailing_address=mailing_address,
                 filing_address=filing_address,
             ),
@@ -153,7 +153,7 @@ class Locations(BaseSDK):
         street_1: str,
         city: str,
         state: str,
-        zip: str,
+        zip_code: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         street_2: OptionalNullable[str] = UNSET,
         mailing_address: Optional[bool] = None,
@@ -176,7 +176,7 @@ class Locations(BaseSDK):
         :param street_1:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param street_2:
         :param mailing_address: Specify if this location is the company's mailing address.
@@ -203,7 +203,7 @@ class Locations(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 mailing_address=mailing_address,
                 filing_address=filing_address,
             ),
@@ -688,7 +688,7 @@ class Locations(BaseSDK):
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         country: Optional[str] = None,
         mailing_address: Optional[bool] = None,
         filing_address: Optional[bool] = None,
@@ -711,7 +711,7 @@ class Locations(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param country:
         :param mailing_address: For a company location, specify if this location is the company's mailing address. A company has a single mailing address, so this designation will override any previous selection.
         :param filing_address: For a company location, specify if this location is the company's filing address. A company has a single filing address, so this designation will override any previous selection.
@@ -738,7 +738,7 @@ class Locations(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 country=country,
                 mailing_address=mailing_address,
                 filing_address=filing_address,
@@ -828,7 +828,7 @@ class Locations(BaseSDK):
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         country: Optional[str] = None,
         mailing_address: Optional[bool] = None,
         filing_address: Optional[bool] = None,
@@ -851,7 +851,7 @@ class Locations(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param country:
         :param mailing_address: For a company location, specify if this location is the company's mailing address. A company has a single mailing address, so this designation will override any previous selection.
         :param filing_address: For a company location, specify if this location is the company's filing address. A company has a single filing address, so this designation will override any previous selection.
@@ -878,7 +878,7 @@ class Locations(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 country=country,
                 mailing_address=mailing_address,
                 filing_address=filing_address,

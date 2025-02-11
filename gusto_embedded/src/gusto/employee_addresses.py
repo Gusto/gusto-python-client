@@ -213,7 +213,7 @@ class EmployeeAddresses(BaseSDK):
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         effective_date: Optional[date] = None,
         courtesy_withholding: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -235,7 +235,7 @@ class EmployeeAddresses(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param effective_date:
         :param courtesy_withholding:
         :param retries: Override the default retry configuration for this method
@@ -259,7 +259,7 @@ class EmployeeAddresses(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 effective_date=effective_date,
                 courtesy_withholding=courtesy_withholding,
             ),
@@ -346,7 +346,7 @@ class EmployeeAddresses(BaseSDK):
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         effective_date: Optional[date] = None,
         courtesy_withholding: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -368,7 +368,7 @@ class EmployeeAddresses(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param effective_date:
         :param courtesy_withholding:
         :param retries: Override the default retry configuration for this method
@@ -392,7 +392,7 @@ class EmployeeAddresses(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
                 effective_date=effective_date,
                 courtesy_withholding=courtesy_withholding,
             ),

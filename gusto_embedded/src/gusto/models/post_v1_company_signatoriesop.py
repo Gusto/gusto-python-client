@@ -20,7 +20,7 @@ class PostV1CompanySignatoriesHomeAddressTypedDict(TypedDict):
     street_1: str
     city: str
     state: str
-    zip: str
+    zip_code: str
     street_2: NotRequired[str]
 
 
@@ -33,7 +33,7 @@ class PostV1CompanySignatoriesHomeAddress(BaseModel):
 
     state: str
 
-    zip: str
+    zip_code: Annotated[str, pydantic.Field(alias="zip")]
 
     street_2: Optional[str] = None
 

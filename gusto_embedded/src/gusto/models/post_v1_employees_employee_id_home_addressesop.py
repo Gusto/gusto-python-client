@@ -21,7 +21,7 @@ class PostV1EmployeesEmployeeIDHomeAddressesRequestBodyTypedDict(TypedDict):
     street_2: NotRequired[Nullable[str]]
     city: NotRequired[str]
     state: NotRequired[str]
-    zip: NotRequired[str]
+    zip_code: NotRequired[str]
     effective_date: NotRequired[date]
     courtesy_withholding: NotRequired[bool]
 
@@ -35,7 +35,7 @@ class PostV1EmployeesEmployeeIDHomeAddressesRequestBody(BaseModel):
 
     state: Optional[str] = None
 
-    zip: Optional[str] = None
+    zip_code: Annotated[Optional[str], pydantic.Field(alias="zip")] = None
 
     effective_date: Optional[date] = None
 
@@ -48,7 +48,7 @@ class PostV1EmployeesEmployeeIDHomeAddressesRequestBody(BaseModel):
             "street_2",
             "city",
             "state",
-            "zip",
+            "zip_code",
             "effective_date",
             "courtesy_withholding",
         ]
