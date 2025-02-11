@@ -45,6 +45,6 @@ python:
   maxMethodParams: 999
   methodArguments: infer-optional-args
   outputModelSuffix: output
-  packageName: gusto
+  packageName: gusto_embedded
   responseFormat: flat
   templateVersion: v2
