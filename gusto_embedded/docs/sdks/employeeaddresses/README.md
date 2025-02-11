@@ -23,14 +23,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_addresses.get_home(employee_id="<id>")
+    res = gusto.employee_addresses.get_home(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -67,14 +67,14 @@ scope: `employees:write`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_addresses.post_v1_employees_employee_id_home_addresses(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
+    res = gusto.employee_addresses.post_v1_employees_employee_id_home_addresses(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
 
     # Handle response
     print(res)
@@ -118,14 +118,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_addresses.get(home_address_uuid="<id>")
+    res = gusto.employee_addresses.get(home_address_uuid="<id>")
 
     # Handle response
     print(res)
@@ -159,14 +159,14 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employee_addresses.delete(home_address_uuid="<id>")
+    gusto.employee_addresses.delete(home_address_uuid="<id>")
 
     # Use the SDK ...
 
@@ -197,14 +197,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_addresses.list_work_addresses(employee_id="<id>")
+    res = gusto.employee_addresses.list_work_addresses(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -239,14 +239,14 @@ scope: `employees:manage`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_addresses.update(work_address_uuid="<id>", version="e6db1baa29d3df1eb307ff6a12c778da", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
+    res = gusto.employee_addresses.update(work_address_uuid="<id>", version="e6db1baa29d3df1eb307ff6a12c778da", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
 
     # Handle response
     print(res)

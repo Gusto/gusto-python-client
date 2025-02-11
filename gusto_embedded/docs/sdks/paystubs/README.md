@@ -16,14 +16,14 @@ scope: `pay_stubs:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_stubs.get(employee_id="<id>")
+    res = gusto.pay_stubs.get(employee_id="<id>")
 
     # Handle response
     print(res)

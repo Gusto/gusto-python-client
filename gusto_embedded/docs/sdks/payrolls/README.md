@@ -37,15 +37,15 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.post_v1_companies_company_id_payrolls(company_id="<id>", off_cycle=True, off_cycle_reason=gusto.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
+    res = gusto.payrolls.post_v1_companies_company_id_payrolls(company_id="<id>", off_cycle=True, off_cycle_reason=gusto_embedded.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
 
     # Handle response
     print(res)
@@ -96,15 +96,15 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.get_v1_companies_company_id_payrolls(company_id="<id>", sort_order=gusto.SortOrder.ASC)
+    res = gusto.payrolls.get_v1_companies_company_id_payrolls(company_id="<id>", sort_order=gusto_embedded.SortOrder.ASC)
 
     # Handle response
     print(res)
@@ -144,14 +144,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.get_v1_companies_company_id_payroll_reversals(company_id="<id>")
+    res = gusto.payrolls.get_v1_companies_company_id_payroll_reversals(company_id="<id>")
 
     # Handle response
     print(res)
@@ -195,14 +195,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.get_v1_companies_company_id_payrolls_payroll_id(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.get_v1_companies_company_id_payrolls_payroll_id(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -241,14 +241,14 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.put_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>", employee_compensations=[
+    res = gusto.payrolls.put_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>", employee_compensations=[
         {},
         {},
         {},
@@ -291,14 +291,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.payrolls.delete_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.delete_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -333,14 +333,14 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.put_v1_companies_company_id_payrolls_payroll_id_prepare(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_prepare(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -380,14 +380,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.get_v1_payment_receipts_payrolls_payroll_uuid(payroll_uuid="<id>")
+    res = gusto.payrolls.get_v1_payment_receipts_payrolls_payroll_uuid(payroll_uuid="<id>")
 
     # Handle response
     print(res)
@@ -423,14 +423,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.list_blockers(company_uuid="<id>")
+    res = gusto.payrolls.list_blockers(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -466,15 +466,15 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.payrolls.post_companies_payroll_skip_company_uuid(company_uuid="<id>", payroll_type=gusto.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
+    gusto.payrolls.post_companies_payroll_skip_company_uuid(company_uuid="<id>", payroll_type=gusto_embedded.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
 
     # Use the SDK ...
 
@@ -511,14 +511,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.post_payrolls_gross_up_payroll_uuid(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00")
+    res = gusto.payrolls.post_payrolls_gross_up_payroll_uuid(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00")
 
     # Handle response
     print(res)
@@ -558,14 +558,14 @@ If the company is blocked from running payroll due to issues like incomplete set
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.payrolls.put_v1_companies_company_id_payrolls_payroll_id_calculate(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_calculate(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -600,14 +600,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.payrolls.put_v1_companies_company_id_payrolls_payroll_id_submit(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_submit(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -642,14 +642,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls.put_api_v1_companies_company_id_payrolls_payroll_id_cancel(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.put_api_v1_companies_company_id_payrolls_payroll_id_cancel(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -685,14 +685,14 @@ scope: `pay_stubs:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.payrolls.get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub(payroll_id="<id>", employee_id="<id>")
+    gusto.payrolls.get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub(payroll_id="<id>", employee_id="<id>")
 
     # Use the SDK ...
 

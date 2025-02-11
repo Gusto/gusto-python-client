@@ -19,14 +19,14 @@ scope: `employees:write`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.home_addresses.update(home_address_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
+    res = gusto.home_addresses.update(home_address_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
 
     # Handle response
     print(res)

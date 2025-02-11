@@ -22,14 +22,14 @@ scope: `departments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.post_departments(company_uuid="<id>", title="Stage Hand")
+    res = gusto.departments.post_departments(company_uuid="<id>", title="Stage Hand")
 
     # Handle response
     print(res)
@@ -65,14 +65,14 @@ scope: `departments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.get_companies_departments(company_uuid="<id>")
+    res = gusto.departments.get_companies_departments(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -107,14 +107,14 @@ scope: `departments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.get_department(department_uuid="<id>")
+    res = gusto.departments.get_department(department_uuid="<id>")
 
     # Handle response
     print(res)
@@ -148,14 +148,14 @@ scope: `departments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.put_departments(department_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", title="Backup Dancer")
+    res = gusto.departments.put_departments(department_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", title="Backup Dancer")
 
     # Handle response
     print(res)
@@ -193,14 +193,14 @@ scope: `departments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.departments.delete_department(department_uuid="<id>")
+    gusto.departments.delete_department(department_uuid="<id>")
 
     # Use the SDK ...
 
@@ -231,14 +231,14 @@ scope: `departments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.put_add_people_to_department(department_uuid="<id>")
+    res = gusto.departments.put_add_people_to_department(department_uuid="<id>")
 
     # Handle response
     print(res)
@@ -276,14 +276,14 @@ scope: `departments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.departments.put_remove_people_from_department(department_uuid="<id>")
+    res = gusto.departments.put_remove_people_from_department(department_uuid="<id>")
 
     # Handle response
     print(res)

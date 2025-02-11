@@ -18,14 +18,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.wire_in_requests.get_wire_in_requests_wire_in_request_uuid(wire_in_request_uuid="<id>")
+    res = gusto.wire_in_requests.get_wire_in_requests_wire_in_request_uuid(wire_in_request_uuid="<id>")
 
     # Handle response
     print(res)
@@ -59,14 +59,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="2024-06-10T00:00:00Z", bank_name="Chase", amount_sent="314500", additional_notes="Wire for 2024-06-15 payroll.")
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="2024-06-10T00:00:00Z", bank_name="Chase", amount_sent="314500", additional_notes="Wire for 2024-06-15 payroll.")
 
     # Handle response
     print(res)
@@ -105,14 +105,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.wire_in_requests.list(company_uuid="<id>")
+    res = gusto.wire_in_requests.list(company_uuid="<id>")
 
     # Handle response
     print(res)

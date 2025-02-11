@@ -20,15 +20,15 @@ scope: `employee_payment_methods:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_payment_methods.post_v1_employees_employee_id_bank_accounts(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_methods.post_v1_employees_employee_id_bank_accounts(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -67,15 +67,15 @@ scope: `employee_payment_methods:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_payment_methods.update(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_methods.update(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -117,14 +117,14 @@ scope: `employee_payment_methods:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_payment_methods.get_v1_employees_employee_id_payment_method(employee_id="<id>")
+    res = gusto.employee_payment_methods.get_v1_employees_employee_id_payment_method(employee_id="<id>")
 
     # Handle response
     print(res)

@@ -18,14 +18,14 @@ Get attributes relevant for an employee's federal taxes.
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_tax_setup.get_v1_employees_employee_id_federal_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_v1_employees_employee_id_federal_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)
@@ -59,14 +59,14 @@ scope: `employee_federal_taxes:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_tax_setup.put_v1_employees_employee_id_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
+    res = gusto.employee_tax_setup.put_v1_employees_employee_id_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
 
     # Handle response
     print(res)
@@ -121,14 +121,14 @@ scope: `employee_state_taxes:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_tax_setup.get_v1_employees_employee_id_state_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_v1_employees_employee_id_state_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)

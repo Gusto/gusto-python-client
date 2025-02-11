@@ -35,13 +35,13 @@ IMPORTANT: the returned access and refresh tokens are reserved for this company 
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.companies.post_v1_partner_managed_companies(security=gusto.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.post_v1_partner_managed_companies(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), user={
         "first_name": "Frank",
@@ -93,14 +93,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.get_v1_companies(company_id="<id>")
+    res = gusto.companies.get_v1_companies(company_id="<id>")
 
     # Handle response
     print(res)
@@ -134,14 +134,14 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.put_v1_companies(company_id="<id>", contractor_only=False)
+    res = gusto.companies.put_v1_companies(company_id="<id>", contractor_only=False)
 
     # Handle response
     print(res)
@@ -179,14 +179,14 @@ scope: `partner_managed_companies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.put_v1_partner_managed_companies_company_uuid_migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
+    res = gusto.companies.put_v1_partner_managed_companies_company_uuid_migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
 
     # Handle response
     print(res)
@@ -225,14 +225,14 @@ scope: `terms_of_services:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.post_partner_managed_companies_company_uuid_accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
+    res = gusto.companies.post_partner_managed_companies_company_uuid_accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
 
     # Handle response
     print(res)
@@ -270,14 +270,14 @@ scope: `terms_of_services:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.post_partner_managed_companies_company_uuid_retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
+    res = gusto.companies.post_partner_managed_companies_company_uuid_retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
 
     # Handle response
     print(res)
@@ -314,14 +314,14 @@ scope: `company_admin:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.post_v1_companies_company_id_admins(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
+    res = gusto.companies.post_v1_companies_company_id_admins(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
 
     # Handle response
     print(res)
@@ -359,14 +359,14 @@ scope: `company_admin:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.get_v1_companies_company_id_admins(company_id="<id>")
+    res = gusto.companies.get_v1_companies_company_id_admins(company_id="<id>")
 
     # Handle response
     print(res)
@@ -403,14 +403,14 @@ scope: `company_onboarding_status:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.get_v1_company_onboarding_status(company_uuid="<id>")
+    res = gusto.companies.get_v1_company_onboarding_status(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -456,14 +456,14 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.get_v1_company_finish_onboarding(company_uuid="<id>")
+    res = gusto.companies.get_v1_company_finish_onboarding(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -498,14 +498,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.companies.get_v1_companies_company_id_custom_fields(company_id="<id>")
+    res = gusto.companies.get_v1_companies_company_id_custom_fields(company_id="<id>")
 
     # Handle response
     print(res)

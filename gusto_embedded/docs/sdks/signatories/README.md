@@ -22,14 +22,14 @@ scope: `signatories:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.signatories.post_v1_company_signatories(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
+    res = gusto.signatories.post_v1_company_signatories(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
         "street_1": "<value>",
         "city": "North Lilly",
         "state": "North Carolina",
@@ -78,14 +78,14 @@ scope: `signatories:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.signatories.get_v1_companies_company_uuid_signatories(company_uuid="<id>")
+    res = gusto.signatories.get_v1_companies_company_uuid_signatories(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -117,14 +117,14 @@ Create a signatory with minimal information. This signatory can be invited to pr
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.signatories.post_v1_companies_company_uuid_signatories_invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
+    res = gusto.signatories.post_v1_companies_company_uuid_signatories_invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
 
     # Handle response
     print(res)
@@ -163,14 +163,14 @@ scope: `signatories:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.signatories.put_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
+    res = gusto.signatories.put_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
 
     # Handle response
     print(res)
@@ -215,14 +215,14 @@ scope: `signatories:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.signatories.delete_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
+    gusto.signatories.delete_v1_companies_company_uuid_signatories_signatory_uuid(company_uuid="<id>", signatory_uuid="<id>")
 
     # Use the SDK ...
 

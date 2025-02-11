@@ -17,14 +17,14 @@ scope: `company_payment_configs:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payment_configs.get_v1_company_payment_configs(company_uuid="<id>")
+    res = gusto.payment_configs.get_v1_company_payment_configs(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -58,17 +58,17 @@ scope: `company_payment_configs:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payment_configs.put_v1_company_payment_configs(company_uuid="<id>", request_body={
+    res = gusto.payment_configs.put_v1_company_payment_configs(company_uuid="<id>", request_body={
         "fast_payment_limit": "5000",
-        "payment_speed": gusto.PaymentSpeedParam.TWO_DAY,
+        "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_DAY,
     })
 
     # Handle response

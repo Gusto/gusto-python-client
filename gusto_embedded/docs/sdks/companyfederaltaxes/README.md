@@ -16,14 +16,14 @@ scope: `company_federal_taxes:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_federal_taxes.get_details(company_id="<id>")
+    res = gusto.company_federal_taxes.get_details(company_id="<id>")
 
     # Handle response
     print(res)

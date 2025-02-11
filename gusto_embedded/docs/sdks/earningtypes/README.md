@@ -21,14 +21,14 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.earning_types.post_v1_companies_company_id_earning_types(company_id="<id>", name="Gym Membership Stipend")
+    res = gusto.earning_types.post_v1_companies_company_id_earning_types(company_id="<id>", name="Gym Membership Stipend")
 
     # Handle response
     print(res)
@@ -70,14 +70,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.earning_types.get_v1_companies_company_id_earning_types(company_id="<id>")
+    res = gusto.earning_types.get_v1_companies_company_id_earning_types(company_id="<id>")
 
     # Handle response
     print(res)
@@ -111,14 +111,14 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.earning_types.put_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>", name="Gym Membership Stipend")
+    res = gusto.earning_types.put_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>", name="Gym Membership Stipend")
 
     # Handle response
     print(res)
@@ -155,14 +155,14 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.earning_types.delete_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>")
+    gusto.earning_types.delete_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>")
 
     # Use the SDK ...
 

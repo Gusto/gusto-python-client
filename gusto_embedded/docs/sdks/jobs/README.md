@@ -19,14 +19,14 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.jobs.get(job_id="<id>")
+    res = gusto.jobs.get(job_id="<id>")
 
     # Handle response
     print(res)
@@ -61,14 +61,14 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.jobs.put_v1_jobs_job_id(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
+    res = gusto.jobs.put_v1_jobs_job_id(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
 
     # Handle response
     print(res)
@@ -109,14 +109,14 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.jobs.delete(job_id="<id>")
+    gusto.jobs.delete(job_id="<id>")
 
     # Use the SDK ...
 
@@ -149,14 +149,14 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.jobs.get_v1_jobs_job_id_compensations(job_id="<id>")
+    res = gusto.jobs.get_v1_jobs_job_id_compensations(job_id="<id>")
 
     # Handle response
     print(res)

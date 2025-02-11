@@ -17,15 +17,15 @@ scope: `company_federal_taxes:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.federal_tax_details.put_v1_companies_company_id_federal_tax_details(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", legal_name="Acme Corp.", tax_payer_type=gusto.TaxPayerType.LLP, filing_form=gusto.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
+    res = gusto.federal_tax_details.put_v1_companies_company_id_federal_tax_details(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", legal_name="Acme Corp.", tax_payer_type=gusto_embedded.TaxPayerType.LLP, filing_form=gusto_embedded.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
 
     # Handle response
     print(res)

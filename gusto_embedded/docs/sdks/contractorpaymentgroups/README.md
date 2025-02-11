@@ -22,14 +22,14 @@ scope: `payrolls:run`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = gusto.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,
@@ -74,14 +74,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_groups.get_v1_companies_company_id_contractor_payment_groups(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
+    res = gusto.contractor_payment_groups.get_v1_companies_company_id_contractor_payment_groups(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
 
     # Handle response
     print(res)
@@ -120,14 +120,14 @@ scope: `payrolls:read`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups_preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = gusto.contractor_payment_groups.post_v1_companies_company_id_contractor_payment_groups_preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,
@@ -172,14 +172,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_groups.get_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
+    res = gusto.contractor_payment_groups.get_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
 
     # Handle response
     print(res)
@@ -213,14 +213,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.contractor_payment_groups.delete_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
+    gusto.contractor_payment_groups.delete_v1_contractor_payment_groups_contractor_payment_group_id(contractor_payment_group_uuid="<id>")
 
     # Use the SDK ...
 
@@ -254,14 +254,14 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_groups.put_v1_contractor_payment_groups_contractor_payment_group_id_fund(contractor_payment_group_uuid="<id>")
+    res = gusto.contractor_payment_groups.put_v1_contractor_payment_groups_contractor_payment_group_id_fund(contractor_payment_group_uuid="<id>")
 
     # Handle response
     print(res)

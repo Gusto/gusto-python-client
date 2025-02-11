@@ -16,14 +16,14 @@ scope: `flows:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.flows.post_v1_company_flows(company_uuid="<id>", flow_type="company_onboarding")
+    res = gusto.flows.post_v1_company_flows(company_uuid="<id>", flow_type="company_onboarding")
 
     # Handle response
     print(res)

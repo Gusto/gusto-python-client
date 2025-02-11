@@ -36,15 +36,15 @@ scope: `i9_authorizations:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i9_authorizations.put_v1_employees_employee_id_i9_authorization(employee_id="<id>", authorization_status=gusto.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.i9_authorizations.put_v1_employees_employee_id_i9_authorization(employee_id="<id>", authorization_status=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, version="52b7c567242cb7452e89ba2bc02cb476")
 
     # Handle response
     print(res)
@@ -85,14 +85,14 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i9_authorizations.get_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>")
+    res = gusto.i9_authorizations.get_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -126,14 +126,14 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.i9_authorizations.delete_v1_employees_employee_id_i9_authorization_documents_document_id(employee_id="<id>", document_id="<id>")
+    gusto.i9_authorizations.delete_v1_employees_employee_id_i9_authorization_documents_document_id(employee_id="<id>", document_id="<id>")
 
     # Use the SDK ...
 

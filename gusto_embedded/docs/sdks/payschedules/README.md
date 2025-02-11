@@ -29,15 +29,15 @@ scope: `pay_schedules:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.post_v1_companies_company_id_pay_schedules(company_id="<id>", frequency=gusto.Frequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule")
+    res = gusto.pay_schedules.post_v1_companies_company_id_pay_schedules(company_id="<id>", frequency=gusto_embedded.Frequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule")
 
     # Handle response
     print(res)
@@ -78,14 +78,14 @@ scope: `pay_schedules:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.list(company_id="<id>")
+    res = gusto.pay_schedules.list(company_id="<id>")
 
     # Handle response
     print(res)
@@ -121,15 +121,15 @@ scope: `pay_schedules:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.get_v1_companies_company_id_pay_schedules_preview(company_id="<id>", frequency=gusto.QueryParamFrequency.EVERY_OTHER_WEEK, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
+    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_preview(company_id="<id>", frequency=gusto_embedded.QueryParamFrequency.EVERY_OTHER_WEEK, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
 
     # Handle response
     print(res)
@@ -168,14 +168,14 @@ scope: `pay_schedules:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.get_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>")
+    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>")
 
     # Handle response
     print(res)
@@ -210,15 +210,15 @@ scope: `pay_schedules:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.put_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>", version="68934a3e9455fa72420237eb05902327", frequency=gusto.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule", auto_pilot=True)
+    res = gusto.pay_schedules.put_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>", version="68934a3e9455fa72420237eb05902327", frequency=gusto_embedded.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule", auto_pilot=True)
 
     # Handle response
     print(res)
@@ -266,14 +266,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.list_pay_periods(company_id="<id>", start_date="2020-01-01", end_date="2020-01-31")
+    res = gusto.pay_schedules.list_pay_periods(company_id="<id>", start_date="2020-01-01", end_date="2020-01-31")
 
     # Handle response
     print(res)
@@ -312,14 +312,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.get_v1_companies_company_id_unprocessed_termination_pay_periods(company_id="<id>")
+    res = gusto.pay_schedules.get_v1_companies_company_id_unprocessed_termination_pay_periods(company_id="<id>")
 
     # Handle response
     print(res)
@@ -353,14 +353,14 @@ scope: `pay_schedules:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.get_v1_companies_company_id_pay_schedules_assignments(company_id="<id>")
+    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_assignments(company_id="<id>")
 
     # Handle response
     print(res)
@@ -394,15 +394,15 @@ scope: `pay_schedules:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.pay_schedules.post_v1_companies_company_id_pay_schedules_assignment_preview(company_id="<id>", type_=gusto.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
+    res = gusto.pay_schedules.post_v1_companies_company_id_pay_schedules_assignment_preview(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
         {
             "employee_uuid": "f0238368-f2cf-43e2-9a07-b0265f2cec69",
             "pay_schedule_uuid": "c277ac52-9871-4a96-a1e6-0c449684602a",
@@ -450,15 +450,15 @@ scope: `pay_schedules:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.pay_schedules.post_v1_companies_company_id_pay_schedules_assign(company_id="<id>", type_=gusto.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
+    gusto.pay_schedules.post_v1_companies_company_id_pay_schedules_assign(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
         {
             "employee_uuid": "f0238368-f2cf-43e2-9a07-b0265f2cec69",
             "pay_schedule_uuid": "c277ac52-9871-4a96-a1e6-0c449684602a",

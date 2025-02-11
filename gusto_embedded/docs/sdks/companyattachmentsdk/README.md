@@ -19,14 +19,14 @@ scope: `company_attachments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_attachment.get_v1_companies_attachment(company_id="<id>", company_attachment_uuid="<id>")
+    res = gusto.company_attachment.get_v1_companies_attachment(company_id="<id>", company_attachment_uuid="<id>")
 
     # Handle response
     print(res)
@@ -62,14 +62,14 @@ scope: `company_attachments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_attachment.get_v1_companies_attachment_url(company_id="<id>", company_attachment_uuid="<id>")
+    res = gusto.company_attachment.get_v1_companies_attachment_url(company_id="<id>", company_attachment_uuid="<id>")
 
     # Handle response
     print(res)
@@ -104,14 +104,14 @@ scope: `company_attachments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_attachment.get_v1_companies_attachments(company_id="<id>")
+    res = gusto.company_attachment.get_v1_companies_attachments(company_id="<id>")
 
     # Handle response
     print(res)
@@ -147,18 +147,18 @@ scope: `company_attachments:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_attachment.post_v1_companies_attachment(company_id="<id>", document={
+    res = gusto.company_attachment.post_v1_companies_attachment(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
 
     # Handle response
     print(res)

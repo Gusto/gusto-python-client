@@ -17,14 +17,14 @@ scope: `employee_payment_methods:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employee_bank_accounts.delete(employee_id="<id>", bank_account_uuid="<id>")
+    gusto.employee_bank_accounts.delete(employee_id="<id>", bank_account_uuid="<id>")
 
     # Use the SDK ...
 

@@ -23,14 +23,14 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_employments.list_terminations(employee_id="<id>")
+    res = gusto.employee_employments.list_terminations(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -66,14 +66,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_employments.put_v1_terminations_employee_id(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gusto.employee_employments.put_v1_terminations_employee_id(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
 
     # Handle response
     print(res)
@@ -111,14 +111,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_employments.put_v1_employees_employee_id_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gusto.employee_employments.put_v1_employees_employee_id_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
 
     # Handle response
     print(res)
@@ -159,14 +159,14 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_employments.get_v1_employees_employee_id_rehire(employee_id="<id>")
+    res = gusto.employee_employments.get_v1_employees_employee_id_rehire(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -201,14 +201,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employee_employments.delete_v1_employees_employee_id_rehire(employee_id="<id>")
+    gusto.employee_employments.delete_v1_employees_employee_id_rehire(employee_id="<id>")
 
     # Use the SDK ...
 
@@ -238,14 +238,14 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_employments.get_v1_employees_employee_id_employment_history(employee_id="<id>")
+    res = gusto.employee_employments.get_v1_employees_employee_id_employment_history(employee_id="<id>")
 
     # Handle response
     print(res)

@@ -22,16 +22,16 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
-        "type": gusto.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
+    res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
+        "type": gusto_embedded.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
         "value": "100.00",
     })
 
@@ -87,14 +87,14 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_benefits.get_v1_employees_employee_id_employee_benefits(employee_id="<id>")
+    res = gusto.employee_benefits.get_v1_employees_employee_id_employee_benefits(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -132,14 +132,14 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_benefits.get_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
+    res = gusto.employee_benefits.get_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -173,14 +173,14 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_benefits.put_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gusto.employee_benefits.put_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
 
     # Handle response
     print(res)
@@ -230,14 +230,14 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employee_benefits.delete_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
+    gusto.employee_benefits.delete_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
 
     # Use the SDK ...
 
@@ -268,14 +268,14 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employee_benefits.create_ytd_benefit_amounts(employee_id="<id>", tax_year=2422.08)
+    gusto.employee_benefits.create_ytd_benefit_amounts(employee_id="<id>", tax_year=2422.08)
 
     # Use the SDK ...
 
@@ -312,14 +312,14 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_benefits.get_ytd_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gusto.employee_benefits.get_ytd_from_different_company(employee_id="<id>", tax_year=2024)
 
     # Handle response
     print(res)

@@ -24,14 +24,14 @@ scope: `external_payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.post_v1_external_payroll(company_uuid="<id>", check_date="2022-06-01", payment_period_start_date="2022-05-15", payment_period_end_date="2022-05-30")
+    res = gusto.external_payrolls.post_v1_external_payroll(company_uuid="<id>", check_date="2022-06-01", payment_period_start_date="2022-05-15", payment_period_end_date="2022-05-30")
 
     # Handle response
     print(res)
@@ -69,14 +69,14 @@ scope: `external_payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.get_v1_company_external_payrolls(company_uuid="<id>")
+    res = gusto.external_payrolls.get_v1_company_external_payrolls(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -110,14 +110,14 @@ scope: `external_payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.get_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
+    res = gusto.external_payrolls.get_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -152,14 +152,14 @@ scope: `external_payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.external_payrolls.delete_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
+    gusto.external_payrolls.delete_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -189,15 +189,15 @@ scope: `external_payrolls:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.put_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>", replace_fields=True, external_payroll_items=[
+    res = gusto.external_payrolls.put_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>", replace_fields=True, external_payroll_items=[
         {
             "employee_uuid": "403c6ee3-5f58-40ef-a117-ff7175cd9ee3",
             "earnings": [
@@ -205,13 +205,13 @@ with Gusto(
                     "hours": "0.0",
                     "amount": "200.00",
                     "earning_id": 1,
-                    "earning_type": gusto.PutV1ExternalPayrollEarningType.COMPANY_PAY_TYPE,
+                    "earning_type": gusto_embedded.PutV1ExternalPayrollEarningType.COMPANY_PAY_TYPE,
                 },
                 {
                     "hours": "0.0",
                     "amount": "5000.00",
                     "earning_id": 2,
-                    "earning_type": gusto.PutV1ExternalPayrollEarningType.COMPANY_EARNING_TYPE,
+                    "earning_type": gusto_embedded.PutV1ExternalPayrollEarningType.COMPANY_EARNING_TYPE,
                 },
             ],
             "benefits": [
@@ -277,14 +277,14 @@ scope: `external_payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.get_v1_external_payroll_calculate_taxes(company_uuid="<id>", external_payroll_id="<id>")
+    res = gusto.external_payrolls.get_v1_external_payroll_calculate_taxes(company_uuid="<id>", external_payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -319,14 +319,14 @@ scope: `external_payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.get_v1_tax_liabilities(company_uuid="<id>")
+    res = gusto.external_payrolls.get_v1_tax_liabilities(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -360,14 +360,14 @@ scope: `external_payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.external_payrolls.put_v1_tax_liabilities(company_uuid="<id>", liability_selections=[
+    res = gusto.external_payrolls.put_v1_tax_liabilities(company_uuid="<id>", liability_selections=[
         {
             "tax_id": 1,
             "last_unpaid_external_payroll_uuid": "7985032c-ee3a-4e98-af27-d56551eb5f1c",
@@ -419,14 +419,14 @@ scope: `external_payrolls:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.external_payrolls.put_v1_tax_liabilities_finish(company_uuid="<id>")
+    gusto.external_payrolls.put_v1_tax_liabilities_finish(company_uuid="<id>")
 
     # Use the SDK ...
 

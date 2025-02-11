@@ -22,14 +22,14 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.locations.post_v1_companies_company_id_locations(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", street_2="Suite 602")
+    res = gusto.locations.post_v1_companies_company_id_locations(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", street_2="Suite 602")
 
     # Handle response
     print(res)
@@ -74,14 +74,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.locations.list(company_id="<id>")
+    res = gusto.locations.list(company_id="<id>")
 
     # Handle response
     print(res)
@@ -117,14 +117,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.locations.get_v1_locations_location_id(location_id="<id>")
+    res = gusto.locations.get_v1_locations_location_id(location_id="<id>")
 
     # Handle response
     print(res)
@@ -158,14 +158,14 @@ scope: `companies.write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.locations.put_v1_locations_location_id(location_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", phone_number="8009360383", street_1="425 2nd Street", street_2="Suite 602", city="San Francisco", state="CA", zip_code="94107", country="USA")
+    res = gusto.locations.put_v1_locations_location_id(location_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", phone_number="8009360383", street_1="425 2nd Street", street_2="Suite 602", city="San Francisco", state="CA", zip_code="94107", country="USA")
 
     # Handle response
     print(res)
@@ -210,14 +210,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.locations.get_v1_locations_location_uuid_minimum_wages(location_uuid="<id>", effective_date="2020-01-31")
+    res = gusto.locations.get_v1_locations_location_uuid_minimum_wages(location_uuid="<id>", effective_date="2020-01-31")
 
     # Handle response
     print(res)
