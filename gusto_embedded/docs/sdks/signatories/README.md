@@ -33,7 +33,7 @@ with Gusto(
         "street_1": "<value>",
         "city": "North Lilly",
         "state": "North Carolina",
-        "zip": "05065",
+        "zip_code": "05065",
     })
 
     # Handle response

@@ -1949,7 +1949,7 @@ class Contractors(BaseSDK):
         street_2: Optional[str] = None,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1968,7 +1968,7 @@ class Contractors(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1991,7 +1991,7 @@ class Contractors(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
             ),
         )
 
@@ -2077,7 +2077,7 @@ class Contractors(BaseSDK):
         street_2: Optional[str] = None,
         city: Optional[str] = None,
         state: Optional[str] = None,
-        zip: Optional[str] = None,
+        zip_code: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2096,7 +2096,7 @@ class Contractors(BaseSDK):
         :param street_2:
         :param city:
         :param state:
-        :param zip:
+        :param zip_code:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2119,7 +2119,7 @@ class Contractors(BaseSDK):
                 street_2=street_2,
                 city=city,
                 state=state,
-                zip=zip,
+                zip_code=zip_code,
             ),
         )
 

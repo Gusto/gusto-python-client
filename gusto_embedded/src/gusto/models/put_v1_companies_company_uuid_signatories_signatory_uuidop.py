@@ -19,7 +19,7 @@ class PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddressTypedDict(Type
     street_2: NotRequired[str]
     city: NotRequired[str]
     state: NotRequired[str]
-    zip: NotRequired[str]
+    zip_code: NotRequired[str]
 
 
 class PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress(BaseModel):
@@ -31,7 +31,7 @@ class PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress(BaseModel):
 
     state: Optional[str] = None
 
-    zip: Optional[str] = None
+    zip_code: Annotated[Optional[str], pydantic.Field(alias="zip")] = None
 
 
 class PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequestBodyTypedDict(TypedDict):

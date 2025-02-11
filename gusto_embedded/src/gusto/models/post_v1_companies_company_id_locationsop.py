@@ -22,7 +22,7 @@ class PostV1CompaniesCompanyIDLocationsRequestBodyTypedDict(TypedDict):
     street_1: str
     city: str
     state: str
-    zip: str
+    zip_code: str
     street_2: NotRequired[Nullable[str]]
     mailing_address: NotRequired[bool]
     r"""Specify if this location is the company's mailing address."""
@@ -41,7 +41,7 @@ class PostV1CompaniesCompanyIDLocationsRequestBody(BaseModel):
 
     state: str
 
-    zip: str
+    zip_code: Annotated[str, pydantic.Field(alias="zip")]
 
     street_2: OptionalNullable[str] = UNSET
 

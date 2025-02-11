@@ -25,7 +25,7 @@ class PutV1LocationsLocationIDRequestBodyTypedDict(TypedDict):
     street_2: NotRequired[Nullable[str]]
     city: NotRequired[str]
     state: NotRequired[str]
-    zip: NotRequired[str]
+    zip_code: NotRequired[str]
     country: NotRequired[str]
     mailing_address: NotRequired[bool]
     r"""For a company location, specify if this location is the company's mailing address. A company has a single mailing address, so this designation will override any previous selection."""
@@ -49,7 +49,7 @@ class PutV1LocationsLocationIDRequestBody(BaseModel):
 
     state: Optional[str] = None
 
-    zip: Optional[str] = None
+    zip_code: Annotated[Optional[str], pydantic.Field(alias="zip")] = None
 
     country: Optional[str] = None
 
@@ -67,7 +67,7 @@ class PutV1LocationsLocationIDRequestBody(BaseModel):
             "street_2",
             "city",
             "state",
-            "zip",
+            "zip_code",
             "country",
             "mailing_address",
             "filing_address",
