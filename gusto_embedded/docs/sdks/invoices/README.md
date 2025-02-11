@@ -20,13 +20,13 @@ scope: `invoices:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.invoices.get_invoices_invoice_period(security=gusto.GetInvoicesInvoicePeriodSecurity(
+    res = gusto.invoices.get_invoices_invoice_period(security=gusto_embedded.GetInvoicesInvoicePeriodSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), invoice_period="2020-01")
 

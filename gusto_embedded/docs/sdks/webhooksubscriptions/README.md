@@ -22,13 +22,13 @@ scope: `webhook_subscriptions:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    g_client.webhook_subscriptions.delete_v1_webhook_subscription_uuid(security=gusto.DeleteV1WebhookSubscriptionUUIDSecurity(
+    gusto.webhook_subscriptions.delete_v1_webhook_subscription_uuid(security=gusto_embedded.DeleteV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 
@@ -65,13 +65,13 @@ scope: `webhook_subscriptions:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    g_client.webhook_subscriptions.get_v1_webhook_subscription_verification_token_uuid(security=gusto.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
+    gusto.webhook_subscriptions.get_v1_webhook_subscription_verification_token_uuid(security=gusto_embedded.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 

@@ -28,15 +28,15 @@ scope: `company_bank_accounts:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.bank_accounts.post_v1_companies_company_id_bank_accounts(company_id="<id>", routing_number="115092013", account_number="9775014007", account_type=gusto.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
+    res = gusto.bank_accounts.post_v1_companies_company_id_bank_accounts(company_id="<id>", routing_number="115092013", account_number="9775014007", account_type=gusto_embedded.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -74,14 +74,14 @@ scope: `company_bank_accounts:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.bank_accounts.get_v1_companies_company_id_bank_accounts(company_id="<id>")
+    res = gusto.bank_accounts.get_v1_companies_company_id_bank_accounts(company_id="<id>")
 
     # Handle response
     print(res)
@@ -128,14 +128,14 @@ scope: `company_bank_accounts:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.bank_accounts.put_v1_companies_company_id_bank_accounts_verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42)
+    res = gusto.bank_accounts.put_v1_companies_company_id_bank_accounts_verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42)
 
     # Handle response
     print(res)
@@ -180,15 +180,15 @@ scope: `plaid_processor:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.bank_accounts.post_v1_plaid_processor_token(owner_type=gusto.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc")
+    res = gusto.bank_accounts.post_v1_plaid_processor_token(owner_type=gusto_embedded.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc")
 
     # Handle response
     print(res)

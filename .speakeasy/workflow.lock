@@ -2,20 +2,20 @@ speakeasyVersion: 1.488.0
 sources:
     Gusto-OAS:
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:56267ffc83b356afb926f4f33e25129ca4cf536c3d3000b4039652f633edfca0
+        sourceRevisionDigest: sha256:238de06f340cac5fca37f16c17b652afbc33c9bbedc14b1ba6959431403faf7d
         sourceBlobDigest: sha256:a8e49c6e476c51ffcc73653a800deb3d3eca380083f2b4f9d227813c97a6197d
         tags:
             - latest
-            - speakeasy-sdk-regen-1739229111
+            - speakeasy-sdk-regen-1739294785
             - "2024-04-01"
 targets:
     gusto:
         source: Gusto-OAS
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:56267ffc83b356afb926f4f33e25129ca4cf536c3d3000b4039652f633edfca0
+        sourceRevisionDigest: sha256:238de06f340cac5fca37f16c17b652afbc33c9bbedc14b1ba6959431403faf7d
         sourceBlobDigest: sha256:a8e49c6e476c51ffcc73653a800deb3d3eca380083f2b4f9d227813c97a6197d
         codeSamplesNamespace: gusto-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:ef7126fa10348b852916fdaa2ef4c88243efe255b81d28d2f4e5ae9a4b1d6e61
+        codeSamplesRevisionDigest: sha256:8d05906f59af4730523a2e0d3419ce606cfee52129ff26769197f0d0cd9f96fa
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -34,6 +34,9 @@ workflow:
             target: python
             source: Gusto-OAS
             output: ./gusto_embedded
+            publish:
+                pypi:
+                    token: $pypi_token
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples

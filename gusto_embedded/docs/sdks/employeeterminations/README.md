@@ -18,14 +18,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_terminations.create(employee_id="<id>", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gusto.employee_terminations.create(employee_id="<id>", effective_date="2020-06-30", run_termination_payroll=True)
 
     # Handle response
     print(res)

@@ -17,14 +17,14 @@ scope: `employee_payment_methods:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_payment_method.get_all(employee_id="<id>")
+    res = gusto.employee_payment_method.get_all(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -61,15 +61,15 @@ scope: `employee_payment_methods:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_payment_method.put_v1_employees_employee_id_payment_method(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, split_by=gusto.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
+    res = gusto.employee_payment_method.put_v1_employees_employee_id_payment_method(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, split_by=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
         {
             "uuid": "e88f9436-b74e-49a8-87e9-777b9bfe715e",
             "name": "BoA Checking Account",

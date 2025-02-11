@@ -16,14 +16,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.terminations.delete(employee_id="<id>")
+    gusto.terminations.delete(employee_id="<id>")
 
     # Use the SDK ...
 

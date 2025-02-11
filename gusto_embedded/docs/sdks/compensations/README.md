@@ -17,15 +17,15 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.compensations.update(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", rate="60000.00", payment_unit=gusto.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto.FlsaStatusType.EXEMPT)
+    res = gusto.compensations.update(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", rate="60000.00", payment_unit=gusto_embedded.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT)
 
     # Handle response
     print(res)
@@ -67,14 +67,14 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.compensations.delete(compensation_id="<id>")
+    gusto.compensations.delete(compensation_id="<id>")
 
     # Use the SDK ...
 

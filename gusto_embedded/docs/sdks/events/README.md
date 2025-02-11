@@ -20,15 +20,15 @@ scope: `events:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.events.get_events(security=gusto.GetEventsSecurity(
+    res = gusto.events.get_events(security=gusto_embedded.GetEventsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), sort_order=gusto.SortOrder.ASC)
+    ), sort_order=gusto_embedded.SortOrder.ASC)
 
     # Handle response
     print(res)

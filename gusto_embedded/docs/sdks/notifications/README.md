@@ -20,14 +20,14 @@ scope: `notifications:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.notifications.get_notifications_notification_uuid(notification_uuid="<id>")
+    res = gusto.notifications.get_notifications_notification_uuid(notification_uuid="<id>")
 
     # Handle response
     print(res)

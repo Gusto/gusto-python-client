@@ -19,14 +19,14 @@ scope: `contractor_documents:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_documents.get_v1_contractor_documents(contractor_uuid="<id>")
+    res = gusto.contractor_documents.get_v1_contractor_documents(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -60,14 +60,14 @@ scope: `contractor_documents:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_documents.get_v1_contractor_document(document_uuid="<id>")
+    res = gusto.contractor_documents.get_v1_contractor_document(document_uuid="<id>")
 
     # Handle response
     print(res)
@@ -101,14 +101,14 @@ scope: `contractor_documents:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_documents.get_v1_contractor_document_pdf(document_uuid="<id>")
+    res = gusto.contractor_documents.get_v1_contractor_document_pdf(document_uuid="<id>")
 
     # Handle response
     print(res)
@@ -142,14 +142,14 @@ scope: `contractor_documents:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_documents.put_v1_contractor_document_sign(document_uuid="<id>", fields=[
+    res = gusto.contractor_documents.put_v1_contractor_document_sign(document_uuid="<id>", fields=[
         {},
         {},
         {},

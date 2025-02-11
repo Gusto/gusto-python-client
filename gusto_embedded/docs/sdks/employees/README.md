@@ -28,14 +28,14 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.post_v1_employees(company_id="<id>", first_name="Soren", last_name="Kierkegaard", middle_initial="A", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294")
+    res = gusto.employees.post_v1_employees(company_id="<id>", first_name="Soren", last_name="Kierkegaard", middle_initial="A", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294")
 
     # Handle response
     print(res)
@@ -78,14 +78,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.list(company_id="<id>")
+    res = gusto.employees.list(company_id="<id>")
 
     # Handle response
     print(res)
@@ -125,14 +125,14 @@ scope: `employees:manage`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.post_v1_historical_employees(company_uuid="<id>", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
+    res = gusto.employees.post_v1_historical_employees(company_uuid="<id>", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
         "location_uuid": "1da85d35-1910-4d5e-8e94-39e8cdfe8c9a",
     }, home_address={
         "street_1": "300 3rd Street",
@@ -195,14 +195,14 @@ scope: `employees:manage`
 
 ```python
 import dateutil.parser
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.update_historical_employee(company_uuid="<id>", historical_employee_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
+    res = gusto.employees.update_historical_employee(company_uuid="<id>", historical_employee_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", last_name="Kierkegaard", date_of_birth="1995-05-05T00:00:00Z", ssn="123456294", work_address={
         "location_uuid": "1da85d35-1910-4d5e-8e94-39e8cdfe8c9a",
     }, home_address={
         "street_1": "300 3rd Street",
@@ -266,14 +266,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.get(employee_id="<id>")
+    res = gusto.employees.get(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -308,14 +308,14 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.put_v1_employees(employee_id="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", middle_initial="A", last_name="Kierkegaard", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294", two_percent_shareholder=False)
+    res = gusto.employees.put_v1_employees(employee_id="<id>", version="db0edd04aaac4506f7edab03ac855d56", first_name="Soren", middle_initial="A", last_name="Kierkegaard", preferred_first_name="Angel", date_of_birth="1995-05-05", email="knight0faith@example.com", ssn="123456294", two_percent_shareholder=False)
 
     # Handle response
     print(res)
@@ -361,14 +361,14 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.employees.delete_v1_employee(employee_id="<id>")
+    gusto.employees.delete_v1_employee(employee_id="<id>")
 
     # Use the SDK ...
 
@@ -398,14 +398,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.get_v1_employees_employee_id_custom_fields(employee_id="<id>")
+    res = gusto.employees.get_v1_employees_employee_id_custom_fields(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -477,14 +477,14 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.get_v1_employees_employee_id_onboarding_status(employee_id="<id>")
+    res = gusto.employees.get_v1_employees_employee_id_onboarding_status(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -527,14 +527,14 @@ Below is a list of valid onboarding status changes depending on the intended act
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.put_v1_employees_employee_id_onboarding_status(employee_id="<id>", onboarding_status="<value>")
+    res = gusto.employees.put_v1_employees_employee_id_onboarding_status(employee_id="<id>", onboarding_status="<value>")
 
     # Handle response
     print(res)
@@ -570,14 +570,14 @@ scope: `employee_time_off_activities:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.get_version_employees_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
+    res = gusto.employees.get_version_employees_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
 
     # Handle response
     print(res)
@@ -612,14 +612,14 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.post_v1_employees_employee_id_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gusto.employees.post_v1_employees_employee_id_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
 
     # Handle response
     print(res)
@@ -667,14 +667,14 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employees.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
+    res = gusto.employees.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
 
     # Handle response
     print(res)

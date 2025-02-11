@@ -17,14 +17,14 @@ scope: `recovery_cases:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.recovery_cases.get_recovery_cases(company_uuid="<id>")
+    res = gusto.recovery_cases.get_recovery_cases(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -62,14 +62,14 @@ scope: `recovery_cases:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.recovery_cases.redebit_recovery_case(recovery_case_uuid="<id>")
+    gusto.recovery_cases.redebit_recovery_case(recovery_case_uuid="<id>")
 
     # Use the SDK ...
 

@@ -24,17 +24,17 @@ scope: `webhook_subscriptions:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.webhooks.create(security=gusto.PostV1WebhookSubscriptionSecurity(
+    res = gusto.webhooks.create(security=gusto_embedded.PostV1WebhookSubscriptionSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), url="https://partner-app.com/subscriber", subscription_types=[
-        gusto.PostV1WebhookSubscriptionSubscriptionTypes.COMPANY,
-        gusto.PostV1WebhookSubscriptionSubscriptionTypes.EMPLOYEE,
+        gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.COMPANY,
+        gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.EMPLOYEE,
     ])
 
     # Handle response
@@ -76,13 +76,13 @@ scope: `webhook_subscriptions:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.webhooks.list(security=gusto.GetV1WebhookSubscriptionsSecurity(
+    res = gusto.webhooks.list(security=gusto_embedded.GetV1WebhookSubscriptionsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ))
 
@@ -123,17 +123,17 @@ scope: `webhook_subscriptions:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.webhooks.update(security=gusto.PutV1WebhookSubscriptionUUIDSecurity(
+    res = gusto.webhooks.update(security=gusto_embedded.PutV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>", subscription_types=[
-        gusto.PutV1WebhookSubscriptionUUIDSubscriptionTypes.COMPANY,
-        gusto.PutV1WebhookSubscriptionUUIDSubscriptionTypes.EMPLOYEE,
+        gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.COMPANY,
+        gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.EMPLOYEE,
     ])
 
     # Handle response
@@ -176,13 +176,13 @@ scope: `webhook_subscriptions:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.webhooks.get_v1_webhook_subscription_uuid(security=gusto.GetV1WebhookSubscriptionUUIDSecurity(
+    res = gusto.webhooks.get_v1_webhook_subscription_uuid(security=gusto_embedded.GetV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>")
 
@@ -226,13 +226,13 @@ scope: `webhook_subscriptions:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.webhooks.verify(security=gusto.PutV1VerifyWebhookSubscriptionUUIDSecurity(
+    res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd")
 

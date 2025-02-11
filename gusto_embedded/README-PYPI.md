@@ -45,10 +45,6 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK to PyPI you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 > [!NOTE]
 > **Python version upgrade policy**
 >
@@ -61,7 +57,7 @@ The SDK can be installed with either *pip* or *poetry* package managers.
 *PIP* is the default package installer for Python, enabling easy installation and management of packages from PyPI via the command line.
 
 ```bash
-pip install git+https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded
+pip install gusto_embedded
 ```
 
 ### Poetry
@@ -69,7 +65,7 @@ pip install git+https://github.com/Gusto/gusto-python-client.git#subdirectory=gu
 *Poetry* is a modern tool that simplifies dependency management and package publishing by using a single `pyproject.toml` file to handle project metadata and dependencies.
 
 ```bash
-poetry add git+https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded
+poetry add gusto_embedded
 ```
 
 ### Shell and script usage with `uv`
@@ -77,7 +73,7 @@ poetry add git+https://github.com/Gusto/gusto-python-client.git#subdirectory=gus
 You can use this SDK in a Python shell with [uv](https://docs.astral.sh/uv/) and the `uvx` command that comes with it like so:
 
 ```shell
-uvx --from gusto python
+uvx --from gusto_embedded python
 ```
 
 It's also possible to write a standalone Python script without needing to set up a whole project like so:
@@ -87,11 +83,11 @@ It's also possible to write a standalone Python script without needing to set up
 # /// script
 # requires-python = ">=3.9"
 # dependencies = [
-#     "gusto",
+#     "gusto_embedded",
 # ]
 # ///
 
-from gusto import Gusto
+from gusto_embedded import Gusto
 
 sdk = Gusto(
   # SDK arguments
@@ -121,14 +117,14 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -140,15 +136,15 @@ The same SDK client can also be used to make asychronous requests by importing a
 ```python
 # Asynchronous Example
 import asyncio
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 async def main():
     async with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as g_client:
+    ) as gusto:
 
-        res = await g_client.introspection.get_v1_token_info_async()
+        res = await gusto.introspection.get_v1_token_info_async()
 
         # Handle response
         print(res)
@@ -170,14 +166,14 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -188,13 +184,13 @@ with Gusto(
 
 Some operations in this SDK require the security scheme to be specified at the request level. For example:
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
 
-    res = g_client.companies.post_v1_partner_managed_companies(security=gusto.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.post_v1_partner_managed_companies(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), user={
         "first_name": "Frank",
@@ -672,18 +668,18 @@ Certain SDK methods accept file objects as part of a request body or multi-part 
 >
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.company_attachment.post_v1_companies_attachment(company_id="<id>", document={
+    res = gusto.company_attachment.post_v1_companies_attachment(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
 
     # Handle response
     print(res)
@@ -698,15 +694,15 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
-from gusto import Gusto
-from gusto.utils import BackoffStrategy, RetryConfig
+from gusto_embedded import Gusto
+from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info(,
+    res = gusto.introspection.get_v1_token_info(,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -716,16 +712,16 @@ with Gusto(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
-from gusto import Gusto
-from gusto.utils import BackoffStrategy, RetryConfig
+from gusto_embedded import Gusto
+from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
 
 with Gusto(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -757,15 +753,15 @@ When custom error responses are specified for an operation, the SDK may also rai
 ### Example
 
 ```python
-import gusto
-from gusto import Gusto, models
+import gusto_embedded
+from gusto_embedded import Gusto, models
 import os
 
-with Gusto() as g_client:
+with Gusto() as gusto:
     res = None
     try:
 
-        res = g_client.companies.post_v1_partner_managed_companies(security=gusto.PostV1PartnerManagedCompaniesSecurity(
+        res = gusto.companies.post_v1_partner_managed_companies(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
             system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
         ), user={
             "first_name": "Frank",
@@ -806,15 +802,15 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     server="prod",
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -825,15 +821,15 @@ with Gusto(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     server_url="https://api.gusto-demo.com",
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -850,7 +846,7 @@ This allows you to wrap the client with your own custom logic, such as adding cu
 
 For example, you could specify a header for every request that this sdk makes as follows:
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import httpx
 
 http_client = httpx.Client(headers={"x-custom-header": "someValue"})
@@ -859,8 +855,8 @@ s = Gusto(client=http_client)
 
 or you could wrap the client with your own custom logic:
 ```python
-from gusto import Gusto
-from gusto.httpclient import AsyncHttpClient
+from gusto_embedded import Gusto
+from gusto_embedded.httpclient import AsyncHttpClient
 import httpx
 
 class CustomClient(AsyncHttpClient):
@@ -930,12 +926,12 @@ The `Gusto` class implements the context manager protocol and registers a finali
 [context-manager]: https://docs.python.org/3/reference/datamodel.html#context-managers
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 def main():
     with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as g_client:
+    ) as gusto:
         # Rest of application here...
 
 
@@ -943,7 +939,7 @@ def main():
 async def amain():
     async with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as g_client:
+    ) as gusto:
         # Rest of application here...
 ```
 <!-- End Resource Management [resource-management] -->
@@ -955,11 +951,11 @@ You can setup your SDK to emit debug logs for SDK requests and responses.
 
 You can pass your own logger class directly into your SDK.
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
-s = Gusto(debug_logger=logging.getLogger("gusto"))
+s = Gusto(debug_logger=logging.getLogger("gusto_embedded"))
 ```
 
 You can also enable a default debug logger by setting an environment variable `GUSTO_DEBUG` to true.

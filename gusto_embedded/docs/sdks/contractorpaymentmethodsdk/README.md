@@ -16,14 +16,14 @@ scope: `contractor_payment_methods:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_method.list_bank_accounts(contractor_uuid="<id>")
+    res = gusto.contractor_payment_method.list_bank_accounts(contractor_uuid="<id>")
 
     # Handle response
     print(res)

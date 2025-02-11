@@ -21,14 +21,14 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i_9_verification.get_v1_employees_employee_id_i9_authorization(employee_id="<id>")
+    res = gusto.i_9_verification.get_v1_employees_employee_id_i9_authorization(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -62,14 +62,14 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i_9_verification.get_v1_employees_employee_id_i9_authorization_document_options(employee_id="<id>")
+    res = gusto.i_9_verification.get_v1_employees_employee_id_i9_authorization_document_options(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -110,14 +110,14 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i_9_verification.put_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>", documents=[
+    res = gusto.i_9_verification.put_v1_employees_employee_id_i9_authorization_documents(employee_id="<id>", documents=[
         {
             "document_type": "us_passport",
             "document_title": "US Passport",
@@ -161,14 +161,14 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.i_9_verification.put_v1_employees_employee_id_i9_authorization_employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", signed_by_ip_address="<value>", agree=True)
+    res = gusto.i_9_verification.put_v1_employees_employee_id_i9_authorization_employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", signed_by_ip_address="<value>", agree=True)
 
     # Handle response
     print(res)

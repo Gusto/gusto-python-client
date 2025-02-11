@@ -22,14 +22,14 @@ scope: `holiday_pay_policies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.get_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
+    res = gusto.holiday_pay_policies.get_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -63,14 +63,14 @@ scope: `holiday_pay_policies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.post_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", federal_holidays={
+    res = gusto.holiday_pay_policies.post_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", federal_holidays={
         "mlk_day": {
             "selected": True,
         },
@@ -125,14 +125,14 @@ scope: `holiday_pay_policies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", federal_holidays={
+    res = gusto.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", federal_holidays={
         "mlk_day": {
             "selected": True,
         },
@@ -188,14 +188,14 @@ scope: `holiday_pay_policies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.holiday_pay_policies.delete_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
+    gusto.holiday_pay_policies.delete_companies_company_uuid_holiday_pay_policy(company_uuid="<id>")
 
     # Use the SDK ...
 
@@ -225,14 +225,14 @@ scope: `holiday_pay_policies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_add(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
+    res = gusto.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_add(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
         {
             "uuid": "1ca3cd25-3eda-48c6-ac88-f0e7fb91a15a",
         },
@@ -276,14 +276,14 @@ scope: `holiday_pay_policies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_remove(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
+    res = gusto.holiday_pay_policies.put_companies_company_uuid_holiday_pay_policy_remove(company_uuid="<id>", version="1b37938b017c7fd7116bada007072290", employees=[
         {
             "uuid": "1ca3cd25-3eda-48c6-ac88-f0e7fb91a15a",
         },
@@ -327,14 +327,14 @@ scope: `holiday_pay_policies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.holiday_pay_policies.get_companies_company_uuid_paid_holidays(company_uuid="<id>", year="2023")
+    res = gusto.holiday_pay_policies.get_companies_company_uuid_paid_holidays(company_uuid="<id>", year="2023")
 
     # Handle response
     print(res)

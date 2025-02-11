@@ -24,14 +24,14 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_forms.post_v1_sandbox_generate_w2(employee_id="<id>")
+    res = gusto.employee_forms.post_v1_sandbox_generate_w2(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -67,14 +67,14 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_forms.get_v1_employee_forms(employee_id="<id>")
+    res = gusto.employee_forms.get_v1_employee_forms(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -108,14 +108,14 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_forms.get(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get(employee_id="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -150,14 +150,14 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_forms.get_v1_employee_form_pdf(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get_v1_employee_form_pdf(employee_id="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -195,14 +195,14 @@ scope: `employee_forms:sign`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.employee_forms.put_v1_employee_form_sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = gusto.employee_forms.put_v1_employee_form_sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
 
     # Handle response
     print(res)

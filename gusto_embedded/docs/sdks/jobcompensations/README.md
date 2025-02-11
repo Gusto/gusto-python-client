@@ -16,15 +16,15 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.job_compensations.create(job_id="<id>", payment_unit=gusto.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto.FlsaStatusType.EXEMPT, rate="60000.00")
+    res = gusto.job_compensations.create(job_id="<id>", payment_unit=gusto_embedded.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT, rate="60000.00")
 
     # Handle response
     print(res)

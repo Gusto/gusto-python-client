@@ -19,15 +19,15 @@ scope: `contractor_payment_methods:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_methods.create(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING)
+    res = gusto.contractor_payment_methods.create(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -68,14 +68,14 @@ scope: `contractor_payment_methods:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractor_payment_methods.get_v1_contractors_contractor_uuid_payment_method(contractor_uuid="<id>")
+    res = gusto.contractor_payment_methods.get_v1_contractors_contractor_uuid_payment_method(contractor_uuid="<id>")
 
     # Handle response
     print(res)

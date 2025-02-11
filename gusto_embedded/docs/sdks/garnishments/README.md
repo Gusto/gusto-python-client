@@ -20,14 +20,14 @@ scope: `garnishments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.garnishments.post_v1_employees_employee_id_garnishments(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gusto.garnishments.post_v1_employees_employee_id_garnishments(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
 
     # Handle response
     print(res)
@@ -74,14 +74,14 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.garnishments.get_v1_employees_employee_id_garnishments(employee_id="<id>")
+    res = gusto.garnishments.get_v1_employees_employee_id_garnishments(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -117,14 +117,14 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.garnishments.get_by_id(garnishment_id="<id>")
+    res = gusto.garnishments.get_by_id(garnishment_id="<id>")
 
     # Handle response
     print(res)
@@ -158,14 +158,14 @@ scope: `garnishments:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.garnishments.put_v1_garnishments_garnishment_id(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.garnishments.put_v1_garnishments_garnishment_id(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
 
     # Handle response
     print(res)
@@ -212,14 +212,14 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.garnishments.get_v1_garnishments_child_support()
+    res = gusto.garnishments.get_v1_garnishments_child_support()
 
     # Handle response
     print(res)

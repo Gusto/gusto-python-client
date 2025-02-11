@@ -16,15 +16,15 @@ scope: `generated_documents:read`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.generated_documents.get_v1_generated_documents_document_type_request_uuid(document_type=gusto.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
+    res = gusto.generated_documents.get_v1_generated_documents_document_type_request_uuid(document_type=gusto_embedded.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
 
     # Handle response
     print(res)

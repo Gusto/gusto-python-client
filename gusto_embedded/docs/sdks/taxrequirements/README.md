@@ -58,14 +58,14 @@ scope: `company_tax_requirements:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.tax_requirements.get_state_requirements(company_uuid="<id>", state="Massachusetts")
+    res = gusto.tax_requirements.get_state_requirements(company_uuid="<id>", state="Massachusetts")
 
     # Handle response
     print(res)
@@ -101,14 +101,14 @@ scope: `company_tax_requirements:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.tax_requirements.put_v1_companies_company_uuid_tax_requirements_state(company_uuid="<id>", state="Texas", requirement_sets=[
+    gusto.tax_requirements.put_v1_companies_company_uuid_tax_requirements_state(company_uuid="<id>", state="Texas", requirement_sets=[
         {
             "key": "registrations",
             "effective_from": None,
@@ -178,14 +178,14 @@ scope: `company_tax_requirements:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.tax_requirements.get_v1_companies_company_uuid_tax_requirements(company_uuid="<id>")
+    res = gusto.tax_requirements.get_v1_companies_company_uuid_tax_requirements(company_uuid="<id>")
 
     # Handle response
     print(res)

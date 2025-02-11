@@ -17,14 +17,14 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.industry_selections.get_v1_company_industry(company_id="<id>")
+    res = gusto.industry_selections.get_v1_company_industry(company_id="<id>")
 
     # Handle response
     print(res)
@@ -58,14 +58,14 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.industry_selections.put_v1_company_industry(company_id="<id>", naics_code="611420", title="Computer Training", sic_codes=[
+    res = gusto.industry_selections.put_v1_company_industry(company_id="<id>", naics_code="611420", title="Computer Training", sic_codes=[
         "8243",
     ])
 

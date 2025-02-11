@@ -18,19 +18,19 @@ scope: `company_reports:write`
 
 ```python
 import dateutil.parser
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.reports.post_companies_company_uuid_reports(company_uuid="<id>", columns=[
-        gusto.Columns.NET_PAY,
+    res = gusto.reports.post_companies_company_uuid_reports(company_uuid="<id>", columns=[
+        gusto_embedded.Columns.NET_PAY,
     ], groupings=[
-        gusto.Groupings.PAYROLL,
-    ], file_type=gusto.FileType.CSV, start_date=dateutil.parser.parse("2024-01-01").date(), end_date=dateutil.parser.parse("2024-04-01").date(), dismissed_start_date=dateutil.parser.parse("2024-01-01").date(), dismissed_end_date=dateutil.parser.parse("2024-04-01").date())
+        gusto_embedded.Groupings.PAYROLL,
+    ], file_type=gusto_embedded.FileType.CSV, start_date=dateutil.parser.parse("2024-01-01").date(), end_date=dateutil.parser.parse("2024-04-01").date(), dismissed_start_date=dateutil.parser.parse("2024-01-01").date(), dismissed_end_date=dateutil.parser.parse("2024-04-01").date())
 
     # Handle response
     print(res)
@@ -80,14 +80,14 @@ scope: `company_reports:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.reports.get_reports_report_uuid(report_uuid="<id>")
+    res = gusto.reports.get_reports_report_uuid(report_uuid="<id>")
 
     # Handle response
     print(res)

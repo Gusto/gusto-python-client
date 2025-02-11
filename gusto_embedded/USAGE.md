@@ -1,14 +1,14 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
 # Synchronous Example
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.introspection.get_v1_token_info()
+    res = gusto.introspection.get_v1_token_info()
 
     # Handle response
     print(res)
@@ -20,15 +20,15 @@ The same SDK client can also be used to make asychronous requests by importing a
 ```python
 # Asynchronous Example
 import asyncio
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 async def main():
     async with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as g_client:
+    ) as gusto:
 
-        res = await g_client.introspection.get_v1_token_info_async()
+        res = await gusto.introspection.get_v1_token_info_async()
 
         # Handle response
         print(res)

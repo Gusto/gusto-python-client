@@ -16,14 +16,14 @@ scope: `ach_transactions:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.ach_transactions.list(company_uuid="<id>")
+    res = gusto.ach_transactions.list(company_uuid="<id>")
 
     # Handle response
     print(res)

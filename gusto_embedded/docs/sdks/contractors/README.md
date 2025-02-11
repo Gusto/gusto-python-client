@@ -26,15 +26,15 @@ scope: `contractors:manage`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.post_v1_companies_company_uuid_contractors(company_uuid="<id>", wage_type=gusto.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = gusto.contractors.post_v1_companies_company_uuid_contractors(company_uuid="<id>", wage_type=gusto_embedded.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
 
     # Handle response
     print(res)
@@ -84,14 +84,14 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.get_v1_companies_company_uuid_contractors(company_uuid="<id>")
+    res = gusto.contractors.get_v1_companies_company_uuid_contractors(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -128,14 +128,14 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.get_v1_contractors_contractor_uuid(contractor_uuid="<id>")
+    res = gusto.contractors.get_v1_contractors_contractor_uuid(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -173,15 +173,15 @@ scope: `contractors:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.put_v1_contractors_contractor_uuid(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = gusto.contractors.put_v1_contractors_contractor_uuid(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_embedded.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
 
     # Handle response
     print(res)
@@ -232,14 +232,14 @@ scope: `contractors:manage`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    g_client.contractors.delete_v1_contractors_contractor_uuid(contractor_uuid="<id>")
+    gusto.contractors.delete_v1_contractors_contractor_uuid(contractor_uuid="<id>")
 
     # Use the SDK ...
 
@@ -299,14 +299,14 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.get_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.get_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -350,14 +350,14 @@ Below is a list of valid onboarding status changes depending on the intended act
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.put_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.put_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -393,14 +393,14 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.get_v1_contractors_contractor_uuid_address(contractor_uuid="<id>")
+    res = gusto.contractors.get_v1_contractors_contractor_uuid_address(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -434,14 +434,14 @@ scope: `contractors:write`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.put_v1_contractors_contractor_uuid_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
+    res = gusto.contractors.put_v1_contractors_contractor_uuid_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
 
     # Handle response
     print(res)
@@ -482,14 +482,14 @@ scope: `contractor_forms:read`
 ### Example Usage
 
 ```python
-from gusto import Gusto
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.get_forms(contractor_uuid="<id>")
+    res = gusto.contractors.get_forms(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -524,15 +524,15 @@ scope: `contractor_payment_methods:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.contractors.put_v1_contractors_contractor_id_payment_method(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
+    res = gusto.contractors.put_v1_contractors_contractor_id_payment_method(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
 
     # Handle response
     print(res)

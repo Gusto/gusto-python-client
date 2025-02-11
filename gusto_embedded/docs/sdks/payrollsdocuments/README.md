@@ -16,15 +16,15 @@ scope: `generated_documents:write`
 ### Example Usage
 
 ```python
-import gusto
-from gusto import Gusto
+import gusto_embedded
+from gusto_embedded import Gusto
 import os
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as g_client:
+) as gusto:
 
-    res = g_client.payrolls_documents.post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks(payroll_uuid="<id>", printing_format=gusto.PrintingFormat.BOTTOM)
+    res = gusto.payrolls_documents.post_v1_payrolls_payroll_uuid_generated_documents_printable_payroll_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.BOTTOM)
 
     # Handle response
     print(res)
