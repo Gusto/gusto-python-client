@@ -10,10 +10,6 @@ Developer-friendly & type-safe Python SDK specifically catered to leverage *gust
 </div>
 
 
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/gusto/ruby-sdk). Delete this section before > publishing to a package manager.
-
 <!-- Start Summary [summary] -->
 ## Summary
 
@@ -973,7 +969,7 @@ looking for the latest version.
 
 ## Contributions
 
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
+While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation.
+We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.
 
 ### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=gusto&utm_campaign=python)
