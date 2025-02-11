@@ -5,8 +5,8 @@ management:
   docVersion: "2024-04-01"
   speakeasyVersion: 1.488.0
   generationVersion: 2.506.0
-  releaseVersion: 0.0.6
-  configChecksum: 01809b46ec50497b0e93674c07466be6
+  releaseVersion: 0.0.7
+  configChecksum: 750ca3f863d4cc76d213754fdd03e77d
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_embedded
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded
