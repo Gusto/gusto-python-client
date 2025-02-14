@@ -7,6 +7,9 @@ sources:
               authHeader: Authorization
               authSecret: $openapi_doc_auth_token
         overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
             - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
         registry:
             location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas
