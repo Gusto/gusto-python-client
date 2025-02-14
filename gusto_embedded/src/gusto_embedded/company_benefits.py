@@ -97,6 +97,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-company_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -224,6 +225,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-company_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -332,6 +334,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-company_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -434,6 +437,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-company_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -536,6 +540,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -640,6 +645,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -757,6 +763,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -878,6 +885,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -982,6 +990,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1089,6 +1098,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-company_benefits-company_benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1192,6 +1202,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1286,6 +1297,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1383,6 +1395,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1480,6 +1493,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-benefit_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1586,6 +1600,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-company_benefit_id-summary",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1692,6 +1707,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-company_benefit_id-summary",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1797,6 +1813,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-company_benefits-company_benefit_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1902,6 +1919,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-company_benefits-company_benefit_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2018,6 +2036,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-company_benefits-company_benefit_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2140,6 +2159,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-company_benefits-company_benefit_id-employee_benefits",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2241,6 +2261,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-benefits_id-requirements",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2336,6 +2357,7 @@ class CompanyBenefits(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-benefits-benefits_id-requirements",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(

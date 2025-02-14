@@ -79,6 +79,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-receipt",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -181,6 +182,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-receipt",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -280,6 +282,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-fund",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -385,6 +388,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-fund",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -518,6 +522,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-contractor_payments",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -651,6 +656,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-contractor_payments",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -770,6 +776,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payments",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -886,6 +893,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payments",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -988,6 +996,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payment-contractor-payment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1087,6 +1096,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payment-contractor-payment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1187,6 +1197,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-contractor_payment-contractor-payment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1293,6 +1304,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-contractor_payment-contractor-payment",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1420,6 +1432,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-companies-company_uuid-contractor_payments-preview",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1553,6 +1566,7 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-companies-company_uuid-contractor_payments-preview",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
