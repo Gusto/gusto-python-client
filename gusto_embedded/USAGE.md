@@ -8,7 +8,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_v1_token_info()
+    res = gusto.introspection.get_info()
 
     # Handle response
     print(res)
@@ -28,7 +28,7 @@ async def main():
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
     ) as gusto:
 
-        res = await gusto.introspection.get_v1_token_info_async()
+        res = await gusto.introspection.get_info_async()
 
         # Handle response
         print(res)

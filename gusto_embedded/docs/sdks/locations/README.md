@@ -5,13 +5,13 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_id_locations](#post_v1_companies_company_id_locations) - Create a company location
-* [list](#list) - Get company locations
-* [get_v1_locations_location_id](#get_v1_locations_location_id) - Get a location
-* [put_v1_locations_location_id](#put_v1_locations_location_id) - Update a location
-* [get_v1_locations_location_uuid_minimum_wages](#get_v1_locations_location_uuid_minimum_wages) - Get minimum wages for a location
+* [create](#create) - Create a company location
+* [get](#get) - Get company locations
+* [retrieve](#retrieve) - Get a location
+* [update](#update) - Update a location
+* [get_minimum_wages](#get_minimum_wages) - Get minimum wages for a location
 
-## post_v1_companies_company_id_locations
+## create
 
 Company locations represent all addresses associated with a company. These can be filing addresses, mailing addresses, and/or work locations; one address may serve multiple, or all, purposes.
 
@@ -29,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.post_v1_companies_company_id_locations(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", street_2="Suite 602")
+    res = gusto.locations.create(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", street_2="Suite 602")
 
     # Handle response
     print(res)
@@ -63,7 +63,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list
+## get
 
 Company locations represent all addresses associated with a company. These can be filing addresses, mailing addresses, and/or work locations; one address may serve multiple, or all, purposes.
 
@@ -81,7 +81,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.list(company_id="<id>")
+    res = gusto.locations.get(company_id="<id>")
 
     # Handle response
     print(res)
@@ -108,7 +108,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_locations_location_id
+## retrieve
 
 Get a location.
 
@@ -124,7 +124,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.get_v1_locations_location_id(location_id="<id>")
+    res = gusto.locations.retrieve(location_id="<id>")
 
     # Handle response
     print(res)
@@ -149,7 +149,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_locations_location_id
+## update
 
 Update a location.
 
@@ -165,7 +165,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.put_v1_locations_location_id(location_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", phone_number="8009360383", street_1="425 2nd Street", street_2="Suite 602", city="San Francisco", state="CA", zip_code="94107", country="USA")
+    res = gusto.locations.update(location_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", phone_number="8009360383", street_1="425 2nd Street", street_2="Suite 602", city="San Francisco", state="CA", zip_code="94107", country="USA")
 
     # Handle response
     print(res)
@@ -201,7 +201,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_locations_location_uuid_minimum_wages
+## get_minimum_wages
 
 Get minimum wages for a location
 
@@ -217,7 +217,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.get_v1_locations_location_uuid_minimum_wages(location_uuid="<id>", effective_date="2020-01-31")
+    res = gusto.locations.get_minimum_wages(location_uuid="<id>", effective_date="2020-01-31")
 
     # Handle response
     print(res)

@@ -5,11 +5,53 @@
 
 ### Available Operations
 
-* [get_v1_contractor_form](#get_v1_contractor_form) - Get a contractor form
-* [get_v1_contractor_form_pdf](#get_v1_contractor_form_pdf) - Get the contractor form pdf
-* [post_v1_sandbox_generate_1099](#post_v1_sandbox_generate_1099) - Generate a 1099 form [DEMO]
+* [list](#list) - Get all contractor forms
+* [get](#get) - Get a contractor form
+* [get_pdf](#get_pdf) - Get the contractor form pdf
+* [generate1099](#generate1099) - Generate a 1099 form [DEMO]
 
-## get_v1_contractor_form
+## list
+
+Get a list of all contractor's forms
+
+scope: `contractor_forms:read`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractor_forms.list(contractor_uuid="<id>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.Form1099]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get
 
 Get a contractor form
 
@@ -25,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.get_v1_contractor_form(contractor_uuid="<id>", form_id="<id>")
+    res = gusto.contractor_forms.get(contractor_uuid="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -51,7 +93,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_contractor_form_pdf
+## get_pdf
 
 Get the link to the form PDF
 
@@ -67,7 +109,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.get_v1_contractor_form_pdf(contractor_uuid="<id>", form_id="<id>")
+    res = gusto.contractor_forms.get_pdf(contractor_uuid="<id>", form_id="<id>")
 
     # Handle response
     print(res)
@@ -93,7 +135,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## post_v1_sandbox_generate_1099
+## generate1099
 
 > 🚧 Demo action
 >
@@ -113,7 +155,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.post_v1_sandbox_generate_1099(contractor_id="<id>")
+    res = gusto.contractor_forms.generate1099(contractor_id="<id>")
 
     # Handle response
     print(res)

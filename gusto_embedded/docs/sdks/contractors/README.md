@@ -5,19 +5,17 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_uuid_contractors](#post_v1_companies_company_uuid_contractors) - Create a contractor
-* [get_v1_companies_company_uuid_contractors](#get_v1_companies_company_uuid_contractors) - Get contractors of a company
-* [get_v1_contractors_contractor_uuid](#get_v1_contractors_contractor_uuid) - Get a contractor
-* [put_v1_contractors_contractor_uuid](#put_v1_contractors_contractor_uuid) - Update a contractor
-* [delete_v1_contractors_contractor_uuid](#delete_v1_contractors_contractor_uuid) - Delete a contractor
-* [get_v1_contractors_contractor_uuid_onboarding_status](#get_v1_contractors_contractor_uuid_onboarding_status) - Get the contractor's onboarding status
-* [put_v1_contractors_contractor_uuid_onboarding_status](#put_v1_contractors_contractor_uuid_onboarding_status) - Change the contractor's onboarding status
-* [get_v1_contractors_contractor_uuid_address](#get_v1_contractors_contractor_uuid_address) - Get a contractor address
-* [put_v1_contractors_contractor_uuid_address](#put_v1_contractors_contractor_uuid_address) - Update a contractor's address
-* [get_forms](#get_forms) - Get all contractor forms
-* [put_v1_contractors_contractor_id_payment_method](#put_v1_contractors_contractor_id_payment_method) - Update a contractor's payment method
+* [create](#create) - Create a contractor
+* [list](#list) - Get contractors of a company
+* [get](#get) - Get a contractor
+* [update](#update) - Update a contractor
+* [delete](#delete) - Delete a contractor
+* [get_onboarding_status](#get_onboarding_status) - Get the contractor's onboarding status
+* [update_onboarding_status](#update_onboarding_status) - Change the contractor's onboarding status
+* [get_address](#get_address) - Get a contractor address
+* [update_address](#update_address) - Update a contractor's address
 
-## post_v1_companies_company_uuid_contractors
+## create
 
 Create an individual or business contractor.
 
@@ -34,7 +32,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.post_v1_companies_company_uuid_contractors(company_uuid="<id>", wage_type=gusto_embedded.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = gusto.contractors.create(company_uuid="<id>", wage_type=gusto_embedded.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
 
     # Handle response
     print(res)
@@ -75,7 +73,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_uuid_contractors
+## list
 
 Get all contractors, active and inactive, individual and business, for a company.
 
@@ -91,7 +89,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_v1_companies_company_uuid_contractors(company_uuid="<id>")
+    res = gusto.contractors.list(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -119,7 +117,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_contractors_contractor_uuid
+## get
 
 Get a contractor.
 
@@ -135,7 +133,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_v1_contractors_contractor_uuid(contractor_uuid="<id>")
+    res = gusto.contractors.get(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -160,7 +158,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_contractors_contractor_uuid
+## update
 
 Update a contractor.
 
@@ -181,7 +179,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.put_v1_contractors_contractor_uuid(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_embedded.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = gusto.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_embedded.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
 
     # Handle response
     print(res)
@@ -223,7 +221,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_v1_contractors_contractor_uuid
+## delete
 
 A contractor can only be deleted when there are no contractor payments.
 
@@ -239,7 +237,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.contractors.delete_v1_contractors_contractor_uuid(contractor_uuid="<id>")
+    gusto.contractors.delete(contractor_uuid="<id>")
 
     # Use the SDK ...
 
@@ -259,7 +257,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_contractors_contractor_uuid_onboarding_status
+## get_onboarding_status
 
 Retrieves a contractor's onboarding status. The data returned helps inform the required onboarding steps and respective completion status.
 
@@ -306,7 +304,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.get_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -331,7 +329,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_contractors_contractor_uuid_onboarding_status
+## update_onboarding_status
 
 Updates a contractor's onboarding status.
 
@@ -357,7 +355,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.put_v1_contractors_contractor_uuid_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -384,7 +382,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_contractors_contractor_uuid_address
+## get_address
 
 The address of a contractor is used to determine certain tax information about them. Addresses are geocoded on create and update to ensure validity.
 
@@ -400,7 +398,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_v1_contractors_contractor_uuid_address(contractor_uuid="<id>")
+    res = gusto.contractors.get_address(contractor_uuid="<id>")
 
     # Handle response
     print(res)
@@ -425,7 +423,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_contractors_contractor_uuid_address
+## update_address
 
 The address of a contractor is used to determine certain tax information about them. Addresses are geocoded on create and update to ensure validity.
 
@@ -441,7 +439,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.put_v1_contractors_contractor_uuid_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
+    res = gusto.contractors.update_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
 
     # Handle response
     print(res)
@@ -465,93 +463,6 @@ with Gusto(
 ### Response
 
 **[models.ContractorAddress](../../models/contractoraddress.md)**
-
-### Errors
-
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
-
-## get_forms
-
-Get a list of all contractor's forms
-
-scope: `contractor_forms:read`
-
-### Example Usage
-
-```python
-from gusto_embedded import Gusto
-import os
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.contractors.get_forms(contractor_uuid="<id>")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.Form1099]](../../models/.md)**
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
-
-## put_v1_contractors_contractor_id_payment_method
-
-Updates a contractor's payment method. Note that creating a contractor
-bank account will also update the contractor's payment method.
-
-scope: `contractor_payment_methods:write`
-
-### Example Usage
-
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.contractors.put_v1_contractors_contractor_id_payment_method(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
-| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            |
-| `type`                                                                                                                                                                                                                       | [models.PutV1ContractorsContractorIDPaymentMethodType](../../models/putv1contractorscontractoridpaymentmethodtype.md)                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The payment method type. If type is Direct Deposit, the contractor is required to have a bank account.<br/>see [Bank account endpoint](./post-v1-contractors-contractor_uuid-bank_accounts)                                  |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.ContractorPaymentMethod](../../models/contractorpaymentmethod.md)**
 
 ### Errors
 

@@ -5,23 +5,25 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_id_payrolls](#post_v1_companies_company_id_payrolls) - Create an off-cycle payroll
-* [get_v1_companies_company_id_payrolls](#get_v1_companies_company_id_payrolls) - Get all payrolls for a company
-* [get_v1_companies_company_id_payroll_reversals](#get_v1_companies_company_id_payroll_reversals) - Get approved payroll reversals
-* [get_v1_companies_company_id_payrolls_payroll_id](#get_v1_companies_company_id_payrolls_payroll_id) - Get a single payroll
-* [put_v1_companies_company_id_payrolls](#put_v1_companies_company_id_payrolls) - Update a payroll by ID
-* [delete_v1_companies_company_id_payrolls](#delete_v1_companies_company_id_payrolls) - Delete a payroll
-* [put_v1_companies_company_id_payrolls_payroll_id_prepare](#put_v1_companies_company_id_payrolls_payroll_id_prepare) - Prepare a payroll for update
-* [get_v1_payment_receipts_payrolls_payroll_uuid](#get_v1_payment_receipts_payrolls_payroll_uuid) - Get a single payroll receipt
-* [list_blockers](#list_blockers) - Get all payroll blockers for a company
-* [post_companies_payroll_skip_company_uuid](#post_companies_payroll_skip_company_uuid) - Skip a payroll
-* [post_payrolls_gross_up_payroll_uuid](#post_payrolls_gross_up_payroll_uuid) - Calculate gross up
-* [put_v1_companies_company_id_payrolls_payroll_id_calculate](#put_v1_companies_company_id_payrolls_payroll_id_calculate) - Calculate a payroll
-* [put_v1_companies_company_id_payrolls_payroll_id_submit](#put_v1_companies_company_id_payrolls_payroll_id_submit) - Submit payroll
-* [put_api_v1_companies_company_id_payrolls_payroll_id_cancel](#put_api_v1_companies_company_id_payrolls_payroll_id_cancel) - Cancel a payroll
-* [get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub](#get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub) - Get an employee pay stub (pdf)
+* [create_off_cycle](#create_off_cycle) - Create an off-cycle payroll
+* [list](#list) - Get all payrolls for a company
+* [get_approved_reversals](#get_approved_reversals) - Get approved payroll reversals
+* [get](#get) - Get a single payroll
+* [update](#update) - Update a payroll by ID
+* [delete](#delete) - Delete a payroll
+* [prepare](#prepare) - Prepare a payroll for update
+* [get_receipt](#get_receipt) - Get a single payroll receipt
+* [get_blockers](#get_blockers) - Get all payroll blockers for a company
+* [skip](#skip) - Skip a payroll
+* [calculate_gross_up](#calculate_gross_up) - Calculate gross up
+* [calculate](#calculate) - Calculate a payroll
+* [submit](#submit) - Submit payroll
+* [cancel](#cancel) - Cancel a payroll
+* [get_pay_stub](#get_pay_stub) - Get an employee pay stub (pdf)
+* [get_pay_stubs](#get_pay_stubs) - Get an employee's pay stubs
+* [generate_printable_checks](#generate_printable_checks) - Generate printable payroll checks (pdf)
 
-## post_v1_companies_company_id_payrolls
+## create_off_cycle
 
 Creates a new, unprocessed, off-cycle payroll.
 
@@ -45,7 +47,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.post_v1_companies_company_id_payrolls(company_id="<id>", off_cycle=True, off_cycle_reason=gusto_embedded.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
+    res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=True, off_cycle_reason=gusto_embedded.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
 
     # Handle response
     print(res)
@@ -81,7 +83,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_id_payrolls
+## list
 
 Returns a list of payrolls for a company. You can change the payrolls returned by updating the processing_status, payroll_types, start_date, & end_date params.
 
@@ -104,7 +106,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_v1_companies_company_id_payrolls(company_id="<id>", sort_order=gusto_embedded.SortOrder.ASC)
+    res = gusto.payrolls.list(company_id="<id>", sort_order=gusto_embedded.SortOrder.ASC)
 
     # Handle response
     print(res)
@@ -135,7 +137,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_payroll_reversals
+## get_approved_reversals
 
 Returns all approved Payroll Reversals for a Company.
 
@@ -151,7 +153,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_v1_companies_company_id_payroll_reversals(company_id="<id>")
+    res = gusto.payrolls.get_approved_reversals(company_id="<id>")
 
     # Handle response
     print(res)
@@ -178,7 +180,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_payrolls_payroll_id
+## get
 
 Returns a payroll. If payroll is calculated or processed, will return employee_compensations and totals.
 
@@ -202,7 +204,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_v1_companies_company_id_payrolls_payroll_id(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.get(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -229,7 +231,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_id_payrolls
+## update
 
 This endpoint allows you to update information for one or more employees for a specific **unprocessed** payroll.  You can think of the **unprocessed**
 payroll object as a template of fields that you can update.  You cannot modify the structure of the payroll object through this endpoint, only values
@@ -248,7 +250,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.put_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>", employee_compensations=[
+    res = gusto.payrolls.update(company_id="<id>", payroll_id="<id>", employee_compensations=[
         {},
         {},
         {},
@@ -280,7 +282,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_v1_companies_company_id_payrolls
+## delete
 
 This endpoint allows you to delete an **unprocessed** payroll.
 
@@ -298,7 +300,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.delete_v1_companies_company_id_payrolls(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.delete(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -320,7 +322,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_id_payrolls_payroll_id_prepare
+## prepare
 
 This endpoint will build the payroll and get it ready for making updates. This includes adding/removing eligible employees from the Payroll and updating the check_date, payroll_deadline, and payroll_status_meta dates & times.
 
@@ -340,7 +342,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_prepare(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.prepare(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -366,7 +368,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_payment_receipts_payrolls_payroll_uuid
+## get_receipt
 
 Returns a payroll receipt.
 
@@ -387,7 +389,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_v1_payment_receipts_payrolls_payroll_uuid(payroll_uuid="<id>")
+    res = gusto.payrolls.get_receipt(payroll_uuid="<id>")
 
     # Handle response
     print(res)
@@ -412,7 +414,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## list_blockers
+## get_blockers
 
 Returns a list of reasons that prevent the company from running payrolls. See the [payroll blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers) for a complete list of reasons.
 
@@ -430,7 +432,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.list_blockers(company_uuid="<id>")
+    res = gusto.payrolls.get_blockers(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -455,7 +457,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## post_companies_payroll_skip_company_uuid
+## skip
 
 Submits a $0 payroll for employees associated with the pay schedule to skip payroll. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, the payroll is transitioned to the `processed` state.
 
@@ -474,7 +476,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.post_companies_payroll_skip_company_uuid(company_uuid="<id>", payroll_type=gusto_embedded.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
+    gusto.payrolls.skip(company_uuid="<id>", payroll_type=gusto_embedded.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
 
     # Use the SDK ...
 
@@ -500,7 +502,7 @@ with Gusto(
 | models.PostCompaniesPayrollSkipCompanyUUIDResponseBody | 422                                                    | application/json                                       |
 | models.APIError                                        | 4XX, 5XX                                               | \*/\*                                                  |
 
-## post_payrolls_gross_up_payroll_uuid
+## calculate_gross_up
 
 Calculates gross up earnings for an employee's payroll, given net earnings. This endpoint is only applicable to off-cycle unprocessed payrolls.
 
@@ -518,7 +520,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.post_payrolls_gross_up_payroll_uuid(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00")
+    res = gusto.payrolls.calculate_gross_up(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00")
 
     # Handle response
     print(res)
@@ -546,7 +548,7 @@ with Gusto(
 | models.PostPayrollsGrossUpPayrollUUIDResponseBody | 422                                               | application/json                                  |
 | models.APIError                                   | 4XX, 5XX                                          | \*/\*                                             |
 
-## put_v1_companies_company_id_payrolls_payroll_id_calculate
+## calculate
 
 Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
 
@@ -565,7 +567,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_calculate(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.calculate(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -587,7 +589,7 @@ with Gusto(
 | models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBody | 422                                                                  | application/json                                                     |
 | models.APIError                                                      | 4XX, 5XX                                                             | \*/\*                                                                |
 
-## put_v1_companies_company_id_payrolls_payroll_id_submit
+## submit
 
 Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
 
@@ -607,7 +609,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.put_v1_companies_company_id_payrolls_payroll_id_submit(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.submit(company_id="<id>", payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -630,7 +632,7 @@ with Gusto(
 | models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBody | 422                                                               | application/json                                                  |
 | models.APIError                                                   | 4XX, 5XX                                                          | \*/\*                                                             |
 
-## put_api_v1_companies_company_id_payrolls_payroll_id_cancel
+## cancel
 
 Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
 - `processed` is true
@@ -649,7 +651,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.put_api_v1_companies_company_id_payrolls_payroll_id_cancel(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.cancel(company_id="<id>", payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -676,7 +678,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub
+## get_pay_stub
 
 Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
 
@@ -692,7 +694,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stub(payroll_id="<id>", employee_id="<id>")
+    gusto.payrolls.get_pay_stub(payroll_id="<id>", employee_id="<id>")
 
     # Use the SDK ...
 
@@ -712,3 +714,89 @@ with Gusto(
 | Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_pay_stubs
+
+Get an employee's pay stubs
+
+scope: `pay_stubs:read`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.payrolls.get_pay_stubs(employee_id="<id>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.EmployeePayStub]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## generate_printable_checks
+
+This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
+
+scope: `generated_documents:write`
+
+### Example Usage
+
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.BOTTOM)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `printing_format`                                                                                                                                                                                                            | [models.PrintingFormat](../../models/printingformat.md)                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | The type of check stock being printed. Check the "Types of check stock" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types                        |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `starting_check_number`                                                                                                                                                                                                      | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers.                                                                                    |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.PayrollCheck](../../models/payrollcheck.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

@@ -5,18 +5,18 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_id_pay_schedules](#post_v1_companies_company_id_pay_schedules) - Create a new pay schedule
-* [list](#list) - Get the pay schedules for a company
-* [get_v1_companies_company_id_pay_schedules_preview](#get_v1_companies_company_id_pay_schedules_preview) - Preview pay schedule dates
-* [get_v1_companies_company_id_pay_schedules_pay_schedule_id](#get_v1_companies_company_id_pay_schedules_pay_schedule_id) - Get a pay schedule
-* [put_v1_companies_company_id_pay_schedules_pay_schedule_id](#put_v1_companies_company_id_pay_schedules_pay_schedule_id) - Update a pay schedule
-* [list_pay_periods](#list_pay_periods) - Get pay periods for a company
-* [get_v1_companies_company_id_unprocessed_termination_pay_periods](#get_v1_companies_company_id_unprocessed_termination_pay_periods) - Get termination pay periods for a company
-* [get_v1_companies_company_id_pay_schedules_assignments](#get_v1_companies_company_id_pay_schedules_assignments) - Get pay schedule assignments for a company
-* [post_v1_companies_company_id_pay_schedules_assignment_preview](#post_v1_companies_company_id_pay_schedules_assignment_preview) - Preview pay schedule assignments for a company
-* [post_v1_companies_company_id_pay_schedules_assign](#post_v1_companies_company_id_pay_schedules_assign) - Assign pay schedules for a company
+* [create](#create) - Create a new pay schedule
+* [get_all](#get_all) - Get the pay schedules for a company
+* [get_preview](#get_preview) - Preview pay schedule dates
+* [get](#get) - Get a pay schedule
+* [update](#update) - Update a pay schedule
+* [get_pay_periods](#get_pay_periods) - Get pay periods for a company
+* [get_unprocessed_termination_periods](#get_unprocessed_termination_periods) - Get termination pay periods for a company
+* [get_assignments](#get_assignments) - Get pay schedule assignments for a company
+* [preview_assignment](#preview_assignment) - Preview pay schedule assignments for a company
+* [assign](#assign) - Assign pay schedules for a company
 
-## post_v1_companies_company_id_pay_schedules
+## create
 
 If a company does not have any pay schedules, this endpoint will create a single pay schedule and assign it to all employees. This is a common use case during company onboarding.
 
@@ -37,7 +37,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.post_v1_companies_company_id_pay_schedules(company_id="<id>", frequency=gusto_embedded.Frequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule")
+    res = gusto.pay_schedules.create(company_id="<id>", frequency=gusto_embedded.Frequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule")
 
     # Handle response
     print(res)
@@ -69,7 +69,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list
+## get_all
 
 The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
 
@@ -85,7 +85,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.list(company_id="<id>")
+    res = gusto.pay_schedules.get_all(company_id="<id>")
 
     # Handle response
     print(res)
@@ -112,7 +112,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_pay_schedules_preview
+## get_preview
 
 Provides a preview of a pay schedule with the specified parameters for the next 18 months.
 
@@ -129,7 +129,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_preview(company_id="<id>", frequency=gusto_embedded.QueryParamFrequency.EVERY_OTHER_WEEK, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
+    res = gusto.pay_schedules.get_preview(company_id="<id>", frequency=gusto_embedded.QueryParamFrequency.EVERY_OTHER_WEEK, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
 
     # Handle response
     print(res)
@@ -159,7 +159,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_pay_schedules_pay_schedule_id
+## get
 
 The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
 
@@ -175,7 +175,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>")
+    res = gusto.pay_schedules.get(company_id="<id>", pay_schedule_id="<id>")
 
     # Handle response
     print(res)
@@ -201,7 +201,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_id_pay_schedules_pay_schedule_id
+## update
 
 Updates a pay schedule.
 
@@ -218,7 +218,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.put_v1_companies_company_id_pay_schedules_pay_schedule_id(company_id="<id>", pay_schedule_id="<id>", version="68934a3e9455fa72420237eb05902327", frequency=gusto_embedded.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule", auto_pilot=True)
+    res = gusto.pay_schedules.update(company_id="<id>", pay_schedule_id="<id>", version="68934a3e9455fa72420237eb05902327", frequency=gusto_embedded.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency.TWICE_PER_MONTH, anchor_pay_date="2021-10-15", anchor_end_of_pay_period="2021-10-15", day_1=15, day_2=31, custom_name="demo pay schedule", auto_pilot=True)
 
     # Handle response
     print(res)
@@ -253,7 +253,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list_pay_periods
+## get_pay_periods
 
 Pay periods are the foundation of payroll. Compensation, time & attendance, taxes, and expense reports all rely on when they happened. To begin submitting information for a given payroll, we need to agree on the time period.
 
@@ -273,7 +273,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.list_pay_periods(company_id="<id>", start_date="2020-01-01", end_date="2020-01-31")
+    res = gusto.pay_schedules.get_pay_periods(company_id="<id>", start_date="2020-01-01", end_date="2020-01-31")
 
     # Handle response
     print(res)
@@ -301,7 +301,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_unprocessed_termination_pay_periods
+## get_unprocessed_termination_periods
 
 When a payroll admin terminates an employee and selects "Dismissal Payroll" as the employee's final payroll, their last pay period will appear on the list.
 
@@ -319,7 +319,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.get_v1_companies_company_id_unprocessed_termination_pay_periods(company_id="<id>")
+    res = gusto.pay_schedules.get_unprocessed_termination_periods(company_id="<id>")
 
     # Handle response
     print(res)
@@ -344,7 +344,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_companies_company_id_pay_schedules_assignments
+## get_assignments
 
 This endpoint returns the current pay schedule assignment for a company, with pay schedule and employee/department mappings depending on the pay schedule type.
 
@@ -360,7 +360,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.get_v1_companies_company_id_pay_schedules_assignments(company_id="<id>")
+    res = gusto.pay_schedules.get_assignments(company_id="<id>")
 
     # Handle response
     print(res)
@@ -385,7 +385,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## post_v1_companies_company_id_pay_schedules_assignment_preview
+## preview_assignment
 
 This endpoint returns the employee changes, including pay period and transition pay periods, for changing the pay schedule.
 
@@ -402,7 +402,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.post_v1_companies_company_id_pay_schedules_assignment_preview(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
+    res = gusto.pay_schedules.preview_assignment(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
         {
             "employee_uuid": "f0238368-f2cf-43e2-9a07-b0265f2cec69",
             "pay_schedule_uuid": "c277ac52-9871-4a96-a1e6-0c449684602a",
@@ -440,7 +440,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## post_v1_companies_company_id_pay_schedules_assign
+## assign
 
 This endpoint assigns employees to pay schedules based on the schedule type.
 For `by_employee` and `by_department` schedules, use the `partial_assignment` parameter to control the assignment scope. Set it to `true` for partial assignments (only some employees or departments at a time) and `false` for full assignments (all employees or departments at once).
@@ -458,7 +458,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.pay_schedules.post_v1_companies_company_id_pay_schedules_assign(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
+    gusto.pay_schedules.assign(company_id="<id>", type_=gusto_embedded.PayScheduleAssignmentBodyType.BY_EMPLOYEE, employees=[
         {
             "employee_uuid": "f0238368-f2cf-43e2-9a07-b0265f2cec69",
             "pay_schedule_uuid": "c277ac52-9871-4a96-a1e6-0c449684602a",

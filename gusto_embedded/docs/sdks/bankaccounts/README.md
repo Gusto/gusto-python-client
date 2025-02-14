@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_id_bank_accounts](#post_v1_companies_company_id_bank_accounts) - Create a company bank account
-* [get_v1_companies_company_id_bank_accounts](#get_v1_companies_company_id_bank_accounts) - Get all company bank accounts
-* [put_v1_companies_company_id_bank_accounts_verify](#put_v1_companies_company_id_bank_accounts_verify) - Verify a company bank account
-* [post_v1_plaid_processor_token](#post_v1_plaid_processor_token) - Create a bank account from a plaid processor token
+* [create](#create) - Create a company bank account
+* [get](#get) - Get all company bank accounts
+* [verify](#verify) - Verify a company bank account
+* [create_from_plaid_token](#create_from_plaid_token) - Create a bank account from a plaid processor token
 
-## post_v1_companies_company_id_bank_accounts
+## create
 
 This endpoint creates a new company bank account.
 
@@ -36,7 +36,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.post_v1_companies_company_id_bank_accounts(company_id="<id>", routing_number="115092013", account_number="9775014007", account_type=gusto_embedded.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
+    res = gusto.bank_accounts.create(company_id="<id>", routing_number="115092013", account_number="9775014007", account_type=gusto_embedded.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -65,7 +65,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_id_bank_accounts
+## get
 
 Returns company bank accounts. Currently, we only support a single default bank account per company.
 
@@ -81,7 +81,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.get_v1_companies_company_id_bank_accounts(company_id="<id>")
+    res = gusto.bank_accounts.get(company_id="<id>")
 
     # Handle response
     print(res)
@@ -106,7 +106,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_id_bank_accounts_verify
+## verify
 
 Verify a company bank account by confirming the two micro-deposits sent to the bank account. Note that the order of the two deposits specified in request parameters does not matter. There's a maximum of 5 verification attempts, after which we will automatically initiate a new set of micro-deposits and require the bank account to be verified with the new micro-deposits.
 
@@ -135,7 +135,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.put_v1_companies_company_id_bank_accounts_verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42)
+    res = gusto.bank_accounts.verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42)
 
     # Handle response
     print(res)
@@ -164,7 +164,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## post_v1_plaid_processor_token
+## create_from_plaid_token
 
 This endpoint creates a new **verified** bank account by using a plaid processor token to retrieve its information.
 
@@ -188,7 +188,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.post_v1_plaid_processor_token(owner_type=gusto_embedded.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc")
+    res = gusto.bank_accounts.create_from_plaid_token(owner_type=gusto_embedded.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc")
 
     # Handle response
     print(res)

@@ -5,12 +5,12 @@
 
 ### Available Operations
 
-* [post_v1_companies_company_id_earning_types](#post_v1_companies_company_id_earning_types) - Create a custom earning type
-* [get_v1_companies_company_id_earning_types](#get_v1_companies_company_id_earning_types) - Get all earning types for a company
-* [put_v1_companies_company_id_earning_types_earning_type_uuid](#put_v1_companies_company_id_earning_types_earning_type_uuid) - Update an earning type
-* [delete_v1_companies_company_id_earning_types_earning_type_uuid](#delete_v1_companies_company_id_earning_types_earning_type_uuid) - Deactivate an earning type
+* [create](#create) - Create a custom earning type
+* [list](#list) - Get all earning types for a company
+* [update](#update) - Update an earning type
+* [delete](#delete) - Deactivate an earning type
 
-## post_v1_companies_company_id_earning_types
+## create
 
 Create a custom earning type.
 
@@ -28,7 +28,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.earning_types.post_v1_companies_company_id_earning_types(company_id="<id>", name="Gym Membership Stipend")
+    res = gusto.earning_types.create(company_id="<id>", name="Gym Membership Stipend")
 
     # Handle response
     print(res)
@@ -55,7 +55,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_id_earning_types
+## list
 
 A payroll item in Gusto is associated to an earning type to name the type of earning described by the payroll item.
 
@@ -77,7 +77,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.earning_types.get_v1_companies_company_id_earning_types(company_id="<id>")
+    res = gusto.earning_types.list(company_id="<id>")
 
     # Handle response
     print(res)
@@ -102,7 +102,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_id_earning_types_earning_type_uuid
+## update
 
 Update an earning type.
 
@@ -118,7 +118,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.earning_types.put_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>", name="Gym Membership Stipend")
+    res = gusto.earning_types.update(company_id="<id>", earning_type_uuid="<id>", name="Gym Membership Stipend")
 
     # Handle response
     print(res)
@@ -146,7 +146,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_v1_companies_company_id_earning_types_earning_type_uuid
+## delete
 
 Deactivate an earning type.
 
@@ -162,7 +162,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.earning_types.delete_v1_companies_company_id_earning_types_earning_type_uuid(company_id="<id>", earning_type_uuid="<id>")
+    gusto.earning_types.delete(company_id="<id>", earning_type_uuid="<id>")
 
     # Use the SDK ...
 

@@ -5,9 +5,51 @@
 
 ### Available Operations
 
-* [put_v1_companies_company_id_federal_tax_details](#put_v1_companies_company_id_federal_tax_details) - Update Federal Tax Details
+* [get](#get) - Get Federal Tax Details
+* [update](#update) - Update Federal Tax Details
 
-## put_v1_companies_company_id_federal_tax_details
+## get
+
+Fetches attributes relevant for a company's federal taxes.
+
+scope: `company_federal_taxes:read`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.federal_tax_details.get(company_id="<id>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.FederalTaxDetails](../../models/federaltaxdetails.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## update
 
 Updates attributes relevant for a company's federal taxes.
 This information is required is to onboard a company for use with Gusto Embedded Payroll.
@@ -25,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.federal_tax_details.put_v1_companies_company_id_federal_tax_details(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", legal_name="Acme Corp.", tax_payer_type=gusto_embedded.TaxPayerType.LLP, filing_form=gusto_embedded.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
+    res = gusto.federal_tax_details.update(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", legal_name="Acme Corp.", tax_payer_type=gusto_embedded.TaxPayerType.LLP, filing_form=gusto_embedded.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
 
     # Handle response
     print(res)

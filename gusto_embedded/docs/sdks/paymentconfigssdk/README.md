@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [get_v1_company_payment_configs](#get_v1_company_payment_configs) - Get a company's payment configs
-* [put_v1_company_payment_configs](#put_v1_company_payment_configs) - Update a company's payment configs
+* [get](#get) - Get a company's payment configs
+* [update](#update) - Update a company's payment configs
 
-## get_v1_company_payment_configs
+## get
 
 Get payment speed for the company and fast payment limit (1-day is only applicable to partners that opt in).
 
@@ -24,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payment_configs.get_v1_company_payment_configs(company_uuid="<id>")
+    res = gusto.payment_configs.get(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -49,7 +49,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_company_payment_configs
+## update
 
 Update payment speed and fast payment limit for a company. At least one of `payment_speed` or `fast_payment_limit` parameters is required. 1-day option is only applicable to partners that opt in.
 
@@ -66,7 +66,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payment_configs.put_v1_company_payment_configs(company_uuid="<id>", request_body={
+    res = gusto.payment_configs.update(company_uuid="<id>", request_body={
         "fast_payment_limit": "5000",
         "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_DAY,
     })

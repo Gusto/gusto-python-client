@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Departments(BaseSDK):
-    def post_departments(
+    def create(
         self,
         *,
         company_uuid: str,
@@ -123,7 +123,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def post_departments_async(
+    async def create_async(
         self,
         *,
         company_uuid: str,
@@ -237,7 +237,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def get_companies_departments(
+    def get_all(
         self,
         *,
         company_uuid: str,
@@ -333,7 +333,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def get_companies_departments_async(
+    async def get_all_async(
         self,
         *,
         company_uuid: str,
@@ -429,7 +429,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def get_department(
+    def get(
         self,
         *,
         department_uuid: str,
@@ -526,7 +526,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def get_department_async(
+    async def get_async(
         self,
         *,
         department_uuid: str,
@@ -623,7 +623,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def put_departments(
+    def update(
         self,
         *,
         department_uuid: str,
@@ -740,7 +740,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def put_departments_async(
+    async def update_async(
         self,
         *,
         department_uuid: str,
@@ -857,7 +857,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def delete_department(
+    def delete(
         self,
         *,
         department_uuid: str,
@@ -960,7 +960,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def delete_department_async(
+    async def delete_async(
         self,
         *,
         department_uuid: str,
@@ -1063,7 +1063,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def put_add_people_to_department(
+    def add_people(
         self,
         *,
         department_uuid: str,
@@ -1193,7 +1193,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def put_add_people_to_department_async(
+    async def add_people_async(
         self,
         *,
         department_uuid: str,
@@ -1323,7 +1323,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    def put_remove_people_from_department(
+    def remove_people(
         self,
         *,
         department_uuid: str,
@@ -1454,7 +1454,7 @@ class Departments(BaseSDK):
             http_res,
         )
 
-    async def put_remove_people_from_department_async(
+    async def remove_people_async(
         self,
         *,
         department_uuid: str,

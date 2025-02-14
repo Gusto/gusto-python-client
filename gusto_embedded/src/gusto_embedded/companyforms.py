@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class CompanyForms(BaseSDK):
-    def get_v1_company_forms(
+    def get_all(
         self,
         *,
         company_id: str,
@@ -105,7 +105,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    async def get_v1_company_forms_async(
+    async def get_all_async(
         self,
         *,
         company_id: str,
@@ -201,7 +201,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    def get_v1_company_form(
+    def get(
         self,
         *,
         form_id: str,
@@ -297,7 +297,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    async def get_v1_company_form_async(
+    async def get_async(
         self,
         *,
         form_id: str,
@@ -393,7 +393,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    def get_v1_company_form_pdf(
+    def get_pdf(
         self,
         *,
         form_id: str,
@@ -489,7 +489,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    async def get_v1_company_form_pdf_async(
+    async def get_pdf_async(
         self,
         *,
         form_id: str,
@@ -585,7 +585,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    def put_v1_company_form_sign(
+    def sign(
         self,
         *,
         form_id: str,
@@ -705,7 +705,7 @@ class CompanyForms(BaseSDK):
             http_res,
         )
 
-    async def put_v1_company_form_sign_async(
+    async def sign_async(
         self,
         *,
         form_id: str,

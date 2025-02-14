@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [get_recovery_cases](#get_recovery_cases) - Get all recovery cases for a company
-* [redebit_recovery_case](#redebit_recovery_case) - Initiate a redebit for a recovery case
+* [get](#get) - Get all recovery cases for a company
+* [redebit](#redebit) - Initiate a redebit for a recovery case
 
-## get_recovery_cases
+## get
 
 Fetch all recovery cases for a company.
 
@@ -24,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.recovery_cases.get_recovery_cases(company_uuid="<id>")
+    res = gusto.recovery_cases.get(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -49,7 +49,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## redebit_recovery_case
+## redebit
 
 After resolving the underlying bank error, initiate a redebit for an open recovery case. This submission is asynchronous and a successful request responds with a 202 HTTP status.
 
@@ -69,7 +69,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.recovery_cases.redebit_recovery_case(recovery_case_uuid="<id>")
+    gusto.recovery_cases.redebit(recovery_case_uuid="<id>")
 
     # Use the SDK ...
 

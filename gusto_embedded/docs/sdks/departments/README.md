@@ -5,15 +5,15 @@
 
 ### Available Operations
 
-* [post_departments](#post_departments) - Create a department
-* [get_companies_departments](#get_companies_departments) - Get all departments of a company
-* [get_department](#get_department) - Get a department
-* [put_departments](#put_departments) - Update a department
-* [delete_department](#delete_department) - Delete a department
-* [put_add_people_to_department](#put_add_people_to_department) - Add people to a department
-* [put_remove_people_from_department](#put_remove_people_from_department) - Remove people from a department
+* [create](#create) - Create a department
+* [get_all](#get_all) - Get all departments of a company
+* [get](#get) - Get a department
+* [update](#update) - Update a department
+* [delete](#delete) - Delete a department
+* [add_people](#add_people) - Add people to a department
+* [remove_people](#remove_people) - Remove people from a department
 
-## post_departments
+## create
 
 Create a department
 
@@ -29,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.post_departments(company_uuid="<id>", title="Stage Hand")
+    res = gusto.departments.create(company_uuid="<id>", title="Stage Hand")
 
     # Handle response
     print(res)
@@ -56,7 +56,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_companies_departments
+## get_all
 
 Get all of the departments for a given company with the employees and contractors assigned to that department.
 
@@ -72,7 +72,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.get_companies_departments(company_uuid="<id>")
+    res = gusto.departments.get_all(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -97,7 +97,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_department
+## get
 
 Get a department given the UUID
 
@@ -114,7 +114,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.get_department(department_uuid="<id>")
+    res = gusto.departments.get(department_uuid="<id>")
 
     # Handle response
     print(res)
@@ -139,7 +139,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_departments
+## update
 
 Update a department
 
@@ -155,7 +155,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.put_departments(department_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", title="Backup Dancer")
+    res = gusto.departments.update(department_uuid="<id>", version="db0edd04aaac4506f7edab03ac855d56", title="Backup Dancer")
 
     # Handle response
     print(res)
@@ -183,7 +183,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_department
+## delete
 
 Delete a department. You cannot delete a department until all employees and contractors have been removed.
 
@@ -200,7 +200,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.departments.delete_department(department_uuid="<id>")
+    gusto.departments.delete(department_uuid="<id>")
 
     # Use the SDK ...
 
@@ -221,7 +221,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## put_add_people_to_department
+## add_people
 
 Add employees and contractors to a department
 
@@ -238,7 +238,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.put_add_people_to_department(department_uuid="<id>")
+    res = gusto.departments.add_people(department_uuid="<id>")
 
     # Handle response
     print(res)
@@ -266,7 +266,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_remove_people_from_department
+## remove_people
 
 Remove employees and contractors from a department
 
@@ -283,7 +283,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.departments.put_remove_people_from_department(department_uuid="<id>")
+    res = gusto.departments.remove_people(department_uuid="<id>")
 
     # Handle response
     print(res)

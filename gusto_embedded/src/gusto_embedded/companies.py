@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Companies(BaseSDK):
-    def post_v1_partner_managed_companies(
+    def create_partner_managed(
         self,
         *,
         security: Union[
@@ -144,7 +144,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def post_v1_partner_managed_companies_async(
+    async def create_partner_managed_async(
         self,
         *,
         security: Union[
@@ -279,7 +279,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def get_v1_companies(
+    def get(
         self,
         *,
         company_id: str,
@@ -378,7 +378,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def get_v1_companies_async(
+    async def get_async(
         self,
         *,
         company_id: str,
@@ -477,7 +477,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def put_v1_companies(
+    def update(
         self,
         *,
         company_id: str,
@@ -591,7 +591,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def put_v1_companies_async(
+    async def update_async(
         self,
         *,
         company_id: str,
@@ -705,7 +705,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def put_v1_partner_managed_companies_company_uuid_migrate(
+    def migrate(
         self,
         *,
         company_uuid: str,
@@ -830,7 +830,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def put_v1_partner_managed_companies_company_uuid_migrate_async(
+    async def migrate_async(
         self,
         *,
         company_uuid: str,
@@ -955,7 +955,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def post_partner_managed_companies_company_uuid_accept_terms_of_service(
+    def accept_terms_of_service(
         self,
         *,
         company_uuid: str,
@@ -1079,7 +1079,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def post_partner_managed_companies_company_uuid_accept_terms_of_service_async(
+    async def accept_terms_of_service_async(
         self,
         *,
         company_uuid: str,
@@ -1203,7 +1203,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def post_partner_managed_companies_company_uuid_retrieve_terms_of_service(
+    def retrieve_terms_of_service(
         self,
         *,
         company_uuid: str,
@@ -1322,7 +1322,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def post_partner_managed_companies_company_uuid_retrieve_terms_of_service_async(
+    async def retrieve_terms_of_service_async(
         self,
         *,
         company_uuid: str,
@@ -1441,7 +1441,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def post_v1_companies_company_id_admins(
+    def create_admin(
         self,
         *,
         company_id: str,
@@ -1562,7 +1562,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def post_v1_companies_company_id_admins_async(
+    async def create_admin_async(
         self,
         *,
         company_id: str,
@@ -1683,7 +1683,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def get_v1_companies_company_id_admins(
+    def list_admins(
         self,
         *,
         company_id: str,
@@ -1785,7 +1785,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def get_v1_companies_company_id_admins_async(
+    async def list_admins_async(
         self,
         *,
         company_id: str,
@@ -1887,7 +1887,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def get_v1_company_onboarding_status(
+    def get_onboarding_status(
         self,
         *,
         company_uuid: str,
@@ -1984,7 +1984,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def get_v1_company_onboarding_status_async(
+    async def get_onboarding_status_async(
         self,
         *,
         company_uuid: str,
@@ -2081,7 +2081,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def get_v1_company_finish_onboarding(
+    def finish_onboarding(
         self,
         *,
         company_uuid: str,
@@ -2195,7 +2195,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def get_v1_company_finish_onboarding_async(
+    async def finish_onboarding_async(
         self,
         *,
         company_uuid: str,
@@ -2309,7 +2309,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    def get_v1_companies_company_id_custom_fields(
+    def get_custom_fields(
         self,
         *,
         company_id: str,
@@ -2411,7 +2411,7 @@ class Companies(BaseSDK):
             http_res,
         )
 
-    async def get_v1_companies_company_id_custom_fields_async(
+    async def get_custom_fields_async(
         self,
         *,
         company_id: str,

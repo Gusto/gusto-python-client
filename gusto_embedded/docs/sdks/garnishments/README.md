@@ -5,13 +5,13 @@
 
 ### Available Operations
 
-* [post_v1_employees_employee_id_garnishments](#post_v1_employees_employee_id_garnishments) - Create a garnishment
-* [get_v1_employees_employee_id_garnishments](#get_v1_employees_employee_id_garnishments) - Get garnishments for an employee
-* [get_by_id](#get_by_id) - Get a garnishment
-* [put_v1_garnishments_garnishment_id](#put_v1_garnishments_garnishment_id) - Update a garnishment
-* [get_v1_garnishments_child_support](#get_v1_garnishments_child_support) - Get child support garnishment data
+* [create](#create) - Create a garnishment
+* [list](#list) - Get garnishments for an employee
+* [get](#get) - Get a garnishment
+* [update](#update) - Update a garnishment
+* [get_child_support_data](#get_child_support_data) - Get child support garnishment data
 
-## post_v1_employees_employee_id_garnishments
+## create
 
 Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
@@ -27,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.post_v1_employees_employee_id_garnishments(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gusto.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
 
     # Handle response
     print(res)
@@ -65,7 +65,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_employees_employee_id_garnishments
+## list
 
 Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
@@ -81,7 +81,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get_v1_employees_employee_id_garnishments(employee_id="<id>")
+    res = gusto.garnishments.list(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -108,7 +108,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_by_id
+## get
 
 Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
@@ -124,7 +124,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get_by_id(garnishment_id="<id>")
+    res = gusto.garnishments.get(garnishment_id="<id>")
 
     # Handle response
     print(res)
@@ -149,7 +149,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_garnishments_garnishment_id
+## update
 
 Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
@@ -165,7 +165,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.put_v1_garnishments_garnishment_id(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
 
     # Handle response
     print(res)
@@ -203,7 +203,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_garnishments_child_support
+## get_child_support_data
 
 Agency data and requirements to be used for creating child support garnishments
 
@@ -219,7 +219,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get_v1_garnishments_child_support()
+    res = gusto.garnishments.get_child_support_data()
 
     # Handle response
     print(res)

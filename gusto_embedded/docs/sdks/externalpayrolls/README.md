@@ -5,17 +5,17 @@
 
 ### Available Operations
 
-* [post_v1_external_payroll](#post_v1_external_payroll) - Create a new external payroll for a company
-* [get_v1_company_external_payrolls](#get_v1_company_external_payrolls) - Get external payrolls for a company
-* [get_v1_external_payroll](#get_v1_external_payroll) - Get an external payroll
-* [delete_v1_external_payroll](#delete_v1_external_payroll) - Delete an external payroll
-* [put_v1_external_payroll](#put_v1_external_payroll) - Update an external payroll
-* [get_v1_external_payroll_calculate_taxes](#get_v1_external_payroll_calculate_taxes) - Get tax suggestions for an external payroll
-* [get_v1_tax_liabilities](#get_v1_tax_liabilities) - Get tax liabilities
-* [put_v1_tax_liabilities](#put_v1_tax_liabilities) - Update tax liabilities
-* [put_v1_tax_liabilities_finish](#put_v1_tax_liabilities_finish) - Finalize tax liabilities options and convert into processed payrolls
+* [create](#create) - Create a new external payroll for a company
+* [get](#get) - Get external payrolls for a company
+* [retrieve](#retrieve) - Get an external payroll
+* [delete](#delete) - Delete an external payroll
+* [update](#update) - Update an external payroll
+* [calculate_taxes](#calculate_taxes) - Get tax suggestions for an external payroll
+* [list_tax_liabilities](#list_tax_liabilities) - Get tax liabilities
+* [update_tax_liabilities](#update_tax_liabilities) - Update tax liabilities
+* [finalize_tax_liabilities](#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 
-## post_v1_external_payroll
+## create
 
 Creates a new external payroll for the company.
 
@@ -31,7 +31,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.post_v1_external_payroll(company_uuid="<id>", check_date="2022-06-01", payment_period_start_date="2022-05-15", payment_period_end_date="2022-05-30")
+    res = gusto.external_payrolls.create(company_uuid="<id>", check_date="2022-06-01", payment_period_start_date="2022-05-15", payment_period_end_date="2022-05-30")
 
     # Handle response
     print(res)
@@ -60,7 +60,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_company_external_payrolls
+## get
 
 Get an external payroll for a given company.
 
@@ -76,7 +76,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.get_v1_company_external_payrolls(company_uuid="<id>")
+    res = gusto.external_payrolls.get(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -101,7 +101,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_external_payroll
+## retrieve
 
 Get an external payroll for a given company.
 
@@ -117,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.get_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
+    res = gusto.external_payrolls.retrieve(company_uuid="<id>", external_payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -143,7 +143,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## delete_v1_external_payroll
+## delete
 
 Delete an external payroll.
 
@@ -159,7 +159,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.external_payrolls.delete_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>")
+    gusto.external_payrolls.delete(company_uuid="<id>", external_payroll_id="<id>")
 
     # Use the SDK ...
 
@@ -180,7 +180,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_external_payroll
+## update
 
 Update an external payroll with a list of external payroll items
 
@@ -197,7 +197,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.put_v1_external_payroll(company_uuid="<id>", external_payroll_id="<id>", replace_fields=True, external_payroll_items=[
+    res = gusto.external_payrolls.update(company_uuid="<id>", external_payroll_id="<id>", replace_fields=True, external_payroll_items=[
         {
             "employee_uuid": "403c6ee3-5f58-40ef-a117-ff7175cd9ee3",
             "earnings": [
@@ -266,7 +266,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_external_payroll_calculate_taxes
+## calculate_taxes
 
 Get tax suggestions for an external payroll. Earnings and/or benefits
 data must be saved prior to the calculation in order to retrieve accurate
@@ -284,7 +284,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.get_v1_external_payroll_calculate_taxes(company_uuid="<id>", external_payroll_id="<id>")
+    res = gusto.external_payrolls.calculate_taxes(company_uuid="<id>", external_payroll_id="<id>")
 
     # Handle response
     print(res)
@@ -310,7 +310,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_tax_liabilities
+## list_tax_liabilities
 
 Get tax liabilities from aggregate external payrolls for a company.
 
@@ -326,7 +326,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.get_v1_tax_liabilities(company_uuid="<id>")
+    res = gusto.external_payrolls.list_tax_liabilities(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -351,7 +351,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_tax_liabilities
+## update_tax_liabilities
 
 Update tax liabilities for a company.
 
@@ -367,7 +367,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.external_payrolls.put_v1_tax_liabilities(company_uuid="<id>", liability_selections=[
+    res = gusto.external_payrolls.update_tax_liabilities(company_uuid="<id>", liability_selections=[
         {
             "tax_id": 1,
             "last_unpaid_external_payroll_uuid": "7985032c-ee3a-4e98-af27-d56551eb5f1c",
@@ -410,7 +410,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## put_v1_tax_liabilities_finish
+## finalize_tax_liabilities
 
 Finalizes tax liabilities for a company. All external payrolls edit action will be disabled.
 
@@ -426,7 +426,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.external_payrolls.put_v1_tax_liabilities_finish(company_uuid="<id>")
+    gusto.external_payrolls.finalize_tax_liabilities(company_uuid="<id>")
 
     # Use the SDK ...
 

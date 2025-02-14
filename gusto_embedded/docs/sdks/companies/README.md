@@ -5,19 +5,19 @@
 
 ### Available Operations
 
-* [post_v1_partner_managed_companies](#post_v1_partner_managed_companies) - Create a partner managed company
-* [get_v1_companies](#get_v1_companies) - Get a company
-* [put_v1_companies](#put_v1_companies) - Update a company
-* [put_v1_partner_managed_companies_company_uuid_migrate](#put_v1_partner_managed_companies_company_uuid_migrate) - Migrate company to embedded payroll
-* [post_partner_managed_companies_company_uuid_accept_terms_of_service](#post_partner_managed_companies_company_uuid_accept_terms_of_service) - Accept terms of service for a company user
-* [post_partner_managed_companies_company_uuid_retrieve_terms_of_service](#post_partner_managed_companies_company_uuid_retrieve_terms_of_service) - Retrieve terms of service status for a company user
-* [post_v1_companies_company_id_admins](#post_v1_companies_company_id_admins) - Create an admin for the company
-* [get_v1_companies_company_id_admins](#get_v1_companies_company_id_admins) - Get all the admins at a company
-* [get_v1_company_onboarding_status](#get_v1_company_onboarding_status) - Get the company's onboarding status
-* [get_v1_company_finish_onboarding](#get_v1_company_finish_onboarding) - Finish company onboarding
-* [get_v1_companies_company_id_custom_fields](#get_v1_companies_company_id_custom_fields) - Get the custom fields of a company
+* [create_partner_managed](#create_partner_managed) - Create a partner managed company
+* [get](#get) - Get a company
+* [update](#update) - Update a company
+* [migrate](#migrate) - Migrate company to embedded payroll
+* [accept_terms_of_service](#accept_terms_of_service) - Accept terms of service for a company user
+* [retrieve_terms_of_service](#retrieve_terms_of_service) - Retrieve terms of service status for a company user
+* [create_admin](#create_admin) - Create an admin for the company
+* [list_admins](#list_admins) - Get all the admins at a company
+* [get_onboarding_status](#get_onboarding_status) - Get the company's onboarding status
+* [finish_onboarding](#finish_onboarding) - Finish company onboarding
+* [get_custom_fields](#get_custom_fields) - Get the custom fields of a company
 
-## post_v1_partner_managed_companies
+## create_partner_managed
 
 Create a partner managed company. When you successfully call the API, it does the following:
 * Creates a new company in Gusto
@@ -41,7 +41,7 @@ import os
 
 with Gusto() as gusto:
 
-    res = gusto.companies.post_v1_partner_managed_companies(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.create_partner_managed(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
     ), user={
         "first_name": "Frank",
@@ -81,7 +81,7 @@ with Gusto() as gusto:
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies
+## get
 
 Get a company.         
 The employees:read scope is required to return home_address and non-work locations.         
@@ -100,7 +100,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_v1_companies(company_id="<id>")
+    res = gusto.companies.get(company_id="<id>")
 
     # Handle response
     print(res)
@@ -125,7 +125,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies
+## update
 
 Update a company.
 
@@ -141,7 +141,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.put_v1_companies(company_id="<id>", contractor_only=False)
+    res = gusto.companies.update(company_id="<id>", contractor_only=False)
 
     # Handle response
     print(res)
@@ -168,7 +168,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## put_v1_partner_managed_companies_company_uuid_migrate
+## migrate
 
 Migrate an existing Gusto customer to your embedded payroll product.
 
@@ -186,7 +186,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.put_v1_partner_managed_companies_company_uuid_migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
+    res = gusto.companies.migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
 
     # Handle response
     print(res)
@@ -215,7 +215,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## post_partner_managed_companies_company_uuid_accept_terms_of_service
+## accept_terms_of_service
 
 Accept the Gusto Embedded Payroll's [Terms of Service](https://flows.gusto.com/terms).
 The user must have a role in the company in order to accept the Terms of Service.
@@ -232,7 +232,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.post_partner_managed_companies_company_uuid_accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
+    res = gusto.companies.accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
 
     # Handle response
     print(res)
@@ -261,7 +261,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## post_partner_managed_companies_company_uuid_retrieve_terms_of_service
+## retrieve_terms_of_service
 
 Retrieve the user acceptance status of the Gusto Embedded Payroll's [Terms of Service](https://flows.gusto.com/terms).
 
@@ -277,7 +277,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.post_partner_managed_companies_company_uuid_retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
+    res = gusto.companies.retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
 
     # Handle response
     print(res)
@@ -304,7 +304,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## post_v1_companies_company_id_admins
+## create_admin
 
 Creates a new admin for a company.
 If the email matches an existing user, this will create an admin account for the current user. Otherwise, this will create a new user.
@@ -321,7 +321,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.post_v1_companies_company_id_admins(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
+    res = gusto.companies.create_admin(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
 
     # Handle response
     print(res)
@@ -350,7 +350,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_id_admins
+## list_admins
 
 Returns a list of all the admins at a company
 
@@ -366,7 +366,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_v1_companies_company_id_admins(company_id="<id>")
+    res = gusto.companies.list_admins(company_id="<id>")
 
     # Handle response
     print(res)
@@ -393,7 +393,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_company_onboarding_status
+## get_onboarding_status
 
 Get company's onboarding status.
 The data returned helps inform the required onboarding steps and respective completion status.
@@ -410,7 +410,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_v1_company_onboarding_status(company_uuid="<id>")
+    res = gusto.companies.get_onboarding_status(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -435,7 +435,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_company_finish_onboarding
+## finish_onboarding
 
 Finalize a given company's onboarding process.
 
@@ -463,7 +463,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_v1_company_finish_onboarding(company_uuid="<id>")
+    res = gusto.companies.finish_onboarding(company_uuid="<id>")
 
     # Handle response
     print(res)
@@ -489,7 +489,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_id_custom_fields
+## get_custom_fields
 
 Returns a list of the custom fields of the company. Useful when you need to know the schema of custom fields for an entire company
 
@@ -505,7 +505,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_v1_companies_company_id_custom_fields(company_id="<id>")
+    res = gusto.companies.get_custom_fields(company_id="<id>")
 
     # Handle response
     print(res)

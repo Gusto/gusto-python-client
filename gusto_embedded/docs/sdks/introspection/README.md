@@ -5,10 +5,10 @@
 
 ### Available Operations
 
-* [get_v1_token_info](#get_v1_token_info) - Get info about the current access token
-* [refresh_access_token](#refresh_access_token) - Refresh access token
+* [get_info](#get_info) - Get info about the current access token
+* [refresh_token](#refresh_token) - Refresh access token
 
-## get_v1_token_info
+## get_info
 
 Returns scope and resource information associated with the current access token.
 
@@ -22,7 +22,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_v1_token_info()
+    res = gusto.introspection.get_info()
 
     # Handle response
     print(res)
@@ -46,7 +46,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## refresh_access_token
+## refresh_token
 
 Exchange a refresh token for a new access token.
 
@@ -64,7 +64,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.refresh_access_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>")
+    res = gusto.introspection.refresh_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>")
 
     # Handle response
     print(res)

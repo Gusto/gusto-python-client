@@ -1,13 +1,13 @@
-# ACHTransactions
+# AchTransactions
 (*ach_transactions*)
 
 ## Overview
 
 ### Available Operations
 
-* [list](#list) - Get all ACH transactions for a company
+* [get_all](#get_all) - Get all ACH transactions for a company
 
-## list
+## get_all
 
 Fetches all ACH transactions for a company.
 
@@ -23,7 +23,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.ach_transactions.list(company_uuid="<id>")
+    res = gusto.ach_transactions.get_all(company_uuid="<id>")
 
     # Handle response
     print(res)

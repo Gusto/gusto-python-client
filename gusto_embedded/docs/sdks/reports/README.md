@@ -5,10 +5,11 @@
 
 ### Available Operations
 
-* [post_companies_company_uuid_reports](#post_companies_company_uuid_reports) - Create a custom report
-* [get_reports_report_uuid](#get_reports_report_uuid) - Get a report
+* [create_custom](#create_custom) - Create a custom report
+* [get](#get) - Get a report
+* [get_template](#get_template) - Get a report template
 
-## post_companies_company_uuid_reports
+## create_custom
 
 Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the report GET endpoint.
 
@@ -26,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.reports.post_companies_company_uuid_reports(company_uuid="<id>", columns=[
+    res = gusto.reports.create_custom(company_uuid="<id>", columns=[
         gusto_embedded.Columns.NET_PAY,
     ], groupings=[
         gusto_embedded.Groupings.PAYROLL,
@@ -71,7 +72,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_reports_report_uuid
+## get
 
 Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
 
@@ -87,7 +88,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.reports.get_reports_report_uuid(report_uuid="<id>")
+    res = gusto.reports.get(report_uuid="<id>")
 
     # Handle response
     print(res)
@@ -105,6 +106,48 @@ with Gusto(
 ### Response
 
 **[models.Report](../../models/report.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_template
+
+Get a company's report template. The only supported report type is `payroll_journal`. The resulting columns and groupings from this endpoint can be used as a guidance to create the report using the POST create report endpoint.
+
+scope: `company_reports:write`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.reports.get_template(company_uuid="<id>", report_type="<value>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `report_type`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The report type                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.ReportTemplate](../../models/reporttemplate.md)**
 
 ### Errors
 
