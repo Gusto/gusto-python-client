@@ -9,7 +9,7 @@ from typing import Any, Mapping, Optional
 
 
 class Flows(BaseSDK):
-    def post_v1_company_flows(
+    def create(
         self,
         *,
         company_uuid: str,
@@ -129,7 +129,7 @@ class Flows(BaseSDK):
             http_res,
         )
 
-    async def post_v1_company_flows_async(
+    async def create_async(
         self,
         *,
         company_uuid: str,

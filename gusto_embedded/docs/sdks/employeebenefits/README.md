@@ -6,12 +6,12 @@
 ### Available Operations
 
 * [create](#create) - Create an employee benefit
-* [get_v1_employees_employee_id_employee_benefits](#get_v1_employees_employee_id_employee_benefits) - Get all benefits for an employee
-* [get_v1_employee_benefits_employee_benefit_id](#get_v1_employee_benefits_employee_benefit_id) - Get an employee benefit
-* [put_v1_employee_benefits_employee_benefit_id](#put_v1_employee_benefits_employee_benefit_id) - Update an employee benefit
-* [delete_v1_employee_benefits_employee_benefit_id](#delete_v1_employee_benefits_employee_benefit_id) - Delete an employee benefit
-* [create_ytd_benefit_amounts](#create_ytd_benefit_amounts) - Create year-to-date benefit amounts from a different company
-* [get_ytd_from_different_company](#get_ytd_from_different_company) - Get year-to-date benefit amounts from a different company
+* [get](#get) - Get all benefits for an employee
+* [retrieve](#retrieve) - Get an employee benefit
+* [update](#update) - Update an employee benefit
+* [delete](#delete) - Delete an employee benefit
+* [get_ytd_benefit_amounts_from_different_company](#get_ytd_benefit_amounts_from_different_company) - Get year-to-date benefit amounts from a different company
+* [create_ytd_benefit_amounts_from_different_company](#create_ytd_benefit_amounts_from_different_company) - Create year-to-date benefit amounts from a different company
 
 ## create
 
@@ -74,7 +74,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_employees_employee_id_employee_benefits
+## get
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -94,7 +94,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get_v1_employees_employee_id_employee_benefits(employee_id="<id>")
+    res = gusto.employee_benefits.get(employee_id="<id>")
 
     # Handle response
     print(res)
@@ -121,7 +121,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## get_v1_employee_benefits_employee_benefit_id
+## retrieve
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -139,7 +139,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
+    res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>")
 
     # Handle response
     print(res)
@@ -164,7 +164,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_employee_benefits_employee_benefit_id
+## update
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -180,7 +180,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.put_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
 
     # Handle response
     print(res)
@@ -221,7 +221,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## delete_v1_employee_benefits_employee_benefit_id
+## delete
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
 
@@ -237,7 +237,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.delete_v1_employee_benefits_employee_benefit_id(employee_benefit_id="<id>")
+    gusto.employee_benefits.delete(employee_benefit_id="<id>")
 
     # Use the SDK ...
 
@@ -257,50 +257,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## create_ytd_benefit_amounts
-
-Year-to-date benefit amounts from a different company represents the amount of money added to an employee's plan during a current year, made outside of the current contribution when they were employed at a different company.
-
-This endpoint only supports passing outside contributions for 401(k) benefits.
-
-scope: `employee_benefits:write`
-
-### Example Usage
-
-```python
-from gusto_embedded import Gusto
-import os
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.employee_benefits.create_ytd_benefit_amounts(employee_id="<id>", tax_year=2422.08)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `tax_year`                                                                                                                                                                                                                   | *float*                                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | The tax year for which this amount applies.                                                                                                                                                                                  |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `benefit_type`                                                                                                                                                                                                               | *Optional[float]*                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | The benefit type supported by Gusto.                                                                                                                                                                                         |
-| `ytd_employee_deduction_amount`                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The year-to-date employee deduction made outside the current company.                                                                                                                                                        |
-| `ytd_company_contribution_amount`                                                                                                                                                                                            | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The year-to-date company contribution made outside the current company.                                                                                                                                                      |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
-
-## get_ytd_from_different_company
+## get_ytd_benefit_amounts_from_different_company
 
 Retrieves year-to-date benefit amounts that were contributed at a different company for the specified employee.
 Returns benefit amounts for the requested tax year (defaults to current year if not specified).
@@ -319,7 +276,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get_ytd_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024)
 
     # Handle response
     print(res)
@@ -344,3 +301,46 @@ with Gusto(
 | Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
+
+## create_ytd_benefit_amounts_from_different_company
+
+Year-to-date benefit amounts from a different company represents the amount of money added to an employee's plan during a current year, made outside of the current contribution when they were employed at a different company.
+
+This endpoint only supports passing outside contributions for 401(k) benefits.
+
+scope: `employee_benefits:write`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2422.08)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `tax_year`                                                                                                                                                                                                                   | *float*                                                                                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | The tax year for which this amount applies.                                                                                                                                                                                  |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `benefit_type`                                                                                                                                                                                                               | *Optional[float]*                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | The benefit type supported by Gusto.                                                                                                                                                                                         |
+| `ytd_employee_deduction_amount`                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The year-to-date employee deduction made outside the current company.                                                                                                                                                        |
+| `ytd_company_contribution_amount`                                                                                                                                                                                            | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The year-to-date company contribution made outside the current company.                                                                                                                                                      |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

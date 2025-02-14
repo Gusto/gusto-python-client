@@ -2,20 +2,20 @@ speakeasyVersion: 1.492.0
 sources:
     Gusto-OAS:
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:536c65456adde4a4062968edc3e8ef7930f216f2c7a412e411a9df8b510dcf34
-        sourceBlobDigest: sha256:e0b4d897d0190d7d91d6258aca3edbf1e5a6f504615b516b89dabf3e7079a781
+        sourceRevisionDigest: sha256:ab4729c75eaab506305218dd966c2ca2273a6872569c6c1d1ff5bb82ebca431b
+        sourceBlobDigest: sha256:f0fdc2ef12e4d07f71797ce152b5a3ffcff778e6c2e40fca4f4087f72da85449
         tags:
             - latest
-            - speakeasy-sdk-regen-1739319735
+            - speakeasy-sdk-regen-1739555675
             - "2024-04-01"
 targets:
     gusto:
         source: Gusto-OAS
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:536c65456adde4a4062968edc3e8ef7930f216f2c7a412e411a9df8b510dcf34
-        sourceBlobDigest: sha256:e0b4d897d0190d7d91d6258aca3edbf1e5a6f504615b516b89dabf3e7079a781
+        sourceRevisionDigest: sha256:ab4729c75eaab506305218dd966c2ca2273a6872569c6c1d1ff5bb82ebca431b
+        sourceBlobDigest: sha256:f0fdc2ef12e4d07f71797ce152b5a3ffcff778e6c2e40fca4f4087f72da85449
         codeSamplesNamespace: gusto-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:093d427a72ff9ed05d044db539ee06f1ca0c6faaa32c21f05ff7ba146ce7e36d
+        codeSamplesRevisionDigest: sha256:d8d37bf7785f6243ea304d3551cd8e7f8890a1345c49cec6ec0db7f526be574d
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -26,6 +26,9 @@ workflow:
                   authHeader: Authorization
                   authSecret: $openapi_doc_auth_token
             overlays:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
                 - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
             registry:
                 location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas

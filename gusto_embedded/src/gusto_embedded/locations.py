@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional
 
 
 class Locations(BaseSDK):
-    def post_v1_companies_company_id_locations(
+    def create(
         self,
         *,
         company_id: str,
@@ -146,7 +146,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def post_v1_companies_company_id_locations_async(
+    async def create_async(
         self,
         *,
         company_id: str,
@@ -283,7 +283,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def list(
+    def get(
         self,
         *,
         company_id: str,
@@ -387,7 +387,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def list_async(
+    async def get_async(
         self,
         *,
         company_id: str,
@@ -491,7 +491,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def get_v1_locations_location_id(
+    def retrieve(
         self,
         *,
         location_id: str,
@@ -587,7 +587,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def get_v1_locations_location_id_async(
+    async def retrieve_async(
         self,
         *,
         location_id: str,
@@ -683,7 +683,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def put_v1_locations_location_id(
+    def update(
         self,
         *,
         location_id: str,
@@ -824,7 +824,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def put_v1_locations_location_id_async(
+    async def update_async(
         self,
         *,
         location_id: str,
@@ -965,7 +965,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    def get_v1_locations_location_uuid_minimum_wages(
+    def get_minimum_wages(
         self,
         *,
         location_uuid: str,
@@ -1064,7 +1064,7 @@ class Locations(BaseSDK):
             http_res,
         )
 
-    async def get_v1_locations_location_uuid_minimum_wages_async(
+    async def get_minimum_wages_async(
         self,
         *,
         location_uuid: str,

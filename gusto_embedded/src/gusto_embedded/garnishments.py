@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Garnishments(BaseSDK):
-    def post_v1_employees_employee_id_garnishments(
+    def create(
         self,
         *,
         employee_id: str,
@@ -165,7 +165,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    async def post_v1_employees_employee_id_garnishments_async(
+    async def create_async(
         self,
         *,
         employee_id: str,
@@ -321,7 +321,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    def get_v1_employees_employee_id_garnishments(
+    def list(
         self,
         *,
         employee_id: str,
@@ -423,7 +423,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    async def get_v1_employees_employee_id_garnishments_async(
+    async def list_async(
         self,
         *,
         employee_id: str,
@@ -525,7 +525,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    def get_by_id(
+    def get(
         self,
         *,
         garnishment_id: str,
@@ -621,7 +621,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    async def get_by_id_async(
+    async def get_async(
         self,
         *,
         garnishment_id: str,
@@ -717,7 +717,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    def put_v1_garnishments_garnishment_id(
+    def update(
         self,
         *,
         garnishment_id: str,
@@ -871,7 +871,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    async def put_v1_garnishments_garnishment_id_async(
+    async def update_async(
         self,
         *,
         garnishment_id: str,
@@ -1025,7 +1025,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    def get_v1_garnishments_child_support(
+    def get_child_support_data(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
@@ -1118,7 +1118,7 @@ class Garnishments(BaseSDK):
             http_res,
         )
 
-    async def get_v1_garnishments_child_support_async(
+    async def get_child_support_data_async(
         self,
         *,
         x_gusto_api_version: Optional[models.VersionHeader] = None,

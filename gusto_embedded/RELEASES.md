@@ -37,3 +37,13 @@ Based on:
 - [python v0.0.8] gusto_embedded
 ### Releases
 - [PyPI v0.0.8] https://pypi.org/project/gusto_embedded/0.0.8 - gusto_embedded
+
+## 2025-02-14 17:54:19
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.492.0 (2.512.4) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [python v0.0.9] gusto_embedded
+### Releases
+- [PyPI v0.0.9] https://pypi.org/project/gusto_embedded/0.0.9 - gusto_embedded

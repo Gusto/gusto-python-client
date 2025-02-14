@@ -5,11 +5,12 @@
 
 ### Available Operations
 
-* [get_v1_employees_employee_id_federal_taxes](#get_v1_employees_employee_id_federal_taxes) - Get an employee's federal taxes
-* [put_v1_employees_employee_id_federal_taxes](#put_v1_employees_employee_id_federal_taxes) - Update an employee's federal taxes
-* [get_v1_employees_employee_id_state_taxes](#get_v1_employees_employee_id_state_taxes) - Get an employee's state taxes
+* [get_federal_taxes](#get_federal_taxes) - Get an employee's federal taxes
+* [update_federal_taxes](#update_federal_taxes) - Update an employee's federal taxes
+* [get_state_taxes](#get_state_taxes) - Get an employee's state taxes
+* [update_state_taxes](#update_state_taxes) - Update an employee's state taxes
 
-## get_v1_employees_employee_id_federal_taxes
+## get_federal_taxes
 
 Get attributes relevant for an employee's federal taxes.
 
@@ -25,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.get_v1_employees_employee_id_federal_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_federal_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)
@@ -50,7 +51,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_employees_employee_id_federal_taxes
+## update_federal_taxes
 
 Update attributes relevant for an employee's federal taxes.
 
@@ -66,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.put_v1_employees_employee_id_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
+    res = gusto.employee_tax_setup.update_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
 
     # Handle response
     print(res)
@@ -100,7 +101,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_employees_employee_id_state_taxes
+## get_state_taxes
 
 Get attributes relevant for an employee's state taxes.
 
@@ -128,7 +129,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.get_v1_employees_employee_id_state_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_state_taxes(employee_uuid="<id>")
 
     # Handle response
     print(res)
@@ -140,6 +141,96 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.EmployeeStateTax]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## update_state_taxes
+
+Update attributes relevant for an employee's state taxes.
+
+As described for the GET endpoint, the answers must be supplied in the effective-dated format, but currently only a single answer will be accepted - `valid_from` and `valid_up_to` must be `"2010-01-01"` and `null` respectively.
+
+scope: `employee_state_taxes:write`
+
+### Example Usage
+
+```python
+from gusto_embedded import Gusto
+import os
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_tax_setup.update_state_taxes(employee_uuid="<id>", states=[
+        {
+            "state": "CA",
+            "questions": [
+                {
+                    "key": "filing_status",
+                    "answers": [
+                        {
+                            "value": "M",
+                            "valid_from": "2010-01-01",
+                            "valid_up_to": None,
+                        },
+                    ],
+                },
+                {
+                    "key": "withholding_allowance",
+                    "answers": [
+                        {
+                            "value": "2",
+                            "valid_from": "2010-01-01",
+                            "valid_up_to": None,
+                        },
+                    ],
+                },
+                {
+                    "key": "additional_withholding",
+                    "answers": [
+                        {
+                            "value": "25.0",
+                            "valid_from": "2010-01-01",
+                            "valid_up_to": None,
+                        },
+                    ],
+                },
+                {
+                    "key": "file_new_hire_report",
+                    "answers": [
+                        {
+                            "value": "true",
+                            "valid_from": "2010-01-01",
+                            "valid_up_to": None,
+                        },
+                    ],
+                },
+            ],
+        },
+    ])
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `states`                                                                                                                                                                                                                     | List[[models.States](../../models/states.md)]                                                                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 

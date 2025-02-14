@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [get_notifications_notification_uuid](#get_notifications_notification_uuid) - Get a notification's details
+* [get_details](#get_details) - Get a notification's details
 
-## get_notifications_notification_uuid
+## get_details
 
 Upon receiving a notification webhook event, use this endpoint to fetch the notification's details. The notification details include basic suggested content that can help you build notifications in your platform.
 
@@ -27,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.notifications.get_notifications_notification_uuid(notification_uuid="<id>")
+    res = gusto.notifications.get_details(notification_uuid="<id>")
 
     # Handle response
     print(res)

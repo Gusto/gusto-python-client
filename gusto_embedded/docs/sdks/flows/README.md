@@ -5,9 +5,9 @@
 
 ### Available Operations
 
-* [post_v1_company_flows](#post_v1_company_flows) - Create a flow
+* [create](#create) - Create a flow
 
-## post_v1_company_flows
+## create
 
 Generate a link to access a pre-built workflow in Gusto white-label UI. For security, all generated flows will expire within 1 hour of inactivity or 24 hours from creation time, whichever comes first.
 
@@ -23,7 +23,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.flows.post_v1_company_flows(company_uuid="<id>", flow_type="company_onboarding")
+    res = gusto.flows.create(company_uuid="<id>", flow_type="company_onboarding")
 
     # Handle response
     print(res)

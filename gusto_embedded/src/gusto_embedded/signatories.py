@@ -9,7 +9,7 @@ from typing import Any, List, Mapping, Optional, Union
 
 
 class Signatories(BaseSDK):
-    def post_v1_company_signatories(
+    def create(
         self,
         *,
         company_uuid: str,
@@ -154,7 +154,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def post_v1_company_signatories_async(
+    async def create_async(
         self,
         *,
         company_uuid: str,
@@ -299,7 +299,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def get_v1_companies_company_uuid_signatories(
+    def list(
         self,
         *,
         company_uuid: str,
@@ -395,7 +395,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def get_v1_companies_company_uuid_signatories_async(
+    async def list_async(
         self,
         *,
         company_uuid: str,
@@ -491,7 +491,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def post_v1_companies_company_uuid_signatories_invite(
+    def invite(
         self,
         *,
         company_uuid: str,
@@ -612,7 +612,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def post_v1_companies_company_uuid_signatories_invite_async(
+    async def invite_async(
         self,
         *,
         company_uuid: str,
@@ -733,7 +733,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def put_v1_companies_company_uuid_signatories_signatory_uuid(
+    def update(
         self,
         *,
         company_uuid: str,
@@ -884,7 +884,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def put_v1_companies_company_uuid_signatories_signatory_uuid_async(
+    async def update_async(
         self,
         *,
         company_uuid: str,
@@ -1035,7 +1035,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    def delete_v1_companies_company_uuid_signatories_signatory_uuid(
+    def delete(
         self,
         *,
         company_uuid: str,
@@ -1134,7 +1134,7 @@ class Signatories(BaseSDK):
             http_res,
         )
 
-    async def delete_v1_companies_company_uuid_signatories_signatory_uuid_async(
+    async def delete_async(
         self,
         *,
         company_uuid: str,

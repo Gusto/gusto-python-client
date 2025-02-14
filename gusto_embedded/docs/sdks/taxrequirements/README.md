@@ -5,11 +5,11 @@
 
 ### Available Operations
 
-* [get_state_requirements](#get_state_requirements) - Get State Tax Requirements
-* [put_v1_companies_company_uuid_tax_requirements_state](#put_v1_companies_company_uuid_tax_requirements_state) - Update State Tax Requirements
-* [get_v1_companies_company_uuid_tax_requirements](#get_v1_companies_company_uuid_tax_requirements) - Get All Tax Requirement States
+* [get](#get) - Get State Tax Requirements
+* [update_state](#update_state) - Update State Tax Requirements
+* [get_all](#get_all) - Get All Tax Requirement States
 
-## get_state_requirements
+## get
 
 Get all tax requirements for a given state.
 
@@ -65,7 +65,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.tax_requirements.get_state_requirements(company_uuid="<id>", state="Massachusetts")
+    res = gusto.tax_requirements.get(company_uuid="<id>", state="Massachusetts")
 
     # Handle response
     print(res)
@@ -92,7 +92,7 @@ with Gusto(
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
 
-## put_v1_companies_company_uuid_tax_requirements_state
+## update_state
 
 Update State Tax Requirements
 
@@ -108,7 +108,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.tax_requirements.put_v1_companies_company_uuid_tax_requirements_state(company_uuid="<id>", state="Texas", requirement_sets=[
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="Texas", requirement_sets=[
         {
             "key": "registrations",
             "effective_from": None,
@@ -169,7 +169,7 @@ with Gusto(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_companies_company_uuid_tax_requirements
+## get_all
 
 Returns objects describing the states that have tax requirements for the company
 
@@ -185,7 +185,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.tax_requirements.get_v1_companies_company_uuid_tax_requirements(company_uuid="<id>")
+    res = gusto.tax_requirements.get_all(company_uuid="<id>")
 
     # Handle response
     print(res)

@@ -9,7 +9,7 @@ from typing import Any, Mapping, Optional
 
 
 class Notifications(BaseSDK):
-    def get_notifications_notification_uuid(
+    def get_details(
         self,
         *,
         notification_uuid: str,
@@ -115,7 +115,7 @@ class Notifications(BaseSDK):
             http_res,
         )
 
-    async def get_notifications_notification_uuid_async(
+    async def get_details_async(
         self,
         *,
         notification_uuid: str,

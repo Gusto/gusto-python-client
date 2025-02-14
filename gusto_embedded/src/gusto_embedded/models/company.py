@@ -106,7 +106,7 @@ class CompanyPaidTimeOff(BaseModel):
     r"""The name of the paid time off type."""
 
 
-class CompensationsModelTypedDict(TypedDict):
+class CompensationsTypedDict(TypedDict):
     r"""The available company-wide compensation rates for the company."""
 
     hourly: NotRequired[List[HourlyTypedDict]]
@@ -117,7 +117,7 @@ class CompensationsModelTypedDict(TypedDict):
     r"""The available types of paid time off for the company."""
 
 
-class CompensationsModel(BaseModel):
+class Compensations(BaseModel):
     r"""The available company-wide compensation rates for the company."""
 
     hourly: Optional[List[Hourly]] = None
@@ -323,7 +323,7 @@ class CompanyTypedDict(TypedDict):
     r"""Company's default funding type"""
     locations: NotRequired[List[CompanyAddressTypedDict]]
     r"""The locations of the company."""
-    compensations: NotRequired[CompensationsModelTypedDict]
+    compensations: NotRequired[CompensationsTypedDict]
     r"""The available company-wide compensation rates for the company."""
     primary_signatory: NotRequired[Nullable[PrimarySignatoryTypedDict]]
     r"""The primary signatory of the company."""
@@ -379,7 +379,7 @@ class Company(BaseModel):
     locations: Optional[List[CompanyAddress]] = None
     r"""The locations of the company."""
 
-    compensations: Optional[CompensationsModel] = None
+    compensations: Optional[Compensations] = None
     r"""The available company-wide compensation rates for the company."""
 
     primary_signatory: OptionalNullable[PrimarySignatory] = UNSET
