@@ -117,6 +117,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -264,6 +265,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -391,6 +393,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -512,6 +515,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -613,6 +617,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payroll_reversals",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -714,6 +719,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payroll_reversals",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -825,6 +831,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -936,6 +943,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1055,6 +1063,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1180,6 +1189,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1289,6 +1299,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1392,6 +1403,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1494,6 +1506,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1596,6 +1609,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1696,6 +1710,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1796,6 +1811,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1893,6 +1909,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-payroll-blockers-company_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -1990,6 +2007,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-companies-payroll-blockers-company_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2111,6 +2129,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-companies-payroll-skip-company_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2241,6 +2260,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-companies-payroll-skip-company_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2362,6 +2382,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-payrolls-gross-up-payroll_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2480,6 +2501,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="post-payrolls-gross-up-payroll_uuid",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2587,6 +2609,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2697,6 +2720,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2827,6 +2851,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -2957,6 +2982,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -3067,6 +3093,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -3174,6 +3201,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -3278,6 +3306,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(
@@ -3376,6 +3405,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                base_url=base_url or "",
                 operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
                 oauth2_scopes=[],
                 security_source=get_security_from_env(

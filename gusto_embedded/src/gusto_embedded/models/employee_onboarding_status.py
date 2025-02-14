@@ -12,7 +12,7 @@ class EmployeeOnboardingStatusOnboardingStepTypedDict(TypedDict):
     id: NotRequired[str]
     r"""String identifier for the onboarding step."""
     required: NotRequired[bool]
-    r"""When true, this step has been completed."""
+    r"""When true, this step is required."""
     completed: NotRequired[bool]
     r"""When true, this step has been completed."""
     requirements: NotRequired[List[str]]
@@ -27,7 +27,7 @@ class EmployeeOnboardingStatusOnboardingStep(BaseModel):
     r"""String identifier for the onboarding step."""
 
     required: Optional[bool] = None
-    r"""When true, this step has been completed."""
+    r"""When true, this step is required."""
 
     completed: Optional[bool] = None
     r"""When true, this step has been completed."""
