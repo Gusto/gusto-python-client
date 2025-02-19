@@ -106,7 +106,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 - [PyCharm Pydantic Plugin](https://docs.pydantic.dev/latest/integrations/pycharm/)
 <!-- End IDE Support [idesupport] -->
 
-<!-- Start SDK Example Usage [usage] -->
+<!-- No SDK Example Usage [usage] -->
 ## SDK Example Usage
 
 ### Example
@@ -116,10 +116,11 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 from gusto_embedded import Gusto
 import os
 
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
+auth_token = os.getenv("GUSTO_COMPANY_ACCESS_AUTH", None)
+if auth_token is None:
+	raise ValueError("GUSTO_COMPANY_ACCESS_AUTH is not set")
 
+with Gusto(company_access_auth=auth_token) as gusto:
     res = gusto.introspection.get_info()
 
     # Handle response
@@ -136,18 +137,19 @@ from gusto_embedded import Gusto
 import os
 
 async def main():
-    async with Gusto(
-        company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as gusto:
+  auth_token = os.getenv("GUSTO_COMPANY_ACCESS_AUTH", None)
+  if auth_token is None:
+    raise ValueError("GUSTO_COMPANY_ACCESS_AUTH is not set")
 
-        res = await gusto.introspection.get_info_async()
+  async with Gusto(company_access_auth=auth_token) as gusto:
+      res = gusto.introspection.get_info_async()
 
-        # Handle response
-        print(res)
+      # Handle response
+      print(res)
 
 asyncio.run(main())
 ```
-<!-- End SDK Example Usage [usage] -->
+<!-- No SDK Example Usage [usage] -->
 
 <!-- Start Authentication [security] -->
 ## Authentication
