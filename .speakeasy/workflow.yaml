@@ -43,3 +43,12 @@ targets:
         target: python
         source: Gusto-App-Int-OAS
         output: gusto_app_int
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
