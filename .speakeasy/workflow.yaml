@@ -10,6 +10,7 @@ sources:
             - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/ar/include-generated-app-int-oas-in-repo/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
               authHeader: Authorization
               authSecret: $openapi_doc_auth_token
+            - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
         registry:
             location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
     Gusto-OAS:
