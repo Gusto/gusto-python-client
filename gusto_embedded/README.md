@@ -22,7 +22,7 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 * [gusto](#gusto)
   * [SDK Installation](#sdk-installation)
   * [IDE Support](#ide-support)
-  * [SDK Example Usage](#sdk-example-usage)
+  * [Example Usage](#example-usage)
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
   * [File uploads](#file-uploads)
@@ -106,8 +106,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 - [PyCharm Pydantic Plugin](https://docs.pydantic.dev/latest/integrations/pycharm/)
 <!-- End IDE Support [idesupport] -->
 
-<!-- Start SDK Example Usage [usage] -->
-## SDK Example Usage
+## Example Usage
 
 ### Example
 
@@ -116,10 +115,11 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 from gusto_embedded import Gusto
 import os
 
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
+auth_token = os.getenv("GUSTO_COMPANY_ACCESS_AUTH", None)
+if auth_token is None:
+	raise ValueError("GUSTO_COMPANY_ACCESS_AUTH is not set")
 
+with Gusto(company_access_auth=auth_token) as gusto:
     res = gusto.introspection.get_info()
 
     # Handle response
@@ -136,18 +136,83 @@ from gusto_embedded import Gusto
 import os
 
 async def main():
-    async with Gusto(
-        company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-    ) as gusto:
+  auth_token = os.getenv("GUSTO_COMPANY_ACCESS_AUTH", None)
+  if auth_token is None:
+    raise ValueError("GUSTO_COMPANY_ACCESS_AUTH is not set")
 
-        res = await gusto.introspection.get_info_async()
+  async with Gusto(company_access_auth=auth_token) as gusto:
+      res = gusto.introspection.get_info_async()
 
-        # Handle response
-        print(res)
+      # Handle response
+      print(res)
 
 asyncio.run(main())
 ```
-<!-- End SDK Example Usage [usage] -->
+
+### Common workflows
+A common workflow, as documented [in our docs](https://docs.gusto.com/embedded-payroll/docs/onboard-a-company), is to create a
+new partner managed company. In this section we will illustrate using a system access token to create a partner managed
+company. Then we will use the returned company access token for subsequent requests. We'll do this in the following steps.
+1. [Create a Partner Managed Company](https://github.com/Gusto/gusto-python-client/blob/main/gusto_embedded/docs/sdks/companies/README.md#create_partner_managed)
+2. [View](https://flows.gusto.com/terms) and [Accept](https://github.com/Gusto/gusto-python-client/blob/main/gusto_embedded/docs/sdks/companies/README.md#accept_terms_of_service) Terms of Service
+3. [Create a Company Location](https://docs.gusto.com/embedded-payroll/docs/onboard-a-company#3-create-a-company-location)
+
+```python
+# Synchronous Example
+from gusto_embedded import Gusto, PostV1PartnerManagedCompaniesSecurity
+import os
+
+system_auth_token = os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", None)
+if system_auth_token is None:
+	raise ValueError("GUSTO_SYSTEM_ACCESS_AUTH is not set")
+
+security = PostV1PartnerManagedCompaniesSecurity(system_access_auth=system_auth_token)
+system_gusto = Gusto()
+partner_managed_company_res = system_gusto.companies.create_partner_managed(
+  security=security,
+  user={
+    "first_name": "Frank",
+    "last_name": "Ocean",
+    "email": "frank@example.com",
+    "phone": "2345558899",
+  },
+  company={
+      "name": "Frank's Ocean, LLC",
+      "trade_name": "Frank’s Ocean",
+      "ein": "123432989",
+      "contractor_only": False,
+  }
+)
+
+company_access_token = partner_managed_company_res.access_token
+company_refresh_token = partner_managed_company_res.refresh_token
+company_uuid = partner_managed_company_res.company_uuid
+
+with Gusto(company_access_auth=company_access_token) as gusto:
+    # Get company admin
+    company_res = gusto.companies.get(company_id=company_uuid)
+    primary_admin = company_res.primary_payroll_admin
+
+    # Accept terms of service
+    terms_of_service_res = gusto.companies.accept_terms_of_service(
+      company_uuid=company_uuid,
+      email=primary_admin.email,
+      ip_address="...",
+      external_user_id="..."
+    )
+
+    # Create a company location
+    location_res = gusto.locations.create(
+      company_id=company_uuid,
+      phone_number="8009360383",
+      street_1="425 2nd Street",
+      city="San Francisco",
+      state="CA",
+      zip_code="94107",
+      street_2="Suite 602"
+    )
+```
+<!-- No SDK Example Usage [usage] -->
 
 <!-- Start Authentication [security] -->
 ## Authentication
@@ -748,10 +813,10 @@ with Gusto() as gusto:
 
 You can override the default server globally by passing a server name to the `server: str` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name   | Server                       |
-| ------ | ---------------------------- |
-| `demo` | `https://api.gusto-demo.com` |
-| `prod` | `https://api.gusto.com`      |
+| Name   | Server                       | Description |
+| ------ | ---------------------------- | ----------- |
+| `demo` | `https://api.gusto-demo.com` | Demo        |
+| `prod` | `https://api.gusto.com`      | Prod        |
 
 #### Example
 
