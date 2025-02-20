@@ -39,6 +39,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormsRequest(
             contractor_uuid=contractor_uuid,
@@ -135,6 +137,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormsRequest(
             contractor_uuid=contractor_uuid,
@@ -233,6 +237,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormRequest(
             contractor_uuid=contractor_uuid,
@@ -332,6 +338,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormRequest(
             contractor_uuid=contractor_uuid,
@@ -431,6 +439,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormPdfRequest(
             contractor_uuid=contractor_uuid,
@@ -530,6 +540,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorFormPdfRequest(
             contractor_uuid=contractor_uuid,
@@ -633,6 +645,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1SandboxGenerate1099Request(
             x_gusto_api_version=x_gusto_api_version,
@@ -751,6 +765,8 @@ class ContractorForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1SandboxGenerate1099Request(
             x_gusto_api_version=x_gusto_api_version,

@@ -49,6 +49,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDBankAccountsRequest(
             employee_id=employee_id,
@@ -174,6 +176,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDBankAccountsRequest(
             employee_id=employee_id,
@@ -292,6 +296,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDBankAccountsBankAccountIDRequest(
             employee_id=employee_id,
@@ -392,6 +398,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDBankAccountsBankAccountIDRequest(
             employee_id=employee_id,
@@ -499,6 +507,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDBankAccountsRequest(
             employee_id=employee_id,
@@ -625,6 +635,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDBankAccountsRequest(
             employee_id=employee_id,
@@ -743,6 +755,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDPaymentMethodRequest(
             employee_id=employee_id,
@@ -841,6 +855,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDPaymentMethodRequest(
             employee_id=employee_id,
@@ -948,6 +964,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDPaymentMethodRequest(
             employee_id=employee_id,
@@ -1074,6 +1092,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDPaymentMethodRequest(
             employee_id=employee_id,

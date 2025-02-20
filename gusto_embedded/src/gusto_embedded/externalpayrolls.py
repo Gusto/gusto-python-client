@@ -45,6 +45,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -165,6 +167,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -279,6 +283,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyExternalPayrollsRequest(
             company_uuid=company_uuid,
@@ -377,6 +383,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyExternalPayrollsRequest(
             company_uuid=company_uuid,
@@ -477,6 +485,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -576,6 +586,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -675,6 +687,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -774,6 +788,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -882,6 +898,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -1010,6 +1028,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ExternalPayrollRequest(
             company_uuid=company_uuid,
@@ -1131,6 +1151,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ExternalPayrollCalculateTaxesRequest(
             company_uuid=company_uuid,
@@ -1234,6 +1256,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ExternalPayrollCalculateTaxesRequest(
             company_uuid=company_uuid,
@@ -1333,6 +1357,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1TaxLiabilitiesRequest(
             company_uuid=company_uuid,
@@ -1431,6 +1457,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1TaxLiabilitiesRequest(
             company_uuid=company_uuid,
@@ -1536,6 +1564,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TaxLiabilitiesRequest(
             company_uuid=company_uuid,
@@ -1659,6 +1689,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TaxLiabilitiesRequest(
             company_uuid=company_uuid,
@@ -1775,6 +1807,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TaxLiabilitiesFinishRequest(
             company_uuid=company_uuid,
@@ -1877,6 +1911,8 @@ class ExternalPayrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TaxLiabilitiesFinishRequest(
             company_uuid=company_uuid,

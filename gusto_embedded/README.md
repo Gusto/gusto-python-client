@@ -748,10 +748,10 @@ with Gusto() as gusto:
 
 You can override the default server globally by passing a server name to the `server: str` optional parameter when initializing the SDK client instance. The selected server will then be used as the default on the operations that use it. This table lists the names associated with the available servers:
 
-| Name   | Server                       |
-| ------ | ---------------------------- |
-| `demo` | `https://api.gusto-demo.com` |
-| `prod` | `https://api.gusto.com`      |
+| Name   | Server                       | Description |
+| ------ | ---------------------------- | ----------- |
+| `demo` | `https://api.gusto-demo.com` | Demo        |
+| `prod` | `https://api.gusto.com`      | Prod        |
 
 #### Example
 

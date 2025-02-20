@@ -55,6 +55,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesRequest(
             company_id=company_id,
@@ -190,6 +192,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesRequest(
             company_id=company_id,
@@ -319,6 +323,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             company_id=company_id,
@@ -430,6 +436,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             company_id=company_id,
@@ -565,6 +573,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1HistoricalEmployeesRequest(
             company_uuid=company_uuid,
@@ -728,6 +738,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1HistoricalEmployeesRequest(
             company_uuid=company_uuid,
@@ -860,6 +872,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesRequest(
             employee_id=employee_id,
@@ -960,6 +974,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesRequest(
             employee_id=employee_id,
@@ -1075,6 +1091,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesRequest(
             employee_id=employee_id,
@@ -1213,6 +1231,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesRequest(
             employee_id=employee_id,
@@ -1335,6 +1355,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeeRequest(
             employee_id=employee_id,
@@ -1439,6 +1461,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeeRequest(
             employee_id=employee_id,
@@ -1545,6 +1569,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
             employee_id=employee_id,
@@ -1649,6 +1675,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
             employee_id=employee_id,
@@ -1751,6 +1779,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
             employee_id=employee_id,
@@ -1861,6 +1891,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
             employee_id=employee_id,
@@ -2005,6 +2037,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDOnboardingStatusRequest(
             employee_id=employee_id,
@@ -2137,6 +2171,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDOnboardingStatusRequest(
             employee_id=employee_id,
@@ -2244,6 +2280,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDOnboardingStatusRequest(
             employee_id=employee_id,
@@ -2367,6 +2405,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDOnboardingStatusRequest(
             employee_id=employee_id,
@@ -2481,6 +2521,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetVersionEmployeesTimeOffActivitiesRequest(
             employee_uuid=employee_uuid,
@@ -2580,6 +2622,8 @@ class Employees(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetVersionEmployeesTimeOffActivitiesRequest(
             employee_uuid=employee_uuid,

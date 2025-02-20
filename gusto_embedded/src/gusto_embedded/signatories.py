@@ -62,6 +62,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
             company_uuid=company_uuid,
@@ -207,6 +209,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
             company_uuid=company_uuid,
@@ -329,6 +333,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
             company_uuid=company_uuid,
@@ -425,6 +431,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
             company_uuid=company_uuid,
@@ -527,6 +535,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
             company_uuid=company_uuid,
@@ -648,6 +658,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
             company_uuid=company_uuid,
@@ -788,6 +800,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
             company_uuid=company_uuid,
@@ -939,6 +953,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
             company_uuid=company_uuid,
@@ -1067,6 +1083,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
             company_uuid=company_uuid,
@@ -1166,6 +1184,8 @@ class Signatories(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
             company_uuid=company_uuid,

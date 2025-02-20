@@ -1,0 +1,10 @@
+# PayrollEmployeeCompensationsTypePaidTimeOff
+
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `name`                                                                                               | *Optional[str]*                                                                                      | :heavy_minus_sign:                                                                                   | The name of the PTO. This also serves as the unique, immutable identifier for the PTO.               |
+| `hours`                                                                                              | *Optional[str]*                                                                                      | :heavy_minus_sign:                                                                                   | The hours of this PTO taken during the pay period.                                                   |
+| `final_payout_unused_hours_input`                                                                    | *Optional[str]*                                                                                      | :heavy_minus_sign:                                                                                   | The outstanding hours paid upon termination. This field is only applicable for termination payrolls. |

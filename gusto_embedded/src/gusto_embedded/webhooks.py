@@ -50,6 +50,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1WebhookSubscriptionRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -173,6 +175,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1WebhookSubscriptionRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -292,6 +296,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionsRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -394,6 +400,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionsRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -501,6 +509,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -625,6 +635,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -747,6 +759,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -853,6 +867,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -959,6 +975,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -1065,6 +1083,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -1175,6 +1195,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -1301,6 +1323,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -1423,6 +1447,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,
@@ -1529,6 +1555,8 @@ class Webhooks(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
             webhook_subscription_uuid=webhook_subscription_uuid,

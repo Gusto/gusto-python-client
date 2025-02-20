@@ -3,10 +3,10 @@ id: f70034eb-4870-4b8d-aeb4-4c71b6c1ec45
 management:
   docChecksum: cbe569d70bfa706bb2b14deeeea0ebfd
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.492.0
-  generationVersion: 2.512.4
-  releaseVersion: 0.0.9
-  configChecksum: dc94b547d48113de2d0c18f0a069f18c
+  speakeasyVersion: 1.498.1
+  generationVersion: 2.518.1
+  releaseVersion: 0.0.10
+  configChecksum: a9fdbf9f84da2c76c4d27221e80aa304
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_embedded
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded
@@ -35,10 +35,10 @@ features:
     methodSecurity: 3.0.1
     multipartFileContentType: 1.0.0
     nameOverrides: 3.0.1
-    nullables: 1.0.0
+    nullables: 1.0.1
     responseFormat: 1.0.1
     retries: 3.0.2
-    sdkHooks: 1.0.0
+    sdkHooks: 1.0.1
     serverIDs: 3.0.0
     unions: 3.0.4
     uploadStreams: 1.0.0
