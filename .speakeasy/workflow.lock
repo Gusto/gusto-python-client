@@ -1,5 +1,12 @@
-speakeasyVersion: 1.492.0
+speakeasyVersion: 1.498.0
 sources:
+    Gusto-App-Int-OAS:
+        sourceNamespace: gusto-app-int-oas
+        sourceRevisionDigest: sha256:3d104d264c7c313786b89c3d440195924aae95b16440a5fb2f99abcfc28cca76
+        sourceBlobDigest: sha256:78c7e01bee479de2129e926542175bf983d22f60bed5d309fa235d63ff0c953c
+        tags:
+            - latest
+            - "2024-04-01"
     Gusto-OAS:
         sourceNamespace: gusto-oas
         sourceRevisionDigest: sha256:ab4729c75eaab506305218dd966c2ca2273a6872569c6c1d1ff5bb82ebca431b
@@ -16,10 +23,26 @@ targets:
         sourceBlobDigest: sha256:f0fdc2ef12e4d07f71797ce152b5a3ffcff778e6c2e40fca4f4087f72da85449
         codeSamplesNamespace: gusto-oas-python-code-samples
         codeSamplesRevisionDigest: sha256:d8d37bf7785f6243ea304d3551cd8e7f8890a1345c49cec6ec0db7f526be574d
+    gusto-app-int:
+        source: Gusto-App-Int-OAS
+        sourceNamespace: gusto-app-int-oas
+        sourceRevisionDigest: sha256:3d104d264c7c313786b89c3d440195924aae95b16440a5fb2f99abcfc28cca76
+        sourceBlobDigest: sha256:78c7e01bee479de2129e926542175bf983d22f60bed5d309fa235d63ff0c953c
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
+        Gusto-App-Int-OAS:
+            inputs:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/ar/include-generated-app-int-oas-in-repo/generated/app-integrations/api.v2024-04-01.app-integrations.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+            overlays:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/ar/include-generated-app-int-oas-in-repo/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
         Gusto-OAS:
             inputs:
                 - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
@@ -46,3 +69,7 @@ workflow:
                 labelOverride:
                     fixedValue: Python (SDK)
                 blocking: false
+        gusto-app-int:
+            target: python
+            source: Gusto-App-Int-OAS
+            output: gusto_app_int
