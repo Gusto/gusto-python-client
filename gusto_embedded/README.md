@@ -22,7 +22,7 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 * [gusto](#gusto)
   * [SDK Installation](#sdk-installation)
   * [IDE Support](#ide-support)
-  * [SDK Example Usage](#sdk-example-usage)
+  * [Example Usage](#example-usage)
   * [Authentication](#authentication)
   * [Available Resources and Operations](#available-resources-and-operations)
   * [File uploads](#file-uploads)
@@ -106,8 +106,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 - [PyCharm Pydantic Plugin](https://docs.pydantic.dev/latest/integrations/pycharm/)
 <!-- End IDE Support [idesupport] -->
 
-<!-- No SDK Example Usage [usage] -->
-## SDK Example Usage
+## Example Usage
 
 ### Example
 
@@ -151,12 +150,12 @@ asyncio.run(main())
 ```
 
 ### Common workflows
-A common workflow, as documented [here](https://docs.gusto.com/embedded-payroll/docs/onboard-a-company), is to create a
+A common workflow, as documented [in our docs](https://docs.gusto.com/embedded-payroll/docs/onboard-a-company), is to create a
 new partner managed company. In this section we will illustrate using a system access token to create a partner managed
-company. Then use the returned company access token for further requests. We'll do this in the following steps.
+company. Then we will use the returned company access token for subsequent requests. We'll do this in the following steps.
 1. [Create a Partner Managed Company](https://github.com/Gusto/gusto-python-client/blob/main/gusto_embedded/docs/sdks/companies/README.md#create_partner_managed)
-2. [View](https://flows.gusto.com/terms) and [Accept](https://github.com/Gusto/gusto-python-client/blob/main/gusto_embedded/docs/sdks/companies/README.md#accept_terms_of_service) Terms of Service]
-3. [Create a Company Location]()
+2. [View](https://flows.gusto.com/terms) and [Accept](https://github.com/Gusto/gusto-python-client/blob/main/gusto_embedded/docs/sdks/companies/README.md#accept_terms_of_service) Terms of Service
+3. [Create a Company Location](https://docs.gusto.com/embedded-payroll/docs/onboard-a-company#3-create-a-company-location)
 
 ```python
 # Synchronous Example
@@ -172,11 +171,12 @@ system_gusto = Gusto()
 partner_managed_company_res = system_gusto.companies.create_partner_managed(
   security=security,
   user={
-      "first_name": "Frank",
-      "last_name": "Ocean",
-      "email": "frank@example.com",
-      "phone": "2345558899",
-  }, company={
+    "first_name": "Frank",
+    "last_name": "Ocean",
+    "email": "frank@example.com",
+    "phone": "2345558899",
+  },
+  company={
       "name": "Frank's Ocean, LLC",
       "trade_name": "Frank’s Ocean",
       "ein": "123432989",
