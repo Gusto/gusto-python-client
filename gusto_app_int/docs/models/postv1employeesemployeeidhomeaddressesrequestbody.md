@@ -1,0 +1,14 @@
+# PostV1EmployeesEmployeeIDHomeAddressesRequestBody
+
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `street_1`                                                                   | *Optional[str]*                                                              | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `street_2`                                                                   | *OptionalNullable[str]*                                                      | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `city`                                                                       | *Optional[str]*                                                              | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `state`                                                                      | *Optional[str]*                                                              | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `zip_code`                                                                   | *Optional[str]*                                                              | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `effective_date`                                                             | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects) | :heavy_minus_sign:                                                           | N/A                                                                          |
+| `courtesy_withholding`                                                       | *Optional[bool]*                                                             | :heavy_minus_sign:                                                           | N/A                                                                          |

@@ -53,6 +53,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentGroupsRequest(
             company_id=company_id,
@@ -185,6 +187,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentGroupsRequest(
             company_id=company_id,
@@ -312,6 +316,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(
             company_id=company_id,
@@ -422,6 +428,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(
             company_id=company_id,
@@ -537,6 +545,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewRequest(
             company_id=company_id,
@@ -669,6 +679,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewRequest(
             company_id=company_id,
@@ -788,6 +800,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
             contractor_payment_group_uuid=contractor_payment_group_uuid,
@@ -884,6 +898,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
             contractor_payment_group_uuid=contractor_payment_group_uuid,
@@ -980,6 +996,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
             contractor_payment_group_uuid=contractor_payment_group_uuid,
@@ -1082,6 +1100,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
             contractor_payment_group_uuid=contractor_payment_group_uuid,
@@ -1188,6 +1208,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundRequest(
@@ -1296,6 +1318,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundRequest(

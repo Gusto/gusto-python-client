@@ -30,6 +30,8 @@ class Form1099TypedDict(TypedDict):
     r"""The quarter of this form. This value is currently always null since it is not present on any contractor forms."""
     requires_signing: NotRequired[bool]
     r"""A boolean flag that indicates whether the form needs signing or not. Note that this value will change after the form is signed."""
+    document_content_type: NotRequired[Nullable[str]]
+    r"""The content type of the associated document. Most forms are PDFs with a content type of `application/pdf`. Some tax file packages will be zip files (containing PDFs) with a content type of `application/zip`. This attribute will be `null` when the document has not been prepared."""
     contractor_uuid: NotRequired[str]
     r"""The contractor UUID"""
 
@@ -59,6 +61,9 @@ class Form1099(BaseModel):
     requires_signing: Optional[bool] = None
     r"""A boolean flag that indicates whether the form needs signing or not. Note that this value will change after the form is signed."""
 
+    document_content_type: OptionalNullable[str] = UNSET
+    r"""The content type of the associated document. Most forms are PDFs with a content type of `application/pdf`. Some tax file packages will be zip files (containing PDFs) with a content type of `application/zip`. This attribute will be `null` when the document has not been prepared."""
+
     contractor_uuid: Optional[str] = None
     r"""The contractor UUID"""
 
@@ -72,9 +77,10 @@ class Form1099(BaseModel):
             "year",
             "quarter",
             "requires_signing",
+            "document_content_type",
             "contractor_uuid",
         ]
-        nullable_fields = ["year", "quarter"]
+        nullable_fields = ["year", "quarter", "document_content_type"]
         null_default_fields = []
 
         serialized = handler(self)

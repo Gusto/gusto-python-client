@@ -51,6 +51,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
@@ -179,6 +181,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
@@ -301,6 +305,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
@@ -404,6 +410,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
@@ -507,6 +515,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -612,6 +622,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -719,6 +731,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -841,6 +855,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -958,6 +974,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -1066,6 +1084,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompanyBenefitsCompanyBenefitIDRequest(
             company_benefit_id=company_benefit_id,
@@ -1171,6 +1191,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -1266,6 +1288,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -1363,6 +1387,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsBenefitIDRequest(
             benefit_id=benefit_id,
@@ -1461,6 +1487,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsBenefitIDRequest(
             benefit_id=benefit_id,
@@ -1565,6 +1593,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsCompanyBenefitIDSummaryRequest(
             company_benefit_id=company_benefit_id,
@@ -1672,6 +1702,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsCompanyBenefitIDSummaryRequest(
             company_benefit_id=company_benefit_id,
@@ -1779,6 +1811,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(
             company_benefit_id=company_benefit_id,
@@ -1885,6 +1919,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(
             company_benefit_id=company_benefit_id,
@@ -1992,6 +2028,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(
             company_benefit_id=company_benefit_id,
@@ -2115,6 +2153,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(
             company_benefit_id=company_benefit_id,
@@ -2229,6 +2269,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsBenefitsIDRequirementsRequest(
             benefit_id=benefit_id,
@@ -2325,6 +2367,8 @@ class CompanyBenefits(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1BenefitsBenefitsIDRequirementsRequest(
             benefit_id=benefit_id,

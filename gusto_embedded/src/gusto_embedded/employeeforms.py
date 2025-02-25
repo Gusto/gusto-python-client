@@ -45,6 +45,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1SandboxGenerateW2Request(
             x_gusto_api_version=x_gusto_api_version,
@@ -165,6 +167,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1SandboxGenerateW2Request(
             x_gusto_api_version=x_gusto_api_version,
@@ -279,6 +283,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormsRequest(
             employee_id=employee_id,
@@ -375,6 +381,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormsRequest(
             employee_id=employee_id,
@@ -473,6 +481,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormRequest(
             employee_id=employee_id,
@@ -572,6 +582,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormRequest(
             employee_id=employee_id,
@@ -671,6 +683,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormPdfRequest(
             employee_id=employee_id,
@@ -770,6 +784,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeeFormPdfRequest(
             employee_id=employee_id,
@@ -950,6 +966,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeeFormSignRequest(
             employee_id=employee_id,
@@ -1184,6 +1202,8 @@ class EmployeeForms(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeeFormSignRequest(
             employee_id=employee_id,

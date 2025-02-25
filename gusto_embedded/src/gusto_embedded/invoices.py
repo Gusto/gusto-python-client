@@ -54,6 +54,8 @@ class Invoices(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetInvoicesInvoicePeriodRequest(
             invoice_period=invoice_period,
@@ -174,6 +176,8 @@ class Invoices(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetInvoicesInvoicePeriodRequest(
             invoice_period=invoice_period,

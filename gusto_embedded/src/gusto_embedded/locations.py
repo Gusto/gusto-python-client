@@ -57,6 +57,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDLocationsRequest(
             company_id=company_id,
@@ -194,6 +196,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDLocationsRequest(
             company_id=company_id,
@@ -319,6 +323,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDLocationsRequest(
             company_id=company_id,
@@ -423,6 +429,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDLocationsRequest(
             company_id=company_id,
@@ -521,6 +529,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationIDRequest(
             location_id=location_id,
@@ -617,6 +627,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationIDRequest(
             location_id=location_id,
@@ -733,6 +745,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1LocationsLocationIDRequest(
             location_id=location_id,
@@ -874,6 +888,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1LocationsLocationIDRequest(
             location_id=location_id,
@@ -997,6 +1013,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
             location_uuid=location_uuid,
@@ -1096,6 +1114,8 @@ class Locations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
             location_uuid=location_uuid,

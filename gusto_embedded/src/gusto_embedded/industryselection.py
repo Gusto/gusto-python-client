@@ -39,6 +39,8 @@ class IndustrySelection(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyIndustryRequest(
             company_id=company_id,
@@ -135,6 +137,8 @@ class IndustrySelection(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyIndustryRequest(
             company_id=company_id,
@@ -237,6 +241,8 @@ class IndustrySelection(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyIndustryRequest(
             company_id=company_id,
@@ -357,6 +363,8 @@ class IndustrySelection(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyIndustryRequest(
             company_id=company_id,

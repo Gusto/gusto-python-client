@@ -43,6 +43,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDEarningTypesRequest(
             company_id=company_id,
@@ -159,6 +161,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDEarningTypesRequest(
             company_id=company_id,
@@ -277,6 +281,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDEarningTypesRequest(
             company_id=company_id,
@@ -379,6 +385,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDEarningTypesRequest(
             company_id=company_id,
@@ -479,6 +487,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest(
             company_id=company_id,
@@ -596,6 +606,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest(
             company_id=company_id,
@@ -711,6 +723,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest(
             company_id=company_id,
@@ -810,6 +824,8 @@ class EarningTypes(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest(
             company_id=company_id,

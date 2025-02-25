@@ -45,6 +45,8 @@ class Flows(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanyFlowsRequest(
             company_uuid=company_uuid,
@@ -165,6 +167,8 @@ class Flows(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanyFlowsRequest(
             company_uuid=company_uuid,

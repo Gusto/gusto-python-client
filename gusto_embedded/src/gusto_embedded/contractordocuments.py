@@ -39,6 +39,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentsRequest(
             contractor_uuid=contractor_uuid,
@@ -135,6 +137,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentsRequest(
             contractor_uuid=contractor_uuid,
@@ -231,6 +235,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentRequest(
             document_uuid=document_uuid,
@@ -327,6 +333,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentRequest(
             document_uuid=document_uuid,
@@ -423,6 +431,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentPdfRequest(
             document_uuid=document_uuid,
@@ -519,6 +529,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorDocumentPdfRequest(
             document_uuid=document_uuid,
@@ -624,6 +636,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorDocumentSignRequest(
             document_uuid=document_uuid,
@@ -749,6 +763,8 @@ class ContractorDocuments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorDocumentSignRequest(
             document_uuid=document_uuid,
