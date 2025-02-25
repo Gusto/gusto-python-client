@@ -13,10 +13,18 @@ permissions:
       - gusto_embedded/.speakeasy/gen.lock
   workflow_dispatch: {}
 jobs:
-  publish:
+  publish-embedded:
     uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
     with:
       target: gusto
+    secrets:
+      github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      pypi_token: ${{ secrets.PYPI_TOKEN }}
+      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+  publish-app-int:
+    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
+    with:
+      target: gusto-app-int
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       pypi_token: ${{ secrets.PYPI_TOKEN }}

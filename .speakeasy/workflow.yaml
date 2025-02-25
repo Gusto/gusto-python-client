@@ -1,6 +1,18 @@
 workflowVersion: 1.0.0
 speakeasyVersion: latest
 sources:
+    Gusto-App-Int-OAS:
+        inputs:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2024-04-01.app-integrations.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+            - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
     Gusto-OAS:
         inputs:
             - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
@@ -24,6 +36,19 @@ targets:
         codeSamples:
             registry:
                 location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
+    gusto-app-int:
+        target: python
+        source: Gusto-App-Int-OAS
+        output: gusto_app_int
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples
             labelOverride:
                 fixedValue: Python (SDK)
             blocking: false
