@@ -52,6 +52,8 @@ class HourlyCompensationsTypedDict(TypedDict):
     r"""The UUID of the job for the compensation."""
     compensation_multiplier: NotRequired[float]
     r"""The amount multiplied by the base rate to calculate total compensation per hour worked."""
+    flsa_status: NotRequired[str]
+    r"""The FLSA Status of the employee's primary job compensation"""
 
 
 class HourlyCompensations(BaseModel):
@@ -69,6 +71,9 @@ class HourlyCompensations(BaseModel):
 
     compensation_multiplier: Optional[float] = None
     r"""The amount multiplied by the base rate to calculate total compensation per hour worked."""
+
+    flsa_status: Optional[str] = None
+    r"""The FLSA Status of the employee's primary job compensation"""
 
 
 class PayrollEmployeeCompensationsTypePaidTimeOffTypedDict(TypedDict):

@@ -71,6 +71,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDContractorsRequest(
             company_uuid=company_uuid,
@@ -229,6 +231,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDContractorsRequest(
             company_uuid=company_uuid,
@@ -361,6 +365,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDContractorsRequest(
             company_uuid=company_uuid,
@@ -466,6 +472,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDContractorsRequest(
             company_uuid=company_uuid,
@@ -565,6 +573,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -661,6 +671,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -795,6 +807,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -960,6 +974,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -1087,6 +1103,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -1183,6 +1201,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDRequest(
             contractor_uuid=contractor_uuid,
@@ -1310,6 +1330,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDOnboardingStatusRequest(
             contractor_uuid=contractor_uuid,
@@ -1439,6 +1461,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDOnboardingStatusRequest(
             contractor_uuid=contractor_uuid,
@@ -1551,6 +1575,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDOnboardingStatusRequest(
             contractor_uuid=contractor_uuid,
@@ -1679,6 +1705,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDOnboardingStatusRequest(
             contractor_uuid=contractor_uuid,
@@ -1793,6 +1821,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDAddressRequest(
             contractor_uuid=contractor_uuid,
@@ -1889,6 +1919,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorsContractorUUIDAddressRequest(
             contractor_uuid=contractor_uuid,
@@ -1997,6 +2029,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDAddressRequest(
             contractor_uuid=contractor_uuid,
@@ -2126,6 +2160,8 @@ class Contractors(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1ContractorsContractorUUIDAddressRequest(
             contractor_uuid=contractor_uuid,

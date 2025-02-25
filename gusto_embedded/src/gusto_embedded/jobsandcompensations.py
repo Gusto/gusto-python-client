@@ -49,6 +49,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1JobsJobIDRequest(
             employee_id=employee_id,
@@ -175,6 +177,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1JobsJobIDRequest(
             employee_id=employee_id,
@@ -297,6 +301,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDJobsRequest(
             employee_id=employee_id,
@@ -402,6 +408,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDJobsRequest(
             employee_id=employee_id,
@@ -503,6 +511,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDRequest(
             job_id=job_id,
@@ -602,6 +612,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDRequest(
             job_id=job_id,
@@ -711,6 +723,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1JobsJobIDRequest(
             job_id=job_id,
@@ -840,6 +854,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1JobsJobIDRequest(
             job_id=job_id,
@@ -957,6 +973,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1JobsJobIDRequest(
             job_id=job_id,
@@ -1053,6 +1071,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1JobsJobIDRequest(
             job_id=job_id,
@@ -1159,6 +1179,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDCompensationsRequest(
             job_id=job_id,
@@ -1268,6 +1290,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDCompensationsRequest(
             job_id=job_id,
@@ -1384,6 +1408,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
             job_id=job_id,
@@ -1523,6 +1549,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
             job_id=job_id,
@@ -1646,6 +1674,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,
@@ -1743,6 +1773,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,
@@ -1858,6 +1890,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,
@@ -1997,6 +2031,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,
@@ -2118,6 +2154,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,
@@ -2215,6 +2253,8 @@ class JobsAndCompensations(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompensationsCompensationIDRequest(
             compensation_id=compensation_id,

@@ -45,6 +45,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -164,6 +166,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -279,6 +283,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -377,6 +383,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -473,6 +481,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -575,6 +585,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDTerminationsRequest(
             employee_id=employee_id,
@@ -685,6 +697,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TerminationsEmployeeIDRequest(
             employee_id=employee_id,
@@ -807,6 +821,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TerminationsEmployeeIDRequest(
             employee_id=employee_id,
@@ -931,6 +947,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1053,6 +1071,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1179,6 +1199,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1310,6 +1332,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1427,6 +1451,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1529,6 +1555,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1631,6 +1659,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1733,6 +1763,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1EmployeesEmployeeIDRehireRequest(
             employee_id=employee_id,
@@ -1835,6 +1867,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDEmploymentHistoryRequest(
             employee_id=employee_id,
@@ -1933,6 +1967,8 @@ class EmployeeEmployments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDEmploymentHistoryRequest(
             employee_id=employee_id,

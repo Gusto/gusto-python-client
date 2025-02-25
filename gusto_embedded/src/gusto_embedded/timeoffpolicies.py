@@ -59,6 +59,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequest(
             payroll_id=payroll_id,
@@ -196,6 +198,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequest(
             payroll_id=payroll_id,
@@ -313,6 +317,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetTimeOffPoliciesTimeOffPolicyUUIDRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -409,6 +415,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetTimeOffPoliciesTimeOffPolicyUUIDRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -523,6 +531,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutTimeOffPoliciesTimeOffPolicyUUIDRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -661,6 +671,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutTimeOffPoliciesTimeOffPolicyUUIDRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -781,6 +793,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDTimeOffPoliciesRequest(
             company_uuid=company_uuid,
@@ -877,6 +891,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDTimeOffPoliciesRequest(
             company_uuid=company_uuid,
@@ -993,6 +1009,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDTimeOffPoliciesRequest(
             company_uuid=company_uuid,
@@ -1134,6 +1152,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDTimeOffPoliciesRequest(
             company_uuid=company_uuid,
@@ -1266,6 +1286,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -1396,6 +1418,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -1526,6 +1550,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -1656,6 +1682,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -1784,6 +1812,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -1912,6 +1942,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -2031,6 +2063,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDDeactivateRequest(
             time_off_policy_uuid=time_off_policy_uuid,
@@ -2133,6 +2167,8 @@ class TimeOffPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDDeactivateRequest(
             time_off_policy_uuid=time_off_policy_uuid,

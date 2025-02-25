@@ -70,6 +70,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDGarnishmentsRequest(
             employee_id=employee_id,
@@ -226,6 +228,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDGarnishmentsRequest(
             employee_id=employee_id,
@@ -355,6 +359,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
             employee_id=employee_id,
@@ -457,6 +463,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
             employee_id=employee_id,
@@ -555,6 +563,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsGarnishmentIDRequest(
             garnishment_id=garnishment_id,
@@ -651,6 +661,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsGarnishmentIDRequest(
             garnishment_id=garnishment_id,
@@ -776,6 +788,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1GarnishmentsGarnishmentIDRequest(
             garnishment_id=garnishment_id,
@@ -930,6 +944,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1GarnishmentsGarnishmentIDRequest(
             garnishment_id=garnishment_id,
@@ -1053,6 +1069,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsChildSupportRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -1146,6 +1164,8 @@ class Garnishments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsChildSupportRequest(
             x_gusto_api_version=x_gusto_api_version,

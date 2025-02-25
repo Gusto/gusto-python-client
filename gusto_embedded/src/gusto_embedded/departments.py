@@ -41,6 +41,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostDepartmentsRequest(
             company_uuid=company_uuid,
@@ -155,6 +157,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostDepartmentsRequest(
             company_uuid=company_uuid,
@@ -267,6 +271,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesDepartmentsRequest(
             company_uuid=company_uuid,
@@ -363,6 +369,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesDepartmentsRequest(
             company_uuid=company_uuid,
@@ -460,6 +468,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetDepartmentRequest(
             department_uuid=department_uuid,
@@ -557,6 +567,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetDepartmentRequest(
             department_uuid=department_uuid,
@@ -657,6 +669,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutDepartmentsRequest(
             department_uuid=department_uuid,
@@ -774,6 +788,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutDepartmentsRequest(
             department_uuid=department_uuid,
@@ -888,6 +904,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteDepartmentRequest(
             department_uuid=department_uuid,
@@ -991,6 +1009,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteDepartmentRequest(
             department_uuid=department_uuid,
@@ -1110,6 +1130,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAddPeopleToDepartmentRequest(
             department_uuid=department_uuid,
@@ -1240,6 +1262,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAddPeopleToDepartmentRequest(
             department_uuid=department_uuid,
@@ -1370,6 +1394,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutRemovePeopleFromDepartmentRequest(
             department_uuid=department_uuid,
@@ -1501,6 +1527,8 @@ class Departments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutRemovePeopleFromDepartmentRequest(
             department_uuid=department_uuid,

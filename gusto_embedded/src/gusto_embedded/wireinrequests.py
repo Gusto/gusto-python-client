@@ -39,6 +39,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetWireInRequestsWireInRequestUUIDRequest(
             wire_in_request_uuid=wire_in_request_uuid,
@@ -135,6 +137,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetWireInRequestsWireInRequestUUIDRequest(
             wire_in_request_uuid=wire_in_request_uuid,
@@ -239,6 +243,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutWireInRequestsWireInRequestUUIDRequest(
             wire_in_request_uuid=wire_in_request_uuid,
@@ -362,6 +368,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutWireInRequestsWireInRequestUUIDRequest(
             wire_in_request_uuid=wire_in_request_uuid,
@@ -477,6 +485,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
             company_uuid=company_uuid,
@@ -573,6 +583,8 @@ class WireInRequests(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
             company_uuid=company_uuid,

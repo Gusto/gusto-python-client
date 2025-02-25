@@ -66,6 +66,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -214,6 +216,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -355,6 +359,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -477,6 +483,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -583,6 +591,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
             company_id=company_id,
@@ -685,6 +695,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
             company_id=company_id,
@@ -797,6 +809,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
             company_id=company_id,
@@ -909,6 +923,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
             company_id=company_id,
@@ -1017,6 +1033,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -1143,6 +1161,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -1265,6 +1285,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -1369,6 +1391,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
             company_id=company_id,
@@ -1473,6 +1497,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequest(
             company_id=company_id,
@@ -1576,6 +1602,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequest(
             company_id=company_id,
@@ -1678,6 +1706,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
             payroll_uuid=payroll_uuid,
@@ -1779,6 +1809,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
             payroll_uuid=payroll_uuid,
@@ -1877,6 +1909,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesPayrollBlockersCompanyUUIDRequest(
             company_uuid=company_uuid,
@@ -1975,6 +2009,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesPayrollBlockersCompanyUUIDRequest(
             company_uuid=company_uuid,
@@ -2083,6 +2119,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesPayrollSkipCompanyUUIDRequest(
             company_uuid=company_uuid,
@@ -2214,6 +2252,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesPayrollSkipCompanyUUIDRequest(
             company_uuid=company_uuid,
@@ -2339,6 +2379,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPayrollsGrossUpPayrollUUIDRequest(
             payroll_uuid=payroll_uuid,
@@ -2458,6 +2500,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPayrollsGrossUpPayrollUUIDRequest(
             payroll_uuid=payroll_uuid,
@@ -2576,6 +2620,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
             company_id=company_id,
@@ -2687,6 +2733,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
             company_id=company_id,
@@ -2806,6 +2854,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
             company_id=company_id,
@@ -2937,6 +2987,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
             company_id=company_id,
@@ -3060,6 +3112,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
             company_id=company_id,
@@ -3168,6 +3222,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
             company_id=company_id,
@@ -3273,6 +3329,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
             payroll_id=payroll_id,
@@ -3372,6 +3430,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
             payroll_id=payroll_id,
@@ -3469,6 +3529,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
             employee_id=employee_id,
@@ -3565,6 +3627,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
             employee_id=employee_id,
@@ -3665,6 +3729,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
             payroll_uuid=payroll_uuid,
@@ -3782,6 +3848,8 @@ class Payrolls(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
             payroll_uuid=payroll_uuid,

@@ -55,6 +55,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesRequest(
             company_id=company_id,
@@ -188,6 +190,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesRequest(
             company_id=company_id,
@@ -309,6 +313,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesRequest(
             company_id=company_id,
@@ -411,6 +417,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesRequest(
             company_id=company_id,
@@ -519,6 +527,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(
             company_id=company_id,
@@ -633,6 +643,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(
             company_id=company_id,
@@ -739,6 +751,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesPayScheduleIDRequest(
             company_id=company_id,
@@ -838,6 +852,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesPayScheduleIDRequest(
             company_id=company_id,
@@ -955,6 +971,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDRequest(
             company_id=company_id,
@@ -1095,6 +1113,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDRequest(
             company_id=company_id,
@@ -1225,6 +1245,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayPeriodsRequest(
             company_id=company_id,
@@ -1334,6 +1356,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayPeriodsRequest(
             company_id=company_id,
@@ -1435,6 +1459,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDUnprocessedTerminationPayPeriodsRequest(
             company_id=company_id,
@@ -1535,6 +1561,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDUnprocessedTerminationPayPeriodsRequest(
             company_id=company_id,
@@ -1633,6 +1661,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesAssignmentsRequest(
             company_id=company_id,
@@ -1729,6 +1759,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPaySchedulesAssignmentsRequest(
             company_id=company_id,
@@ -1843,6 +1875,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesAssignmentPreviewRequest(
             company_id=company_id,
@@ -1985,6 +2019,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesAssignmentPreviewRequest(
             company_id=company_id,
@@ -2128,6 +2164,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesAssignRequest(
             company_id=company_id,
@@ -2269,6 +2307,8 @@ class PaySchedules(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPaySchedulesAssignRequest(
             company_id=company_id,

@@ -39,6 +39,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -135,6 +137,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -238,6 +242,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -362,6 +368,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -488,6 +496,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -615,6 +625,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -733,6 +745,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -835,6 +849,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteCompaniesCompanyUUIDHolidayPayPolicyRequest(
             company_uuid=company_uuid,
@@ -948,6 +964,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequest(
             company_uuid=company_uuid,
@@ -1077,6 +1095,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyAddRequest(
             company_uuid=company_uuid,
@@ -1206,6 +1226,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequest(
             company_uuid=company_uuid,
@@ -1337,6 +1359,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutCompaniesCompanyUUIDHolidayPayPolicyRemoveRequest(
             company_uuid=company_uuid,
@@ -1459,6 +1483,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDPaidHolidaysRequest(
             company_uuid=company_uuid,
@@ -1573,6 +1599,8 @@ class HolidayPayPolicies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDPaidHolidaysRequest(
             company_uuid=company_uuid,

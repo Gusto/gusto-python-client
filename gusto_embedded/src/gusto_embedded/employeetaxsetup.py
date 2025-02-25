@@ -39,6 +39,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
             employee_uuid=employee_uuid,
@@ -135,6 +137,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
             employee_uuid=employee_uuid,
@@ -247,6 +251,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
             employee_uuid=employee_uuid,
@@ -382,6 +388,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
             employee_uuid=employee_uuid,
@@ -513,6 +521,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
             employee_uuid=employee_uuid,
@@ -621,6 +631,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
             employee_uuid=employee_uuid,
@@ -721,6 +733,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDStateTaxesRequest(
             employee_uuid=employee_uuid,
@@ -831,6 +845,8 @@ class EmployeeTaxSetup(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDStateTaxesRequest(
             employee_uuid=employee_uuid,

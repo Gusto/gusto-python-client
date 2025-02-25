@@ -32,6 +32,8 @@ class FormTypedDict(TypedDict):
     r"""The quarter of this form. For some forms, e.g. tax forms, this is the calendar quarter which this form represents. An Employer's Quarterly Federal Tax Return (Form 941) for April, May, June 2022 would have a quarter value of 2 (and a year value of 2022). This value is nullable and will not be present on all forms."""
     requires_signing: NotRequired[bool]
     r"""A boolean flag that indicates whether the form needs signing or not. Note that this value will change after the form is signed."""
+    document_content_type: NotRequired[Nullable[str]]
+    r"""The content type of the associated document. Most forms are PDFs with a content type of `application/pdf`. Some tax file packages will be zip files (containing PDFs) with a content type of `application/zip`. This attribute will be `null` when the document has not been prepared."""
 
 
 class Form(BaseModel):
@@ -61,6 +63,9 @@ class Form(BaseModel):
     requires_signing: Optional[bool] = None
     r"""A boolean flag that indicates whether the form needs signing or not. Note that this value will change after the form is signed."""
 
+    document_content_type: OptionalNullable[str] = UNSET
+    r"""The content type of the associated document. Most forms are PDFs with a content type of `application/pdf`. Some tax file packages will be zip files (containing PDFs) with a content type of `application/zip`. This attribute will be `null` when the document has not been prepared."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
@@ -71,8 +76,9 @@ class Form(BaseModel):
             "year",
             "quarter",
             "requires_signing",
+            "document_content_type",
         ]
-        nullable_fields = ["year", "quarter"]
+        nullable_fields = ["year", "quarter", "document_content_type"]
         null_default_fields = []
 
         serialized = handler(self)

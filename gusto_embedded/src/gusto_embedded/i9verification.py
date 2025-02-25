@@ -41,6 +41,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
             employee_id=employee_id,
@@ -139,6 +141,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
             employee_id=employee_id,
@@ -267,6 +271,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationRequest(
             employee_id=employee_id,
@@ -416,6 +422,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationRequest(
             employee_id=employee_id,
@@ -533,6 +541,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
             employee_id=employee_id,
@@ -631,6 +641,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
             employee_id=employee_id,
@@ -729,6 +741,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
             employee_id=employee_id,
@@ -827,6 +841,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
             employee_id=employee_id,
@@ -934,6 +950,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
             employee_id=employee_id,
@@ -1057,6 +1075,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
             employee_id=employee_id,
@@ -1173,6 +1193,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDRequest(
@@ -1274,6 +1296,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDRequest(
@@ -1385,6 +1409,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
             employee_id=employee_id,
@@ -1514,6 +1540,8 @@ class I9Verification(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
             employee_id=employee_id,

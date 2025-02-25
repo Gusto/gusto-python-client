@@ -47,6 +47,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptRequest(
             contractor_payment_uuid=contractor_payment_uuid,
@@ -150,6 +152,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptRequest(
             contractor_payment_uuid=contractor_payment_uuid,
@@ -250,6 +254,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDFundRequest(
             contractor_payment_uuid=contractor_payment_uuid,
@@ -356,6 +362,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDFundRequest(
             contractor_payment_uuid=contractor_payment_uuid,
@@ -474,6 +482,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentsRequest(
             company_id=company_id,
@@ -608,6 +618,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentsRequest(
             company_id=company_id,
@@ -738,6 +750,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
             company_id=company_id,
@@ -855,6 +869,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
             company_id=company_id,
@@ -961,6 +977,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
@@ -1061,6 +1079,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
@@ -1162,6 +1182,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
@@ -1269,6 +1291,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = (
             models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
@@ -1385,6 +1409,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(
             company_uuid=company_uuid,
@@ -1519,6 +1545,8 @@ class ContractorPayments(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(
             company_uuid=company_uuid,

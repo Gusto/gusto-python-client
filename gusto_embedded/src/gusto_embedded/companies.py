@@ -58,6 +58,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -193,6 +195,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesRequest(
             x_gusto_api_version=x_gusto_api_version,
@@ -312,6 +316,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
             company_id=company_id,
@@ -411,6 +417,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
             company_id=company_id,
@@ -509,6 +517,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
             company_id=company_id,
@@ -623,6 +633,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
             company_id=company_id,
@@ -743,6 +755,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
             company_uuid=company_uuid,
@@ -868,6 +882,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
             company_uuid=company_uuid,
@@ -992,6 +1008,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
             company_uuid=company_uuid,
@@ -1116,6 +1134,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
             company_uuid=company_uuid,
@@ -1237,6 +1257,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
             company_uuid=company_uuid,
@@ -1356,6 +1378,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
             company_uuid=company_uuid,
@@ -1478,6 +1502,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDAdminsRequest(
             company_id=company_id,
@@ -1599,6 +1625,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDAdminsRequest(
             company_id=company_id,
@@ -1717,6 +1745,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDAdminsRequest(
             company_id=company_id,
@@ -1819,6 +1849,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDAdminsRequest(
             company_id=company_id,
@@ -1918,6 +1950,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
             company_uuid=company_uuid,
@@ -2015,6 +2049,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
             company_uuid=company_uuid,
@@ -2123,6 +2159,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
             company_uuid=company_uuid,
@@ -2237,6 +2275,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
             company_uuid=company_uuid,
@@ -2343,6 +2383,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDCustomFieldsRequest(
             company_id=company_id,
@@ -2445,6 +2487,8 @@ class Companies(BaseSDK):
 
         if server_url is not None:
             base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDCustomFieldsRequest(
             company_id=company_id,
