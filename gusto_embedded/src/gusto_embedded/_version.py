@@ -3,10 +3,10 @@
 import importlib.metadata
 
 __title__: str = "gusto_embedded"
-__version__: str = "0.1.0"
+__version__: str = "0.1.1"
 __openapi_doc_version__: str = "2024-04-01"
-__gen_version__: str = "2.529.2"
-__user_agent__: str = "speakeasy-sdk/python 0.1.0 2.529.2 2024-04-01 gusto_embedded"
+__gen_version__: str = "2.536.0"
+__user_agent__: str = "speakeasy-sdk/python 0.1.1 2.536.0 2024-04-01 gusto_embedded"
 
 try:
     if __package__ is not None:
