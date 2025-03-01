@@ -30,6 +30,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto() as gusto:
 
     res = gusto.webhooks.create_subscription(security=gusto_embedded.PostV1WebhookSubscriptionSecurity(
@@ -82,6 +83,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto() as gusto:
 
     res = gusto.webhooks.list_subscriptions(security=gusto_embedded.GetV1WebhookSubscriptionsSecurity(
@@ -128,6 +130,7 @@ scope: `webhook_subscriptions:write`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto() as gusto:
 
@@ -182,6 +185,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto() as gusto:
 
     res = gusto.webhooks.get_subscription(security=gusto_embedded.GetV1WebhookSubscriptionUUIDSecurity(
@@ -230,6 +234,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto() as gusto:
 
     gusto.webhooks.delete_subscription(security=gusto_embedded.DeleteV1WebhookSubscriptionUUIDSecurity(
@@ -274,6 +279,7 @@ scope: `webhook_subscriptions:write`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto() as gusto:
 
@@ -324,6 +330,7 @@ scope: `webhook_subscriptions:read`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto() as gusto:
 

@@ -24,6 +24,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto() as gusto:
 
     res = gusto.events.get(security=gusto_embedded.GetEventsSecurity(

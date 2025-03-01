@@ -29,6 +29,7 @@ scope: `webhook_subscriptions:write`
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.create(security=gusto_app_integration.PostV1WebhookSubscriptionSecurity(
@@ -80,6 +81,7 @@ scope: `webhook_subscriptions:read`
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.list_subscriptions(security=gusto_app_integration.GetV1WebhookSubscriptionsSecurity(
@@ -125,6 +127,7 @@ scope: `webhook_subscriptions:write`
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration() as gai_client:
 
@@ -178,6 +181,7 @@ scope: `webhook_subscriptions:read`
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.get_subscription(security=gusto_app_integration.GetV1WebhookSubscriptionUUIDSecurity(
@@ -225,6 +229,7 @@ scope: `webhook_subscriptions:write`
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration() as gai_client:
 
     gai_client.webhooks.delete_subscription(security=gusto_app_integration.DeleteV1WebhookSubscriptionUUIDSecurity(
@@ -268,6 +273,7 @@ scope: `webhook_subscriptions:write`
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration() as gai_client:
 
@@ -317,6 +323,7 @@ scope: `webhook_subscriptions:read`
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration() as gai_client:
 

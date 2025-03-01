@@ -18,6 +18,7 @@ Returns scope and resource information associated with the current access token.
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -59,6 +60,7 @@ The `expires_in` value is provided in seconds from when the `access_token` was g
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

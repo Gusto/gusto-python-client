@@ -9,7 +9,7 @@ from typing_extensions import NotRequired, TypedDict
 class PostEmployeeYtdBenefitAmountsFromDifferentCompanyTypedDict(TypedDict):
     tax_year: float
     r"""The tax year for which this amount applies."""
-    benefit_type: NotRequired[float]
+    benefit_type: NotRequired[int]
     r"""The benefit type supported by Gusto."""
     ytd_employee_deduction_amount: NotRequired[str]
     r"""The year-to-date employee deduction made outside the current company."""
@@ -21,7 +21,7 @@ class PostEmployeeYtdBenefitAmountsFromDifferentCompany(BaseModel):
     tax_year: float
     r"""The tax year for which this amount applies."""
 
-    benefit_type: Optional[float] = None
+    benefit_type: Optional[int] = None
     r"""The benefit type supported by Gusto."""
 
     ytd_employee_deduction_amount: Optional[str] = "0.00"
