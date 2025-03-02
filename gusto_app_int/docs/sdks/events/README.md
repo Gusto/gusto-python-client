@@ -23,6 +23,7 @@ scope: `events:read`
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration() as gai_client:
 
     res = gai_client.events.get_all(security=gusto_app_integration.GetEventsSecurity(

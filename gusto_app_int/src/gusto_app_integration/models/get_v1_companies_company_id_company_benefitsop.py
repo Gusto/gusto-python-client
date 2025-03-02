@@ -17,6 +17,8 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class GetV1CompaniesCompanyIDCompanyBenefitsRequestTypedDict(TypedDict):
     company_id: str
     r"""The UUID of the company"""
+    active: NotRequired[bool]
+    r"""Whether the benefit is currently active"""
     enrollment_count: NotRequired[bool]
     r"""Whether to return employee enrollment count"""
     x_gusto_api_version: NotRequired[VersionHeader]
@@ -28,6 +30,12 @@ class GetV1CompaniesCompanyIDCompanyBenefitsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the company"""
+
+    active: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Whether the benefit is currently active"""
 
     enrollment_count: Annotated[
         Optional[bool],
