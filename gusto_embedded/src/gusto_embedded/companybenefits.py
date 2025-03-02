@@ -15,7 +15,7 @@ class CompanyBenefits(BaseSDK):
         company_id: str,
         description: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        benefit_type: Optional[float] = None,
+        benefit_type: Optional[int] = None,
         active: Optional[bool] = True,
         responsible_for_employer_taxes: Optional[bool] = None,
         responsible_for_employee_w2: Optional[bool] = None,
@@ -145,7 +145,7 @@ class CompanyBenefits(BaseSDK):
         company_id: str,
         description: str,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
-        benefit_type: Optional[float] = None,
+        benefit_type: Optional[int] = None,
         active: Optional[bool] = True,
         responsible_for_employer_taxes: Optional[bool] = None,
         responsible_for_employee_w2: Optional[bool] = None,
@@ -273,6 +273,7 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_id: str,
+        active: Optional[bool] = None,
         enrollment_count: Optional[bool] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -291,6 +292,7 @@ class CompanyBenefits(BaseSDK):
         scope: `company_benefits:read`
 
         :param company_id: The UUID of the company
+        :param active: Whether the benefit is currently active
         :param enrollment_count: Whether to return employee enrollment count
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
@@ -310,6 +312,7 @@ class CompanyBenefits(BaseSDK):
 
         request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
+            active=active,
             enrollment_count=enrollment_count,
             x_gusto_api_version=x_gusto_api_version,
         )
@@ -378,6 +381,7 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_id: str,
+        active: Optional[bool] = None,
         enrollment_count: Optional[bool] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -396,6 +400,7 @@ class CompanyBenefits(BaseSDK):
         scope: `company_benefits:read`
 
         :param company_id: The UUID of the company
+        :param active: Whether the benefit is currently active
         :param enrollment_count: Whether to return employee enrollment count
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
@@ -415,6 +420,7 @@ class CompanyBenefits(BaseSDK):
 
         request = models.GetV1CompaniesCompanyIDCompanyBenefitsRequest(
             company_id=company_id,
+            active=active,
             enrollment_count=enrollment_count,
             x_gusto_api_version=x_gusto_api_version,
         )
@@ -1777,8 +1783,8 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_benefit_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1885,8 +1891,8 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_benefit_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,

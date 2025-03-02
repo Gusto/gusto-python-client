@@ -25,9 +25,9 @@ class GetAchTransactionsRequestTypedDict(TypedDict):
     r"""Used to filter the ACH transactions to only include those with a specific transaction type, such as \"Credit employee pay\"."""
     payment_direction: NotRequired[str]
     r"""Used to filter the ACH transactions to only include those with a specific payment direction, either \"credit\" or \"debit\"."""
-    page: NotRequired[float]
+    page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
-    per: NotRequired[float]
+    per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
@@ -64,13 +64,13 @@ class GetAchTransactionsRequest(BaseModel):
     r"""Used to filter the ACH transactions to only include those with a specific payment direction, either \"credit\" or \"debit\"."""
 
     page: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
 
     per: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""

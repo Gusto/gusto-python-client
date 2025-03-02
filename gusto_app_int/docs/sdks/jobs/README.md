@@ -19,6 +19,7 @@ scope: `jobs:write`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -65,6 +66,7 @@ scope: `jobs:write`
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
