@@ -25,6 +25,7 @@ scope: `signatories:manage`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -81,6 +82,7 @@ scope: `signatories:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -119,6 +121,7 @@ Create a signatory with minimal information. This signatory can be invited to pr
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -165,6 +168,7 @@ scope: `signatories:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -217,6 +221,7 @@ scope: `signatories:manage`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

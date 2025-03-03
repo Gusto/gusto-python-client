@@ -25,6 +25,7 @@ scope: `departments:write`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -68,6 +69,7 @@ scope: `departments:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -110,6 +112,7 @@ scope: `departments:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -150,6 +153,7 @@ scope: `departments:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -196,6 +200,7 @@ scope: `departments:write`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -233,6 +238,7 @@ scope: `departments:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -278,6 +284,7 @@ scope: `departments:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

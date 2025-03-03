@@ -3,7 +3,12 @@
 from __future__ import annotations
 from .versionheader import VersionHeader
 from gusto_embedded.types import BaseModel
-from gusto_embedded.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
+from gusto_embedded.utils import (
+    FieldMetadata,
+    HeaderMetadata,
+    PathParamMetadata,
+    QueryParamMetadata,
+)
 import pydantic
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
@@ -12,6 +17,8 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class GetV1CompanyOnboardingStatusRequestTypedDict(TypedDict):
     company_uuid: str
     r"""The UUID of the company"""
+    additional_steps: NotRequired[str]
+    r"""Comma delimited string indicating whether to include any additional steps of onboarding. Currently only supports the value \"external_payroll\"."""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
@@ -21,6 +28,12 @@ class GetV1CompanyOnboardingStatusRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the company"""
+
+    additional_steps: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Comma delimited string indicating whether to include any additional steps of onboarding. Currently only supports the value \"external_payroll\"."""
 
     x_gusto_api_version: Annotated[
         Optional[VersionHeader],

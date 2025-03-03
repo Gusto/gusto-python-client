@@ -23,6 +23,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -84,6 +85,7 @@ scope: `company_reports:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -124,6 +126,7 @@ scope: `company_reports:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

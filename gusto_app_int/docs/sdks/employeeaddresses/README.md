@@ -29,6 +29,7 @@ scope: `employees:read`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -71,6 +72,7 @@ scope: `employees:write`
 ```python
 import dateutil.parser
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -122,6 +124,7 @@ scope: `employees:read`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -164,6 +167,7 @@ scope: `employees:write`
 ```python
 import dateutil.parser
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -214,6 +218,7 @@ scope: `employees:write`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -250,6 +255,7 @@ scope: `employees:read`
 
 ```python
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -291,6 +297,7 @@ scope: `employees:manage`
 ```python
 import dateutil.parser
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -335,6 +342,7 @@ scope: `employees:read`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -375,6 +383,7 @@ scope: `employees:manage`
 ```python
 import dateutil.parser
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -419,6 +428,7 @@ scope: `employees:manage`
 
 ```python
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",

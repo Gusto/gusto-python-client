@@ -10,7 +10,7 @@ class YtdBenefitAmountsFromDifferentCompanyTypedDict(TypedDict):
 
     uuid: str
     r"""The unique identifier for this benefit amount record."""
-    benefit_type: float
+    benefit_type: int
     r"""The benefit type supported by Gusto. See [Benefit Types](https://docs.gusto.com/embedded-payroll/reference/get-v1-benefits) for more information."""
     ytd_employee_deduction_amount: str
     r"""The year-to-date employee deduction made outside the current company."""
@@ -24,7 +24,7 @@ class YtdBenefitAmountsFromDifferentCompany(BaseModel):
     uuid: str
     r"""The unique identifier for this benefit amount record."""
 
-    benefit_type: float
+    benefit_type: int
     r"""The benefit type supported by Gusto. See [Benefit Types](https://docs.gusto.com/embedded-payroll/reference/get-v1-benefits) for more information."""
 
     ytd_employee_deduction_amount: str

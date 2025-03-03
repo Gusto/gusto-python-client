@@ -26,9 +26,9 @@ class GetV1EmployeesEmployeeIDJobsQueryParamInclude(str, Enum):
 class GetV1EmployeesEmployeeIDJobsRequestTypedDict(TypedDict):
     employee_id: str
     r"""The UUID of the employee"""
-    page: NotRequired[float]
+    page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
-    per: NotRequired[float]
+    per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
     include: NotRequired[GetV1EmployeesEmployeeIDJobsQueryParamInclude]
     r"""Available options:
@@ -45,13 +45,13 @@ class GetV1EmployeesEmployeeIDJobsRequest(BaseModel):
     r"""The UUID of the employee"""
 
     page: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
 
     per: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""

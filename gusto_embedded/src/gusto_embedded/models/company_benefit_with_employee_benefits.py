@@ -157,7 +157,9 @@ class CompanyBenefitWithEmployeeBenefitsTypedDict(TypedDict):
     r"""The UUID of the company benefit."""
     version: NotRequired[str]
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
-    benefit_type: NotRequired[float]
+    company_uuid: NotRequired[str]
+    r"""The UUID of the company."""
+    benefit_type: NotRequired[int]
     r"""The type of the benefit to which the company benefit belongs (same as benefit_id)."""
     active: NotRequired[bool]
     r"""Whether this benefit is active for employee participation. Company benefits may only be deactivated if no employees are actively participating."""
@@ -183,7 +185,10 @@ class CompanyBenefitWithEmployeeBenefits(BaseModel):
     version: Optional[str] = None
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
-    benefit_type: Optional[float] = None
+    company_uuid: Optional[str] = None
+    r"""The UUID of the company."""
+
+    benefit_type: Optional[int] = None
     r"""The type of the benefit to which the company benefit belongs (same as benefit_id)."""
 
     active: Optional[bool] = True

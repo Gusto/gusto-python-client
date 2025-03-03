@@ -21,6 +21,7 @@ scope: `contractor_payment_methods:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -64,6 +65,7 @@ scope: `contractor_payment_methods:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -106,6 +108,7 @@ scope: `contractor_payment_methods:write`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

@@ -35,6 +35,7 @@ scope: `payrolls:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -83,6 +84,7 @@ scope: `time_off_policies:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -124,6 +126,7 @@ scope: `time_off_policies:write`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -176,6 +179,7 @@ scope: `time_off_policies:read`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -217,6 +221,7 @@ scope: `time_off_policies:write`
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -270,6 +275,7 @@ scope: `time_off_policies:write`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -312,6 +318,7 @@ scope: `time_off_policies:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -356,6 +363,7 @@ scope: `time_off_policies:write`
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -398,6 +406,7 @@ scope: `time_off_policies:write`
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),

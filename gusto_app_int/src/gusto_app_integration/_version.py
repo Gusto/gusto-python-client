@@ -3,11 +3,11 @@
 import importlib.metadata
 
 __title__: str = "gusto_app_integration"
-__version__: str = "0.1.0"
+__version__: str = "0.1.1"
 __openapi_doc_version__: str = "2024-04-01"
-__gen_version__: str = "2.529.2"
+__gen_version__: str = "2.536.0"
 __user_agent__: str = (
-    "speakeasy-sdk/python 0.1.0 2.529.2 2024-04-01 gusto_app_integration"
+    "speakeasy-sdk/python 0.1.1 2.536.0 2024-04-01 gusto_app_integration"
 )
 
 try:

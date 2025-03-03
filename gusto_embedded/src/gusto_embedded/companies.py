@@ -1715,8 +1715,8 @@ class Companies(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1819,8 +1819,8 @@ class Companies(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1923,6 +1923,7 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
+        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1937,6 +1938,7 @@ class Companies(BaseSDK):
         scope: `company_onboarding_status:read`
 
         :param company_uuid: The UUID of the company
+        :param additional_steps: Comma delimited string indicating whether to include any additional steps of onboarding. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1955,6 +1957,7 @@ class Companies(BaseSDK):
 
         request = models.GetV1CompanyOnboardingStatusRequest(
             company_uuid=company_uuid,
+            additional_steps=additional_steps,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -2022,6 +2025,7 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
+        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2036,6 +2040,7 @@ class Companies(BaseSDK):
         scope: `company_onboarding_status:read`
 
         :param company_uuid: The UUID of the company
+        :param additional_steps: Comma delimited string indicating whether to include any additional steps of onboarding. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -2054,6 +2059,7 @@ class Companies(BaseSDK):
 
         request = models.GetV1CompanyOnboardingStatusRequest(
             company_uuid=company_uuid,
+            additional_steps=additional_steps,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -2353,8 +2359,8 @@ class Companies(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2457,8 +2463,8 @@ class Companies(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,

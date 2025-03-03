@@ -9,7 +9,7 @@ from typing_extensions import NotRequired, TypedDict
 class SupportedBenefitTypedDict(TypedDict):
     r"""Example response"""
 
-    benefit_type: NotRequired[float]
+    benefit_type: NotRequired[int]
     r"""The benefit type in Gusto."""
     name: NotRequired[str]
     r"""The name of the benefit."""
@@ -34,7 +34,7 @@ class SupportedBenefitTypedDict(TypedDict):
 class SupportedBenefit(BaseModel):
     r"""Example response"""
 
-    benefit_type: Optional[float] = None
+    benefit_type: Optional[int] = None
     r"""The benefit type in Gusto."""
 
     name: Optional[str] = None

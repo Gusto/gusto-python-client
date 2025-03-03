@@ -19,6 +19,7 @@ Returns scope and resource information associated with the current access token.
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -55,6 +56,7 @@ Revokes the given access token. After revoking, this token can no longer be used
 
 ```python
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -94,6 +96,7 @@ The `expires_in` value is provided in seconds from when the `access_token` was g
 
 ```python
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -139,6 +142,7 @@ scope: `companies:disconnect_app_integration`
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration() as gai_client:
 
