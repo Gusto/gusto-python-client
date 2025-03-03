@@ -1,4 +1,4 @@
-![gusto logo](./assets/Gusto_logo.png)
+![gusto logo](./assets/Gusto_logo.png|height=50)
 
 # Gusto Python Client
 **Payroll, HR, benefits. Simplified**
