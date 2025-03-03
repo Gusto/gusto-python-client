@@ -118,6 +118,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 # Synchronous Example
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -137,6 +138,7 @@ import asyncio
 from gusto_app_integration import GustoAppIntegration
 
 async def main():
+
     async with GustoAppIntegration(
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
@@ -165,6 +167,7 @@ To authenticate with the API the `company_access_auth` parameter must be set whe
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -182,6 +185,7 @@ Some operations in this SDK require the security scheme to be specified at the r
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration() as gai_client:
 
@@ -391,6 +395,7 @@ To change the default retry strategy for a single API call, simply provide a `Re
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -407,6 +412,7 @@ If you'd like to override the default retry strategy for all operations that sup
 ```python
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
+
 
 with GustoAppIntegration(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
@@ -447,6 +453,7 @@ When custom error responses are specified for an operation, the SDK may also rai
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration, models
+
 
 with GustoAppIntegration() as gai_client:
     res = None
@@ -517,6 +524,7 @@ You can override the default server globally by passing a server name to the `se
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     server="prod",
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
@@ -534,6 +542,7 @@ with GustoAppIntegration(
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
 from gusto_app_integration import GustoAppIntegration
+
 
 with GustoAppIntegration(
     server_url="https://api.gusto-demo.com",
@@ -639,6 +648,7 @@ The `GustoAppIntegration` class implements the context manager protocol and regi
 ```python
 from gusto_app_integration import GustoAppIntegration
 def main():
+
     with GustoAppIntegration(
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
@@ -647,6 +657,7 @@ def main():
 
 # Or when using async:
 async def amain():
+
     async with GustoAppIntegration(
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:

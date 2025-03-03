@@ -26,6 +26,7 @@ scope: `payrolls:read`
 ```python
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:

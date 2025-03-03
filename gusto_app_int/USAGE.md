@@ -3,6 +3,7 @@
 # Synchronous Example
 from gusto_app_integration import GustoAppIntegration
 
+
 with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
@@ -22,6 +23,7 @@ import asyncio
 from gusto_app_integration import GustoAppIntegration
 
 async def main():
+
     async with GustoAppIntegration(
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:

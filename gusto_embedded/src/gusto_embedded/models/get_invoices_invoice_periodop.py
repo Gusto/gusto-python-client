@@ -36,9 +36,9 @@ class GetInvoicesInvoicePeriodSecurity(BaseModel):
 class GetInvoicesInvoicePeriodRequestTypedDict(TypedDict):
     invoice_period: str
     r"""The month we are calculating the invoice for. Must be in YYYY-MM format"""
-    page: NotRequired[float]
+    page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
-    per: NotRequired[float]
+    per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
     company_uuids: NotRequired[str]
     r"""Filter companies returned in the active_companies response, will return an error if company not active during provided invoice period. i.e. `?company_uuids=781922d8-e780-4b6b-bf74-ee303166d022,bbbca930-7322-491c-ba7f-98707a52a9c5`"""
@@ -53,13 +53,13 @@ class GetInvoicesInvoicePeriodRequest(BaseModel):
     r"""The month we are calculating the invoice for. Must be in YYYY-MM format"""
 
     page: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
 
     per: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""

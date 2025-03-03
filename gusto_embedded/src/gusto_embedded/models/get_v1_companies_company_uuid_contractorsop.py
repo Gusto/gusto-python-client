@@ -17,9 +17,9 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class GetV1CompaniesCompanyUUIDContractorsRequestTypedDict(TypedDict):
     company_uuid: str
     r"""The UUID of the company"""
-    page: NotRequired[float]
+    page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
-    per: NotRequired[float]
+    per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
     search_term: NotRequired[str]
     r"""A string to search for in the object's names"""
@@ -34,13 +34,13 @@ class GetV1CompaniesCompanyUUIDContractorsRequest(BaseModel):
     r"""The UUID of the company"""
 
     page: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
 
     per: Annotated[
-        Optional[float],
+        Optional[int],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""

@@ -17,7 +17,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class PostV1CompaniesCompanyIDCompanyBenefitsRequestBodyTypedDict(TypedDict):
     description: str
     r"""The description of the company benefit. For example, a company may offer multiple benefits with an ID of 1 (for Medical Insurance). The description would show something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."""
-    benefit_type: NotRequired[float]
+    benefit_type: NotRequired[int]
     r"""The ID of the benefit to which the company benefit belongs."""
     active: NotRequired[bool]
     r"""Whether this benefit is active for employee participation."""
@@ -31,7 +31,7 @@ class PostV1CompaniesCompanyIDCompanyBenefitsRequestBody(BaseModel):
     description: str
     r"""The description of the company benefit. For example, a company may offer multiple benefits with an ID of 1 (for Medical Insurance). The description would show something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."""
 
-    benefit_type: Optional[float] = None
+    benefit_type: Optional[int] = None
     r"""The ID of the benefit to which the company benefit belongs."""
 
     active: Optional[bool] = True

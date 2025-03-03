@@ -321,6 +321,8 @@ class Payrolls(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         sort_order: Optional[models.SortOrder] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -346,6 +348,8 @@ class Payrolls(BaseSDK):
         :param start_date: Return payrolls whose pay period is after the start date
         :param end_date: Return payrolls whose pay period is before the end date. If left empty, defaults to today's date.
         :param sort_order: A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -370,6 +374,8 @@ class Payrolls(BaseSDK):
             start_date=start_date,
             end_date=end_date,
             sort_order=sort_order,
+            page=page,
+            per=per,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -445,6 +451,8 @@ class Payrolls(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         sort_order: Optional[models.SortOrder] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -470,6 +478,8 @@ class Payrolls(BaseSDK):
         :param start_date: Return payrolls whose pay period is after the start date
         :param end_date: Return payrolls whose pay period is before the end date. If left empty, defaults to today's date.
         :param sort_order: A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -494,6 +504,8 @@ class Payrolls(BaseSDK):
             start_date=start_date,
             end_date=end_date,
             sort_order=sort_order,
+            page=page,
+            per=per,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -561,8 +573,8 @@ class Payrolls(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -665,8 +677,8 @@ class Payrolls(BaseSDK):
         self,
         *,
         company_id: str,
-        page: Optional[float] = None,
-        per: Optional[float] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         x_gusto_api_version: Optional[models.VersionHeader] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,

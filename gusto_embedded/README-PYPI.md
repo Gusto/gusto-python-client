@@ -230,6 +230,7 @@ To authenticate with the API the `company_access_auth` parameter must be set whe
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -248,6 +249,7 @@ Some operations in this SDK require the security scheme to be specified at the r
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto() as gusto:
 
@@ -691,6 +693,7 @@ import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -717,6 +720,7 @@ from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
 
+
 with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
@@ -734,6 +738,7 @@ If you'd like to override the default retry strategy for all operations that sup
 from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
+
 
 with Gusto(
     retry_config=RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False),
@@ -775,6 +780,7 @@ When custom error responses are specified for an operation, the SDK may also rai
 import gusto_embedded
 from gusto_embedded import Gusto, models
 import os
+
 
 with Gusto() as gusto:
     res = None
@@ -824,6 +830,7 @@ You can override the default server globally by passing a server name to the `se
 from gusto_embedded import Gusto
 import os
 
+
 with Gusto(
     server="prod",
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
@@ -842,6 +849,7 @@ The default server can also be overridden globally by passing a URL to the `serv
 ```python
 from gusto_embedded import Gusto
 import os
+
 
 with Gusto(
     server_url="https://api.gusto-demo.com",
@@ -948,6 +956,7 @@ The `Gusto` class implements the context manager protocol and registers a finali
 from gusto_embedded import Gusto
 import os
 def main():
+
     with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
     ) as gusto:
@@ -956,6 +965,7 @@ def main():
 
 # Or when using async:
 async def amain():
+
     async with Gusto(
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
     ) as gusto:
