@@ -15,7 +15,9 @@ class Garnishments(BaseSDK):
         employee_id: str,
         amount: str,
         court_ordered: bool,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         description: Optional[str] = None,
         garnishment_type: OptionalNullable[
@@ -173,7 +175,9 @@ class Garnishments(BaseSDK):
         employee_id: str,
         amount: str,
         court_ordered: bool,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         description: Optional[str] = None,
         garnishment_type: OptionalNullable[
@@ -331,7 +335,9 @@ class Garnishments(BaseSDK):
         employee_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -435,7 +441,9 @@ class Garnishments(BaseSDK):
         employee_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -537,7 +545,9 @@ class Garnishments(BaseSDK):
         self,
         *,
         garnishment_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -635,7 +645,9 @@ class Garnishments(BaseSDK):
         self,
         *,
         garnishment_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -734,7 +746,9 @@ class Garnishments(BaseSDK):
         *,
         garnishment_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         amount: Optional[str] = None,
         description: Optional[str] = None,
@@ -890,7 +904,9 @@ class Garnishments(BaseSDK):
         *,
         garnishment_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         amount: Optional[str] = None,
         description: Optional[str] = None,
@@ -1044,7 +1060,9 @@ class Garnishments(BaseSDK):
     def get_child_support_data(
         self,
         *,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1139,7 +1157,9 @@ class Garnishments(BaseSDK):
     async def get_child_support_data_async(
         self,
         *,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

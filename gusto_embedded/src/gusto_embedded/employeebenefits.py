@@ -14,7 +14,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         company_benefit_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         employee_deduction: Optional[str] = "0.00",
         deduct_as_percentage: Optional[bool] = False,
@@ -186,7 +188,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         company_benefit_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = True,
         employee_deduction: Optional[str] = "0.00",
         deduct_as_percentage: Optional[bool] = False,
@@ -359,7 +363,9 @@ class EmployeeBenefits(BaseSDK):
         employee_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -467,7 +473,9 @@ class EmployeeBenefits(BaseSDK):
         employee_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -573,7 +581,9 @@ class EmployeeBenefits(BaseSDK):
         self,
         *,
         employee_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -673,7 +683,9 @@ class EmployeeBenefits(BaseSDK):
         self,
         *,
         employee_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -774,7 +786,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_benefit_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = None,
         employee_deduction: Optional[str] = "0.00",
         deduct_as_percentage: Optional[bool] = None,
@@ -944,7 +958,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_benefit_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = None,
         employee_deduction: Optional[str] = "0.00",
         deduct_as_percentage: Optional[bool] = None,
@@ -1113,7 +1129,9 @@ class EmployeeBenefits(BaseSDK):
         self,
         *,
         employee_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1211,7 +1229,9 @@ class EmployeeBenefits(BaseSDK):
         self,
         *,
         employee_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1310,7 +1330,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         tax_year: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1416,7 +1438,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         tax_year: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1522,7 +1546,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         tax_year: float,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         benefit_type: Optional[int] = None,
         ytd_employee_deduction_amount: Optional[str] = "0.00",
         ytd_company_contribution_amount: Optional[str] = "0.00",
@@ -1649,7 +1675,9 @@ class EmployeeBenefits(BaseSDK):
         *,
         employee_id: str,
         tax_year: float,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         benefit_type: Optional[int] = None,
         ytd_employee_deduction_amount: Optional[str] = "0.00",
         ytd_company_contribution_amount: Optional[str] = "0.00",

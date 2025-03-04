@@ -35,7 +35,9 @@ class HistoricalEmployees(BaseSDK):
             models.PutV1HistoricalEmployeesJob,
             models.PutV1HistoricalEmployeesJobTypedDict,
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         middle_initial: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
         email: Optional[str] = None,
@@ -210,7 +212,9 @@ class HistoricalEmployees(BaseSDK):
             models.PutV1HistoricalEmployeesJob,
             models.PutV1HistoricalEmployeesJobTypedDict,
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         middle_initial: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
         email: Optional[str] = None,

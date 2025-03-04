@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: 04f1c1b33071c0817ed03c2e5d600c27
+  docChecksum: eab22830776ef8621dd61dc446cddafe
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.508.1
-  generationVersion: 2.536.0
-  releaseVersion: 0.1.1
-  configChecksum: 895ddb4380cec551bfa85e273aed7399
+  speakeasyVersion: 1.509.1
+  generationVersion: 2.539.1
+  releaseVersion: 0.1.2
+  configChecksum: b7c2ef721db646c05f3f4d62ecc6b876
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int
@@ -15,7 +15,7 @@ features:
   python:
     additionalDependencies: 1.0.0
     constsAndDefaults: 1.0.5
-    core: 5.12.1
+    core: 5.12.2
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     enumUnions: 0.1.0
@@ -711,15 +711,24 @@ generatedFiles:
 examples:
   get-v1-token-info:
     Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"scope": "companies:read companies:write employees:read", "resource": {"type": "Company", "uuid": "5eca5127-6048-43ad-91ee-b56a0c34bc85"}, "resource_owner": {"type": "CompanyAdmin", "uuid": "367871c2-3f70-4874-adc9-f1736647e8e1"}}
   revoke-access-token:
     speakeasy-default-revoke-access-token:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"client_id": "<id>", "client_secret": "<value>", "token": "<value>"}
   refresh-access-token:
     Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"client_id": "<id>", "client_secret": "<value>", "refresh_token": "<value>", "grant_type": "<value>"}
       responses:
@@ -730,27 +739,40 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   post-v1-provision:
     Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"user": {"first_name": "Frank", "last_name": "Ocean", "email": "frank@example.com", "phone": "2345558899"}, "company": {"name": "Frank's Ocean, LLC", "trade_name": "Frank’s Ocean", "ein": "123456789", "states": ["CO", "CA"], "number_employees": 8, "addresses": [{"street_1": "1201 16th Street Mall", "street_2": "Suite 350", "city": "Denver", "zip": "80202", "state": "CO", "phone": "2345678900", "is_primary": "true"}, {"street_1": "525 20th Street", "city": "San Francisco", "zip": "94107", "state": "CA", "phone": "2345678901"}]}}
       responses:
         "201":
           application/json: {"account_claim_url": "https://app.gusto.com/claim_account/3456789"}
     Basic:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"user": {"first_name": "Dolly", "last_name": "Ernser", "email": "Mateo_Runolfsdottir@gmail.com"}, "company": {"name": "<value>"}}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
     Resource:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"user": {"first_name": "Kaitlyn", "last_name": "Wisozk", "email": "Magnus_Howe55@hotmail.com"}, "company": {"name": "<value>"}}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
     Nested:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"user": {"first_name": "Adele", "last_name": "Jacobson", "email": "Maud_Rau14@gmail.com"}, "company": {"name": "<value>"}}
       responses:
@@ -761,7 +783,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"ein": "00-0000001", "entity_type": "C-Corporation", "contractor_only": false, "tier": "core", "is_suspended": false, "company_status": "Approved", "uuid": "c7a07c73-a703-4462-9343-1b181182b6e0", "name": "Shoppe Studios LLC", "slug": "record-shoppe", "trade_name": "Record Shoppe", "is_partner_managed": false, "pay_schedule_type": "by_department", "join_date": "2023-03-01", "funding_type": "ach", "locations": [{"street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true}, {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": true}], "compensations": {"hourly": [{"name": "Overtime", "multiple": 1.5}, {"name": "Double overtime", "multiple": 2}, {"name": "Regular", "multiple": 1}, {"name": "Outstanding vacation", "multiple": 1}, {"name": "Holiday", "multiple": 1}, {"name": "Emergency sick - self care", "multiple": 1}, {"name": "Emergency sick - caring for others", "multiple": 1}, {"name": "FMLA Public Health Emergency Leave", "multiple": 1}, {"name": "Regular Hours", "multiple": 1}], "fixed": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Severance"}, {"name": "Minimum Wage Adjustment"}, {"name": "Reimbursement"}], "paid_time_off": [{"name": "Vacation Hours"}, {"name": "Sick Hours"}, {"name": "Holiday Hours"}]}, "primary_signatory": {"uuid": "8a2ed9c2-9d1e-443a-8e56-a490d8bf73bb", "first_name": "Alda", "middle_initial": "", "last_name": "Carter", "phone": "1-565-710-7558", "email": "louie.hessel7757869450111547@zemlak.biz", "home_address": {"street_1": "524 Roob Divide", "street_2": "Suite 565", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}}, "primary_payroll_admin": {"first_name": "Ian", "last_name": "Labadie", "phone": "1-565-710-7559", "email": "louie.hessel7757869450111547@zemlak.biz"}}
@@ -770,7 +793,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"contractor_only": false}
       responses:
@@ -780,7 +804,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"contractor_only": false}
       responses:
@@ -790,7 +815,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"contractor_only": false}
       responses:
@@ -800,7 +826,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"contractor_only": true}
       responses:
@@ -812,7 +839,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "987058cc-23ee-46e9-81ef-5cee086cceca", "email": "Katherine@acmecorp.com", "first_name": "Katherine", "last_name": "Johnson"}, {"uuid": "5de11791-98fd-4587-9ed0-d5d804b8e647", "email": "Anita@acmecorp.com", "first_name": "Anita", "last_name": "Borg"}]
@@ -822,7 +850,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"custom_fields": [{"uuid": "ea7e5d57-6abb-47d7-b654-347c142886c0", "name": "employee_level", "type": "text", "description": "Employee Level", "selection_options": null}, {"uuid": "299650e4-e970-4acf-9bf0-6f05585d20ba", "name": "t-shirt size", "type": "text", "description": "What is your t-shirt size?", "selection_options": null}, {"uuid": "024ec137-6c92-43a3-b061-14a9720531d6", "name": "favorite fruit", "type": "radio", "description": "Which is your favorite fruit?", "selection_options": ["apple", "banana", "orange"]}]}
@@ -831,7 +860,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"phone_number": "8009360383", "street_1": "425 2nd Street", "street_2": "Suite 602", "city": "San Francisco", "state": "CA", "zip": "94107"}
       responses:
@@ -841,7 +871,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"phone_number": "741.279.0107 x857", "street_1": "<value>", "city": "Grand Island", "state": "Illinois", "zip": "22031"}
       responses:
@@ -851,7 +882,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"phone_number": "(263) 266-2050", "street_1": "<value>", "city": "Lubowitzside", "state": "Minnesota", "zip": "27179"}
       responses:
@@ -861,7 +893,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"phone_number": "824-550-4439 x01255", "street_1": "<value>", "city": "South Barrett", "state": "Georgia", "zip": "80985-0183"}
       responses:
@@ -872,7 +905,8 @@ examples:
       parameters:
         path:
           location_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}
@@ -881,7 +915,8 @@ examples:
       parameters:
         path:
           location_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "1928d0c378e519e9c03fb959bc959a6b", "phone_number": "8009360383", "street_1": "425 2nd Street", "street_2": "Suite 602", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}
       responses:
@@ -891,7 +926,8 @@ examples:
       parameters:
         path:
           location_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -901,7 +937,8 @@ examples:
       parameters:
         path:
           location_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -911,7 +948,8 @@ examples:
       parameters:
         path:
           location_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -924,7 +962,8 @@ examples:
           location_uuid: "<id>"
         query:
           effective_date: "2020-01-31"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "70c523ff-c71e-4474-9c83-a4ea51bd54a8", "wage": "13.0", "wage_type": "Regular", "effective_date": "2022-01-01", "authority": "State", "notes": "Employers with 6 or more employees"}]
@@ -934,7 +973,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}, {"uuid": "fa94a2fd-11a8-4024-87ff-85c587d9d2b4", "version": "15e6b9680e00f3122729e64e3cef3224", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "2866070827", "street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}]
@@ -944,7 +984,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "2097fe08-407a-46d7-b35c-a32402a2355e", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "Engineering department pay schedule", "auto_pilot": false, "active": true}, {"uuid": "8fc9f556-74fa-4271-97f6-4bfbfc5a5352", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Sales", "custom_name": "Sales department monthly schedule", "auto_pilot": false, "active": false}, {"uuid": "0e07d35a-af11-4123-bfcb-4dd5f2f12ee1", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Staff", "custom_name": "Staff department pay schedule", "auto_pilot": true, "active": false}]
@@ -954,7 +995,8 @@ examples:
         path:
           company_id: "<id>"
           pay_schedule_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "f2a69c38-e2f9-4e31-b5c5-4754fc60a052", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "A new monthly pay schedule", "auto_pilot": false, "active": true}
@@ -966,7 +1008,8 @@ examples:
         query:
           start_date: "2020-01-01"
           end_date: "2020-01-31"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"start_date": "2020-01-11", "end_date": "2020-01-24", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501", "payroll": {"payroll_uuid": "bfd8aad4-9c3f-4ca3-b072-a1b2b3ea689f", "check_date": "2020-01-30", "processed": true, "payroll_deadline": "2020-01-28", "payroll_type": "regular"}}, {"start_date": "2020-12-12", "end_date": "2020-12-25", "pay_schedule_uuid": "cb53db72-612f-4eb1-9b85-389e79cfa510", "payroll": {"payroll_uuid": "7ed29b45-4bb1-4d38-bd94-4d607d49fd21", "check_date": "2020-12-30", "processed": true, "payroll_deadline": "2020-12-28", "payroll_type": "regular"}}]
@@ -975,7 +1018,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"start_date": "2023-01-11", "end_date": "2023-01-24", "check_date": "2023-01-28", "debit_date": "2023-01-26", "employee_name": "Mary Warner", "employee_uuid": "094f6ded-a790-4651-87e6-4a7f15dec7c6", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, {"start_date": "2023-01-25", "end_date": "2023-02-07", "check_date": "2023-02-10", "debit_date": "2023-02-08", "employee_name": "Mary Warner", "employee_uuid": "094f6ded-a790-4651-87e6-4a7f15dec7c6", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}]
@@ -984,7 +1028,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"type": "by_employee", "employees": [{"employee_uuid": "f0238368-f2cf-43e2-9a07-b0265f2cec69", "pay_schedule_uuid": "c277ac52-9871-4a96-a1e6-0c449684602a"}]}
@@ -993,7 +1038,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Soren", "middle_initial": "A", "last_name": "Kierkegaard", "preferred_first_name": "Angel", "date_of_birth": "1995-05-05", "email": "knight0faith@example.com", "ssn": "123456294"}
       responses:
@@ -1004,7 +1050,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Kathryn", "last_name": "Klein"}
       responses:
@@ -1014,7 +1061,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Jerrod", "last_name": "Sawayn"}
       responses:
@@ -1024,7 +1072,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Brigitte", "last_name": "Waelchi"}
       responses:
@@ -1034,7 +1083,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Osborne", "last_name": "Ernser"}
       responses:
@@ -1044,7 +1094,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"first_name": "Isobel", "last_name": "McKenzie"}
       responses:
@@ -1056,7 +1107,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "9779767c-6044-48e0-bf68-aeb370b9a2e7", "first_name": "Nicole", "middle_initial": "M", "last_name": "Boehm", "email": "kory7757869450111548@barton-hermiston.io", "company_uuid": "c44d66dc-c41b-4a60-9e25-5e93ff8583f2", "manager_uuid": "5e53e257-c8d6-45aa-aa8a-ec99283a3acd", "version": "414dedaca594b77135e0b8d2f398516d", "department": "Stage Hand", "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": "9d5e3ce5-ea8f-4885-90e5-7ebbed03f7c5", "i9_document": true}, "jobs": [{"uuid": "5d5e3ce5-ea8f-4885-90e5-7ebaed03f7c5", "version": "91179081a7309c9fbd31bb3cf7b9893e", "employee_uuid": "a987bce1-6d06-43f8-9978-9db886f479fb", "hire_date": "2020-01-20", "title": "Client Support Manager", "primary": true, "rate": "22.00", "payment_unit": "Hour", "current_compensation_uuid": "798a962f-0fcf-491e-9b71-cfa6a1db114f", "compensations": [{"uuid": "94f17a77-cfe5-436a-af94-422bbf8248ff", "version": "233f0096a8015e62d9795fadf1fd300d", "job_uuid": "64711ac0-83ff-4aaf-bec1-db72f5a44e56", "rate": "22.00", "payment_unit": "Hour", "flsa_status": "Nonexempt", "effective_date": "2021-01-20", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [{"name": "Sick Hours", "policy_name": "Sick Policy", "policy_uuid": "9940d205-9904-4e55-9fec-652628e84af7", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_method": "per_hour_worked", "accrual_period": "Year", "accrual_balance": "71.0", "maximum_accrual_balance": "240.0", "paid_at_termination": false}, {"name": "Vacation Hours", "policy_name": "Vacation Policy", "policy_uuid": "8b312f0e-30e7-4810-9c06-1177a6484f2d", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_period": "Year", "accrual_balance": "34.0", "maximum_accrual_balance": "240.0", "paid_at_termination": true}], "terminations": [], "garnishments": [], "date_of_birth": "1996-05-08", "has_ssn": true, "ssn": "", "phone": "1234567890", "preferred_first_name": "Vanessa", "payment_method": "Check", "work_email": "vanessa.boehm@example.com"}, {"uuid": "d7cb289a-af62-4120-9cd5-acda324b5c04", "first_name": "Maci", "middle_initial": "M", "last_name": "Cassin", "email": "claud_reinger7757869450111549@gutkowski.net", "company_uuid": "4522d043-5731-406d-a129-de1808042a32", "manager_uuid": "5e53e257-c8d6-45aa-aa8a-ec99283a3acd", "version": "e867459e1360fa71e78b88142923d341", "department": "Band", "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": "1d5e3ce5-ea8f-4885-90e5-7ebbed03f7c5", "i9_document": true}, "jobs": [{"uuid": "62a00cf7-342b-465e-a151-ecd295152be0", "version": "d0e719137f89ca3dd334dd4cc248ffbb", "employee_uuid": "5e53e257-c8d6-45aa-aa8a-ec99283a3acd", "hire_date": "2020-01-20", "title": "Account Director", "primary": true, "rate": "78000.00", "payment_unit": "Year", "current_compensation_uuid": "93e5da92-173b-4faa-a0bd-d1a8dee68be0", "compensations": [{"uuid": "1bad5177-c4ed-432e-ab43-66055d40c3a5", "version": "994b75511d1debac5d7e2ddeae13679f", "job_uuid": "1214875b-f43d-4267-bf2f-a6d2c298ff3d", "rate": "78000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2021-01-20", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [{"name": "Sick Hours", "policy_name": "Sick Policy", "policy_uuid": "8b312f0e-30e7-4810-9c06-1177a6484f2d", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_method": "per_hour_worked", "accrual_period": "Year", "accrual_balance": "74.0", "maximum_accrual_balance": "240.0", "paid_at_termination": false}, {"name": "Vacation Hours", "policy_name": "Vacation Policy", "policy_uuid": "0d4c755e-50ac-4c54-b46e-81bdfa03da5b", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_period": "Year", "accrual_balance": "16.0", "maximum_accrual_balance": "240.0", "paid_at_termination": true}], "terminations": [], "garnishments": [], "custom_fields": [{"id": "ee515986-f3ca-49da-b576-2691b95262f9", "company_custom_field_id": "ea7e5d57-6abb-47d7-b654-347c142886c0", "name": "employee_level", "type": "text", "description": "Employee Level", "value": "2", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "299650e4-e970-4acf-9bf0-6f05585d20ba", "name": "t-shirt size", "type": "text", "description": "What is your t-shirt size?", "value": "md", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "024ec137-6c92-43a3-b061-14a9720531d6", "name": "favorite fruit", "type": "radio", "description": "Which is your favorite fruit?", "value": "apple", "selection_options": ["apple", "banana", "orange"]}], "date_of_birth": "1995-09-21", "has_ssn": true, "ssn": "", "phone": "1234567890", "preferred_first_name": "Denis", "payment_method": "Check", "work_email": "denis.cassin@example.com"}]
@@ -1066,7 +1118,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "4b3f930f-82cd-48a8-b797-798686e12e5e", "first_name": "Isom", "middle_initial": null, "last_name": "Jaskolski", "email": "dane7757869450111550@botsford.net", "company_uuid": "a007e1ab-3595-43c2-ab4b-af7a5af2e365", "manager_uuid": "5e53e257-c8d6-45aa-aa8a-ec99283a3acd", "version": "1c7ba9d62c8bafbfff998ffccad5d296", "department": "Stage Hand", "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "428a653a-0745-4db4-9c80-558288d416fa", "version": "6c0ed1521e8b86eb36bd4455a63a2dac", "employee_uuid": "f0689739-1985-49f3-b9ba-84562e71e85f", "hire_date": "2020-01-20", "title": "Client Support Director", "primary": true, "rate": "70000.00", "payment_unit": "Year", "current_compensation_uuid": "c9fd719b-8b07-48f3-8a4c-f447d2c59669", "compensations": [{"uuid": "145660ed-6fcc-4211-8915-18e2786290a2", "version": "2cd4b18662395eb53bcf80d5b5447f36", "job_uuid": "857feae3-414e-445d-b28b-2eb3ef50155e", "rate": "70000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2021-01-20", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [{"name": "Sick Hours", "policy_name": "Sick Policy", "policy_uuid": "9940d205-9904-4e55-9fec-652628e84af7", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_method": "per_hour_worked", "accrual_period": "Year", "accrual_balance": "31.8", "maximum_accrual_balance": "240.0", "paid_at_termination": false}, {"name": "Vacation Hours", "policy_name": "Vacation Policy", "policy_uuid": "ab59de61-239f-4805-933b-0e3360ed291c", "accrual_unit": "Hour", "accrual_rate": "208.0", "accrual_period": "Year", "accrual_balance": "77.8", "maximum_accrual_balance": "240.0", "paid_at_termination": true}], "terminations": [], "garnishments": [], "custom_fields": [{"id": "ee515986-f3ca-49da-b576-2691b95262f9", "company_custom_field_id": "ea7e5d57-6abb-47d7-b654-347c142886c0", "name": "employee_level", "type": "text", "description": "Employee Level", "value": "2", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "299650e4-e970-4acf-9bf0-6f05585d20ba", "name": "t-shirt size", "type": "text", "description": "What is your t-shirt size?", "value": "md", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "024ec137-6c92-43a3-b061-14a9720531d6", "name": "favorite fruit", "type": "radio", "description": "Which is your favorite fruit?", "value": "apple", "selection_options": ["apple", "banana", "orange"]}], "date_of_birth": "1986-06-25", "has_ssn": false, "ssn": "", "phone": "1234567890", "preferred_first_name": "Angel", "payment_method": "Check", "work_email": "angel.jaskolski@example.com"}
@@ -1075,7 +1128,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "ad85459f-8bf5-4a8f-9079-3b3fa790799e", "first_name": "Karl", "middle_initial": null, "last_name": "Jaskolski", "email": null, "company_uuid": "3c69d228-a250-49b4-9946-24e4e4294da4", "manager_uuid": null, "version": "dedac972dd28945fcd6cd941723cc71a", "department": null, "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "f0be5480-7a15-4583-b0d0-789c02a1afe4", "version": "1c0722f3e090713b6a0db7c39904693e", "employee_uuid": "ad85459f-8bf5-4a8f-9079-3b3fa790799e", "hire_date": "2023-11-01", "title": "Client Support Director", "primary": true, "rate": "70000.00", "payment_unit": "Year", "current_compensation_uuid": "1a1faa42-274b-4440-b200-a5d81df14af2", "compensations": [{"uuid": "145660ed-6fcc-4211-8915-18e2786290a2", "version": "2cd4b18662395eb53bcf80d5b5447f36", "job_uuid": "857feae3-414e-445d-b28b-2eb3ef50155e", "rate": "70000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2023-11-01", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [], "terminations": [{"uuid": "ad85459f-8bf5-4a8f-9079-3b3fa790799e", "version": "e6c865df784842196d411c1466b01686", "employee_uuid": "ad85459f-8bf5-4a8f-9079-3b3fa790799e", "active": false, "cancelable": true, "effective_date": "2023-12-31T00:00:00Z", "run_termination_payroll": false}], "garnishments": [], "date_of_birth": "1986-06-25", "has_ssn": false, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Check", "work_email": null}
@@ -1084,7 +1138,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "db0edd04aaac4506f7edab03ac855d56", "first_name": "Soren", "middle_initial": "A", "last_name": "Kierkegaard", "preferred_first_name": "Angel", "date_of_birth": "1995-05-05", "email": "knight0faith@example.com", "ssn": "123456294", "two_percent_shareholder": false}
       responses:
@@ -1095,7 +1150,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1105,7 +1161,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1115,7 +1172,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1125,7 +1183,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1135,7 +1194,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1146,7 +1206,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
@@ -1154,7 +1215,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
@@ -1162,7 +1224,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
@@ -1172,7 +1235,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"custom_fields": [{"id": "ee515986-f3ca-49da-b576-2691b95262f9", "company_custom_field_id": "ea7e5d57-6abb-47d7-b654-347c142886c0", "name": "employee_level", "type": "text", "description": "Employee Level", "value": "2", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "299650e4-e970-4acf-9bf0-6f05585d20ba", "name": "t-shirt size", "type": "text", "description": "What is your t-shirt size?", "value": "md", "selection_options": null}, {"id": "3796e08d-c2e3-434c-b4de-4ce1893e7b59", "company_custom_field_id": "024ec137-6c92-43a3-b061-14a9720531d6", "name": "favorite fruit", "type": "radio", "description": "Which is your favorite fruit?", "value": "apple", "selection_options": ["apple", "banana", "orange"]}]}
@@ -1183,13 +1247,15 @@ examples:
           employee_uuid: "<id>"
         query:
           time_off_type: "<value>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   get-v1-employees-employee_id-terminations:
     Example:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "da441196-43a9-4d23-ad5d-f37ce6bb99c0", "version": "d487dd0b55dfcacdd920ccbdaeafa351", "employee_uuid": "da441196-43a9-4d23-ad5d-f37ce6bb99c0", "active": true, "cancelable": true, "effective_date": "2020-03-10", "run_termination_payroll": false}]
@@ -1198,7 +1264,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"title": "Stage Hand"}
       responses:
@@ -1208,7 +1275,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1218,7 +1286,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1228,7 +1297,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1239,7 +1309,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"version": "d90440dd464601d1c8f4e9e240dfb7a6", "uuid": "56260b3d-c375-415c-b77a-75d99f717193", "company_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "title": "Stage Hand", "employees": [{"uuid": "41199375-a999-4414-9f40-d9bf596b134d"}], "contractors": []}, {"version": "34f39a30b45d077cb83aed2df4810d74", "uuid": "ec5c8a85-3233-4f39-a9f5-fb1ab7b5f5f3", "company_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "title": "Actors", "employees": [{"uuid": "7ee4aca1-814b-4034-b0f8-07f93cc679d1"}], "contractors": []}, {"version": "1fe3076d35ef7c97d0ae68c5f4df0acd", "uuid": "1802465d-4f68-4865-920c-1307ab095f12", "company_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "title": "Band", "employees": [{"uuid": "a73955be-c009-44dc-915e-6246e2bdedbb"}], "contractors": [{"uuid": "3488549f-60e4-494f-a34a-9d8aad3aabf5"}]}]
@@ -1248,7 +1319,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"version": "d90440dd464601d1c8f4e9e240dfb7a6", "uuid": "56260b3d-c375-415c-b77a-75d99f717193", "company_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "title": "Stage Hand", "employees": [{"uuid": "41199375-a999-4414-9f40-d9bf596b134d"}], "contractors": [{"uuid": "3488549f-60e4-494f-a34a-9d8aad3aabf5"}]}
@@ -1257,7 +1329,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "db0edd04aaac4506f7edab03ac855d56", "title": "Backup Dancer"}
       responses:
@@ -1267,7 +1340,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1277,7 +1351,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1287,7 +1362,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1298,7 +1374,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
@@ -1306,7 +1383,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
@@ -1314,7 +1392,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
@@ -1323,7 +1402,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1334,7 +1414,8 @@ examples:
       parameters:
         path:
           department_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1345,7 +1426,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "2020-06-30", "run_termination_payroll": true}
       responses:
@@ -1355,7 +1437,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>"}
       responses:
@@ -1365,7 +1448,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>"}
       responses:
@@ -1375,7 +1459,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>"}
       responses:
@@ -1386,7 +1471,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "404":
           application/json: {"errors": [{"error_key": "employment", "category": "incorrect_state", "message": "The employee's employment is not in the right state."}]}
@@ -1395,7 +1481,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "1928d0c378e519e9c03fb959bc959a6b", "effective_date": "2020-06-30", "run_termination_payroll": true}
       responses:
@@ -1405,7 +1492,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>"}
       responses:
@@ -1415,7 +1503,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>"}
       responses:
@@ -1425,7 +1514,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>"}
       responses:
@@ -1436,7 +1526,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "2023-06-30", "file_new_hire_report": true, "work_location_uuid": "b6ae9d93-d4b8-4119-8c96-dba595dd8c30"}
       responses:
@@ -1446,7 +1537,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
@@ -1456,7 +1548,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>", "file_new_hire_report": false, "work_location_uuid": "<id>"}
       responses:
@@ -1466,7 +1559,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
@@ -1477,7 +1571,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "1928d0c378e519e9c03fb959bc959a6b", "effective_date": "2023-06-30", "file_new_hire_report": true, "work_location_uuid": "b6ae9d93-d4b8-4119-8c96-dba595dd8c30"}
       responses:
@@ -1487,7 +1582,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
@@ -1497,7 +1593,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
@@ -1507,7 +1604,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
@@ -1518,7 +1616,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"version": "2e930d43acbdb241f8f14a2d531fa417", "effective_date": "2024-01-01", "file_new_hire_report": false, "work_location_uuid": "d2c80d44-857b-4d4d-bce4-23ae52cc863b,", "employment_status": "full_time", "two_percent_shareholder": false, "employee_uuid": "da441196-43a9-4d23-ad5d-f37ce6bb99c0", "active": false}
@@ -1529,7 +1628,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "404":
           application/json: {"errors": [{"error_key": "employment", "category": "incorrect_state", "message": "The employee's employment is not in the right state."}]}
@@ -1538,7 +1638,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"hire_date": "2023-05-30", "termination_date": "<value>", "file_new_hire_report": true, "two_percent_shareholder": false, "employment_status": "seasonal"}, {"hire_date": "2021-02-02", "termination_date": "2023-03-01", "file_new_hire_report": false, "two_percent_shareholder": false, "employment_status": "full_time"}]
@@ -1547,7 +1648,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": false, "uuid": "56260b3d-c375-415c-b77a-75d99f717193", "employee_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "effective_date": "2021-01-01", "courtesy_withholding": true}, {"street_1": "100 5th Ave", "street_2": "Suite 555", "city": "New York", "state": "NY", "zip": "10001", "country": "USA", "active": true, "uuid": "d9f74049-8769-4fba-8e0f-eceef2da4e6b", "employee_uuid": "7087a288-8349-4632-b92e-bc94fb79f29e", "effective_date": "2022-03-03", "courtesy_withholding": true}]
@@ -1556,7 +1658,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"street_1": "300 3rd Street", "street_2": null, "city": "San Francisco", "state": "CA", "zip": "94107", "effective_date": "2021-01-01", "courtesy_withholding": true}
       responses:
@@ -1566,7 +1669,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1576,7 +1680,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1586,7 +1691,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1597,7 +1703,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": false, "uuid": "56260b3d-c375-415c-b77a-75d99f717193", "effective_date": "2021-01-01", "courtesy_withholding": true}
@@ -1606,7 +1713,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "fe75bd065ff48b91c35fe8ff842f986c", "street_1": "300 3rd Street", "street_2": null, "city": "San Francisco", "state": "CA", "zip": "94107", "effective_date": "2021-01-01", "courtesy_withholding": true}
       responses:
@@ -1616,7 +1724,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1626,7 +1735,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1636,7 +1746,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1647,7 +1758,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
@@ -1655,7 +1767,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
@@ -1663,7 +1776,8 @@ examples:
       parameters:
         path:
           home_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
@@ -1672,7 +1786,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "fc5b87dc-8d88-400d-b2da-c3587a7e5b15", "effective_date": "2022-01-01", "active": false, "location_uuid": "d9456c94-f561-40d2-afec-919da5f59196", "employee_uuid": "7597f3e3-31d4-4953-83a5-f95be78d2fe2", "version": "139f9769a2e543e6a1259173e1ee3b8d", "street_1": "800 Adolfo Gardens", "street_2": "Suite 419", "city": "Bremen", "state": "AL", "zip": "35033", "country": "USA"}, {"uuid": "be1c2e24-af86-4c36-b34e-3a55dbcdbdab", "effective_date": "2023-01-01", "active": true, "location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "employee_uuid": "7597f3e3-31d4-4953-83a5-f95be78d2fe2", "version": "bbe8d4c741339c6b9e0e2e1c1b120816", "street_1": "2216 Icie Villages", "street_2": "Apt. 798", "city": "Big Delta", "state": "AK", "zip": "99737", "country": "USA"}]
@@ -1681,7 +1796,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "effective_date": "2023-05-15"}
       responses:
@@ -1691,7 +1807,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1701,7 +1818,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1711,7 +1829,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -1722,7 +1841,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "34925ef7-6234-440d-83b8-788a24d0d69a", "effective_date": "2023-05-15", "active": true, "location_uuid": "aba6d0fd-7294-4997-b1a4-bc9268c45932", "employee_uuid": "2363b9c0-6625-4425-9261-47627fd68783", "version": "6a22da647ed391f184a212e6e83a541d", "street_1": "977 Marks Viaduct", "street_2": null, "city": "Pink Hill", "state": "NC", "zip": "28572", "country": "USA"}
@@ -1731,7 +1851,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "effective_date": "2023-05-15", "version": "e6db1baa29d3df1eb307ff6a12c778da"}
       responses:
@@ -1741,7 +1862,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1751,7 +1873,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1761,7 +1884,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1772,7 +1896,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
@@ -1780,7 +1905,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
@@ -1788,7 +1914,8 @@ examples:
       parameters:
         path:
           work_address_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
@@ -1797,7 +1924,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"title": "Regional Manager", "hire_date": "2020-12-21"}
       responses:
@@ -1807,7 +1935,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"title": "<value>", "hire_date": "<value>"}
       responses:
@@ -1817,7 +1946,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"title": "<value>", "hire_date": "<value>"}
       responses:
@@ -1827,7 +1957,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"title": "<value>", "hire_date": "<value>"}
       responses:
@@ -1838,7 +1969,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"rate": "60000.00", "payment_unit": "Year", "flsa_status": "Exempt"}
       responses:
@@ -1848,7 +1980,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"rate": "7.00", "payment_unit": "Hour", "effective_date": "2023-01-01", "flsa_status": "Nonexempt", "adjust_for_minimum_wage": true, "minimum_wages": [{"uuid": "340832db-ab28-4112-9e10-28dd1711835f"}]}
       responses:
@@ -1858,7 +1991,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"payment_unit": "Paycheck", "flsa_status": "Commission Only Nonexempt"}
       responses:
@@ -1868,7 +2002,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"payment_unit": "Hour", "flsa_status": "Commission Only Exempt"}
       responses:
@@ -1878,7 +2013,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"payment_unit": "Month", "flsa_status": "Commission Only Exempt"}
       responses:
@@ -1890,7 +2026,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "d6d1035e-8a21-4e1d-89d5-fa894f9aff97", "version": "6c0ed1521e8b86eb36bd4455a63a2dac", "employee_uuid": "948daac8-4355-4ece-9e2a-229898accb22", "hire_date": "2020-01-20", "title": "Client Support Director", "primary": true, "rate": "70000.00", "payment_unit": "Year", "current_compensation_uuid": "ea8b0b90-1112-4f9d-bb93-bf029bc8537a", "state_wc_covered": "null,", "state_wc_class_code": "null,", "compensations": [{"uuid": "ea8b0b90-1112-4f9d-bb93-bf029bc8537a", "version": "2cd4b18662395eb53bcf80d5b5447f36", "job_uuid": "d6d1035e-8a21-4e1d-89d5-fa894f9aff97", "rate": "70000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2021-01-20", "adjust_for_minimum_wage": false, "minimum_wages": []}]}]
@@ -1900,7 +2037,8 @@ examples:
         path:
           job_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "d6d1035e-8a21-4e1d-89d5-fa894f9aff97", "version": "d0e719137f89ca3dd334dd4cc248ffbb", "employee_uuid": "948daac8-4355-4ece-9e2a-229898accb22", "hire_date": "2020-01-20", "title": "Account Director", "primary": true, "rate": "78000.00", "payment_unit": "Year", "current_compensation_uuid": "ea8b0b90-1112-4f9d-bb93-bf029bc8537a", "state_wc_covered": "null,", "state_wc_class_code": "null,", "compensations": [{"uuid": "ea8b0b90-1112-4f9d-bb93-bf029bc8537a", "version": "994b75511d1debac5d7e2ddeae13679f", "job_uuid": "d6d1035e-8a21-4e1d-89d5-fa894f9aff97", "rate": "78000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2021-01-20", "adjust_for_minimum_wage": false, "minimum_wages": []}]}
@@ -1909,7 +2047,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", "title": "Regional Manager", "hire_date": "2020-12-21"}
       responses:
@@ -1919,7 +2058,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1929,7 +2069,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1939,7 +2080,8 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -1950,14 +2092,16 @@ examples:
       parameters:
         path:
           job_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   get-v1-jobs-job_id-compensations:
     Example:
       parameters:
         path:
           job_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "db57832c-d8bc-43a7-ae99-0a04480ff037", "version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "job_uuid": "d8f8fbe7-496d-4b69-86f0-1e2d1b73a086", "rate": "70.00", "payment_unit": "Hour", "flsa_status": "Nonexempt", "effective_date": "2020-12-11", "adjust_for_minimum_wage": false, "minimum_wages": []}, {"uuid": "a4d9ba9c-32cc-4cc1-a5bc-6ef4cd653e7a", "version": "cc59bd3879d655fb940a1f6b675f2ad9", "job_uuid": "d8f8fbe7-496d-4b69-86f0-1e2d1b73a086", "rate": "5.00", "payment_unit": "Hour", "flsa_status": "Nonexempt", "effective_date": "2018-12-11", "adjust_for_minimum_wage": true, "minimum_wages": [{"uuid": "edeea5af-ecd6-4b1c-b5de-5cff2d302738", "wage": "7.25", "effective_date": "2018-12-11"}]}]
@@ -1966,7 +2110,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "db57832c-d8bc-43a7-ae99-0a04480ff037", "version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "job_uuid": "d8f8fbe7-496d-4b69-86f0-1e2d1b73a086", "rate": "60000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2020-12-11", "adjust_for_minimum_wage": false, "minimum_wages": []}
@@ -1974,7 +2119,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "a4d9ba9c-32cc-4cc1-a5bc-6ef4cd653e7a", "version": "cc59bd3879d655fb940a1f6b675f2ad9", "job_uuid": "d8f8fbe7-496d-4b69-86f0-1e2d1b73a086", "rate": "5.00", "payment_unit": "Hour", "flsa_status": "Nonexempt", "effective_date": "2018-12-11", "adjust_for_minimum_wage": true, "minimum_wages": [{"uuid": "edeea5af-ecd6-4b1c-b5de-5cff2d302738", "wage": "7.25", "effective_date": "2018-12-11"}]}
@@ -1983,7 +2129,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "rate": "60000.00", "payment_unit": "Year", "flsa_status": "Exempt"}
       responses:
@@ -1993,7 +2140,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "rate": "7.00", "payment_unit": "Hour", "flsa_status": "Nonexempt", "adjust_for_minimum_wage": true, "minimum_wages": [{"uuid": "340832db-ab28-4112-9e10-28dd1711835f"}]}
       responses:
@@ -2003,7 +2151,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2013,7 +2162,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2023,7 +2173,8 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2034,13 +2185,15 @@ examples:
       parameters:
         path:
           compensation_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   post-v1-companies-company_id-earning_types:
     Example:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"name": "Gym Membership Stipend"}
       responses:
@@ -2050,7 +2203,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"name": "<value>"}
       responses:
@@ -2060,7 +2214,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"name": "<value>"}
       responses:
@@ -2070,7 +2225,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"name": "<value>"}
       responses:
@@ -2081,7 +2237,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"default": [{"name": "Bonus", "uuid": "b82e35c5-d7c6-4705-9e16-9f87499ade18"}, {"name": "Cash Tips", "uuid": "f5618c94-ed7d-4366-b2c4-ff05e430064f"}, {"name": "Commission", "uuid": "60191999-004a-49d9-b163-630574433653"}, {"name": "Correction Payment", "uuid": "368226e0-8e8c-48f0-bc91-aee46caafbc9"}, {"name": "Minimum Wage Adjustment", "uuid": "88a2e519-9ff5-4c19-9071-6a709f3c2939"}, {"name": "Paycheck Tips", "uuid": "a3eaf03d-e712-4144-8f9b-71a85528adcf"}, {"name": "Severance", "uuid": "a6a2eba7-6c7d-4ced-bbe8-43452fbc9f63"}], "custom": [{"name": "Gym Membership Stipend", "uuid": "6b4a8efb-db90-4c13-a75f-aae11b3f4ff9"}]}
@@ -2091,7 +2248,8 @@ examples:
         path:
           company_id: "<id>"
           earning_type_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"name": "Gym Membership Stipend"}
       responses:
@@ -2102,7 +2260,8 @@ examples:
         path:
           company_id: "<id>"
           earning_type_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2113,7 +2272,8 @@ examples:
         path:
           company_id: "<id>"
           earning_type_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2124,7 +2284,8 @@ examples:
         path:
           company_id: "<id>"
           earning_type_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2136,13 +2297,15 @@ examples:
         path:
           company_id: "<id>"
           earning_type_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   post-v1-companies-company_uuid-contractors:
     Create an Individual contractor:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Fixed", "start_date": "2020-04-01", "self_onboarding": true, "email": "johnson@johnson.com", "first_name": "Johnson", "last_name": "Johnson", "file_new_hire_report": "true,", "work_state": "CA"}
       responses:
@@ -2153,7 +2316,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Business", "wage_type": "Fixed", "start_date": "2020-04-01", "self_onboarding": false, "file_new_hire_report": false, "business_name": "Johnson-Johnson Contractors"}
       responses:
@@ -2164,7 +2328,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Fixed", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2174,7 +2339,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Fixed", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2184,7 +2350,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Hourly", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2194,7 +2361,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Hourly", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2204,7 +2372,8 @@ examples:
       parameters:
         path:
           company_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"type": "Individual", "wage_type": "Fixed", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2216,7 +2385,8 @@ examples:
         path:
           company_uuid: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "c9fc1ad3-c107-4e7b-aa21-2dd4b00a7a07", "company_uuid": "b7457fec-3b76-43bb-9c6e-69cca4688942", "wage_type": "Fixed", "is_active": false, "version": "63859768485e218ccf8a449bb60f14ed", "type": "Individual", "first_name": "Kory", "last_name": "Gottlieb", "middle_initial": "P", "business_name": null, "ein": null, "has_ein": false, "email": "keira.west@mckenzie.org", "start_date": "2022-01-01", "address": {"street_1": "621 Jast Row", "street_2": "Apt. 281", "city": "Coral Springs", "state": "FL", "zip": "33065", "country": "USA"}, "hourly_rate": "0.00", "file_new_hire_report": false, "work_state": null, "onboarded": true, "onboarding_status": "onboarding_completed", "has_ssn": true, "department_uuid": "1802465d-4f68-4865-920c-1307ab095f12"}, {"uuid": "183a86f4-a803-4b38-9357-cd9b78e2560c", "company_uuid": "afdd5d98-581b-4fc0-b988-706b7d23b2a5", "wage_type": "Fixed", "is_active": true, "version": "8aab307f1e8ed788697f8986346af559", "type": "Business", "first_name": null, "last_name": null, "middle_initial": null, "business_name": "Labadie-Stroman", "ein": "XX-XXX0001", "has_ein": true, "email": "jonatan@kerluke.info", "start_date": "2022-01-01", "address": {"street_1": "1625 Bednar Center", "street_2": "Apt. 480", "city": "Port Charlotte", "state": "FL", "zip": "33954", "country": "USA"}, "hourly_rate": "0.00", "file_new_hire_report": false, "work_state": null, "onboarded": true, "onboarding_status": "onboarding_completed", "has_ssn": false}, {"uuid": "ea1c2d65-b622-4899-bcb7-5cd0fe0232aa", "company_uuid": "281c763d-a2ba-4f51-b9e8-b1ed61576d62", "wage_type": "Fixed", "is_active": true, "version": "b48c46abfed1487b873b442334b3c4ff", "type": "Individual", "first_name": "Chanel", "last_name": "Boyle", "middle_initial": "X", "business_name": null, "ein": null, "has_ein": false, "email": "loyal@hettinger.biz", "address": {"street_1": "35913 Darrick Run", "street_2": "Apt. 913", "city": "Cypress", "state": "TX", "zip": "77433", "country": "USA"}, "hourly_rate": "0.00", "file_new_hire_report": true, "work_state": "TX", "onboarded": true, "onboarding_status": "onboarding_completed", "has_ssn": true}]
@@ -2225,7 +2395,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "c9fc1ad3-c107-4e7b-aa21-2dd4b00a7a07", "company_uuid": "b7457fec-3b76-43bb-9c6e-69cca4688942", "wage_type": "Hourly", "is_active": false, "version": "63859768485e218ccf8a449bb60f14ed", "type": "Individual", "first_name": "Kory", "last_name": "Gottlieb", "middle_initial": "P", "business_name": null, "ein": null, "has_ein": false, "email": "keira.west@mckenzie.org", "start_date": "2022-01-01", "address": {"street_1": "621 Jast Row", "street_2": "Apt. 281", "city": "Coral Springs", "state": "FL", "zip": "33065", "country": "USA"}, "hourly_rate": "60.00", "file_new_hire_report": true, "work_state": "FL", "onboarded": true, "onboarding_status": "onboarding_completed", "payment_method": "Direct Deposit", "has_ssn": true, "department_uuid": "56260b3d-c375-415c-b77a-75d99f717193"}
@@ -2233,7 +2404,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "c7c0659c-21a6-4b4e-b74c-9252576fc68c", "company_uuid": "0ec4ae6e-e436-460d-b63c-94a14503d16f", "wage_type": "Fixed", "is_active": true, "version": "8aab307f1e8ed788697f8986346af559", "type": "Business", "first_name": null, "last_name": null, "middle_initial": null, "business_name": "Labadie-Stroman", "ein": "XX-XXX0001", "has_ein": true, "email": "jonatan@kerluke.info", "start_date": "2022-01-01", "address": null, "hourly_rate": "0.00", "file_new_hire_report": false, "work_state": null, "onboarded": false, "onboarding_status": "admin_onboarding_incomplete", "payment_method": "Direct Deposit", "has_ssn": false}
@@ -2242,7 +2414,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "b48c46abfed1487b873b442334b3c4ff", "type": "Individual", "wage_type": "Hourly", "start_date": "2021-01-01", "hourly_rate": "20.00", "self_onboarding": false, "first_name": "Chanel", "last_name": "Boyle", "middle_initial": "X", "file_new_hire_report": false, "is_active": true}
       responses:
@@ -2253,7 +2426,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "b48c46abfed1487b873b442334b3c4ff", "type": "Individual", "wage_type": "Fixed", "start_date": "2020-01-11", "self_onboarding": false, "file_new_hire_report": false, "business_name": "Contracting Solutions", "ein": "991113334", "is_active": false}
       responses:
@@ -2264,7 +2438,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2274,7 +2449,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2284,7 +2460,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2294,7 +2471,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2304,7 +2482,8 @@ examples:
       parameters:
         path:
           contractor_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
@@ -2312,24 +2491,36 @@ examples:
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
   post-v1-webhook-subscription:
     Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"url": "https://partner-app.com/subscriber", "subscription_types": ["Company", "Employee"]}
       responses:
         "201":
           application/json: {"uuid": "c5fdae57-5483-4529-9aae-f0edceed92d4", "url": "https://the-partner-app.com/subscriber", "status": "verified", "subscription_types": ["BankAccount", "Company", "CompanyBenefit", "Contractor", "ContractorPayment", "Employee", "EmployeeBenefit", "EmployeeJobCompensation", "ExternalPayroll", "Form", "Location", "Notification", "Payroll", "PaySchedule", "Signatory"]}
     Basic:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"url": "https://probable-heating.com/", "subscription_types": []}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "base", "category": "payroll_blocker", "message": "Company must complete all onboarding requirements in order to run payroll."}]}
     Resource:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"url": "https://well-documented-cd.biz", "subscription_types": []}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
     Nested:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"url": "https://substantial-morbidity.net", "subscription_types": ["Employee", "Contractor", "BankAccount"]}
       responses:
@@ -2337,6 +2528,9 @@ examples:
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
   get-v1-webhook-subscriptions:
     Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "dcceb38a-46be-4110-9d1d-1b3384c3b906", "url": "https://6116-2603-6000-8900-3d42-58e7-f1e3-b394-1f21.ngrok.io/subscriber", "status": "pending", "subscription_types": ["BankAccount", "Company", "CompanyBenefit", "Contractor", "ContractorPayment", "Employee", "EmployeeBenefit", "EmployeeJobCompensation", "ExternalPayroll", "Form", "Location", "Notification", "Payroll", "PaySchedule", "Signatory"]}]
@@ -2345,7 +2539,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"subscription_types": ["Company", "Employee"]}
       responses:
@@ -2355,7 +2550,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"subscription_types": ["Company", "ExternalPayroll", "Payroll"]}
       responses:
@@ -2365,7 +2561,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"subscription_types": []}
       responses:
@@ -2375,7 +2572,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"subscription_types": ["EmployeeJobCompensation", "Signatory"]}
       responses:
@@ -2386,7 +2584,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "c5fdae57-5483-4529-9aae-f0edceed92d4", "url": "https://the-partner-app.com/subscriber", "status": "verified", "subscription_types": ["BankAccount", "Company", "CompanyBenefit", "Contractor", "ContractorPayment", "Employee", "EmployeeBenefit", "EmployeeJobCompensation", "ExternalPayroll", "Form", "Location", "Notification", "Payroll", "PaySchedule", "Signatory"]}
@@ -2395,13 +2594,15 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   put-v1-verify-webhook-subscription-uuid:
     Example:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"verification_token": "asefasedfe23e234easd"}
       responses:
@@ -2411,7 +2612,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"verification_token": "<value>"}
       responses:
@@ -2421,7 +2623,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"verification_token": "<value>"}
       responses:
@@ -2431,7 +2634,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"verification_token": "<value>"}
       responses:
@@ -2442,7 +2646,8 @@ examples:
       parameters:
         path:
           webhook_subscription_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   get-v1-companies-company_id-payrolls:
     Example:
       parameters:
@@ -2450,7 +2655,8 @@ examples:
           company_id: "<id>"
         query:
           sort_order: "asc"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"payroll_deadline": "2021-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": true, "processed_date": "2021-02-18", "calculated_at": "2021-02-18T12:00:00Z", "uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "totals": {"company_debit": "121747.71", "net_pay_debit": "79283.80", "tax_debit": "42463.91", "reimbursement_debit": "0.00", "child_support_debit": "0.00", "reimbursements": "0.00", "net_pay": "81752.94", "gross_pay": "130635.89", "employee_bonuses": "0.00", "employee_commissions": "18536.37", "employee_cash_tips": "0.00", "employee_paycheck_tips": "0.00", "additional_earnings": "0.00", "owners_draw": "0.00", "check_amount": "2469.14", "employer_taxes": "6917.19", "employee_taxes": "35546.72", "benefits": "0.00", "employee_benefits_deductions": "13336.23", "imputed_pay": "0.00", "deferred_payroll_taxes": "0.00", "other_deductions": "240.00"}, "created_at": "2021-02-01T22:00:00Z"}, {"payroll_deadline": "2021-02-28", "check_date": "2021-03-01", "processed": false, "processed_date": "nil", "calculated_at": "nil", "uuid": "01307237-5128-4fcf-b2da-ce8dbbbb0c50", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "external": false, "pay_period": {"start_date": "2021-02-16", "end_date": "2021-03-01", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "created_at": "2022-02-01T22:00:00Z"}]
@@ -2461,7 +2667,8 @@ examples:
           company_id: "<id>"
           payroll_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"payroll_deadline": "2021-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": false, "processed_date": "<value>", "calculated_at": "<value>", "uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "auto_pilot": false, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "payroll_status_meta": {"cancellable": false, "expected_check_date": "2021-02-22", "initial_check_date": "2021-02-22", "expected_debit_time": "2021-02-18T22:00:00Z", "payroll_late": false, "initial_debit_cutoff_time": "2021-02-18T22:00:00Z"}, "created_at": "2022-02-01T22:00:00Z", "submission_blockers": [{"blocker_type": "fast_ach_threshold_exceeded", "blocker_name": "Fast ACH Threshold Exceeded", "unblock_options": [{"unblock_type": "wire_in", "check_date": "2024-06-10T00:00:00Z"}, {"unblock_type": "move_to_four_day", "check_date": "2024-06-12T00:00:00Z", "metadata": {}}], "selected_option": null, "status": "unresolved"}], "processing_request": null}
@@ -2471,7 +2678,8 @@ examples:
           company_id: "<id>"
           payroll_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"payroll_deadline": "2021-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": true, "processed_date": "2021-02-18", "calculated_at": "2021-02-18T12:00:00Z", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "auto_pilot": true, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "payroll_status_meta": {"cancellable": false, "expected_check_date": "2021-02-22", "initial_check_date": "2021-02-22", "expected_debit_time": "2021-02-18T22:00:00Z", "payroll_late": false, "initial_debit_cutoff_time": "2021-02-18T22:00:00Z"}, "totals": {"company_debit": "121747.71", "net_pay_debit": "79283.80", "tax_debit": "42463.91", "reimbursement_debit": "0.00", "child_support_debit": "0.00", "reimbursements": "0.00", "net_pay": "81752.94", "gross_pay": "130635.89", "employee_bonuses": "0.00", "employee_commissions": "18536.37", "employee_cash_tips": "0.00", "employee_paycheck_tips": "0.00", "additional_earnings": "0.00", "owners_draw": "0.00", "check_amount": "2469.14", "employer_taxes": "6917.19", "employee_taxes": "35546.72", "benefits": "0.00", "employee_benefits_deductions": "13336.23", "imputed_pay": "0.00", "deferred_payroll_taxes": "0.00", "other_deductions": "240.00"}, "employee_compensations": [{"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7067", "excluded": false, "gross_pay": "2791.25", "net_pay": "1953.31", "check_amount": "1953.31", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242ba5"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e909ba"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Nonexempt"}, {"name": "Overtime", "hours": "15.000", "job_uuid": "9d3760f0-d1f9-4700-8817-0fe2dce5cf23", "compensation_multiplier": 1.5, "flsa_status": "Nonexempt"}, {"name": "Double overtime", "hours": "0.000", "job_uuid": "b5eef9a9-4a87-4649-a80d-14878c05f44e", "compensation_multiplier": 2, "flsa_status": "Nonexempt"}, {"name": "Regular Hours", "hours": "40.000", "job_uuid": "332bd171-9efc-432b-abbb-a75c9dba706a", "compensation_multiplier": 1, "flsa_status": "Nonexempt"}, {"name": "Overtime", "hours": "5.000", "job_uuid": "ca9b3dc1-57ac-4736-901a-9b1c9634b9d5", "compensation_multiplier": 1.5, "flsa_status": "Nonexempt"}, {"name": "Double overtime", "hours": "0.000", "job_uuid": "1bad01e2-140c-49ed-9542-2388ce4a19b3", "compensation_multiplier": 2, "flsa_status": "Nonexempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}], "benefits": [{"name": "Group Term Life", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": true}, {"name": "401K", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": false}], "deductions": [{"name": "Child Support", "amount": "80.00"}], "taxes": [{"name": "Federal Income Tax", "employer": false, "amount": "646.69"}, {"name": "Social Security", "employer": true, "amount": "191.25"}]}, {"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7012", "excluded": false, "gross_pay": "2791.25", "net_pay": "1953.31", "check_amount": "1953.31", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242b34"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e90955"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Commission Only Exempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}], "benefits": [{"name": "Group Term Life", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": true}, {"name": "401K", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": false}], "deductions": [{"name": "Child Support", "amount": "80.00"}], "taxes": [{"name": "Federal Income Tax", "employer": false, "amount": "646.69"}, {"name": "Social Security", "employer": true, "amount": "191.25"}]}, {"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7781", "excluded": false, "gross_pay": "2791.25", "net_pay": "1953.31", "check_amount": "1953.31", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242bab"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e909cd"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Exempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}], "benefits": [{"name": "Group Term Life", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": true}, {"name": "401K", "employee_deduction": "100.00", "company_contribution": "50.00", "imputed": false}], "deductions": [{"name": "Child Support", "amount": "80.00"}], "taxes": [{"name": "Federal Income Tax", "employer": false, "amount": "646.69"}, {"name": "Social Security", "employer": true, "amount": "191.25"}]}], "company_taxes": [{"name": "MO Compensation Deduction", "employer": true, "amount": "-0.92"}, {"name": "NY MCTMT", "employer": true, "amount": "5.00"}], "created_at": "2022-02-01T22:00:00Z", "credit_blockers": [{"blocker_type": "waiting_for_wire_in", "blocker_name": "Waiting for Wire In", "unblock_options": [{"unblock_type": "submit_wire", "check_date": "2024-06-10T00:00:00Z"}], "selected_option": "submit_wire", "status": "unresolved"}], "processing_request": {"status": "submit_success", "errors": []}}
@@ -2481,7 +2689,8 @@ examples:
         path:
           company_id: "<id>"
           payroll_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_compensations": [{}, {}, {}]}
       responses:
@@ -2492,7 +2701,8 @@ examples:
         path:
           company_id: "<id>"
           payroll_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_compensations": [{}, {}]}
       responses:
@@ -2503,7 +2713,8 @@ examples:
         path:
           company_id: "<id>"
           payroll_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_compensations": [{}]}
       responses:
@@ -2514,7 +2725,8 @@ examples:
         path:
           company_id: "<id>"
           payroll_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_compensations": [{}, {}, {}]}
       responses:
@@ -2526,7 +2738,8 @@ examples:
         path:
           company_id: "<id>"
           payroll_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"payroll_deadline": "2022-02-18T22:00:00Z", "check_date": "2021-02-22", "processed": false, "processed_date": "<value>", "calculated_at": "<value>", "uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "payroll_uuid": "b50e611d-8f3d-4f24-b001-46675f7b5777", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "off_cycle": false, "off_cycle_reason": null, "auto_pilot": false, "external": false, "pay_period": {"start_date": "2021-02-01", "end_date": "2021-02-15", "pay_schedule_uuid": "00ebc4a4-ec88-4435-8f45-c505bb63e501"}, "payroll_status_meta": {"cancellable": false, "expected_check_date": "2022-02-22", "initial_check_date": "2022-02-22", "expected_debit_time": "2022-02-18T22:00:00Z", "payroll_late": false, "initial_debit_cutoff_time": "2022-02-18T22:00:00Z"}, "employee_compensations": [{"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7067", "excluded": false, "version": "4ba36d23a78c7393b4900ef38019d8ff", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242ba5"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e909ba"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Nonexempt"}, {"name": "Overtime", "hours": "15.000", "job_uuid": "9d3760f0-d1f9-4700-8817-0fe2dce5cf23", "compensation_multiplier": 1.5, "flsa_status": "Nonexempt"}, {"name": "Double overtime", "hours": "0.000", "job_uuid": "b5eef9a9-4a87-4649-a80d-14878c05f44e", "compensation_multiplier": 2, "flsa_status": "Nonexempt"}, {"name": "Regular Hours", "hours": "40.000", "job_uuid": "332bd171-9efc-432b-abbb-a75c9dba706a", "compensation_multiplier": 1, "flsa_status": "Nonexempt"}, {"name": "Overtime", "hours": "5.000", "job_uuid": "ca9b3dc1-57ac-4736-901a-9b1c9634b9d5", "compensation_multiplier": 1.5, "flsa_status": "Nonexempt"}, {"name": "Double overtime", "hours": "0.000", "job_uuid": "1bad01e2-140c-49ed-9542-2388ce4a19b3", "compensation_multiplier": 2, "flsa_status": "Nonexempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}]}, {"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7012", "excluded": false, "version": "ff083257a5583291fb86656ad0df1b42", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242b34"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e90955"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Commission Only Exempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}]}, {"employee_uuid": "187412e1-3dbe-491a-bb2f-2f40323a7781", "excluded": false, "version": "259816479e3729bf855318af9b9adddf", "payment_method": "Direct Deposit", "fixed_compensations": [{"name": "Bonus", "amount": "100.00", "job_uuid": "94e0d15e-9ed2-4077-98f6-64554f242bab"}, {"name": "Reimbursement", "amount": "100.00", "job_uuid": "91bc3b43-ded0-4ee7-98fe-215499e909cd"}], "hourly_compensations": [{"name": "Regular Hours", "hours": "40.000", "job_uuid": "bd378298-3e0c-4145-904a-baadf8a91fa3", "compensation_multiplier": 1, "flsa_status": "Exempt"}], "paid_time_off": [{"name": "Vacation Hours", "hours": "20.000"}, {"name": "Sick Hours", "hours": "0.000"}, {"name": "Holiday Hours", "hours": "0.000"}]}], "created_at": "2022-02-01T22:00:00Z", "fixed_compensation_types": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Anniversary Bonus"}, {"name": "Internet Stipend"}, {"name": "Reimbursement"}], "processing_request": null}
@@ -2536,7 +2749,8 @@ examples:
         path:
           payroll_id: "<id>"
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"regular_hours_worked": 30.25, "overtime_hours_worked": 10, "double_overtime_hours_worked": 0, "pto_hours_used": 5.5, "sick_hours_used": 0}
       responses:
@@ -2547,7 +2761,8 @@ examples:
         path:
           payroll_id: "<id>"
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2558,7 +2773,8 @@ examples:
         path:
           payroll_id: "<id>"
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2569,7 +2785,8 @@ examples:
         path:
           payroll_id: "<id>"
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {}
       responses:
@@ -2583,7 +2800,8 @@ examples:
         query:
           start_date: "2020-01-01"
           end_date: "2020-12-31"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {}
@@ -2593,7 +2811,8 @@ examples:
         path:
           company_id: "<id>"
           contractor_payment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "contractor_uuid": "bc57832c-d8bc-43a7-ae99-3a03380ff037", "bonus": "20.0", "date": "2020-10-19", "hours": "40.0", "payment_method": "Direct Deposit", "reimbursement": "100.0", "status": "Unfunded", "hourly_rate": "18.0", "may_cancel": true, "wage": "0.0", "wage_type": "Hourly", "wage_total": "740.00"}
@@ -2605,7 +2824,8 @@ examples:
         query:
           start_date: "2020-01-01"
           end_date: "2020-12-31"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "7f2337f9-9b78-44b9-aeed-be4777b833a8", "company_uuid": "c54046f7-1be4-4c54-8194-f4842c30c86d", "check_date": "2024-03-15T00:00:00Z", "debit_date": "2024-03-11T00:00:00Z", "status": "Funded", "creation_token": "a51a3500-3200-43af-a738-169d4b66a9db", "totals": {"debit_amount": "740.00", "wage_amount": "720.00", "reimbursement_amount": "20.00"}}, {"uuid": "56260b3d-c375-415c-b77a-75d99f717193", "company_uuid": "c54046f7-1be4-4c54-8194-f4842c30c86d", "check_date": "2024-05-02T00:00:00Z", "debit_date": "2024-04-26T00:00:00Z", "status": "Unfunded", "creation_token": "45ef81bb-ae24-4ad1-b2c6-6e563a4c30ed", "totals": {"debit_amount": "2365.00", "wage_amount": "2270.00", "reimbursement_amount": "95.00"}}]
@@ -2614,7 +2834,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"check_date": "2020-01-01", "creation_token": "1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", "contractor_payments": [{"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}]}
       responses:
@@ -2624,7 +2845,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"check_date": "2020-01-01", "creation_token": "1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", "contractor_payments": []}
       responses:
@@ -2634,7 +2856,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"check_date": "2020-01-01", "creation_token": "1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", "contractor_payments": [{"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}, {"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}]}
       responses:
@@ -2644,7 +2867,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"check_date": "2020-01-01", "creation_token": "1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", "contractor_payments": [{"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}, {"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}]}
       responses:
@@ -2655,7 +2879,8 @@ examples:
       parameters:
         path:
           contractor_payment_group_uuid: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "f693e034-d833-46e3-88d4-2c820c383c57", "company_uuid": "c54046f7-1be4-4c54-8194-f4842c30c86d", "check_date": "2024-05-07T00:00:00Z", "debit_date": "2024-05-01T00:00:00Z", "status": "Unfunded", "creation_token": "45ef81bb-ae24-4ad1-b2c6-6e563a4c30ed", "totals": {"amount": "2295.0", "debit_amount": "2295.0", "wage_amount": "2220.0", "reimbursement_amount": "75.0"}, "contractor_payments": [{"uuid": "630dc982-f498-4ebc-a6dc-4d76711027ce", "contractor_uuid": "2e6d0970-31bf-47ce-bdb4-713e4207ecf4", "bonus": "0.0", "hours": "40.0", "payment_method": "Direct Deposit", "reimbursement": "75.0", "status": "Unfunded", "hourly_rate": "18.0", "may_cancel": false, "wage": "0.0", "wage_type": "Hourly", "wage_total": "720.0"}, {"uuid": "12f51eba-d653-4357-8c05-1f1f8d0fd5e3", "contractor_uuid": "a975fda0-fcf5-469a-a5fd-06e43d1cd99d", "bonus": "0.0", "hours": "0.0", "payment_method": "Check", "reimbursement": "0.0", "status": "Unfunded", "hourly_rate": "0.0", "may_cancel": false, "wage": "1500.0", "wage_type": "Fixed", "wage_total": "1500.0"}]}
@@ -2664,7 +2889,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "description": "yuck vice between gee ugh ha"}
       responses:
@@ -2674,7 +2900,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "description": "bulky electronics through for ick superb nudge embalm simple ouch"}
       responses:
@@ -2684,7 +2911,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "description": "yahoo until planula conceal pfft partially till distant zowie nasalise"}
       responses:
@@ -2694,7 +2922,8 @@ examples:
       parameters:
         path:
           company_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "description": "down ha who political inside bony procurement funny entwine institute"}
       responses:
@@ -2706,7 +2935,8 @@ examples:
         path:
           company_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "company_uuid": "528cc543-8a41-497e-b479-23a4c5ec77ac", "uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "benefit_type": 1, "active": true, "description": "Kaiser Permanente", "deletable": true, "supports_percentage_amounts": true, "responsible_for_employer_taxes": false, "responsible_for_employee_w2": false}]
@@ -2716,7 +2946,8 @@ examples:
         path:
           company_benefit_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "description": "Kaiser Permanente", "deletable": true, "supports_percentage_amounts": true, "responsible_for_employer_taxes": false, "responsible_for_employee_w2": false, "employee_benefits": [{"employee_uuid": "ae44a0b2-3c89-41e1-91c8-5f8224a779ca", "company_benefit_uuid": "d2cec746-caee-464a-bcaf-00d93f7049c9", "active": true, "deduct_as_percentage": false, "employee_deduction": "3", "company_contribution": "0", "uuid": "9988f241-9aee-4383-bfca-eac79cf58135", "contribution": {"type": "amount", "value": "<value>"}}]}
@@ -2725,7 +2956,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", "active": false}
       responses:
@@ -2735,7 +2967,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2745,7 +2978,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2755,7 +2989,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>"}
       responses:
@@ -2766,12 +3001,16 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
           application/json: {"errors": {"base": [{"type": "error type", "message": "This is an error message", "full_message": "This is a more descriptive error message"}]}}
   get-v1-benefits:
     Supported Benefits:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"benefit_type": 1, "name": "Medical Insurance", "description": "Deductions and contributions for Medical Insurance", "pretax": true, "posttax": false, "imputed": false, "healthcare": true, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 2, "name": "Dental Insurance", "description": "Deductions and contributions for Dental Insurance", "pretax": true, "posttax": false, "imputed": false, "healthcare": true, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 3, "name": "Vision Insurance", "description": "Deductions and contributions for Vision Insurance", "pretax": true, "posttax": false, "imputed": false, "healthcare": true, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 6, "name": "Health Savings Account", "description": "Health Savings Accounts (HSA) allow employees to be reimbursed for qualified medical expenses. Contributions are pre-tax and lower the total amount of tax paid by employees and the employer. Employers may also make tax-free contributions to employees' HSA. Remaining balances are carried over in next year.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": true, "category": "Health"}, {"benefit_type": 7, "name": "Health FSA", "description": "Flexible Spending Accounts (FSA) allow employees to be reimbursed for qualified medical expenses. Contributions are pre-tax and lower the total amount of tax paid by employees and the employer. Employers may also make tax-free contributions to employees' FSA. Remaining balances are not carried over in next year.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": true, "category": "Health"}, {"benefit_type": 11, "name": "Dependent Care FSA", "description": "Dependent Care FSA reimburses employees for expenses to care for dependents while the employee is at work (e.g. Daycares). Contributions are pre-tax and lower the total amount of tax paid by employees and the employer. Employers may also make tax-free contributions to employee FSA. Remaining balances are not carried over to the next year. Single parents or Married couples filing a joint return can elect up to $5000 per year. Married couples filing separate returns are limited to $2500 elections each.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": true, "category": "Health"}, {"benefit_type": 8, "name": "SIMPLE IRA", "description": "The SIMPLE IRA is a tax-deferred retirement savings plan for employees. It is often used by small businesses as an alternative to 401(k) due to its relatively low operating cost. Employers are required to contribute a specific percentage to an employee's SIMPLE IRA.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 105, "name": "Roth 401(k)", "description": "Roth 401(k) is an after-tax savings plan for employees. The standard maximum is $18,000, or $24,000 for employees over 50 years old.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 110, "name": "Roth 403(b)", "description": "Roth 403(b) is an after-tax savings plan for certain clerics, employees of public schools, and employees of other types of tax-exempt organizations. Contributions made by employees are taxable for federal and state withholding. Often, employers contribute additional pre-tax dollars to the employee’s Roth account to encourage saving for retirement.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 5, "name": "401(k)", "description": "401(k) is tax-deferred retirement savings plan for employees. The standard maximum is $18,000, or $24,000 for employees over 50 years old.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 9, "name": "403(b)", "description": "403(b) is tax-deferred retirement savings plan for certain clerics, employees of public schools, and employees of other types of tax-exempt organizations.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 108, "name": "SEP-IRA", "description": "A SEP-IRA is a pre-tax retirement savings plan where only the employer contributes. It is often used by small businesses as an alternative to 401(k) due to its relatively low operating cost. Employers are required to contribute the same percentage to all enrolled employees, with a maximum contribution of 25% of the employee’s compensation.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 109, "name": "SARSEP", "description": "A SARSEP is a pre-tax retirement savings plan used by small businesses as an alternative to 401(k) due to its relatively low operating cost. While new SARSEP plans are not available, there are still some companies that are grandfathered into the plan. Employers are required to contribute the same percentage to all enrolled employees, with a maximum contribution of 25% of the employee’s compensation.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": true, "yearly_limit": true, "category": "Savings and Retirement"}, {"benefit_type": 107, "name": "Group-Term Life Insurance", "description": "Group-Term Life Insurance for coverage in excess of $50,000 per employee is a taxable fringe benefit. See IRS Publication 15-B to determine the dollar value of the excess coverage.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 10, "name": "Commuter Benefits (pre-tax)", "description": "Tax-free commuter benefits for transit, vanpooling, bicycling, and work-related parking costs. The annual maximum contribution for this pre-tax benefit is in the IRS publication 15-B.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 106, "name": "Personal Use of Company Car", "description": "When an employee uses a company-owned car for personal matters, it is considered taxable benefit provided in-kind.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 111, "name": "529 College Savings", "description": "529 College Savings is an after-tax savings plan for employees designed to encourage saving for future college costs. This benefit should be reported as a taxable benefit and will therefore be taxed.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Other"}, {"benefit_type": 112, "name": "Student Loan Repayment", "description": "Student Loan Repayment is an after-tax savings plan for employees to pay towards their outstanding student loans. An employee can choose to set aside after-tax dollars towards this benefit. These benefits should be reported as a taxable benefit and will therefore be taxed.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Other"}, {"benefit_type": 998, "name": "Short Term Disability (post-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 999, "name": "Long Term Disability (post-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 996, "name": "Short Term Disability (pre-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 997, "name": "Long Term Disability (pre-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 991, "name": "Voluntary Short Term Disability (post-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 992, "name": "Voluntary Long Term Disability (post-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 993, "name": "Voluntary Life (post-tax)", "description": "Third Party Disability or Third Party Leave are policies offered by employers that pay an employee for a specific life event (maternity leave, injury). All payments made to employees come from a third-party, such as an insurer. For more information on the taxation of these plans, please refer to publication 15-A for more details.", "pretax": false, "posttax": true, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Health"}, {"benefit_type": 113, "name": "Commuter Parking", "description": "Tax-free commuter benefits allow employees to reduce their monthly commuting expenses for transit, carpooling, bicycling, and work-related parking costs. Please note that there is an annual maximum for this pre-tax benefit. The maximum dollar amount is found in IRS Publication 15-B.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 114, "name": "Commuter Transit", "description": "Tax-free commuter benefits allow employees to reduce their monthly commuting expenses for transit, carpooling, bicycling, and work-related parking costs. Please note that there is an annual maximum for this pre-tax benefit. The maximum dollar amount is found in IRS Publication 15-B.", "pretax": true, "posttax": false, "imputed": false, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 100, "name": "Other (taxable)", "description": "Other taxable benefit", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Other"}, {"benefit_type": 201, "name": "Cell Phone (taxable)", "description": "Employer-sponsored benefits like this are called fringe benefits, and they don’t get special tax treatment—they’ll be reported as taxable wages on your employees’ paystubs.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 202, "name": "Gym & Fitness (taxable)", "description": "Employer-sponsored benefits like this are called fringe benefits, and they don’t get special tax treatment—they’ll be reported as taxable wages on your employees’ paystubs.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 203, "name": "Housing (taxable)", "description": "Employer-sponsored benefits like this are called fringe benefits, and they don’t get special tax treatment—they’ll be reported as taxable wages on your employees’ paystubs.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}, {"benefit_type": 204, "name": "Wellness (taxable)", "description": "Employer-sponsored benefits like this are called fringe benefits, and they don’t get special tax treatment—they’ll be reported as taxable wages on your employees’ paystubs.", "pretax": false, "posttax": true, "imputed": true, "healthcare": false, "retirement": false, "yearly_limit": false, "category": "Transportation"}]
@@ -2780,7 +3019,8 @@ examples:
       parameters:
         path:
           benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"benefit_type": 1, "name": "Medical Insurance", "description": "Deductions and contributions for Medical Insurance", "pretax": true, "posttax": false, "imputed": false, "healthcare": true, "retirement": false, "yearly_limit": false}
@@ -2792,7 +3032,8 @@ examples:
         query:
           start_date: "2022-01-01"
           end_date: "2022-12-31"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"start_date": "2022-01-01", "end_date": "2022-12-31", "description": "Simple IRA", "company_benefit_deduction": "60.0", "company_benefit_contribution": "30.0"}
@@ -2802,7 +3043,8 @@ examples:
         path:
           company_benefit_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"version": "09j3d29jqdpj92109j9j2d90dq", "active": true, "employee_deduction": "100.00", "deduct_as_percentage": false, "employee_deduction_annual_maximum": "200.00", "elective": false, "company_contribution_annual_maximum": "200.00", "limit_option": null, "catch_up": false, "coverage_amount": null, "deduction_reduces_taxable_income": null, "coverage_salary_multiplier": "0.00", "company_contribution": "100.00", "contribute_as_percentage": false, "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e", "company_benefit_uuid": "54e37c27-43e6-4ae5-a5b2-e29895a133be", "uuid": "e91ca856-a915-4339-9b18-29f9cd66b031"}]
@@ -2811,7 +3053,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_benefits": [{"version": "09j3d29jqdpj92109j9j2d90dq", "active": true, "employee_deduction": "250.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e"}]}
       responses:
@@ -2821,7 +3064,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_benefits": []}
       responses:
@@ -2831,7 +3075,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_benefits": [{"active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "<id>"}, {"active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "<id>"}, {"active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "<id>"}]}
       responses:
@@ -2841,7 +3086,8 @@ examples:
       parameters:
         path:
           company_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"employee_benefits": []}
       responses:
@@ -2852,7 +3098,8 @@ examples:
       parameters:
         path:
           benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"employee_deduction": {"required": true, "editable": true, "choices": ["<value>"]}, "contribution": {"required": true, "editable": true, "default_value": {"value": "2", "type": "percentage"}, "choices": ["percentage"]}, "deduct_as_percentage": {"required": true, "editable": true, "choices": ["<value>", "<value>", "<value>"]}, "catch_up": {"required": true, "editable": true, "choices": ["<value>"]}, "limit_option": {"required": false, "editable": false, "choices": ["<value>"]}, "company_contribution_annual_maximum": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}, "coverage_salary_multiplier": {"required": false, "editable": false, "choices": ["<value>", "<value>"]}, "coverage_amount": {"required": false, "editable": false, "choices": ["<value>", "<value>", "<value>"]}}
@@ -2861,7 +3108,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"company_benefit_uuid": "f68abb42-431e-4392-bc3f-2795627e00f3", "active": true, "employee_deduction": "100.00", "deduct_as_percentage": false, "contribution": {"type": "amount", "value": "100.00"}, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2871,7 +3119,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"company_benefit_uuid": "<id>", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2881,7 +3130,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"company_benefit_uuid": "<id>", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2891,7 +3141,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"company_benefit_uuid": "<id>", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2901,7 +3152,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"company_benefit_uuid": "<id>", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2913,7 +3165,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"version": "09j3d29jqdpj92109j9j2d90dq", "active": true, "employee_deduction": "100.00", "deduct_as_percentage": false, "employee_deduction_annual_maximum": "200.00", "elective": false, "company_contribution_annual_maximum": "200.00", "limit_option": null, "catch_up": false, "coverage_amount": null, "deduction_reduces_taxable_income": null, "coverage_salary_multiplier": "0.00", "company_contribution": "100.00", "contribute_as_percentage": false, "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e", "company_benefit_uuid": "54e37c27-43e6-4ae5-a5b2-e29895a133be", "uuid": "e91ca856-a915-4339-9b18-29f9cd66b031"}]
@@ -2922,7 +3175,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"version": "09j3d29jqdpj92109j9j2d90dq", "active": true, "employee_deduction": "100.00", "deduct_as_percentage": false, "employee_deduction_annual_maximum": "200.00", "contribution": {"type": "amount", "value": "100.00"}, "elective": false, "company_contribution_annual_maximum": "200.00", "limit_option": null, "catch_up": false, "coverage_amount": null, "deduction_reduces_taxable_income": null, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "908123091820398", "company_benefit_uuid": "54e37c27-43e6-4ae5-a5b2-e29895a133be", "uuid": "e91ca856-a915-4339-9b18-29f9cd66b031"}
@@ -2930,7 +3184,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"version": "string", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "employee_deduction_annual_maximum": "string", "contribution": {"type": "tiered", "value": {"tiers": [{"rate": "5.0", "threshold": "2.0", "threshold_delta": "2.0"}, {"rate": "3.0", "threshold": "5.0", "threshold_delta": "3.0"}]}}, "elective": false, "company_contribution_annual_maximum": "string", "limit_option": "string", "catch_up": false, "coverage_amount": "string", "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false, "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e", "company_benefit_uuid": "54e37c27-43e6-4ae5-a5b2-e29895a133be", "uuid": "e91ca856-a915-4339-9b18-29f9cd66b031"}
@@ -2939,7 +3194,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "09j3d29jqdpj92109j9j2d90dq", "employee_deduction": "250.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2949,7 +3205,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "employee_deduction": "0.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2959,7 +3216,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "employee_deduction": "0.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2969,7 +3227,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "employee_deduction": "0.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2979,7 +3238,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"version": "<value>", "employee_deduction": "0.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
@@ -2990,7 +3250,8 @@ examples:
       parameters:
         path:
           employee_benefit_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   get-employee-ytd-benefit-amounts-from-different-company:
     Example:
       parameters:
@@ -2998,7 +3259,8 @@ examples:
           employee_id: "<id>"
         query:
           tax_year: 2024
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "c5fdae57-5483-4529-9aae-f0edceed92d3", "benefit_type": 1, "ytd_employee_deduction_amount": "5000.00", "ytd_company_contribution_amount": "2500.00"}, {"uuid": "1bfdb946-b2be-4909-ac46-9e7f73872d0a", "benefit_type": 5, "ytd_employee_deduction_amount": "2132.00", "ytd_company_contribution_amount": "3345.00"}]
@@ -3007,7 +3269,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"tax_year": 5621.31, "ytd_employee_deduction_amount": "0.00", "ytd_company_contribution_amount": "0.00"}
       responses:
@@ -3017,7 +3280,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"tax_year": 2733.34, "ytd_employee_deduction_amount": "0.00", "ytd_company_contribution_amount": "0.00"}
       responses:
@@ -3027,7 +3291,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"tax_year": 9236.96, "ytd_employee_deduction_amount": "0.00", "ytd_company_contribution_amount": "0.00"}
       responses:
@@ -3038,7 +3303,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "amount": "150.00", "description": "Back taxes", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
@@ -3048,7 +3314,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "amount": "40", "court_ordered": true, "garnishment_type": "child_support", "times": null, "recurring": true, "annual_maximum": null, "pay_period_maximum": "500.00", "deduct_as_percentage": true, "child_support": {"state": "FL", "payment_period": "Monthly", "case_number": "CS1234"}}
       responses:
@@ -3058,7 +3325,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "amount": "<value>", "court_ordered": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
@@ -3068,7 +3336,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "amount": "<value>", "court_ordered": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
@@ -3078,7 +3347,8 @@ examples:
       parameters:
         path:
           employee_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "amount": "<value>", "court_ordered": false, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
@@ -3090,7 +3360,8 @@ examples:
         path:
           employee_id: "<id>"
         query: {}
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "b888f774-3e7c-4135-a18c-6b985523c4bc", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}, {"uuid": "e50f7622-81da-484b-9c66-1c8a99c6b71b", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}]
@@ -3099,7 +3370,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "494da5be-4224-44d6-879c-5a5ab8a332c3", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
@@ -3107,7 +3379,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: {"uuid": "93c53f77-0fa0-4a7c-8e4e-8fe2456ece6a", "active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
@@ -3116,7 +3389,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": false, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "52b7c567242cb7452e89ba2bc02cb476"}
       responses:
@@ -3126,7 +3400,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
@@ -3136,7 +3411,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
@@ -3146,7 +3422,8 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
@@ -3156,19 +3433,25 @@ examples:
       parameters:
         path:
           garnishment_id: "<id>"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       requestBody:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "hours", "category": "invalid_attribute_value", "message": "Ella Fitzgerald is paid fixed wage and hours cannot be set on a contractor payment"}]}, {"error_key": "contractor_payments", "category": "nested_errors", "errors": [{"error_key": "wage", "category": "invalid_attribute_value", "message": "Isaiah Berlin is paid hourly and wage cannot be set on a contractor payment"}]}]}
-  get-v1-garnishments-child_support: {}
+  get-v1-garnishments-child_support:
+    Example:
+      parameters:
+        header:
+          X-Gusto-API-Version: "2024-04-01"
   get-events:
     Example:
       parameters:
         query:
           sort_order: "asc"
-        header: {}
+        header:
+          X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
           application/json: [{"uuid": "f7397a24-57ad-4fae-b011-d258e8232900", "event_type": "employee.bank_account.created", "resource_type": "Company", "resource_uuid": "92a20431-9489-4bde-ad27-6feb20b969d5", "entity_type": "BankAccount", "entity_uuid": "92a20431-9489-4bde-ad27-6feb20b969d5", "timestamp": 1686784995}]

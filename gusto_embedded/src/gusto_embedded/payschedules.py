@@ -16,7 +16,9 @@ class PaySchedules(BaseSDK):
         frequency: models.Frequency,
         anchor_pay_date: str,
         anchor_end_of_pay_period: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
         custom_name: Optional[str] = None,
@@ -151,7 +153,9 @@ class PaySchedules(BaseSDK):
         frequency: models.Frequency,
         anchor_pay_date: str,
         anchor_end_of_pay_period: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
         custom_name: Optional[str] = None,
@@ -285,7 +289,9 @@ class PaySchedules(BaseSDK):
         company_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -389,7 +395,9 @@ class PaySchedules(BaseSDK):
         company_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -496,7 +504,9 @@ class PaySchedules(BaseSDK):
         anchor_end_of_pay_period: str,
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -612,7 +622,9 @@ class PaySchedules(BaseSDK):
         anchor_end_of_pay_period: str,
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -724,7 +736,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         pay_schedule_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -825,7 +839,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         pay_schedule_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -927,7 +943,9 @@ class PaySchedules(BaseSDK):
         company_id: str,
         pay_schedule_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         frequency: Optional[
             models.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency
         ] = None,
@@ -1069,7 +1087,9 @@ class PaySchedules(BaseSDK):
         company_id: str,
         pay_schedule_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         frequency: Optional[
             models.PutV1CompaniesCompanyIDPaySchedulesPayScheduleIDFrequency
         ] = None,
@@ -1212,7 +1232,9 @@ class PaySchedules(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         payroll_types: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1323,7 +1345,9 @@ class PaySchedules(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         payroll_types: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1431,7 +1455,9 @@ class PaySchedules(BaseSDK):
         self,
         *,
         company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1533,7 +1559,9 @@ class PaySchedules(BaseSDK):
         self,
         *,
         company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1635,7 +1663,9 @@ class PaySchedules(BaseSDK):
         self,
         *,
         company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1733,7 +1763,9 @@ class PaySchedules(BaseSDK):
         self,
         *,
         company_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1832,7 +1864,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         type_: Nullable[models.PayScheduleAssignmentBodyType],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         hourly_pay_schedule_uuid: Optional[str] = None,
         salaried_pay_schedule_uuid: Optional[str] = None,
         default_pay_schedule_uuid: Optional[str] = None,
@@ -1976,7 +2010,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         type_: Nullable[models.PayScheduleAssignmentBodyType],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         hourly_pay_schedule_uuid: Optional[str] = None,
         salaried_pay_schedule_uuid: Optional[str] = None,
         default_pay_schedule_uuid: Optional[str] = None,
@@ -2120,7 +2156,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         type_: Nullable[models.PayScheduleAssignmentBodyType],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         hourly_pay_schedule_uuid: Optional[str] = None,
         salaried_pay_schedule_uuid: Optional[str] = None,
         default_pay_schedule_uuid: Optional[str] = None,
@@ -2263,7 +2301,9 @@ class PaySchedules(BaseSDK):
         *,
         company_id: str,
         type_: Nullable[models.PayScheduleAssignmentBodyType],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         hourly_pay_schedule_uuid: Optional[str] = None,
         salaried_pay_schedule_uuid: Optional[str] = None,
         default_pay_schedule_uuid: Optional[str] = None,
