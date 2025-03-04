@@ -13,7 +13,9 @@ class ContractorForms(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -111,7 +113,9 @@ class ContractorForms(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -210,7 +214,9 @@ class ContractorForms(BaseSDK):
         *,
         contractor_uuid: str,
         form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -311,7 +317,9 @@ class ContractorForms(BaseSDK):
         *,
         contractor_uuid: str,
         form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -412,7 +420,9 @@ class ContractorForms(BaseSDK):
         *,
         contractor_uuid: str,
         form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -513,7 +523,9 @@ class ContractorForms(BaseSDK):
         *,
         contractor_uuid: str,
         form_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -613,7 +625,9 @@ class ContractorForms(BaseSDK):
         self,
         *,
         contractor_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         year: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -733,7 +747,9 @@ class ContractorForms(BaseSDK):
         self,
         *,
         contractor_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         year: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,

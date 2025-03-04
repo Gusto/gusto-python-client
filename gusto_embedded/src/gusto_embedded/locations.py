@@ -18,7 +18,9 @@ class Locations(BaseSDK):
         city: str,
         state: str,
         zip_code: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_2: OptionalNullable[str] = UNSET,
         mailing_address: Optional[bool] = None,
         filing_address: Optional[bool] = None,
@@ -157,7 +159,9 @@ class Locations(BaseSDK):
         city: str,
         state: str,
         zip_code: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_2: OptionalNullable[str] = UNSET,
         mailing_address: Optional[bool] = None,
         filing_address: Optional[bool] = None,
@@ -293,7 +297,9 @@ class Locations(BaseSDK):
         company_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -399,7 +405,9 @@ class Locations(BaseSDK):
         company_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -503,7 +511,9 @@ class Locations(BaseSDK):
         self,
         *,
         location_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -601,7 +611,9 @@ class Locations(BaseSDK):
         self,
         *,
         location_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -700,7 +712,9 @@ class Locations(BaseSDK):
         *,
         location_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         phone_number: Optional[str] = None,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
@@ -843,7 +857,9 @@ class Locations(BaseSDK):
         *,
         location_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         phone_number: Optional[str] = None,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
@@ -986,7 +1002,9 @@ class Locations(BaseSDK):
         *,
         location_uuid: str,
         effective_date: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1087,7 +1105,9 @@ class Locations(BaseSDK):
         *,
         location_uuid: str,
         effective_date: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

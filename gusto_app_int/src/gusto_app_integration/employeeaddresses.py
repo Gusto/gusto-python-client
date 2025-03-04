@@ -13,7 +13,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -111,7 +113,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -209,7 +213,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
@@ -343,7 +349,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
@@ -477,7 +485,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         home_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -575,7 +585,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         home_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -674,7 +686,9 @@ class EmployeeAddresses(BaseSDK):
         *,
         home_address_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
@@ -811,7 +825,9 @@ class EmployeeAddresses(BaseSDK):
         *,
         home_address_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
         city: Optional[str] = None,
@@ -947,7 +963,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         home_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1049,7 +1067,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         home_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1151,7 +1171,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1248,7 +1270,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1345,7 +1369,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1462,7 +1488,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1579,7 +1607,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         work_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1675,7 +1705,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         work_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1772,7 +1804,9 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1892,7 +1926,9 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -2011,7 +2047,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         work_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2113,7 +2151,9 @@ class EmployeeAddresses(BaseSDK):
         self,
         *,
         work_address_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

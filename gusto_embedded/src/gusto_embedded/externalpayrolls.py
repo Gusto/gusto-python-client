@@ -16,7 +16,9 @@ class ExternalPayrolls(BaseSDK):
         check_date: str,
         payment_period_start_date: str,
         payment_period_end_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -138,7 +140,9 @@ class ExternalPayrolls(BaseSDK):
         check_date: str,
         payment_period_start_date: str,
         payment_period_end_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -257,7 +261,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -357,7 +363,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -458,7 +466,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -559,7 +569,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -660,7 +672,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -761,7 +775,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -862,7 +878,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         replace_fields: Optional[bool] = None,
         external_payroll_items: Optional[
             Union[
@@ -992,7 +1010,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         replace_fields: Optional[bool] = None,
         external_payroll_items: Optional[
             Union[
@@ -1122,7 +1142,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1227,7 +1249,9 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         external_payroll_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1331,7 +1355,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1431,7 +1457,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1531,7 +1559,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         liability_selections: Optional[
             Union[
                 List[models.LiabilitySelections],
@@ -1656,7 +1686,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         liability_selections: Optional[
             Union[
                 List[models.LiabilitySelections],
@@ -1781,7 +1813,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1885,7 +1919,9 @@ class ExternalPayrolls(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

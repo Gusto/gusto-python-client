@@ -15,7 +15,9 @@ class TaxRequirements(BaseSDK):
         company_uuid: str,
         state: str,
         scheduling: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -159,7 +161,9 @@ class TaxRequirements(BaseSDK):
         company_uuid: str,
         state: str,
         scheduling: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -302,7 +306,9 @@ class TaxRequirements(BaseSDK):
         *,
         company_uuid: str,
         state: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         requirement_sets: Optional[
             Union[List[models.RequirementSets], List[models.RequirementSetsTypedDict]]
         ] = None,
@@ -425,7 +431,9 @@ class TaxRequirements(BaseSDK):
         *,
         company_uuid: str,
         state: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         requirement_sets: Optional[
             Union[List[models.RequirementSets], List[models.RequirementSetsTypedDict]]
         ] = None,
@@ -547,7 +555,9 @@ class TaxRequirements(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -645,7 +655,9 @@ class TaxRequirements(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

@@ -15,7 +15,9 @@ class Contractors(BaseSDK):
         company_uuid: str,
         wage_type: models.PostV1CompaniesCompanyUUIDContractorsWageType,
         start_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         type_: Optional[
             models.PostV1CompaniesCompanyUUIDContractorsType
         ] = models.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL,
@@ -175,7 +177,9 @@ class Contractors(BaseSDK):
         company_uuid: str,
         wage_type: models.PostV1CompaniesCompanyUUIDContractorsWageType,
         start_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         type_: Optional[
             models.PostV1CompaniesCompanyUUIDContractorsType
         ] = models.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL,
@@ -336,7 +340,9 @@ class Contractors(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         search_term: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -443,7 +449,9 @@ class Contractors(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         search_term: Optional[str] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -547,7 +555,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -645,7 +655,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -744,7 +756,9 @@ class Contractors(BaseSDK):
         *,
         contractor_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         type_: Optional[
             models.PutV1ContractorsContractorUUIDType
         ] = models.PutV1ContractorsContractorUUIDType.INDIVIDUAL,
@@ -911,7 +925,9 @@ class Contractors(BaseSDK):
         *,
         contractor_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         type_: Optional[
             models.PutV1ContractorsContractorUUIDType
         ] = models.PutV1ContractorsContractorUUIDType.INDIVIDUAL,
@@ -1077,7 +1093,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1175,7 +1193,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1273,7 +1293,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1404,7 +1426,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1535,7 +1559,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         onboarding_status: Optional[
             models.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus
         ] = models.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED,
@@ -1665,7 +1691,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         onboarding_status: Optional[
             models.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus
         ] = models.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED,
@@ -1795,7 +1823,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1893,7 +1923,9 @@ class Contractors(BaseSDK):
         self,
         *,
         contractor_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1992,7 +2024,9 @@ class Contractors(BaseSDK):
         *,
         contractor_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: Optional[str] = None,
         city: Optional[str] = None,
@@ -2123,7 +2157,9 @@ class Contractors(BaseSDK):
         *,
         contractor_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         street_1: Optional[str] = None,
         street_2: Optional[str] = None,
         city: Optional[str] = None,

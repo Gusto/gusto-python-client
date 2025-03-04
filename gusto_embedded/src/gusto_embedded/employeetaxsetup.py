@@ -13,7 +13,9 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -111,7 +113,9 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -210,7 +214,9 @@ class EmployeeTaxSetup(BaseSDK):
         *,
         employee_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         filing_status: Optional[str] = None,
         extra_withholding: OptionalNullable[str] = UNSET,
         two_jobs: Optional[bool] = None,
@@ -347,7 +353,9 @@ class EmployeeTaxSetup(BaseSDK):
         *,
         employee_uuid: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         filing_status: Optional[str] = None,
         extra_withholding: OptionalNullable[str] = UNSET,
         two_jobs: Optional[bool] = None,
@@ -483,7 +491,9 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -593,7 +603,9 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -704,7 +716,9 @@ class EmployeeTaxSetup(BaseSDK):
         *,
         employee_uuid: str,
         states: Union[List[models.States], List[models.StatesTypedDict]],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -816,7 +830,9 @@ class EmployeeTaxSetup(BaseSDK):
         *,
         employee_uuid: str,
         states: Union[List[models.States], List[models.StatesTypedDict]],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

@@ -17,7 +17,9 @@ class Reports(BaseSDK):
         columns: List[models.Columns],
         groupings: List[models.Groupings],
         file_type: models.FileType,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         custom_name: Optional[str] = None,
         with_totals: Optional[bool] = False,
         start_date: Optional[date] = None,
@@ -179,7 +181,9 @@ class Reports(BaseSDK):
         columns: List[models.Columns],
         groupings: List[models.Groupings],
         file_type: models.FileType,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         custom_name: Optional[str] = None,
         with_totals: Optional[bool] = False,
         start_date: Optional[date] = None,
@@ -338,7 +342,9 @@ class Reports(BaseSDK):
         self,
         *,
         report_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -436,7 +442,9 @@ class Reports(BaseSDK):
         self,
         *,
         report_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -535,7 +543,9 @@ class Reports(BaseSDK):
         *,
         company_uuid: str,
         report_type: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -636,7 +646,9 @@ class Reports(BaseSDK):
         *,
         company_uuid: str,
         report_type: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

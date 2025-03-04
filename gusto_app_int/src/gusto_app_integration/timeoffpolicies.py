@@ -13,7 +13,9 @@ class TimeOffPolicies(BaseSDK):
         *,
         payroll_id: str,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -150,7 +152,9 @@ class TimeOffPolicies(BaseSDK):
         *,
         payroll_id: str,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,

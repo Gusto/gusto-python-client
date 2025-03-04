@@ -14,7 +14,9 @@ class TimeOffPolicies(BaseSDK):
         *,
         payroll_id: str,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -153,7 +155,9 @@ class TimeOffPolicies(BaseSDK):
         *,
         payroll_id: str,
         employee_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -291,7 +295,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -389,7 +395,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -487,7 +495,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         name: Optional[str] = None,
         accrual_method: Optional[models.AccrualMethod] = None,
         accrual_rate: Optional[str] = None,
@@ -627,7 +637,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         name: Optional[str] = None,
         accrual_method: Optional[models.AccrualMethod] = None,
         accrual_rate: Optional[str] = None,
@@ -767,7 +779,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -865,7 +879,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -966,7 +982,9 @@ class TimeOffPolicies(BaseSDK):
         name: str,
         policy_type: str,
         accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         accrual_rate: Optional[str] = None,
         accrual_rate_unit: Optional[str] = None,
         paid_out_on_termination: Optional[bool] = None,
@@ -1109,7 +1127,9 @@ class TimeOffPolicies(BaseSDK):
         name: str,
         policy_type: str,
         accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         accrual_rate: Optional[str] = None,
         accrual_rate_unit: Optional[str] = None,
         paid_out_on_termination: Optional[bool] = None,
@@ -1249,7 +1269,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[
@@ -1381,7 +1403,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[
@@ -1513,7 +1537,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[
@@ -1645,7 +1671,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[
@@ -1777,7 +1805,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
@@ -1907,7 +1937,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         employees: Optional[
             Union[
                 List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
@@ -2037,7 +2069,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2141,7 +2175,9 @@ class TimeOffPolicies(BaseSDK):
         self,
         *,
         time_off_policy_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

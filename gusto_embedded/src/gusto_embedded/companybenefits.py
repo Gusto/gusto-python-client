@@ -14,7 +14,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_id: str,
         description: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         benefit_type: Optional[int] = None,
         active: Optional[bool] = True,
         responsible_for_employer_taxes: Optional[bool] = None,
@@ -144,7 +146,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_id: str,
         description: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         benefit_type: Optional[int] = None,
         active: Optional[bool] = True,
         responsible_for_employer_taxes: Optional[bool] = None,
@@ -275,7 +279,9 @@ class CompanyBenefits(BaseSDK):
         company_id: str,
         active: Optional[bool] = None,
         enrollment_count: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -383,7 +389,9 @@ class CompanyBenefits(BaseSDK):
         company_id: str,
         active: Optional[bool] = None,
         enrollment_count: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -490,7 +498,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         with_employee_benefits: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -597,7 +607,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         with_employee_benefits: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -704,7 +716,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = None,
         description: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -828,7 +842,9 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         active: Optional[bool] = None,
         description: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -951,7 +967,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1061,7 +1079,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         company_benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1170,7 +1190,9 @@ class CompanyBenefits(BaseSDK):
     def get_all(
         self,
         *,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1267,7 +1289,9 @@ class CompanyBenefits(BaseSDK):
     async def get_all_async(
         self,
         *,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1365,7 +1389,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1465,7 +1491,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1568,7 +1596,9 @@ class CompanyBenefits(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         detailed: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1677,7 +1707,9 @@ class CompanyBenefits(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         detailed: Optional[bool] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1785,7 +1817,9 @@ class CompanyBenefits(BaseSDK):
         company_benefit_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1893,7 +1927,9 @@ class CompanyBenefits(BaseSDK):
         company_benefit_id: str,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2003,7 +2039,9 @@ class CompanyBenefits(BaseSDK):
             List[models.EmployeeBenefitForCompanyBenefit],
             List[models.EmployeeBenefitForCompanyBenefitTypedDict],
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2128,7 +2166,9 @@ class CompanyBenefits(BaseSDK):
             List[models.EmployeeBenefitForCompanyBenefit],
             List[models.EmployeeBenefitForCompanyBenefitTypedDict],
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2249,7 +2289,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2347,7 +2389,9 @@ class CompanyBenefits(BaseSDK):
         self,
         *,
         benefit_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

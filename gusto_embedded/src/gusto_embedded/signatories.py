@@ -24,7 +24,9 @@ class Signatories(BaseSDK):
             models.PostV1CompanySignatoriesHomeAddress,
             models.PostV1CompanySignatoriesHomeAddressTypedDict,
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         middle_initial: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -171,7 +173,9 @@ class Signatories(BaseSDK):
             models.PostV1CompanySignatoriesHomeAddress,
             models.PostV1CompanySignatoriesHomeAddressTypedDict,
         ],
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         middle_initial: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -307,7 +311,9 @@ class Signatories(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -405,7 +411,9 @@ class Signatories(BaseSDK):
         self,
         *,
         company_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -504,7 +512,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         email: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         title: Optional[str] = None,
@@ -627,7 +637,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         email: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         title: Optional[str] = None,
@@ -750,7 +762,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         signatory_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         version: Optional[str] = None,
         first_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -903,7 +917,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         signatory_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         version: Optional[str] = None,
         first_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -1056,7 +1072,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         signatory_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1157,7 +1175,9 @@ class Signatories(BaseSDK):
         *,
         company_uuid: str,
         signatory_uuid: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

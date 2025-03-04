@@ -509,10 +509,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                             | Status Code                                            | Content Type                                           |
-| ------------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------------ |
-| models.PostCompaniesPayrollSkipCompanyUUIDResponseBody | 422                                                    | application/json                                       |
-| models.APIError                                        | 4XX, 5XX                                               | \*/\*                                                  |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.PayrollBlockersError           | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## calculate_gross_up
 
@@ -556,10 +557,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                        | Status Code                                       | Content Type                                      |
-| ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| models.PostPayrollsGrossUpPayrollUUIDResponseBody | 422                                               | application/json                                  |
-| models.APIError                                   | 4XX, 5XX                                          | \*/\*                                             |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.PayrollBlockersError           | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## calculate
 
@@ -598,10 +600,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                                           | Status Code                                                          | Content Type                                                         |
-| -------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBody | 422                                                                  | application/json                                                     |
-| models.APIError                                                      | 4XX, 5XX                                                             | \*/\*                                                                |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.PayrollBlockersError           | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## submit
 
@@ -642,10 +645,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                                        | Status Code                                                       | Content Type                                                      |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBody | 422                                                               | application/json                                                  |
-| models.APIError                                                   | 4XX, 5XX                                                          | \*/\*                                                             |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.PayrollBlockersError           | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## cancel
 

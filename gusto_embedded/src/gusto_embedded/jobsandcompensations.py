@@ -15,7 +15,9 @@ class JobsAndCompensations(BaseSDK):
         employee_id: str,
         title: str,
         hire_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -143,7 +145,9 @@ class JobsAndCompensations(BaseSDK):
         employee_id: str,
         title: str,
         hire_date: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -272,7 +276,9 @@ class JobsAndCompensations(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -379,7 +385,9 @@ class JobsAndCompensations(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -484,7 +492,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         job_id: str,
         include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -585,7 +595,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         job_id: str,
         include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -686,7 +698,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         job_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         title: Optional[str] = None,
         hire_date: Optional[str] = None,
         two_percent_shareholder: Optional[bool] = None,
@@ -817,7 +831,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         job_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         title: Optional[str] = None,
         hire_date: Optional[str] = None,
         two_percent_shareholder: Optional[bool] = None,
@@ -947,7 +963,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         job_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1045,7 +1063,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         job_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1146,7 +1166,9 @@ class JobsAndCompensations(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1JobsJobIDCompensationsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1257,7 +1279,9 @@ class JobsAndCompensations(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1JobsJobIDCompensationsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1367,7 +1391,9 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
         flsa_status: models.FlsaStatusType,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         rate: Optional[str] = None,
         effective_date: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
@@ -1508,7 +1534,9 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
         flsa_status: models.FlsaStatusType,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         rate: Optional[str] = None,
         effective_date: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
@@ -1647,7 +1675,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         compensation_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1746,7 +1776,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         compensation_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1846,7 +1878,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         compensation_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         rate: Optional[str] = None,
         payment_unit: Optional[
             models.PutV1CompensationsCompensationIDPaymentUnit
@@ -1987,7 +2021,9 @@ class JobsAndCompensations(BaseSDK):
         *,
         compensation_id: str,
         version: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         rate: Optional[str] = None,
         payment_unit: Optional[
             models.PutV1CompensationsCompensationIDPaymentUnit
@@ -2127,7 +2163,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         compensation_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2226,7 +2264,9 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         compensation_id: str,
-        x_gusto_api_version: Optional[models.VersionHeader] = None,
+        x_gusto_api_version: Optional[
+            models.VersionHeader
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
