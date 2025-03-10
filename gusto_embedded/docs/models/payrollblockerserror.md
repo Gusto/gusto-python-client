@@ -7,6 +7,6 @@ For detailed information, see the [Payroll Blockers guide](https://docs.gusto.co
 
 ## Fields
 
-| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `errors`                                                                           | List[[models.PayrollBlockersErrorErrors](../models/payrollblockerserrorerrors.md)] | :heavy_minus_sign:                                                                 | N/A                                                                                |
+| Field                                      | Type                                       | Required                                   | Description                                |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| `errors`                                   | List[[models.Errors](../models/errors.md)] | :heavy_minus_sign:                         | N/A                                        |

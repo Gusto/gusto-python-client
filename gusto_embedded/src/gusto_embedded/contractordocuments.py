@@ -618,10 +618,11 @@ class ContractorDocuments(BaseSDK):
             List[models.PutV1ContractorDocumentSignFieldsTypedDict],
         ],
         agree: bool,
-        signed_by_ip_address: str,
+        x_gusto_client_ip: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        signed_by_ip_address: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -636,8 +637,9 @@ class ContractorDocuments(BaseSDK):
         :param document_uuid: The ID or UUID of the document
         :param fields: List of fields and the values they will be set to.
         :param agree: Whether you agree to sign electronically
-        :param signed_by_ip_address: The IP address of the signatory who signed the form.
+        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param signed_by_ip_address: The IP address of the signatory who signed the form. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -655,6 +657,7 @@ class ContractorDocuments(BaseSDK):
 
         request = models.PutV1ContractorDocumentSignRequest(
             document_uuid=document_uuid,
+            x_gusto_client_ip=x_gusto_client_ip,
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1ContractorDocumentSignRequestBody(
                 fields=utils.get_pydantic_model(
@@ -747,10 +750,11 @@ class ContractorDocuments(BaseSDK):
             List[models.PutV1ContractorDocumentSignFieldsTypedDict],
         ],
         agree: bool,
-        signed_by_ip_address: str,
+        x_gusto_client_ip: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        signed_by_ip_address: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -765,8 +769,9 @@ class ContractorDocuments(BaseSDK):
         :param document_uuid: The ID or UUID of the document
         :param fields: List of fields and the values they will be set to.
         :param agree: Whether you agree to sign electronically
-        :param signed_by_ip_address: The IP address of the signatory who signed the form.
+        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param signed_by_ip_address: The IP address of the signatory who signed the form. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -784,6 +789,7 @@ class ContractorDocuments(BaseSDK):
 
         request = models.PutV1ContractorDocumentSignRequest(
             document_uuid=document_uuid,
+            x_gusto_client_ip=x_gusto_client_ip,
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1ContractorDocumentSignRequestBody(
                 fields=utils.get_pydantic_model(

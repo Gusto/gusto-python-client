@@ -431,11 +431,7 @@ from .employment_history_list import (
 )
 from .entity_error_object import (
     EntityErrorObject,
-    EntityErrorObjectMetadata,
-    EntityErrorObjectMetadataTypedDict,
     EntityErrorObjectTypedDict,
-    Errors,
-    ErrorsTypedDict,
     Metadata,
     MetadataTypedDict,
 )
@@ -485,8 +481,6 @@ from .form_pdf import FormPdf, FormPdfTypedDict
 from .garnishment import Garnishment, GarnishmentType, GarnishmentTypedDict
 from .garnishment_child_support import (
     GarnishmentChildSupport,
-    GarnishmentChildSupportInput,
-    GarnishmentChildSupportInputTypedDict,
     GarnishmentChildSupportTypedDict,
     PaymentPeriod,
 )
@@ -1076,6 +1070,14 @@ from .invoice_data import (
 )
 from .job import Job, JobTypedDict
 from .location import Location, LocationTypedDict
+from .metadata_with_multiple_entities import (
+    MetadataWithMultipleEntities,
+    MetadataWithMultipleEntitiesTypedDict,
+)
+from .metadata_with_one_entity import (
+    MetadataWithOneEntity,
+    MetadataWithOneEntityTypedDict,
+)
 from .minimum_wage import MinimumWage, MinimumWageTypedDict
 from .notification import (
     Notification,
@@ -1152,10 +1154,10 @@ from .payment_speed_required_body import (
 from .payroll import Payroll, PayrollTypedDict
 from .payroll_blocker import PayrollBlocker, PayrollBlockerTypedDict
 from .payroll_blockers_error import (
+    Errors,
+    ErrorsTypedDict,
     PayrollBlockersError,
     PayrollBlockersErrorData,
-    PayrollBlockersErrorErrors,
-    PayrollBlockersErrorErrorsTypedDict,
     PayrollBlockersErrorMetadata,
     PayrollBlockersErrorMetadataTypedDict,
 )
@@ -2496,8 +2498,6 @@ __all__ = [
     "EmploymentStatus",
     "EmploymentType",
     "EntityErrorObject",
-    "EntityErrorObjectMetadata",
-    "EntityErrorObjectMetadataTypedDict",
     "EntityErrorObjectTypedDict",
     "EntityType",
     "Errors",
@@ -2548,8 +2548,6 @@ __all__ = [
     "FundingType",
     "Garnishment",
     "GarnishmentChildSupport",
-    "GarnishmentChildSupportInput",
-    "GarnishmentChildSupportInputTypedDict",
     "GarnishmentChildSupportTypedDict",
     "GarnishmentType",
     "GarnishmentTypedDict",
@@ -2886,6 +2884,10 @@ __all__ = [
     "MemorialDayTypedDict",
     "Metadata",
     "MetadataTypedDict",
+    "MetadataWithMultipleEntities",
+    "MetadataWithMultipleEntitiesTypedDict",
+    "MetadataWithOneEntity",
+    "MetadataWithOneEntityTypedDict",
     "MigrationStatus",
     "MinimumWage",
     "MinimumWageTypedDict",
@@ -2966,8 +2968,6 @@ __all__ = [
     "PayrollBlockerTypedDict",
     "PayrollBlockersError",
     "PayrollBlockersErrorData",
-    "PayrollBlockersErrorErrors",
-    "PayrollBlockersErrorErrorsTypedDict",
     "PayrollBlockersErrorMetadata",
     "PayrollBlockersErrorMetadataTypedDict",
     "PayrollCheck",

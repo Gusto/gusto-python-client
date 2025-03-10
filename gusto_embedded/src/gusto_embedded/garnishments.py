@@ -31,8 +31,7 @@ class Garnishments(BaseSDK):
         total_amount: Optional[str] = None,
         child_support: OptionalNullable[
             Union[
-                models.GarnishmentChildSupportInput,
-                models.GarnishmentChildSupportInputTypedDict,
+                models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -91,7 +90,7 @@ class Garnishments(BaseSDK):
                 deduct_as_percentage=deduct_as_percentage,
                 total_amount=total_amount,
                 child_support=utils.get_pydantic_model(
-                    child_support, OptionalNullable[models.GarnishmentChildSupportInput]
+                    child_support, OptionalNullable[models.GarnishmentChildSupport]
                 ),
             ),
         )
@@ -191,8 +190,7 @@ class Garnishments(BaseSDK):
         total_amount: Optional[str] = None,
         child_support: OptionalNullable[
             Union[
-                models.GarnishmentChildSupportInput,
-                models.GarnishmentChildSupportInputTypedDict,
+                models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -251,7 +249,7 @@ class Garnishments(BaseSDK):
                 deduct_as_percentage=deduct_as_percentage,
                 total_amount=total_amount,
                 child_support=utils.get_pydantic_model(
-                    child_support, OptionalNullable[models.GarnishmentChildSupportInput]
+                    child_support, OptionalNullable[models.GarnishmentChildSupport]
                 ),
             ),
         )
@@ -761,8 +759,7 @@ class Garnishments(BaseSDK):
         total_amount: Optional[str] = None,
         child_support: OptionalNullable[
             Union[
-                models.GarnishmentChildSupportInput,
-                models.GarnishmentChildSupportInputTypedDict,
+                models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -820,7 +817,7 @@ class Garnishments(BaseSDK):
                 deduct_as_percentage=deduct_as_percentage,
                 total_amount=total_amount,
                 child_support=utils.get_pydantic_model(
-                    child_support, OptionalNullable[models.GarnishmentChildSupportInput]
+                    child_support, OptionalNullable[models.GarnishmentChildSupport]
                 ),
                 version=version,
             ),
@@ -919,8 +916,7 @@ class Garnishments(BaseSDK):
         total_amount: Optional[str] = None,
         child_support: OptionalNullable[
             Union[
-                models.GarnishmentChildSupportInput,
-                models.GarnishmentChildSupportInputTypedDict,
+                models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -978,7 +974,7 @@ class Garnishments(BaseSDK):
                 deduct_as_percentage=deduct_as_percentage,
                 total_amount=total_amount,
                 child_support=utils.get_pydantic_model(
-                    child_support, OptionalNullable[models.GarnishmentChildSupportInput]
+                    child_support, OptionalNullable[models.GarnishmentChildSupport]
                 ),
                 version=version,
             ),

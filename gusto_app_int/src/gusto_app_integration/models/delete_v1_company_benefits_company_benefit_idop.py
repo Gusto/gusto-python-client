@@ -45,16 +45,16 @@ class Base(BaseModel):
     full_message: Optional[str] = None
 
 
-class DeleteV1CompanyBenefitsCompanyBenefitIDErrorsTypedDict(TypedDict):
+class ErrorsTypedDict(TypedDict):
     base: NotRequired[List[BaseTypedDict]]
 
 
-class DeleteV1CompanyBenefitsCompanyBenefitIDErrors(BaseModel):
+class Errors(BaseModel):
     base: Optional[List[Base]] = None
 
 
 class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData(BaseModel):
-    errors: Optional[DeleteV1CompanyBenefitsCompanyBenefitIDErrors] = None
+    errors: Optional[Errors] = None
 
 
 class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(Exception):

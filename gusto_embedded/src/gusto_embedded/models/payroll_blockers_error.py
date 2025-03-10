@@ -17,7 +17,7 @@ class PayrollBlockersErrorMetadata(BaseModel):
     r"""A categorization of the payroll blocker, e.g. \"geocode_error\" """
 
 
-class PayrollBlockersErrorErrorsTypedDict(TypedDict):
+class ErrorsTypedDict(TypedDict):
     error_key: NotRequired[str]
     r"""The string \"base\" """
     category: NotRequired[str]
@@ -27,7 +27,7 @@ class PayrollBlockersErrorErrorsTypedDict(TypedDict):
     metadata: NotRequired[PayrollBlockersErrorMetadataTypedDict]
 
 
-class PayrollBlockersErrorErrors(BaseModel):
+class Errors(BaseModel):
     error_key: Optional[str] = None
     r"""The string \"base\" """
 
@@ -41,7 +41,7 @@ class PayrollBlockersErrorErrors(BaseModel):
 
 
 class PayrollBlockersErrorData(BaseModel):
-    errors: Optional[List[PayrollBlockersErrorErrors]] = None
+    errors: Optional[List[Errors]] = None
 
 
 class PayrollBlockersError(Exception):

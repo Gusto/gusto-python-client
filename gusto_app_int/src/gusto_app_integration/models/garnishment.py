@@ -53,6 +53,8 @@ class GarnishmentTypedDict(TypedDict):
     r"""Whether the garnishment should recur indefinitely."""
     annual_maximum: NotRequired[Nullable[str]]
     r"""The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\"."""
+    total_amount: NotRequired[Nullable[str]]
+    r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
     pay_period_maximum: NotRequired[Nullable[str]]
     r"""The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\"."""
     deduct_as_percentage: NotRequired[bool]
@@ -96,6 +98,9 @@ class Garnishment(BaseModel):
     annual_maximum: OptionalNullable[str] = None
     r"""The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\"."""
 
+    total_amount: OptionalNullable[str] = None
+    r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
+
     pay_period_maximum: OptionalNullable[str] = None
     r"""The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\"."""
 
@@ -120,6 +125,7 @@ class Garnishment(BaseModel):
             "times",
             "recurring",
             "annual_maximum",
+            "total_amount",
             "pay_period_maximum",
             "deduct_as_percentage",
             "garnishment_type",
@@ -128,11 +134,17 @@ class Garnishment(BaseModel):
         nullable_fields = [
             "times",
             "annual_maximum",
+            "total_amount",
             "pay_period_maximum",
             "garnishment_type",
             "child_support",
         ]
-        null_default_fields = ["times", "annual_maximum", "pay_period_maximum"]
+        null_default_fields = [
+            "times",
+            "annual_maximum",
+            "total_amount",
+            "pay_period_maximum",
+        ]
 
         serialized = handler(self)
 
