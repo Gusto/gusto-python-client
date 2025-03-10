@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 from .garnishment_child_support import (
-    GarnishmentChildSupportInput,
-    GarnishmentChildSupportInputTypedDict,
+    GarnishmentChildSupport,
+    GarnishmentChildSupportTypedDict,
 )
 from .versionheader import VersionHeader
 from gusto_app_integration.types import (
@@ -48,7 +48,7 @@ class PutV1GarnishmentsGarnishmentIDRequestBodyTypedDict(TypedDict):
     r"""Whether the amount should be treated as a percentage to be deducted per pay period."""
     total_amount: NotRequired[str]
     r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
-    child_support: NotRequired[Nullable[GarnishmentChildSupportInputTypedDict]]
+    child_support: NotRequired[Nullable[GarnishmentChildSupportTypedDict]]
     r"""Additional child support order details"""
 
 
@@ -86,7 +86,7 @@ class PutV1GarnishmentsGarnishmentIDRequestBody(BaseModel):
     total_amount: Optional[str] = None
     r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
 
-    child_support: OptionalNullable[GarnishmentChildSupportInput] = UNSET
+    child_support: OptionalNullable[GarnishmentChildSupport] = UNSET
     r"""Additional child support order details"""
 
     @model_serializer(mode="wrap")

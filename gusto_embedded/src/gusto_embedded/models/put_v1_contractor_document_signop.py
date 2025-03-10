@@ -34,8 +34,8 @@ class PutV1ContractorDocumentSignRequestBodyTypedDict(TypedDict):
     r"""List of fields and the values they will be set to."""
     agree: bool
     r"""Whether you agree to sign electronically"""
-    signed_by_ip_address: str
-    r"""The IP address of the signatory who signed the form."""
+    signed_by_ip_address: NotRequired[str]
+    r"""The IP address of the signatory who signed the form. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead."""
 
 
 class PutV1ContractorDocumentSignRequestBody(BaseModel):
@@ -45,14 +45,16 @@ class PutV1ContractorDocumentSignRequestBody(BaseModel):
     agree: bool
     r"""Whether you agree to sign electronically"""
 
-    signed_by_ip_address: str
-    r"""The IP address of the signatory who signed the form."""
+    signed_by_ip_address: Optional[str] = None
+    r"""The IP address of the signatory who signed the form. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead."""
 
 
 class PutV1ContractorDocumentSignRequestTypedDict(TypedDict):
     document_uuid: str
     r"""The ID or UUID of the document"""
     request_body: PutV1ContractorDocumentSignRequestBodyTypedDict
+    x_gusto_client_ip: NotRequired[str]
+    r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
@@ -67,6 +69,13 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
         PutV1ContractorDocumentSignRequestBody,
         FieldMetadata(request=RequestMetadata(media_type="application/json")),
     ]
+
+    x_gusto_client_ip: Annotated[
+        Optional[str],
+        pydantic.Field(alias="x-gusto-client-ip"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = None
+    r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
 
     x_gusto_api_version: Annotated[
         Optional[VersionHeader],

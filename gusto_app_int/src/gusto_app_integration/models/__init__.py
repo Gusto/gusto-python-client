@@ -178,12 +178,12 @@ from .delete_v1_companies_company_id_earning_types_earning_type_uuidop import (
 from .delete_v1_company_benefits_company_benefit_idop import (
     Base,
     BaseTypedDict,
-    DeleteV1CompanyBenefitsCompanyBenefitIDErrors,
-    DeleteV1CompanyBenefitsCompanyBenefitIDErrorsTypedDict,
     DeleteV1CompanyBenefitsCompanyBenefitIDRequest,
     DeleteV1CompanyBenefitsCompanyBenefitIDRequestTypedDict,
     DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody,
     DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData,
+    Errors,
+    ErrorsTypedDict,
 )
 from .delete_v1_compensations_compensation_idop import (
     DeleteV1CompensationsCompensationIDRequest,
@@ -278,11 +278,7 @@ from .employment_history_list import (
 )
 from .entity_error_object import (
     EntityErrorObject,
-    EntityErrorObjectMetadata,
-    EntityErrorObjectMetadataTypedDict,
     EntityErrorObjectTypedDict,
-    Errors,
-    ErrorsTypedDict,
     Metadata,
     MetadataTypedDict,
 )
@@ -291,8 +287,6 @@ from .flsa_status_type import FlsaStatusType
 from .garnishment import Garnishment, GarnishmentType, GarnishmentTypedDict
 from .garnishment_child_support import (
     GarnishmentChildSupport,
-    GarnishmentChildSupportInput,
-    GarnishmentChildSupportInputTypedDict,
     GarnishmentChildSupportTypedDict,
     PaymentPeriod,
 )
@@ -537,6 +531,14 @@ from .get_version_employees_time_off_activitiesop import (
 )
 from .job import Job, JobTypedDict
 from .location import Location, LocationTypedDict
+from .metadata_with_multiple_entities import (
+    MetadataWithMultipleEntities,
+    MetadataWithMultipleEntitiesTypedDict,
+)
+from .metadata_with_one_entity import (
+    MetadataWithOneEntity,
+    MetadataWithOneEntityTypedDict,
+)
 from .minimum_wage import MinimumWage, MinimumWageTypedDict
 from .off_cycle_reason_type import OffCycleReasonType
 from .paid_time_off import Name, PaidTimeOff, PaidTimeOffTypedDict
@@ -1111,8 +1113,6 @@ __all__ = [
     "DeleteDepartmentRequestTypedDict",
     "DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest",
     "DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestTypedDict",
-    "DeleteV1CompanyBenefitsCompanyBenefitIDErrors",
-    "DeleteV1CompanyBenefitsCompanyBenefitIDErrorsTypedDict",
     "DeleteV1CompanyBenefitsCompanyBenefitIDRequest",
     "DeleteV1CompanyBenefitsCompanyBenefitIDRequestTypedDict",
     "DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody",
@@ -1173,8 +1173,6 @@ __all__ = [
     "EmploymentHistoryListTypedDict",
     "EmploymentStatus",
     "EntityErrorObject",
-    "EntityErrorObjectMetadata",
-    "EntityErrorObjectMetadataTypedDict",
     "EntityErrorObjectTypedDict",
     "EntityType",
     "Errors",
@@ -1191,8 +1189,6 @@ __all__ = [
     "FundingType",
     "Garnishment",
     "GarnishmentChildSupport",
-    "GarnishmentChildSupportInput",
-    "GarnishmentChildSupportInputTypedDict",
     "GarnishmentChildSupportTypedDict",
     "GarnishmentType",
     "GarnishmentTypedDict",
@@ -1342,6 +1338,10 @@ __all__ = [
     "LocationTypedDict",
     "Metadata",
     "MetadataTypedDict",
+    "MetadataWithMultipleEntities",
+    "MetadataWithMultipleEntitiesTypedDict",
+    "MetadataWithOneEntity",
+    "MetadataWithOneEntityTypedDict",
     "MinimumWage",
     "MinimumWageTypedDict",
     "MinimumWages",

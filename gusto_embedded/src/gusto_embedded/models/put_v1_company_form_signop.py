@@ -19,8 +19,8 @@ class PutV1CompanyFormSignRequestBodyTypedDict(TypedDict):
     r"""The signature"""
     agree: bool
     r"""Whether you agree to sign electronically"""
-    signed_by_ip_address: str
-    r"""The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported."""
+    signed_by_ip_address: NotRequired[str]
+    r"""The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead."""
 
 
 class PutV1CompanyFormSignRequestBody(BaseModel):
@@ -30,14 +30,16 @@ class PutV1CompanyFormSignRequestBody(BaseModel):
     agree: bool
     r"""Whether you agree to sign electronically"""
 
-    signed_by_ip_address: str
-    r"""The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported."""
+    signed_by_ip_address: Optional[str] = None
+    r"""The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead."""
 
 
 class PutV1CompanyFormSignRequestTypedDict(TypedDict):
     form_id: str
     r"""The UUID of the form"""
     request_body: PutV1CompanyFormSignRequestBodyTypedDict
+    x_gusto_client_ip: NotRequired[str]
+    r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
@@ -52,6 +54,13 @@ class PutV1CompanyFormSignRequest(BaseModel):
         PutV1CompanyFormSignRequestBody,
         FieldMetadata(request=RequestMetadata(media_type="application/json")),
     ]
+
+    x_gusto_client_ip: Annotated[
+        Optional[str],
+        pydantic.Field(alias="x-gusto-client-ip"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = None
+    r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
 
     x_gusto_api_version: Annotated[
         Optional[VersionHeader],

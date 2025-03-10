@@ -3,7 +3,17 @@
 Contains relevant data to identify the resource in question when applicable. For example, to identify an entity `entity_type` and `entity_uuid` will be provided.
 
 
-## Fields
+## Supported Types
 
-| Field       | Type        | Required    | Description |
-| ----------- | ----------- | ----------- | ----------- |
+### `models.MetadataWithMultipleEntities`
+
+```python
+value: models.MetadataWithMultipleEntities = /* values here */
+```
+
+### `models.MetadataWithOneEntity`
+
+```python
+value: models.MetadataWithOneEntity = /* values here */
+```
+
