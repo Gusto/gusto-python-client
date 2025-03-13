@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: f70034eb-4870-4b8d-aeb4-4c71b6c1ec45
 management:
-  docChecksum: c0ef5054303fad9a939fb33ed3e70c26
+  docChecksum: 1929f7ebdf0e349f2d49338559dc6e43
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.513.4
-  generationVersion: 2.545.4
-  releaseVersion: 0.2.0
-  configChecksum: 112a3f39b06fac94bc7efb8b6874449f
+  speakeasyVersion: 1.517.2
+  generationVersion: 2.548.5
+  releaseVersion: 0.2.1
+  configChecksum: a78c6cb032e152722eaedd43224e57c6
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_embedded
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded
@@ -16,7 +16,7 @@ features:
     additionalDependencies: 1.0.0
     additionalProperties: 1.0.1
     constsAndDefaults: 1.0.5
-    core: 5.12.2
+    core: 5.12.3
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     devContainers: 3.0.0
@@ -54,6 +54,7 @@ generatedFiles:
   - docs/models/accounttype.md
   - docs/models/accrualmethod.md
   - docs/models/accruingtimeoffhour.md
+  - docs/models/accruingtimeoffhourobject.md
   - docs/models/achtransaction.md
   - docs/models/achtransactionrecipienttype.md
   - docs/models/activecompanies.md
@@ -1020,6 +1021,7 @@ generatedFiles:
   - src/gusto_embedded/locations.py
   - src/gusto_embedded/models/__init__.py
   - src/gusto_embedded/models/accruing_time_off_hour.py
+  - src/gusto_embedded/models/accruing_time_off_hour_object.py
   - src/gusto_embedded/models/ach_transaction.py
   - src/gusto_embedded/models/admin.py
   - src/gusto_embedded/models/apierror.py
@@ -5971,7 +5973,7 @@ examples:
         application/json: {"regular_hours_worked": 30.25, "overtime_hours_worked": 10, "double_overtime_hours_worked": 0, "pto_hours_used": 5.5, "sick_hours_used": 0}
       responses:
         "200":
-          application/json: [{"time_off_policy_uuid": "c3a15554-f124-415d-b2c4-90b430fd8eb1", "hours": "3.2"}, {"time_off_policy_uuid": "386fc48d-52d2-4009-87b3-368f74f6b3df", "hours": "6.0"}]
+          application/json: {"hours_earned": []}
     Basic:
       parameters:
         path:

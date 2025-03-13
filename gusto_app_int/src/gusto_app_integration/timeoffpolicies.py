@@ -4,7 +4,7 @@ from .basesdk import BaseSDK
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
-from typing import Any, List, Mapping, Optional
+from typing import Any, Mapping, Optional
 
 
 class TimeOffPolicies(BaseSDK):
@@ -15,7 +15,7 @@ class TimeOffPolicies(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -25,7 +25,7 @@ class TimeOffPolicies(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AccruingTimeOffHour]:
+    ) -> models.AccruingTimeOffHourObject:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
@@ -121,7 +121,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AccruingTimeOffHour])
+            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -154,7 +154,7 @@ class TimeOffPolicies(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -164,7 +164,7 @@ class TimeOffPolicies(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AccruingTimeOffHour]:
+    ) -> models.AccruingTimeOffHourObject:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
@@ -260,7 +260,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AccruingTimeOffHour])
+            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData

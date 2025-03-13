@@ -54,7 +54,7 @@ with GustoAppIntegration(
 
 ### Response
 
-**[List[models.AccruingTimeOffHour]](../../models/.md)**
+**[models.AccruingTimeOffHourObject](../../models/accruingtimeoffhourobject.md)**
 
 ### Errors
 

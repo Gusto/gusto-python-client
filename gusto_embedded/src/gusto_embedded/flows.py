@@ -16,7 +16,7 @@ class Flows(BaseSDK):
         flow_type: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         entity_uuid: Optional[str] = None,
         entity_type: Optional[models.PostV1CompanyFlowsEntityType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -140,7 +140,7 @@ class Flows(BaseSDK):
         flow_type: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         entity_uuid: Optional[str] = None,
         entity_type: Optional[models.PostV1CompanyFlowsEntityType] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,

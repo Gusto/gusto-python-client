@@ -5,8 +5,8 @@ Gusto Embedded supports three payment speeds (1-day, 2-day, and 4-day). For next
 
 ## Values
 
-| Name       | Value      |
-| ---------- | ---------- |
-| `ONE_DAY`  | 1-day      |
-| `TWO_DAY`  | 2-day      |
-| `FOUR_DAY` | 4-day      |
+| Name             | Value            |
+| ---------------- | ---------------- |
+| `ONE_MINUS_DAY`  | 1-day            |
+| `TWO_MINUS_DAY`  | 2-day            |
+| `FOUR_MINUS_DAY` | 4-day            |

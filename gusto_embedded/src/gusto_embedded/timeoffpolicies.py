@@ -16,7 +16,7 @@ class TimeOffPolicies(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -26,7 +26,7 @@ class TimeOffPolicies(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AccruingTimeOffHour]:
+    ) -> models.AccruingTimeOffHourObject:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
@@ -124,7 +124,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AccruingTimeOffHour])
+            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -157,7 +157,7 @@ class TimeOffPolicies(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         regular_hours_worked: Optional[float] = None,
         overtime_hours_worked: Optional[float] = None,
         double_overtime_hours_worked: Optional[float] = None,
@@ -167,7 +167,7 @@ class TimeOffPolicies(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.AccruingTimeOffHour]:
+    ) -> models.AccruingTimeOffHourObject:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
@@ -265,7 +265,7 @@ class TimeOffPolicies(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.AccruingTimeOffHour])
+            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
@@ -297,7 +297,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -397,7 +397,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -497,7 +497,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         name: Optional[str] = None,
         accrual_method: Optional[models.AccrualMethod] = None,
         accrual_rate: Optional[str] = None,
@@ -639,7 +639,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         name: Optional[str] = None,
         accrual_method: Optional[models.AccrualMethod] = None,
         accrual_rate: Optional[str] = None,
@@ -781,7 +781,7 @@ class TimeOffPolicies(BaseSDK):
         company_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -881,7 +881,7 @@ class TimeOffPolicies(BaseSDK):
         company_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -984,7 +984,7 @@ class TimeOffPolicies(BaseSDK):
         accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         accrual_rate: Optional[str] = None,
         accrual_rate_unit: Optional[str] = None,
         paid_out_on_termination: Optional[bool] = None,
@@ -1129,7 +1129,7 @@ class TimeOffPolicies(BaseSDK):
         accrual_method: models.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         accrual_rate: Optional[str] = None,
         accrual_rate_unit: Optional[str] = None,
         paid_out_on_termination: Optional[bool] = None,
@@ -1271,7 +1271,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[
@@ -1405,7 +1405,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[
@@ -1539,7 +1539,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[
@@ -1673,7 +1673,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[
@@ -1807,7 +1807,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
@@ -1939,7 +1939,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         employees: Optional[
             Union[
                 List[models.PutVersionTimeOffPoliciesTimeOffPolicyUUIDBalanceEmployees],
@@ -2071,7 +2071,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2177,7 +2177,7 @@ class TimeOffPolicies(BaseSDK):
         time_off_policy_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
