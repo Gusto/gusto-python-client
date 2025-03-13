@@ -16,7 +16,7 @@ class Jobs(BaseSDK):
         hire_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -144,7 +144,7 @@ class Jobs(BaseSDK):
         hire_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -272,7 +272,7 @@ class Jobs(BaseSDK):
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         rate: Optional[str] = None,
         effective_date: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
@@ -413,7 +413,7 @@ class Jobs(BaseSDK):
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         rate: Optional[str] = None,
         effective_date: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,

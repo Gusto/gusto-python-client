@@ -37,7 +37,7 @@ class HistoricalEmployees(BaseSDK):
         ],
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         middle_initial: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
         email: Optional[str] = None,
@@ -214,7 +214,7 @@ class HistoricalEmployees(BaseSDK):
         ],
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_04_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         middle_initial: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
         email: Optional[str] = None,

@@ -70,7 +70,7 @@ with Gusto(
 
     res = gusto.payment_configs.update(company_uuid="<id>", request_body={
         "fast_payment_limit": "5000",
-        "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_DAY,
+        "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_MINUS_DAY,
     })
 
     # Handle response

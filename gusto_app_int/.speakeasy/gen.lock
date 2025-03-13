@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: eff8b18eb482158f3816ab1293101639
+  docChecksum: e5dbf5a9cf30d9ea940fe694fe20aab8
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.513.4
-  generationVersion: 2.545.4
-  releaseVersion: 0.2.0
-  configChecksum: 1289c787dd37404d4239502dd3ab26a8
+  speakeasyVersion: 1.517.2
+  generationVersion: 2.548.5
+  releaseVersion: 0.2.1
+  configChecksum: 6f1f3a37d8e261faae78f02ba148f837
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int
@@ -16,7 +16,7 @@ features:
     additionalDependencies: 1.0.0
     additionalProperties: 1.0.1
     constsAndDefaults: 1.0.5
-    core: 5.12.2
+    core: 5.12.3
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     enumUnions: 0.1.0
@@ -44,6 +44,7 @@ generatedFiles:
   - .vscode/settings.json
   - USAGE.md
   - docs/models/accruingtimeoffhour.md
+  - docs/models/accruingtimeoffhourobject.md
   - docs/models/address.md
   - docs/models/addresses.md
   - docs/models/admin.md
@@ -499,6 +500,7 @@ generatedFiles:
   - src/gusto_app_integration/locations.py
   - src/gusto_app_integration/models/__init__.py
   - src/gusto_app_integration/models/accruing_time_off_hour.py
+  - src/gusto_app_integration/models/accruing_time_off_hour_object.py
   - src/gusto_app_integration/models/admin.py
   - src/gusto_app_integration/models/apierror.py
   - src/gusto_app_integration/models/authentication.py
@@ -2757,7 +2759,7 @@ examples:
         application/json: {"regular_hours_worked": 30.25, "overtime_hours_worked": 10, "double_overtime_hours_worked": 0, "pto_hours_used": 5.5, "sick_hours_used": 0}
       responses:
         "200":
-          application/json: [{"time_off_policy_uuid": "c3a15554-f124-415d-b2c4-90b430fd8eb1", "hours": "3.2"}, {"time_off_policy_uuid": "386fc48d-52d2-4009-87b3-368f74f6b3df", "hours": "6.0"}]
+          application/json: {"hours_earned": []}
     Basic:
       parameters:
         path:
