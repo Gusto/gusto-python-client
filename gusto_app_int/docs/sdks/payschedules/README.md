@@ -46,7 +46,7 @@ with GustoAppIntegration(
 
 ### Response
 
-**[List[models.PaySchedule]](../../models/.md)**
+**[List[models.PayScheduleList]](../../models/.md)**
 
 ### Errors
 
@@ -88,7 +88,7 @@ with GustoAppIntegration(
 
 ### Response
 
-**[models.PaySchedule](../../models/payschedule.md)**
+**[models.PayScheduleObject](../../models/payscheduleobject.md)**
 
 ### Errors
 

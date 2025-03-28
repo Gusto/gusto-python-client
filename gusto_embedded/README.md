@@ -304,6 +304,11 @@ with Gusto() as gusto:
 * [finish_onboarding](docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
 * [get_custom_fields](docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 
+#### [companies.suspensions](docs/sdks/suspensions/README.md)
+
+* [get](docs/sdks/suspensions/README.md#get) - Get suspensions for this company
+* [suspend](docs/sdks/suspensions/README.md#suspend) - Suspend a company's account
+
 ### [company_attachment](docs/sdks/companyattachmentsdk/README.md)
 
 * [get_download_url](docs/sdks/companyattachmentsdk/README.md#get_download_url) - Get a temporary url to download the Company Attachment file

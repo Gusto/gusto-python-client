@@ -20,7 +20,7 @@ class EmployeeFederalTaxTypedDict(TypedDict):
 
     version: str
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
-    filing_status: str
+    filing_status: Nullable[str]
     r"""It determines which tax return form an individual will use and is an important factor in computing taxable income. One of:
     - Single
     - Married
@@ -55,7 +55,7 @@ class EmployeeFederalTax(BaseModel):
     version: str
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
-    filing_status: str
+    filing_status: Nullable[str]
     r"""It determines which tax return form an individual will use and is an important factor in computing taxable income. One of:
     - Single
     - Married
@@ -95,6 +95,7 @@ class EmployeeFederalTax(BaseModel):
     def serialize_model(self, handler):
         optional_fields = ["federal_withholding_allowance", "additional_withholding"]
         nullable_fields = [
+            "filing_status",
             "extra_withholding",
             "two_jobs",
             "dependents_amount",

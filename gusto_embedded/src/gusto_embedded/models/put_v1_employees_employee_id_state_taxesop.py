@@ -17,18 +17,28 @@ from gusto_embedded.utils import (
 )
 import pydantic
 from pydantic import model_serializer
-from typing import Any, List, Optional
-from typing_extensions import Annotated, NotRequired, TypedDict
+from typing import Any, List, Optional, Union
+from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
+
+
+PutV1EmployeesEmployeeIDStateTaxesValueTypedDict = TypeAliasType(
+    "PutV1EmployeesEmployeeIDStateTaxesValueTypedDict", Union[str, float, bool]
+)
+
+
+PutV1EmployeesEmployeeIDStateTaxesValue = TypeAliasType(
+    "PutV1EmployeesEmployeeIDStateTaxesValue", Union[str, float, bool]
+)
 
 
 class AnswersTypedDict(TypedDict):
-    value: str
+    value: Nullable[PutV1EmployeesEmployeeIDStateTaxesValueTypedDict]
     valid_from: str
     valid_up_to: NotRequired[Nullable[Any]]
 
 
 class Answers(BaseModel):
-    value: str
+    value: Nullable[PutV1EmployeesEmployeeIDStateTaxesValue]
 
     valid_from: str
 
@@ -37,7 +47,7 @@ class Answers(BaseModel):
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = ["valid_up_to"]
-        nullable_fields = ["valid_up_to"]
+        nullable_fields = ["value", "valid_up_to"]
         null_default_fields = []
 
         serialized = handler(self)

@@ -296,7 +296,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PaySchedule]:
+    ) -> List[models.PayScheduleList]:
         r"""Get the pay schedules for a company
 
         The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -368,7 +368,7 @@ class PaySchedules(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.PaySchedule])
+            return utils.unmarshal_json(http_res.text, List[models.PayScheduleList])
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -402,7 +402,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PaySchedule]:
+    ) -> List[models.PayScheduleList]:
         r"""Get the pay schedules for a company
 
         The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -474,7 +474,7 @@ class PaySchedules(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.PaySchedule])
+            return utils.unmarshal_json(http_res.text, List[models.PayScheduleList])
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -743,7 +743,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PaySchedule:
+    ) -> models.PayScheduleObject:
         r"""Get a pay schedule
 
         The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -813,7 +813,7 @@ class PaySchedules(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.PaySchedule)
+            return utils.unmarshal_json(http_res.text, models.PayScheduleObject)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -846,7 +846,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PaySchedule:
+    ) -> models.PayScheduleObject:
         r"""Get a pay schedule
 
         The pay schedule object in Gusto captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -916,7 +916,7 @@ class PaySchedules(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.PaySchedule)
+            return utils.unmarshal_json(http_res.text, models.PayScheduleObject)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
