@@ -134,6 +134,13 @@ from .company_onboarding_status import (
     OnboardingStepTypedDict,
     Requirements,
 )
+from .company_suspension import (
+    CompanySuspension,
+    CompanySuspensionTypedDict,
+    ReconcileTaxMethod,
+    TaxRefunds,
+    TaxRefundsTypedDict,
+)
 from .compensation import (
     Compensation,
     CompensationTypedDict,
@@ -528,6 +535,10 @@ from .get_companies_company_uuid_paid_holidaysop import (
 from .get_companies_company_uuid_report_templates_report_typeop import (
     GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest,
     GetCompaniesCompanyUUIDReportTemplatesReportTypeRequestTypedDict,
+)
+from .get_companies_company_uuid_suspensionsop import (
+    GetCompaniesCompanyUUIDSuspensionsRequest,
+    GetCompaniesCompanyUUIDSuspensionsRequestTypedDict,
 )
 from .get_companies_company_uuid_time_off_policiesop import (
     GetCompaniesCompanyUUIDTimeOffPoliciesRequest,
@@ -1099,7 +1110,6 @@ from .pay_period import (
     PayPeriodTypedDict,
     PayrollType,
 )
-from .pay_schedule import PaySchedule, PayScheduleTypedDict
 from .pay_schedule_assignment import (
     PayScheduleAssignment,
     PayScheduleAssignmentTypedDict,
@@ -1145,6 +1155,8 @@ from .pay_schedule_create_update import (
 )
 from .pay_schedule_frequency import PayScheduleFrequency
 from .pay_schedule_frequency_create_update import PayScheduleFrequencyCreateUpdate
+from .pay_schedule_list import PayScheduleList, PayScheduleListTypedDict
+from .pay_schedule_object import PayScheduleObject, PayScheduleObjectTypedDict
 from .payment_configs import PaymentConfigs, PaymentConfigsTypedDict
 from .payment_method_bank_account import (
     PaymentMethodBankAccount,
@@ -1286,6 +1298,15 @@ from .post_companies_company_uuid_reportsop import (
     PostCompaniesCompanyUUIDReportsRequestBody,
     PostCompaniesCompanyUUIDReportsRequestBodyTypedDict,
     PostCompaniesCompanyUUIDReportsRequestTypedDict,
+)
+from .post_companies_company_uuid_suspensionsop import (
+    LeavingFor,
+    PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod,
+    PostCompaniesCompanyUUIDSuspensionsRequest,
+    PostCompaniesCompanyUUIDSuspensionsRequestBody,
+    PostCompaniesCompanyUUIDSuspensionsRequestBodyTypedDict,
+    PostCompaniesCompanyUUIDSuspensionsRequestTypedDict,
+    Reason,
 )
 from .post_companies_company_uuid_time_off_policiesop import (
     PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod,
@@ -1750,6 +1771,7 @@ from .put_v1_companies_company_id_payrollsop import (
     PutV1CompaniesCompanyIDPayrollsRequestBody,
     PutV1CompaniesCompanyIDPayrollsRequestBodyTypedDict,
     PutV1CompaniesCompanyIDPayrollsRequestTypedDict,
+    PutV1CompaniesCompanyIDPayrollsWithholdingPayPeriod,
 )
 from .put_v1_companies_company_uuid_signatories_signatory_uuidop import (
     PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress,
@@ -1946,6 +1968,8 @@ from .put_v1_employees_employee_id_state_taxesop import (
     PutV1EmployeesEmployeeIDStateTaxesRequestBody,
     PutV1EmployeesEmployeeIDStateTaxesRequestBodyTypedDict,
     PutV1EmployeesEmployeeIDStateTaxesRequestTypedDict,
+    PutV1EmployeesEmployeeIDStateTaxesValue,
+    PutV1EmployeesEmployeeIDStateTaxesValueTypedDict,
     Questions,
     QuestionsTypedDict,
     States,
@@ -2290,6 +2314,8 @@ __all__ = [
     "CompanyPaidTimeOff",
     "CompanyPaidTimeOffTypedDict",
     "CompanyStatus",
+    "CompanySuspension",
+    "CompanySuspensionTypedDict",
     "CompanyTypedDict",
     "Compensation",
     "CompensationTypedDict",
@@ -2584,6 +2610,8 @@ __all__ = [
     "GetCompaniesCompanyUUIDPaidHolidaysRequestTypedDict",
     "GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest",
     "GetCompaniesCompanyUUIDReportTemplatesReportTypeRequestTypedDict",
+    "GetCompaniesCompanyUUIDSuspensionsRequest",
+    "GetCompaniesCompanyUUIDSuspensionsRequestTypedDict",
     "GetCompaniesCompanyUUIDTimeOffPoliciesRequest",
     "GetCompaniesCompanyUUIDTimeOffPoliciesRequestTypedDict",
     "GetCompaniesCompanyUUIDWireInRequestUUIDRequest",
@@ -2878,6 +2906,7 @@ __all__ = [
     "Key",
     "LaborDay",
     "LaborDayTypedDict",
+    "LeavingFor",
     "LiabilitySelections",
     "LiabilitySelectionsTypedDict",
     "Licensee",
@@ -2928,7 +2957,6 @@ __all__ = [
     "PayPeriodTypedDict",
     "PayPeriods",
     "PayPeriodsTypedDict",
-    "PaySchedule",
     "PayScheduleAssignment",
     "PayScheduleAssignmentBody",
     "PayScheduleAssignmentBodyType",
@@ -2951,8 +2979,11 @@ __all__ = [
     "PayScheduleCreateUpdateTypedDict",
     "PayScheduleFrequency",
     "PayScheduleFrequencyCreateUpdate",
+    "PayScheduleList",
+    "PayScheduleListTypedDict",
+    "PayScheduleObject",
+    "PayScheduleObjectTypedDict",
     "PayScheduleType",
-    "PayScheduleTypedDict",
     "PaymentConfigs",
     "PaymentConfigsTypedDict",
     "PaymentDirection",
@@ -3060,6 +3091,11 @@ __all__ = [
     "PostCompaniesCompanyUUIDReportsRequestBody",
     "PostCompaniesCompanyUUIDReportsRequestBodyTypedDict",
     "PostCompaniesCompanyUUIDReportsRequestTypedDict",
+    "PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod",
+    "PostCompaniesCompanyUUIDSuspensionsRequest",
+    "PostCompaniesCompanyUUIDSuspensionsRequestBody",
+    "PostCompaniesCompanyUUIDSuspensionsRequestBodyTypedDict",
+    "PostCompaniesCompanyUUIDSuspensionsRequestTypedDict",
     "PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod",
     "PostCompaniesCompanyUUIDTimeOffPoliciesRequest",
     "PostCompaniesCompanyUUIDTimeOffPoliciesRequestBody",
@@ -3398,6 +3434,7 @@ __all__ = [
     "PutV1CompaniesCompanyIDPayrollsRequestBody",
     "PutV1CompaniesCompanyIDPayrollsRequestBodyTypedDict",
     "PutV1CompaniesCompanyIDPayrollsRequestTypedDict",
+    "PutV1CompaniesCompanyIDPayrollsWithholdingPayPeriod",
     "PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddress",
     "PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHomeAddressTypedDict",
     "PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest",
@@ -3532,6 +3569,8 @@ __all__ = [
     "PutV1EmployeesEmployeeIDStateTaxesRequestBody",
     "PutV1EmployeesEmployeeIDStateTaxesRequestBodyTypedDict",
     "PutV1EmployeesEmployeeIDStateTaxesRequestTypedDict",
+    "PutV1EmployeesEmployeeIDStateTaxesValue",
+    "PutV1EmployeesEmployeeIDStateTaxesValueTypedDict",
     "PutV1EmployeesRequest",
     "PutV1EmployeesRequestBody",
     "PutV1EmployeesRequestBodyTypedDict",
@@ -3641,7 +3680,9 @@ __all__ = [
     "Questions",
     "QuestionsTypedDict",
     "RateType",
+    "Reason",
     "RecipientType",
+    "ReconcileTaxMethod",
     "RecoveryCase",
     "RecoveryCaseStatus",
     "RecoveryCaseTypedDict",
@@ -3696,6 +3737,8 @@ __all__ = [
     "TaxLiabilitiesSelections",
     "TaxLiabilitiesSelectionsTypedDict",
     "TaxPayerType",
+    "TaxRefunds",
+    "TaxRefundsTypedDict",
     "TaxRequirement",
     "TaxRequirementMetadata",
     "TaxRequirementMetadataOptions",

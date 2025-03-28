@@ -194,7 +194,7 @@ with Gusto(
                     "key": "withholding_allowance",
                     "answers": [
                         {
-                            "value": "2",
+                            "value": 2,
                             "valid_from": "2010-01-01",
                             "valid_up_to": None,
                         },
@@ -214,7 +214,7 @@ with Gusto(
                     "key": "file_new_hire_report",
                     "answers": [
                         {
-                            "value": "true",
+                            "value": True,
                             "valid_from": "2010-01-01",
                             "valid_up_to": None,
                         },

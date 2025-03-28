@@ -304,6 +304,11 @@ with Gusto() as gusto:
 * [finish_onboarding](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
 * [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 
+#### [companies.suspensions](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/suspensions/README.md)
+
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/suspensions/README.md#get) - Get suspensions for this company
+* [suspend](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/suspensions/README.md#suspend) - Suspend a company's account
+
 ### [company_attachment](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/companyattachmentsdk/README.md)
 
 * [get_download_url](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/companyattachmentsdk/README.md#get_download_url) - Get a temporary url to download the Company Attachment file

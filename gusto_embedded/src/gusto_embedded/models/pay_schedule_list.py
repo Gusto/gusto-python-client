@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from .pay_schedule_frequency import PayScheduleFrequency
-from gusto_app_integration.types import (
+from gusto_embedded.types import (
     BaseModel,
     Nullable,
     OptionalNullable,
@@ -14,11 +14,13 @@ from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class PayScheduleTypedDict(TypedDict):
+class PayScheduleListTypedDict(TypedDict):
     r"""The representation of a pay schedule."""
 
     uuid: str
     r"""The unique identifier of the pay schedule in Gusto."""
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
     frequency: NotRequired[PayScheduleFrequency]
     r"""The frequency that employees on this pay schedule are paid with Gusto."""
     anchor_pay_date: NotRequired[str]
@@ -39,11 +41,14 @@ class PayScheduleTypedDict(TypedDict):
     r"""Whether this pay schedule is associated with any employees. A pay schedule is inactive when it's unassigned."""
 
 
-class PaySchedule(BaseModel):
+class PayScheduleList(BaseModel):
     r"""The representation of a pay schedule."""
 
     uuid: str
     r"""The unique identifier of the pay schedule in Gusto."""
+
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
     frequency: Optional[PayScheduleFrequency] = None
     r"""The frequency that employees on this pay schedule are paid with Gusto."""

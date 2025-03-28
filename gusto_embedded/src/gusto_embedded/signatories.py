@@ -605,7 +605,7 @@ class Signatories(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Signatory)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
@@ -730,7 +730,7 @@ class Signatories(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
+        if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Signatory)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(

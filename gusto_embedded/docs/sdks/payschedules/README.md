@@ -106,7 +106,7 @@ with Gusto(
 
 ### Response
 
-**[List[models.PaySchedule]](../../models/.md)**
+**[List[models.PayScheduleList]](../../models/.md)**
 
 ### Errors
 
@@ -197,7 +197,7 @@ with Gusto(
 
 ### Response
 
-**[models.PaySchedule](../../models/payschedule.md)**
+**[models.PayScheduleObject](../../models/payscheduleobject.md)**
 
 ### Errors
 

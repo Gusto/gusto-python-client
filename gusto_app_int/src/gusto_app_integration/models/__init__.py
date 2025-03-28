@@ -553,7 +553,6 @@ from .pay_period import (
     PayPeriodTypedDict,
     PayrollType,
 )
-from .pay_schedule import PaySchedule, PayScheduleTypedDict
 from .pay_schedule_assignment import (
     PayScheduleAssignment,
     PayScheduleAssignmentTypedDict,
@@ -568,6 +567,8 @@ from .pay_schedule_assignment_employee import (
     PayScheduleAssignmentEmployeeTypedDict,
 )
 from .pay_schedule_frequency import PayScheduleFrequency
+from .pay_schedule_list import PayScheduleList, PayScheduleListTypedDict
+from .pay_schedule_object import PayScheduleObject, PayScheduleObjectTypedDict
 from .payroll import Payroll, PayrollTypedDict
 from .payroll_company_taxes_type import (
     PayrollCompanyTaxesType,
@@ -831,6 +832,7 @@ from .put_v1_companies_company_id_payrollsop import (
     PutV1CompaniesCompanyIDPayrollsRequestBody,
     PutV1CompaniesCompanyIDPayrollsRequestBodyTypedDict,
     PutV1CompaniesCompanyIDPayrollsRequestTypedDict,
+    WithholdingPayPeriod,
 )
 from .put_v1_companiesop import (
     PutV1CompaniesRequest,
@@ -1363,7 +1365,6 @@ __all__ = [
     "PayPeriodPayroll",
     "PayPeriodPayrollTypedDict",
     "PayPeriodTypedDict",
-    "PaySchedule",
     "PayScheduleAssignment",
     "PayScheduleAssignmentDepartment",
     "PayScheduleAssignmentDepartmentTypedDict",
@@ -1371,8 +1372,11 @@ __all__ = [
     "PayScheduleAssignmentEmployeeTypedDict",
     "PayScheduleAssignmentTypedDict",
     "PayScheduleFrequency",
+    "PayScheduleList",
+    "PayScheduleListTypedDict",
+    "PayScheduleObject",
+    "PayScheduleObjectTypedDict",
     "PayScheduleType",
-    "PayScheduleTypedDict",
     "PaymentMethod",
     "PaymentPeriod",
     "PaymentUnit",
@@ -1713,6 +1717,7 @@ __all__ = [
     "WageType",
     "WebhookSubscription",
     "WebhookSubscriptionTypedDict",
+    "WithholdingPayPeriod",
     "YtdBenefitAmountsFromDifferentCompany",
     "YtdBenefitAmountsFromDifferentCompanyTypedDict",
 ]

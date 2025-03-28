@@ -508,6 +508,9 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
+        skip_regular_deductions: Optional[bool] = None,
+        fixed_withholding_rate: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -526,6 +529,9 @@ class Payrolls(BaseSDK):
         :param payroll_id: The UUID of the payroll
         :param employee_compensations:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
+        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
+        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -549,6 +555,9 @@ class Payrolls(BaseSDK):
                 employee_compensations=utils.get_pydantic_model(
                     employee_compensations, List[models.EmployeeCompensations]
                 ),
+                withholding_pay_period=withholding_pay_period,
+                skip_regular_deductions=skip_regular_deductions,
+                fixed_withholding_rate=fixed_withholding_rate,
             ),
         )
 
@@ -635,6 +644,9 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
+        skip_regular_deductions: Optional[bool] = None,
+        fixed_withholding_rate: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -653,6 +665,9 @@ class Payrolls(BaseSDK):
         :param payroll_id: The UUID of the payroll
         :param employee_compensations:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
+        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
+        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -676,6 +691,9 @@ class Payrolls(BaseSDK):
                 employee_compensations=utils.get_pydantic_model(
                     employee_compensations, List[models.EmployeeCompensations]
                 ),
+                withholding_pay_period=withholding_pay_period,
+                skip_regular_deductions=skip_regular_deductions,
+                fixed_withholding_rate=fixed_withholding_rate,
             ),
         )
 

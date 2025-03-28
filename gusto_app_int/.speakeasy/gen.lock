@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: e5dbf5a9cf30d9ea940fe694fe20aab8
+  docChecksum: 78dbfa21931768c6fe27a77e45ba47a1
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.517.2
-  generationVersion: 2.548.5
-  releaseVersion: 0.2.1
-  configChecksum: 6f1f3a37d8e261faae78f02ba148f837
+  speakeasyVersion: 1.525.2
+  generationVersion: 2.562.3
+  releaseVersion: 0.2.2
+  configChecksum: c99a9a504eb21dcd8712f151b9512847
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int
@@ -16,7 +16,7 @@ features:
     additionalDependencies: 1.0.0
     additionalProperties: 1.0.1
     constsAndDefaults: 1.0.5
-    core: 5.12.3
+    core: 5.12.4
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     enumUnions: 0.1.0
@@ -274,11 +274,12 @@ generatedFiles:
   - docs/models/payrolltype.md
   - docs/models/payrolltypes.md
   - docs/models/payrollwithholdingpayperiodtype.md
-  - docs/models/payschedule.md
   - docs/models/payscheduleassignment.md
   - docs/models/payscheduleassignmentdepartment.md
   - docs/models/payscheduleassignmentemployee.md
   - docs/models/payschedulefrequency.md
+  - docs/models/payschedulelist.md
+  - docs/models/payscheduleobject.md
   - docs/models/payscheduletype.md
   - docs/models/postdepartmentsrequest.md
   - docs/models/postdepartmentsrequestbody.md
@@ -443,6 +444,7 @@ generatedFiles:
   - docs/models/versionheader.md
   - docs/models/wagetype.md
   - docs/models/webhooksubscription.md
+  - docs/models/withholdingpayperiod.md
   - docs/models/ytdbenefitamountsfromdifferentcompany.md
   - docs/sdks/companies/README.md
   - docs/sdks/companybenefits/README.md
@@ -612,11 +614,12 @@ generatedFiles:
   - src/gusto_app_integration/models/off_cycle_reason_type.py
   - src/gusto_app_integration/models/paid_time_off.py
   - src/gusto_app_integration/models/pay_period.py
-  - src/gusto_app_integration/models/pay_schedule.py
   - src/gusto_app_integration/models/pay_schedule_assignment.py
   - src/gusto_app_integration/models/pay_schedule_assignment_department.py
   - src/gusto_app_integration/models/pay_schedule_assignment_employee.py
   - src/gusto_app_integration/models/pay_schedule_frequency.py
+  - src/gusto_app_integration/models/pay_schedule_list.py
+  - src/gusto_app_integration/models/pay_schedule_object.py
   - src/gusto_app_integration/models/payroll.py
   - src/gusto_app_integration/models/payroll_company_taxes_type.py
   - src/gusto_app_integration/models/payroll_credit_blockers_type.py
@@ -992,7 +995,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"uuid": "2097fe08-407a-46d7-b35c-a32402a2355e", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "Engineering department pay schedule", "auto_pilot": false, "active": true}, {"uuid": "8fc9f556-74fa-4271-97f6-4bfbfc5a5352", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Sales", "custom_name": "Sales department monthly schedule", "auto_pilot": false, "active": false}, {"uuid": "0e07d35a-af11-4123-bfcb-4dd5f2f12ee1", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Staff", "custom_name": "Staff department pay schedule", "auto_pilot": true, "active": false}]
+          application/json: [{"uuid": "2097fe08-407a-46d7-b35c-a32402a2355e", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "Engineering department pay schedule", "auto_pilot": false, "active": true, "version": "68934a3e9455fa72420237eb05902327"}, {"uuid": "8fc9f556-74fa-4271-97f6-4bfbfc5a5352", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Sales", "custom_name": "Sales department monthly schedule", "auto_pilot": false, "active": false, "version": "68934a3e9455fa72420237eb05902320"}, {"uuid": "0e07d35a-af11-4123-bfcb-4dd5f2f12ee1", "frequency": "Monthly", "anchor_pay_date": "2020-05-31", "day_1": 31, "day_2": null, "name": "Staff", "custom_name": "Staff department pay schedule", "auto_pilot": true, "active": false, "version": "68934a3e9455fa72420237eb05902323"}]
   get-v1-companies-company_id-pay_schedules-pay_schedule_id:
     Example:
       parameters:
@@ -1003,7 +1006,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"uuid": "f2a69c38-e2f9-4e31-b5c5-4754fc60a052", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "A new monthly pay schedule", "auto_pilot": false, "active": true}
+          application/json: {"uuid": "f2a69c38-e2f9-4e31-b5c5-4754fc60a052", "frequency": "Twice per month", "anchor_pay_date": "2020-05-15", "anchor_end_of_pay_period": "2020-05-08", "day_1": 15, "day_2": 31, "name": "Engineering", "custom_name": "A new monthly pay schedule", "auto_pilot": false, "active": true, "version": "68934a3e9455fa72420237eb05902327"}
   get-v1-companies-company_id-pay_periods:
     Example:
       parameters:

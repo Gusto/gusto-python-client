@@ -146,14 +146,45 @@ class PutV1CompaniesCompanyIDPayrollsEmployeeCompensations(BaseModel):
     r"""An array of all paid time off the employee is eligible for this pay period. Each paid time off object can be the name or the specific policy_uuid."""
 
 
+class PutV1CompaniesCompanyIDPayrollsWithholdingPayPeriod(str, Enum):
+    r"""The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls."""
+
+    EVERY_WEEK = "Every week"
+    EVERY_OTHER_WEEK = "Every other week"
+    TWICE_PER_MONTH = "Twice per month"
+    MONTHLY = "Monthly"
+    QUARTERLY = "Quarterly"
+    SEMIANNUALLY = "Semiannually"
+    ANNUALLY = "Annually"
+
+
 class PutV1CompaniesCompanyIDPayrollsRequestBodyTypedDict(TypedDict):
     employee_compensations: List[
         PutV1CompaniesCompanyIDPayrollsEmployeeCompensationsTypedDict
     ]
+    withholding_pay_period: NotRequired[
+        PutV1CompaniesCompanyIDPayrollsWithholdingPayPeriod
+    ]
+    r"""The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls."""
+    skip_regular_deductions: NotRequired[bool]
+    r"""Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls."""
+    fixed_withholding_rate: NotRequired[bool]
+    r"""Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls."""
 
 
 class PutV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
     employee_compensations: List[PutV1CompaniesCompanyIDPayrollsEmployeeCompensations]
+
+    withholding_pay_period: Optional[
+        PutV1CompaniesCompanyIDPayrollsWithholdingPayPeriod
+    ] = None
+    r"""The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls."""
+
+    skip_regular_deductions: Optional[bool] = None
+    r"""Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls."""
+
+    fixed_withholding_rate: Optional[bool] = None
+    r"""Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls."""
 
 
 class PutV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
