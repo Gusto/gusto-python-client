@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: 78dbfa21931768c6fe27a77e45ba47a1
+  docChecksum: 4c5d2f1216a28f6762e454df8bdcc054
   docVersion: "2024-04-01"
   speakeasyVersion: 1.525.2
   generationVersion: 2.562.3
-  releaseVersion: 0.2.2
-  configChecksum: c99a9a504eb21dcd8712f151b9512847
+  releaseVersion: 0.2.3
+  configChecksum: 1526a81640ebb32b6b92729d14d28fc0
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int

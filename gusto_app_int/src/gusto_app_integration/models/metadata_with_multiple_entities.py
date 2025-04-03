@@ -6,17 +6,17 @@ from .metadata_with_one_entity import (
     MetadataWithOneEntityTypedDict,
 )
 from gusto_app_integration.types import BaseModel
-from typing import List, Optional
-from typing_extensions import NotRequired, TypedDict
+from typing import List
+from typing_extensions import TypedDict
 
 
 class MetadataWithMultipleEntitiesTypedDict(TypedDict):
     r"""multiple entities"""
 
-    entities: NotRequired[List[MetadataWithOneEntityTypedDict]]
+    entities: List[MetadataWithOneEntityTypedDict]
 
 
 class MetadataWithMultipleEntities(BaseModel):
     r"""multiple entities"""
 
-    entities: Optional[List[MetadataWithOneEntity]] = None
+    entities: List[MetadataWithOneEntity]
