@@ -2,35 +2,35 @@ speakeasyVersion: 1.525.2
 sources:
     Gusto-App-Int-OAS:
         sourceNamespace: gusto-app-int-oas
-        sourceRevisionDigest: sha256:146394ace1f2364d29972b713f4c983469873146b72b8e440e4c85a116118413
-        sourceBlobDigest: sha256:928c472ebcc8603189dec96605686c09586dbc5e8f76169a7ca59a1c3cf777d5
+        sourceRevisionDigest: sha256:689628279a41eeb057e1c7afdca8152784bd5f9c2b58efa4bc1665fc4a209577
+        sourceBlobDigest: sha256:81ba6d3af1a240459cf53438bb3b5b518d869062b7dd32abfa212c70952b5886
         tags:
             - latest
-            - speakeasy-sdk-regen-1742257375
+            - speakeasy-sdk-regen-1743553451
             - "2024-04-01"
     Gusto-OAS:
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:058c4e660dd4b27a1cd8a068429a5239a71a1b5b365fde8544362ffcf28c2939
-        sourceBlobDigest: sha256:4c5a52b64a2132d394b1fae941027466dcf804b8de2d8e7995eeb16a6f9a2392
+        sourceRevisionDigest: sha256:20cf22a6e926e505aa744b6c012c764f2add3299c5a5fd4f623162b518b3c9b6
+        sourceBlobDigest: sha256:a5d5ddef31610735f102cde75d6c827223f5382ebbd680161128fd7e2b242c36
         tags:
             - latest
-            - speakeasy-sdk-regen-1742257375
+            - speakeasy-sdk-regen-1743553451
             - "2024-04-01"
 targets:
     gusto:
         source: Gusto-OAS
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:058c4e660dd4b27a1cd8a068429a5239a71a1b5b365fde8544362ffcf28c2939
-        sourceBlobDigest: sha256:4c5a52b64a2132d394b1fae941027466dcf804b8de2d8e7995eeb16a6f9a2392
+        sourceRevisionDigest: sha256:20cf22a6e926e505aa744b6c012c764f2add3299c5a5fd4f623162b518b3c9b6
+        sourceBlobDigest: sha256:a5d5ddef31610735f102cde75d6c827223f5382ebbd680161128fd7e2b242c36
         codeSamplesNamespace: gusto-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:a02d9747808931b1ac9832630609b77df58001e95aae6f66f0d0b535b2e5a243
+        codeSamplesRevisionDigest: sha256:0a063a27ea60e9873d6294ed5ec3c241d735406c892fbe9df2a4a8b0dc93fc49
     gusto-app-int:
         source: Gusto-App-Int-OAS
         sourceNamespace: gusto-app-int-oas
-        sourceRevisionDigest: sha256:146394ace1f2364d29972b713f4c983469873146b72b8e440e4c85a116118413
-        sourceBlobDigest: sha256:928c472ebcc8603189dec96605686c09586dbc5e8f76169a7ca59a1c3cf777d5
+        sourceRevisionDigest: sha256:689628279a41eeb057e1c7afdca8152784bd5f9c2b58efa4bc1665fc4a209577
+        sourceBlobDigest: sha256:81ba6d3af1a240459cf53438bb3b5b518d869062b7dd32abfa212c70952b5886
         codeSamplesNamespace: gusto-app-int-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:f13e0c32f6a3382d3dd1046c8ba164778440942d263cb02d201f05578c89462c
+        codeSamplesRevisionDigest: sha256:1f6740fe62454346fb6432f61c3eb830a5a5f7a02686cd212b41b925be25c440
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
