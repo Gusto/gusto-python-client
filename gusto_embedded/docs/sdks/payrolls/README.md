@@ -193,7 +193,6 @@ Notes:
 * Hour and dollar amounts are returned as string representations of numeric decimals.
 * Hours are represented to the thousands place; dollar amounts are represented to the cent.
 * Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to “0.00” (for fixed amounts) or “0.000” (for hours ).
-* To return future payrolls, you must include an `end_date` in the future.
 * When include parameter with benefits value is passed, employee_benefits:read scope is required to return benefits
   * Benefits containing PHI are only visible with the `employee_benefits:read:phi` scope
 
