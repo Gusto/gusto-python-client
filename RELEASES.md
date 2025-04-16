@@ -69,3 +69,13 @@ Based on:
 - [python v0.2.3] gusto_app_int
 ### Releases
 - [PyPI v0.2.3] https://pypi.org/project/gusto_app_integration/0.2.3 - gusto_app_int
+
+## 2025-04-16 00:24:18
+### Changes
+Based on:
+- OpenAPI Doc  
+- Speakeasy CLI 1.525.2 (2.562.3) https://github.com/speakeasy-api/speakeasy
+### Generated
+- [python v0.2.4] gusto_app_int
+### Releases
+- [PyPI v0.2.4] https://pypi.org/project/gusto_app_integration/0.2.4 - gusto_app_int

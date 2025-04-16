@@ -46,6 +46,8 @@ class NotificationTypedDict(TypedDict):
     r"""The notification's category."""
     actionable: NotRequired[bool]
     r"""Indicates whether a notification requires action or not. If false, the notification provides critical information only."""
+    can_block_payroll: NotRequired[bool]
+    r"""Indicates whether a notification may block ability to run payroll. If true, we suggest that these notifications are prioritized to your end users."""
     published_at: NotRequired[str]
     r"""Timestamp of when the notification was published."""
     due_at: NotRequired[str]
@@ -74,6 +76,9 @@ class Notification(BaseModel):
 
     actionable: Optional[bool] = None
     r"""Indicates whether a notification requires action or not. If false, the notification provides critical information only."""
+
+    can_block_payroll: Optional[bool] = None
+    r"""Indicates whether a notification may block ability to run payroll. If true, we suggest that these notifications are prioritized to your end users."""
 
     published_at: Optional[str] = None
     r"""Timestamp of when the notification was published."""
