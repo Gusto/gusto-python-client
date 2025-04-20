@@ -137,10 +137,10 @@ with Gusto(
         "location_uuid": "1da85d35-1910-4d5e-8e94-39e8cdfe8c9a",
     }, home_address={
         "street_1": "300 3rd Street",
+        "street_2": None,
         "city": "San Francisco",
         "state": "CA",
         "zip": "94107",
-        "street_2": None,
     }, termination={
         "effective_date": dateutil.parser.parse("2022-09-15T00:00:00Z").date(),
     }, job={

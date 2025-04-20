@@ -157,7 +157,7 @@ with Gusto(
         {},
         {},
         {},
-    ], agree=True, signed_by_ip_address="<value>")
+    ], agree=True)
 
     # Handle response
     print(res)
