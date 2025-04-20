@@ -29,9 +29,11 @@ with Gusto(
 ) as gusto:
 
     res = gusto.reports.create_custom(company_uuid="<id>", columns=[
-        gusto_embedded.Columns.NET_PAY,
+        gusto_embedded.Columns.TOTAL_EMPLOYER_BENEFIT_CONTRIBUTIONS,
+        gusto_embedded.Columns.EMPLOYEE_MEDICARE_ADDITIONAL_TAX,
     ], groupings=[
-        gusto_embedded.Groupings.PAYROLL,
+        gusto_embedded.Groupings.WORK_ADDRESS_STATE,
+        gusto_embedded.Groupings.WORK_ADDRESS,
     ], file_type=gusto_embedded.FileType.CSV, start_date=dateutil.parser.parse("2024-01-01").date(), end_date=dateutil.parser.parse("2024-04-01").date(), dismissed_start_date=dateutil.parser.parse("2024-01-01").date(), dismissed_end_date=dateutil.parser.parse("2024-04-01").date())
 
     # Handle response

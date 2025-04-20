@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: d69042cc3cc17acc78abc9058ae88896
+  docChecksum: 275f311e501f218e792595e5812ef532
   docVersion: "2024-04-01"
-  speakeasyVersion: 1.525.2
-  generationVersion: 2.562.3
-  releaseVersion: 0.2.4
-  configChecksum: eca361bddd83613dd8daf60c95b86c84
+  speakeasyVersion: 1.535.1
+  generationVersion: 2.585.2
+  releaseVersion: 0.3.0
+  configChecksum: 4e2356320a6fb5e40d06265ddc5ae9dc
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int
@@ -16,7 +16,7 @@ features:
     additionalDependencies: 1.0.0
     additionalProperties: 1.0.1
     constsAndDefaults: 1.0.5
-    core: 5.12.4
+    core: 5.14.0
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     enumUnions: 0.1.0
@@ -784,7 +784,7 @@ examples:
         application/json: {"user": {"first_name": "Adele", "last_name": "Jacobson", "email": "Maud_Rau14@gmail.com"}, "company": {"name": "<value>"}}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies:
     Example:
       parameters:
@@ -839,7 +839,7 @@ examples:
         application/json: {"contractor_only": true}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_id-admins:
     Example:
       parameters:
@@ -906,7 +906,7 @@ examples:
         application/json: {"phone_number": "824-550-4439 x01255", "street_1": "<value>", "city": "South Barrett", "state": "Georgia", "zip": "80985-0183"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-locations-location_id:
     Example:
       parameters:
@@ -961,7 +961,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-locations-location_uuid-minimum_wages:
     Example:
       parameters:
@@ -1107,7 +1107,7 @@ examples:
         application/json: {"first_name": "Isobel", "last_name": "McKenzie"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_id-employees:
     Example:
       parameters:
@@ -1207,7 +1207,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-employee:
     Basic:
       parameters:
@@ -1235,7 +1235,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-custom_fields:
     Example:
       parameters:
@@ -1310,7 +1310,7 @@ examples:
         application/json: {}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-companies-departments:
     Example:
       parameters:
@@ -1375,7 +1375,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-department:
     Basic:
       parameters:
@@ -1403,7 +1403,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   put-add-people-to-department:
     Example:
       parameters:
@@ -1472,7 +1472,7 @@ examples:
         application/json: {"effective_date": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-employees-employee_id-terminations:
     Example:
       parameters:
@@ -1527,7 +1527,7 @@ examples:
         application/json: {"version": "<value>", "effective_date": "<value>"}
       responses:
         "404":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   post-v1-employees-employee_id-rehire:
     Example:
       parameters:
@@ -1572,7 +1572,7 @@ examples:
         application/json: {"effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   put-v1-employees-employee_id-rehire:
     Example:
       parameters:
@@ -1617,7 +1617,7 @@ examples:
         application/json: {"version": "<value>", "effective_date": "<value>", "file_new_hire_report": true, "work_location_uuid": "<id>"}
       responses:
         "404":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-rehire:
     Example:
       parameters:
@@ -1704,7 +1704,7 @@ examples:
         application/json: {}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-home_addresses-home_address_uuid:
     Example:
       parameters:
@@ -1759,7 +1759,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-home_addresses-home_address_uuid:
     Basic:
       parameters:
@@ -1787,7 +1787,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-work_addresses:
     Example:
       parameters:
@@ -1842,7 +1842,7 @@ examples:
         application/json: {}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-work_addresses-work_address_uuid:
     Example:
       parameters:
@@ -1897,7 +1897,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-work_addresses-work_address_uuid:
     Basic:
       parameters:
@@ -1925,7 +1925,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   post-v1-jobs-job_id:
     Example:
       parameters:
@@ -1970,7 +1970,7 @@ examples:
         application/json: {"title": "<value>", "hire_date": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   post-v1-compensations-compensation_id:
     Exempt:
       parameters:
@@ -2026,7 +2026,7 @@ examples:
         application/json: {"payment_unit": "Month", "flsa_status": "Commission Only Exempt"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-jobs:
     Example:
       parameters:
@@ -2093,7 +2093,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-jobs-job_id:
     speakeasy-default-delete-v1-jobs-job-id:
       parameters:
@@ -2186,7 +2186,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-compensations-compensation_id:
     speakeasy-default-delete-v1-compensations-compensation-id:
       parameters:
@@ -2238,7 +2238,7 @@ examples:
         application/json: {"name": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_id-earning_types:
     Example:
       parameters:
@@ -2297,7 +2297,7 @@ examples:
         application/json: {}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-companies-company_id-earning_types-earning_type_uuid:
     speakeasy-default-delete-v1-companies-company-id-earning-types-earning-type-uuid:
       parameters:
@@ -2385,7 +2385,7 @@ examples:
         application/json: {"type": "Individual", "wage_type": "Fixed", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_uuid-contractors:
     Example:
       parameters:
@@ -2495,7 +2495,7 @@ examples:
         application/json: {"version": "<value>", "type": "Individual", "start_date": "2020-01-11", "hourly_rate": "40.0", "self_onboarding": false, "file_new_hire_report": false}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   post-v1-webhook-subscription:
     Example:
       parameters:
@@ -2532,7 +2532,7 @@ examples:
         application/json: {"url": "https://substantial-morbidity.net", "subscription_types": ["Employee", "Contractor", "BankAccount"]}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-webhook-subscriptions:
     Example:
       parameters:
@@ -2585,7 +2585,7 @@ examples:
         application/json: {"subscription_types": ["EmployeeJobCompensation", "Signatory"]}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-webhook-subscription-uuid:
     Example:
       parameters:
@@ -2647,7 +2647,7 @@ examples:
         application/json: {"verification_token": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-webhook-subscription-verification-token-uuid:
     speakeasy-default-get-v1-webhook-subscription-verification-token-uuid:
       parameters:
@@ -2738,7 +2738,7 @@ examples:
         application/json: {"employee_compensations": [{}, {}, {}]}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   put-v1-companies-company_id-payrolls-payroll_id-prepare:
     Example:
       parameters:
@@ -2798,7 +2798,7 @@ examples:
         application/json: {}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_id-contractor_payments:
     Example:
       parameters:
@@ -2880,7 +2880,7 @@ examples:
         application/json: {"check_date": "2020-01-01", "creation_token": "1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", "contractor_payments": [{"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}, {"payment_method": "Direct Deposit", "wage": 5000, "hours": 40, "bonus": 500, "reimbursement": 20}]}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-contractor_payment_groups-contractor_payment_group_id:
     Example:
       parameters:
@@ -2935,7 +2935,7 @@ examples:
         application/json: {"active": true, "description": "down ha who political inside bony procurement funny entwine institute"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-companies-company_id-company_benefits:
     Example:
       parameters:
@@ -3002,7 +3002,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-company_benefits-company_benefit_id:
     Example:
       parameters:
@@ -3099,7 +3099,7 @@ examples:
         application/json: {"employee_benefits": []}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-benefits-benefits_id-requirements:
     Example:
       parameters:
@@ -3165,7 +3165,7 @@ examples:
         application/json: {"company_benefit_uuid": "<id>", "active": true, "employee_deduction": "0.00", "deduct_as_percentage": false, "elective": false, "catch_up": false, "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-employee_benefits:
     Example:
       parameters:
@@ -3251,7 +3251,7 @@ examples:
         application/json: {"version": "<value>", "employee_deduction": "0.00", "elective": false, "catch_up": false, "deduction_reduces_taxable_income": "unset", "coverage_salary_multiplier": "0.00", "company_contribution": "0.00", "contribute_as_percentage": false}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   delete-v1-employee_benefits-employee_benefit_id:
     speakeasy-default-delete-v1-employee-benefits-employee-benefit-id:
       parameters:
@@ -3304,7 +3304,7 @@ examples:
         application/json: {"tax_year": 9236.96, "ytd_employee_deduction_amount": "0.00", "ytd_company_contribution_amount": "0.00"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   post-v1-employees-employee_id-garnishments:
     Example:
       parameters:
@@ -3316,7 +3316,7 @@ examples:
         application/json: {"active": true, "amount": "150.00", "description": "Back taxes", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
         "201":
-          application/json: {"uuid": "7a621cf0-21cd-49cf-8540-3315211a509a", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7484f", "version": "52b7c567242cb7452e89ba2bc02cb476", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "8.00", "description": "Company loan to employee", "court_ordered": false, "times": 5, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "100.00", "deduct_as_percentage": true, "garnishment_type": null, "child_support": null}
     Child-Support-Example:
       parameters:
         path:
@@ -3327,7 +3327,7 @@ examples:
         application/json: {"active": true, "amount": "40", "court_ordered": true, "garnishment_type": "child_support", "times": null, "recurring": true, "annual_maximum": null, "pay_period_maximum": "500.00", "deduct_as_percentage": true, "child_support": {"state": "FL", "payment_period": "Monthly", "fips_code": "12011", "case_number": "CS1234"}}
       responses:
         "201":
-          application/json: {"uuid": "080a8e77-4c2b-4ecc-9376-91775e024985", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7481a", "version": "52b7c567242cb7452e89ba2bc02cb383", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "40.00", "description": "Child support - AZ28319", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "400.00", "deduct_as_percentage": true, "garnishment_type": "child_support", "child_support": {"state": "AZ", "payment_period": "Monthly", "fips_code": "04000", "case_number": "AZ28319", "order_number": null, "remittance_number": null}}
     Basic:
       parameters:
         path:
@@ -3346,7 +3346,7 @@ examples:
         header:
           X-Gusto-API-Version: "2024-04-01"
       requestBody:
-        application/json: {"active": true, "amount": "<value>", "court_ordered": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+        application/json: {"active": true, "amount": "<value>", "court_ordered": false, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
         "422":
           application/json: {"errors": [{"error_key": "first_name", "category": "invalid_attribute_value", "message": "First name is required"}, {"error_key": "date_of_birth", "category": "invalid_attribute_value", "message": "Date of birth is not a valid date"}]}
@@ -3357,10 +3357,10 @@ examples:
         header:
           X-Gusto-API-Version: "2024-04-01"
       requestBody:
-        application/json: {"active": true, "amount": "<value>", "court_ordered": false, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+        application/json: {"active": true, "amount": "<value>", "court_ordered": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-employees-employee_id-garnishments:
     Example:
       parameters:
@@ -3371,7 +3371,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"uuid": "b888f774-3e7c-4135-a18c-6b985523c4bc", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}, {"uuid": "e50f7622-81da-484b-9c66-1c8a99c6b71b", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}]
+          application/json: [{"uuid": "4c7841a2-1363-497e-bc0f-664703c7484f", "version": "52b7c567242cb7452e89ba2bc02cb476", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "8.00", "description": "Company loan to employee", "court_ordered": false, "times": 5, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "100.00", "deduct_as_percentage": true, "garnishment_type": null, "child_support": null}, {"uuid": "4c7841a2-1363-497e-bc0f-664703c7481a", "version": "52b7c567242cb7452e89ba2bc02cb383", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "40.00", "description": "Child support - AZ28319", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "400.00", "deduct_as_percentage": true, "garnishment_type": "child_support", "child_support": {"state": "AZ", "payment_period": "Monthly", "fips_code": "04000", "case_number": "AZ28319", "order_number": null, "remittance_number": null}}]
   get-v1-garnishments-garnishment_id:
     Example:
       parameters:
@@ -3381,7 +3381,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"uuid": "494da5be-4224-44d6-879c-5a5ab8a332c3", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7484f", "version": "52b7c567242cb7452e89ba2bc02cb476", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "8.00", "description": "Company loan to employee", "court_ordered": false, "times": 5, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "100.00", "deduct_as_percentage": true, "garnishment_type": null, "child_support": null}
     Child-Support-Example:
       parameters:
         path:
@@ -3390,7 +3390,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"uuid": "93c53f77-0fa0-4a7c-8e4e-8fe2456ece6a", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7481a", "version": "52b7c567242cb7452e89ba2bc02cb383", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "40.00", "description": "Child support - AZ28319", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "400.00", "deduct_as_percentage": true, "garnishment_type": "child_support", "child_support": {"state": "AZ", "payment_period": "Monthly", "fips_code": "04000", "case_number": "AZ28319", "order_number": null, "remittance_number": null}}
   put-v1-garnishments-garnishment_id:
     Example:
       parameters:
@@ -3402,7 +3402,7 @@ examples:
         application/json: {"active": false, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "52b7c567242cb7452e89ba2bc02cb476"}
       responses:
         "200":
-          application/json: {"uuid": "d95fa7f0-e743-42ce-b47c-b60cc78135dd", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7484f", "version": "52b7c567242cb7452e89ba2bc02cb476", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "8.00", "description": "Company loan to employee", "court_ordered": false, "times": 5, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "100.00", "deduct_as_percentage": true, "garnishment_type": null, "child_support": null}
     Child-Support-Example:
       parameters:
         path:
@@ -3413,7 +3413,7 @@ examples:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
         "200":
-          application/json: {"uuid": "b85898c1-25a1-4907-a1c5-562af6646dad", "active": true, "times": null, "recurring": false, "annual_maximum": null, "total_amount": null, "pay_period_maximum": null, "deduct_as_percentage": false}
+          application/json: {"uuid": "4c7841a2-1363-497e-bc0f-664703c7481a", "version": "52b7c567242cb7452e89ba2bc02cb383", "employee_uuid": "a6b53294-f871-4db2-bbd4-8c3d1fe56440", "active": true, "amount": "40.00", "description": "Child support - AZ28319", "court_ordered": true, "times": null, "recurring": true, "annual_maximum": null, "total_amount": null, "pay_period_maximum": "400.00", "deduct_as_percentage": true, "garnishment_type": "child_support", "child_support": {"state": "AZ", "payment_period": "Monthly", "fips_code": "04000", "case_number": "AZ28319", "order_number": null, "remittance_number": null}}
     Basic:
       parameters:
         path:
@@ -3446,12 +3446,15 @@ examples:
         application/json: {"active": true, "times": null, "recurring": false, "annual_maximum": null, "pay_period_maximum": null, "deduct_as_percentage": false, "version": "<value>"}
       responses:
         "422":
-          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+          application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}, "errors": []}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}, "errors": []}]}
   get-v1-garnishments-child_support:
     Example:
       parameters:
         header:
           X-Gusto-API-Version: "2024-04-01"
+      responses:
+        "200":
+          application/json: {"agencies": [{"state": "AK", "name": "Alaska Child Support Services Division", "manual_payment_required": false, "fips_codes": [{"code": "0200000", "county": null}], "required_attributes": [{"key": "case_number", "label": "CSE Case Number"}]}, {"state": "OH", "name": "Ohio Office of Child Support Enforcement", "manual_payment_required": false, "fips_codes": [{"code": "39000", "county": null}], "required_attributes": [{"key": "case_number", "label": "CSE Case Number"}, {"key": "order_number", "label": "Order Identifier"}]}]}
   get-events:
     Example:
       parameters:
@@ -3462,5 +3465,5 @@ examples:
       responses:
         "200":
           application/json: [{"uuid": "f7397a24-57ad-4fae-b011-d258e8232900", "event_type": "employee.bank_account.created", "resource_type": "Company", "resource_uuid": "92a20431-9489-4bde-ad27-6feb20b969d5", "entity_type": "BankAccount", "entity_uuid": "92a20431-9489-4bde-ad27-6feb20b969d5", "timestamp": 1686784995}]
-examplesVersion: 1.0.0
+examplesVersion: 1.0.1
 generatedTests: {}

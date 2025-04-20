@@ -237,9 +237,9 @@ with Gusto(
         {
             "document_type": "us_passport",
             "document_title": "US Passport",
-            "issuing_authority": "USA",
             "document_number": "F12345678",
             "expiration_date": "2026-01-01",
+            "issuing_authority": "USA",
         },
     ])
 

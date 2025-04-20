@@ -682,6 +682,10 @@ class Introspection(BaseSDK):
 
         Disconnects the given company from the App Integration associated with the current system access token. If multiple users from that company are authorized with the App Integration, then their tokens will also be revoked.
 
+        > 📘 System Access Authentication
+        >
+        > This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
+
         scope: `companies:disconnect_app_integration`
 
         :param security:
@@ -737,7 +741,7 @@ class Introspection(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-disconnect-app-integration",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -786,6 +790,10 @@ class Introspection(BaseSDK):
         r"""Disconnect an app integration
 
         Disconnects the given company from the App Integration associated with the current system access token. If multiple users from that company are authorized with the App Integration, then their tokens will also be revoked.
+
+        > 📘 System Access Authentication
+        >
+        > This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
 
         scope: `companies:disconnect_app_integration`
 
@@ -842,7 +850,7 @@ class Introspection(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-disconnect-app-integration",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,

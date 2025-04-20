@@ -135,6 +135,10 @@ with GustoAppIntegration(
 
 Disconnects the given company from the App Integration associated with the current system access token. If multiple users from that company are authorized with the App Integration, then their tokens will also be revoked.
 
+> 📘 System Access Authentication
+>
+> This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
+
 scope: `companies:disconnect_app_integration`
 
 ### Example Usage
