@@ -14,17 +14,19 @@ permissions:
   workflow_dispatch: {}
 jobs:
   publish-embedded:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
+    uses: Gusto/sdk-generation-action/.github/workflows/workflow-executor.yaml@main
     with:
       target: gusto
+      runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       pypi_token: ${{ secrets.PYPI_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
   publish-app-int:
-    uses: speakeasy-api/sdk-generation-action/.github/workflows/sdk-publish.yaml@v15
+    uses: Gusto/sdk-generation-action/.github/workflows/workflow-executor.yaml@main
     with:
       target: gusto-app-int
+      runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       pypi_token: ${{ secrets.PYPI_TOKEN }}
