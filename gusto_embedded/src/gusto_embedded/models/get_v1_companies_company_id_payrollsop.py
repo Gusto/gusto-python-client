@@ -31,6 +31,7 @@ class GetV1CompaniesCompanyIDPayrollsQueryParamInclude(str, Enum):
     TOTALS = "totals"
     PAYROLL_STATUS_META = "payroll_status_meta"
     RISK_BLOCKERS = "risk_blockers"
+    REVERSALS = "reversals"
 
 
 class GetV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
@@ -41,7 +42,7 @@ class GetV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
     payroll_types: NotRequired[List[PayrollTypes]]
     r"""Whether to include regular and/or off_cycle payrolls in the response, defaults to regular, for multiple attributes comma separate the values, i.e. `?payroll_types=regular,off_cycle`"""
     include: NotRequired[List[GetV1CompaniesCompanyIDPayrollsQueryParamInclude]]
-    r"""Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`"""
+    r"""Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. The reversals option will include reversal payroll UUIDs if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`"""
     start_date: NotRequired[str]
     r"""Return payrolls whose pay period is after the start date"""
     end_date: NotRequired[str]
@@ -78,7 +79,7 @@ class GetV1CompaniesCompanyIDPayrollsRequest(BaseModel):
         Optional[List[GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
-    r"""Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`"""
+    r"""Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. The reversals option will include reversal payroll UUIDs if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`"""
 
     start_date: Annotated[
         Optional[str],

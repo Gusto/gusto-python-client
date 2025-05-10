@@ -21,7 +21,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -30,7 +30,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,
@@ -121,7 +121,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -130,7 +130,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = gusto.contractor_payment_groups.preview(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,

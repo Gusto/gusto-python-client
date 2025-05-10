@@ -372,6 +372,14 @@ with GustoAppIntegration() as gai_client:
 
 * [calculate_accruing_time_off_hours](docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
 
+### [time_tracking](docs/sdks/timetracking/README.md)
+
+* [get_companies_company_uuid_time_tracking_time_sheets](docs/sdks/timetracking/README.md#get_companies_company_uuid_time_tracking_time_sheets) - Get all time sheets for a company
+* [post_companies_company_uuid_time_tracking_time_sheets](docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_time_sheets) - Create a time sheet
+* [get_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#get_time_tracking_time_sheets_time_sheet_uuid) - Get a time sheet
+* [put_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#put_time_tracking_time_sheets_time_sheet_uuid) - Update a time sheet
+* [delete_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#delete_time_tracking_time_sheets_time_sheet_uuid) - Delete a time sheet
+
 ### [webhooks](docs/sdks/webhooks/README.md)
 
 * [create](docs/sdks/webhooks/README.md#create) - Create a webhook subscription

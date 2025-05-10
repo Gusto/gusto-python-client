@@ -41,6 +41,7 @@ from gusto_embedded.historicalemployees import HistoricalEmployees
 from gusto_embedded.holidaypaypolicies import HolidayPayPolicies
 from gusto_embedded.i9verification import I9Verification
 from gusto_embedded.industryselection import IndustrySelection
+from gusto_embedded.information_requests import InformationRequests
 from gusto_embedded.introspection import Introspection
 from gusto_embedded.invoices import Invoices
 from gusto_embedded.jobsandcompensations import JobsAndCompensations
@@ -111,6 +112,7 @@ class Gusto(BaseSDK):
     holiday_pay_policies: HolidayPayPolicies
     notifications: Notifications
     events: Events
+    information_requests: InformationRequests
     recovery_cases: RecoveryCases
     ach_transactions: AchTransactions
     wire_in_requests: WireInRequests
@@ -265,6 +267,7 @@ class Gusto(BaseSDK):
         self.holiday_pay_policies = HolidayPayPolicies(self.sdk_configuration)
         self.notifications = Notifications(self.sdk_configuration)
         self.events = Events(self.sdk_configuration)
+        self.information_requests = InformationRequests(self.sdk_configuration)
         self.recovery_cases = RecoveryCases(self.sdk_configuration)
         self.ach_transactions = AchTransactions(self.sdk_configuration)
         self.wire_in_requests = WireInRequests(self.sdk_configuration)
