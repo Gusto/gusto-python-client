@@ -555,6 +555,10 @@ with Gusto() as gusto:
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/industryselection/README.md#get) - Get a company industry selection
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/industryselection/README.md#update) - Update a company industry selection
 
+### [information_requests](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/informationrequests/README.md)
+
+* [get_information_requests](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/informationrequests/README.md#get_information_requests) - Get all information requests for a company
+
 ### [introspection](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/introspection/README.md)
 
 * [get_info](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/introspection/README.md#get_info) - Get info about the current access token

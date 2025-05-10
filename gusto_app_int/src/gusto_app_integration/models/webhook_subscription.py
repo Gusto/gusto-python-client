@@ -7,7 +7,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class Status(str, Enum):
+class WebhookSubscriptionStatus(str, Enum):
     r"""The status of the webhook subscription."""
 
     PENDING = "pending"
@@ -41,7 +41,7 @@ class WebhookSubscriptionTypedDict(TypedDict):
     r"""The UUID of the webhook subscription."""
     url: NotRequired[str]
     r"""The webhook subscriber URL. Updates will be POSTed to this URL."""
-    status: NotRequired[Status]
+    status: NotRequired[WebhookSubscriptionStatus]
     r"""The status of the webhook subscription."""
     subscription_types: NotRequired[List[SubscriptionTypes]]
     r"""Receive updates for these types."""
@@ -56,7 +56,7 @@ class WebhookSubscription(BaseModel):
     url: Optional[str] = None
     r"""The webhook subscriber URL. Updates will be POSTed to this URL."""
 
-    status: Optional[Status] = None
+    status: Optional[WebhookSubscriptionStatus] = None
     r"""The status of the webhook subscription."""
 
     subscription_types: Optional[List[SubscriptionTypes]] = None

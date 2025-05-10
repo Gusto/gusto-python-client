@@ -17,20 +17,22 @@ from typing import List, Optional, Union
 from typing_extensions import NotRequired, TypeAliasType, TypedDict
 
 
-TaxRequirementValueTypedDict = TypeAliasType(
-    "TaxRequirementValueTypedDict", Union[bool, str, float]
+TaxRequirementApplicableIfValueTypedDict = TypeAliasType(
+    "TaxRequirementApplicableIfValueTypedDict", Union[bool, str, float]
 )
 r"""The required value of the requirement identified by `key`"""
 
 
-TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[bool, str, float])
+TaxRequirementApplicableIfValue = TypeAliasType(
+    "TaxRequirementApplicableIfValue", Union[bool, str, float]
+)
 r"""The required value of the requirement identified by `key`"""
 
 
 class ApplicableIfTypedDict(TypedDict):
     key: NotRequired[str]
     r"""An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set."""
-    value: NotRequired[Nullable[TaxRequirementValueTypedDict]]
+    value: NotRequired[Nullable[TaxRequirementApplicableIfValueTypedDict]]
     r"""The required value of the requirement identified by `key`"""
 
 
@@ -38,7 +40,7 @@ class ApplicableIf(BaseModel):
     key: Optional[str] = None
     r"""An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set."""
 
-    value: OptionalNullable[TaxRequirementValue] = UNSET
+    value: OptionalNullable[TaxRequirementApplicableIfValue] = UNSET
     r"""The required value of the requirement identified by `key`"""
 
     @model_serializer(mode="wrap")
@@ -51,7 +53,7 @@ class ApplicableIf(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)
@@ -72,6 +74,16 @@ class ApplicableIf(BaseModel):
         return m
 
 
+TaxRequirementValueTypedDict = TypeAliasType(
+    "TaxRequirementValueTypedDict", Union[str, bool]
+)
+r"""The \"answer\" """
+
+
+TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[str, bool])
+r"""The \"answer\" """
+
+
 class TaxRequirementTypedDict(TypedDict):
     key: NotRequired[str]
     r"""An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set."""
@@ -79,9 +91,9 @@ class TaxRequirementTypedDict(TypedDict):
     r"""An array of references to other requirements within the requirement set. This requirement is only applicable if all referenced requirements have values matching the corresponding `value`. The primary use-case is dynamically hiding and showing requirements as values change. E.g. Show Requirement-B when Requirement-A has been answered with `false`. To be explicit, an empty array means the requirement is applicable."""
     label: NotRequired[str]
     r"""A customer facing description of the requirement"""
-    description: NotRequired[str]
+    description: NotRequired[Nullable[str]]
     r"""A more detailed customer facing description of the requirement"""
-    value: NotRequired[Nullable[str]]
+    value: NotRequired[Nullable[TaxRequirementValueTypedDict]]
     r"""The \"answer\" """
     metadata: NotRequired[TaxRequirementMetadataTypedDict]
 
@@ -96,10 +108,10 @@ class TaxRequirement(BaseModel):
     label: Optional[str] = None
     r"""A customer facing description of the requirement"""
 
-    description: Optional[str] = None
+    description: OptionalNullable[str] = UNSET
     r"""A more detailed customer facing description of the requirement"""
 
-    value: OptionalNullable[str] = UNSET
+    value: OptionalNullable[TaxRequirementValue] = UNSET
     r"""The \"answer\" """
 
     metadata: Optional[TaxRequirementMetadata] = None
@@ -114,14 +126,14 @@ class TaxRequirement(BaseModel):
             "value",
             "metadata",
         ]
-        nullable_fields = ["value"]
+        nullable_fields = ["description", "value"]
         null_default_fields = []
 
         serialized = handler(self)
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)

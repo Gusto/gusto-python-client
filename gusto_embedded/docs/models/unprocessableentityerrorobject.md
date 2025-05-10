@@ -10,4 +10,4 @@ This may happen when the body of your request contains errors such as `invalid_a
 
 | Field                                                            | Type                                                             | Required                                                         | Description                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `errors`                                                         | List[[models.EntityErrorObject](../models/entityerrorobject.md)] | :heavy_minus_sign:                                               | N/A                                                              |
+| `errors`                                                         | List[[models.EntityErrorObject](../models/entityerrorobject.md)] | :heavy_check_mark:                                               | N/A                                                              |

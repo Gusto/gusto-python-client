@@ -97,7 +97,7 @@ class Invoices(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-invoices-invoice-period",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
             ),
             request=req,
@@ -221,7 +221,7 @@ class Invoices(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-invoices-invoice-period",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
             ),
             request=req,

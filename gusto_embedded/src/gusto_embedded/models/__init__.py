@@ -106,11 +106,12 @@ from .company_bank_account import (
     VerificationStatus,
     VerificationType,
 )
-from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict
+from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict, Source
 from .company_benefit_with_employee_benefits import (
     CompanyBenefitWithEmployeeBenefits,
     CompanyBenefitWithEmployeeBenefitsContribution,
     CompanyBenefitWithEmployeeBenefitsContributionTypedDict,
+    CompanyBenefitWithEmployeeBenefitsSource,
     CompanyBenefitWithEmployeeBenefitsTypedDict,
     CompanyBenefitWithEmployeeBenefitsValue,
     CompanyBenefitWithEmployeeBenefitsValue2,
@@ -563,6 +564,10 @@ from .get_eventsop import (
     GetEventsSecurity,
     GetEventsSecurityTypedDict,
 )
+from .get_information_requestsop import (
+    GetInformationRequestsRequest,
+    GetInformationRequestsRequestTypedDict,
+)
 from .get_invoices_invoice_periodop import (
     GetInvoicesInvoicePeriodRequest,
     GetInvoicesInvoicePeriodRequestTypedDict,
@@ -960,8 +965,10 @@ from .get_v1_jobs_job_idop import (
 from .get_v1_locations_location_idop import (
     GetV1LocationsLocationIDRequest,
     GetV1LocationsLocationIDRequestTypedDict,
+    XGustoAPIVersion,
 )
 from .get_v1_locations_location_uuid_minimum_wagesop import (
+    GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion,
     GetV1LocationsLocationUUIDMinimumWagesRequest,
     GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict,
 )
@@ -1077,6 +1084,12 @@ from .i9_authorization_document_option import (
     Section,
 )
 from .industry import Industry, IndustryTypedDict
+from .information_request import (
+    InformationRequest,
+    InformationRequestStatus,
+    InformationRequestType,
+    InformationRequestTypedDict,
+)
 from .invoice_data import (
     ActiveCompanies,
     ActiveCompaniesTypedDict,
@@ -1096,6 +1109,7 @@ from .metadata_with_one_entity import (
 from .minimum_wage import MinimumWage, MinimumWageTypedDict
 from .notification import (
     Notification,
+    NotificationStatus,
     NotificationTypedDict,
     Resources,
     ResourcesTypedDict,
@@ -2031,6 +2045,7 @@ from .put_v1_jobs_job_idop import (
     PutV1JobsJobIDRequestTypedDict,
 )
 from .put_v1_locations_location_idop import (
+    HeaderXGustoAPIVersion,
     PutV1LocationsLocationIDRequest,
     PutV1LocationsLocationIDRequestBody,
     PutV1LocationsLocationIDRequestBodyTypedDict,
@@ -2155,6 +2170,8 @@ from .tax_requirement import (
     ApplicableIf,
     ApplicableIfTypedDict,
     TaxRequirement,
+    TaxRequirementApplicableIfValue,
+    TaxRequirementApplicableIfValueTypedDict,
     TaxRequirementTypedDict,
     TaxRequirementValue,
     TaxRequirementValueTypedDict,
@@ -2294,6 +2311,7 @@ __all__ = [
     "CompanyBenefitWithEmployeeBenefits",
     "CompanyBenefitWithEmployeeBenefitsContribution",
     "CompanyBenefitWithEmployeeBenefitsContributionTypedDict",
+    "CompanyBenefitWithEmployeeBenefitsSource",
     "CompanyBenefitWithEmployeeBenefitsTypedDict",
     "CompanyBenefitWithEmployeeBenefitsValue",
     "CompanyBenefitWithEmployeeBenefitsValue2",
@@ -2626,6 +2644,8 @@ __all__ = [
     "GetEventsRequestTypedDict",
     "GetEventsSecurity",
     "GetEventsSecurityTypedDict",
+    "GetInformationRequestsRequest",
+    "GetInformationRequestsRequestTypedDict",
     "GetInvoicesInvoicePeriodRequest",
     "GetInvoicesInvoicePeriodRequestTypedDict",
     "GetInvoicesInvoicePeriodSecurity",
@@ -2831,6 +2851,7 @@ __all__ = [
     "GetV1JobsJobIDRequestTypedDict",
     "GetV1LocationsLocationIDRequest",
     "GetV1LocationsLocationIDRequestTypedDict",
+    "GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion",
     "GetV1LocationsLocationUUIDMinimumWagesRequest",
     "GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict",
     "GetV1PaymentReceiptsPayrollsPayrollUUIDRequest",
@@ -2865,6 +2886,7 @@ __all__ = [
     "GrossUpPay",
     "GrossUpPayTypedDict",
     "Groupings",
+    "HeaderXGustoAPIVersion",
     "HistoricalEmployeeBody",
     "HistoricalEmployeeBodyHomeAddress",
     "HistoricalEmployeeBodyHomeAddressTypedDict",
@@ -2897,6 +2919,10 @@ __all__ = [
     "IndependenceDayTypedDict",
     "Industry",
     "IndustryTypedDict",
+    "InformationRequest",
+    "InformationRequestStatus",
+    "InformationRequestType",
+    "InformationRequestTypedDict",
     "InvoiceData",
     "InvoiceDataTypedDict",
     "Job",
@@ -2934,6 +2960,7 @@ __all__ = [
     "NewYearsDay",
     "NewYearsDayTypedDict",
     "Notification",
+    "NotificationStatus",
     "NotificationTypedDict",
     "OffCycleReason",
     "OffCycleReasonType",
@@ -3723,6 +3750,7 @@ __all__ = [
     "Signatory",
     "SignatoryTypedDict",
     "SortOrder",
+    "Source",
     "SplitBy",
     "Splits",
     "SplitsTypedDict",
@@ -3740,6 +3768,8 @@ __all__ = [
     "TaxRefunds",
     "TaxRefundsTypedDict",
     "TaxRequirement",
+    "TaxRequirementApplicableIfValue",
+    "TaxRequirementApplicableIfValueTypedDict",
     "TaxRequirementMetadata",
     "TaxRequirementMetadataOptions",
     "TaxRequirementMetadataOptionsTypedDict",
@@ -3812,6 +3842,7 @@ __all__ = [
     "WithholdingPayPeriod",
     "WorkAddress",
     "WorkAddressTypedDict",
+    "XGustoAPIVersion",
     "YtdBenefitAmountsFromDifferentCompany",
     "YtdBenefitAmountsFromDifferentCompanyTypedDict",
 ]

@@ -63,7 +63,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -71,7 +71,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractor_payment_groups.preview(company_id="<id>", check_date=dateutil.parser.parse("2020-01-01").date(), contractor_payments=[
+    res = gai_client.contractor_payment_groups.preview(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[
         {
             "wage": 5000,
             "hours": 40,

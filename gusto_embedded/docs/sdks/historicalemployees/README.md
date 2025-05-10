@@ -16,7 +16,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -29,14 +29,14 @@ with Gusto(
         "location_uuid": "1da85d35-1910-4d5e-8e94-39e8cdfe8c9a",
     }, home_address={
         "street_1": "300 3rd Street",
+        "street_2": None,
         "city": "San Francisco",
         "state": "CA",
         "zip": "94107",
-        "street_2": None,
     }, termination={
-        "effective_date": dateutil.parser.parse("2022-09-15T00:00:00Z").date(),
+        "effective_date": date.fromisoformat("2022-09-15T00:00:00Z"),
     }, job={
-        "hire_date": dateutil.parser.parse("2018-05-09T00:00:00Z").date(),
+        "hire_date": date.fromisoformat("2018-05-09T00:00:00Z"),
     }, middle_initial="A", employee_state_taxes={
         "wc_covered": True,
         "wc_class_code": "20992",

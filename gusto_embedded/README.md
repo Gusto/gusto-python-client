@@ -555,6 +555,10 @@ with Gusto() as gusto:
 * [get](docs/sdks/industryselection/README.md#get) - Get a company industry selection
 * [update](docs/sdks/industryselection/README.md#update) - Update a company industry selection
 
+### [information_requests](docs/sdks/informationrequests/README.md)
+
+* [get_information_requests](docs/sdks/informationrequests/README.md#get_information_requests) - Get all information requests for a company
+
 ### [introspection](docs/sdks/introspection/README.md)
 
 * [get_info](docs/sdks/introspection/README.md#get_info) - Get info about the current access token

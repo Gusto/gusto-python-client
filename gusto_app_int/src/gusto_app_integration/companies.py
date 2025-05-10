@@ -40,6 +40,8 @@ class Companies(BaseSDK):
         >
         > This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
 
+        scope: `accounts:write`
+
         :param security:
         :param user: Information for the user who will be the primary payroll administrator for the new company.
         :param company:
@@ -104,7 +106,7 @@ class Companies(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-provision",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -174,6 +176,8 @@ class Companies(BaseSDK):
         >
         > This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
 
+        scope: `accounts:write`
+
         :param security:
         :param user: Information for the user who will be the primary payroll administrator for the new company.
         :param company:
@@ -238,7 +242,7 @@ class Companies(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-provision",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
