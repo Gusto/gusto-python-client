@@ -14,12 +14,11 @@ class EmploymentHistoryListEmploymentStatus(str, Enum):
     FULL_TIME = "full_time"
     PART_TIME_ELIGIBLE = "part_time_eligible"
     VARIABLE = "variable"
-    SEASONAL = "seasonal"
-    NOT_SET = "not_set"
+    SEASONAL_NOT_SET = "seasonal - not_set"
 
 
 class EmploymentHistoryListTypedDict(TypedDict):
-    r"""Example response"""
+    r"""The representation of an employee's individual employements."""
 
     hire_date: NotRequired[str]
     r"""The employee's start day of work for an employment."""
@@ -34,7 +33,7 @@ class EmploymentHistoryListTypedDict(TypedDict):
 
 
 class EmploymentHistoryList(BaseModel):
-    r"""Example response"""
+    r"""The representation of an employee's individual employements."""
 
     hire_date: Optional[str] = None
     r"""The employee's start day of work for an employment."""

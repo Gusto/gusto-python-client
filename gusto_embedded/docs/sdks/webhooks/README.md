@@ -61,10 +61,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## list_subscriptions
 
@@ -162,10 +162,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get_subscription
 
@@ -308,10 +308,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## request_verification_token
 

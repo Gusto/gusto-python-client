@@ -138,9 +138,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollPrepared)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -290,9 +290,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollPrepared)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -350,7 +350,7 @@ class Payrolls(BaseSDK):
         :param company_id: The UUID of the company
         :param processing_statuses: Whether to include processed and/or unprocessed payrolls in the response, defaults to processed, for multiple attributes comma separate the values, i.e. `?processing_statuses=processed,unprocessed`
         :param payroll_types: Whether to include regular and/or off_cycle payrolls in the response, defaults to regular, for multiple attributes comma separate the values, i.e. `?payroll_types=regular,off_cycle`
-        :param include: Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`
+        :param include: Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. The reversals option will include reversal payroll UUIDs if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`
         :param start_date: Return payrolls whose pay period is after the start date
         :param end_date: Return payrolls whose pay period is before the end date. If left empty, defaults to today's date.
         :param sort_order: A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty.
@@ -482,7 +482,7 @@ class Payrolls(BaseSDK):
         :param company_id: The UUID of the company
         :param processing_statuses: Whether to include processed and/or unprocessed payrolls in the response, defaults to processed, for multiple attributes comma separate the values, i.e. `?processing_statuses=processed,unprocessed`
         :param payroll_types: Whether to include regular and/or off_cycle payrolls in the response, defaults to regular, for multiple attributes comma separate the values, i.e. `?payroll_types=regular,off_cycle`
-        :param include: Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`
+        :param include: Include the requested attribute in the response. The risk_blockers option will include submission_blockers and credit_blockers if applicable. The reversals option will include reversal payroll UUIDs if applicable. In v2023-04-01 totals are no longer included by default. For multiple attributes comma separate the values, i.e. `?include=totals,payroll_status_meta`
         :param start_date: Return payrolls whose pay period is after the start date
         :param end_date: Return payrolls whose pay period is before the end date. If left empty, defaults to today's date.
         :param sort_order: A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty.
@@ -1137,9 +1137,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollPrepared)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -1278,9 +1278,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollPrepared)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -3250,9 +3250,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.Payroll)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -3362,9 +3362,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.Payroll)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -3391,8 +3391,8 @@ class Payrolls(BaseSDK):
         payroll_id: str,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
+        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -3403,6 +3403,7 @@ class Payrolls(BaseSDK):
         Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
 
         scope: `pay_stubs:read`
+
 
         :param payroll_id: The UUID of the payroll
         :param employee_id: The UUID of the employee
@@ -3423,9 +3424,9 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
+            x_gusto_api_version=x_gusto_api_version,
             payroll_id=payroll_id,
             employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -3494,8 +3495,8 @@ class Payrolls(BaseSDK):
         payroll_id: str,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
+        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -3506,6 +3507,7 @@ class Payrolls(BaseSDK):
         Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
 
         scope: `pay_stubs:read`
+
 
         :param payroll_id: The UUID of the payroll
         :param employee_id: The UUID of the employee
@@ -3526,9 +3528,9 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
+            x_gusto_api_version=x_gusto_api_version,
             payroll_id=payroll_id,
             employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -3596,18 +3598,19 @@ class Payrolls(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeePayStub]:
+    ) -> List[models.EmployeePayStubsList]:
         r"""Get an employee's pay stubs
 
         Get an employee's pay stubs
 
         scope: `pay_stubs:read`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -3627,8 +3630,8 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -3669,9 +3672,17 @@ class Payrolls(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeePayStub])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return utils.unmarshal_json(
+                http_res.text, List[models.EmployeePayStubsList]
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            )
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -3696,18 +3707,19 @@ class Payrolls(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeePayStub]:
+    ) -> List[models.EmployeePayStubsList]:
         r"""Get an employee's pay stubs
 
         Get an employee's pay stubs
 
         scope: `pay_stubs:read`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -3727,8 +3739,8 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -3769,9 +3781,17 @@ class Payrolls(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeePayStub])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return utils.unmarshal_json(
+                http_res.text, List[models.EmployeePayStubsList]
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            )
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -3889,9 +3909,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollCheck)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -4010,9 +4030,9 @@ class Payrolls(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.PayrollCheck)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

@@ -4,11 +4,11 @@ from __future__ import annotations
 from .entity_error_object import EntityErrorObject
 from gusto_app_integration import utils
 from gusto_app_integration.types import BaseModel
-from typing import List, Optional
+from typing import List
 
 
 class UnprocessableEntityErrorObjectData(BaseModel):
-    errors: Optional[List[EntityErrorObject]] = None
+    errors: List[EntityErrorObject]
 
 
 class UnprocessableEntityErrorObject(Exception):

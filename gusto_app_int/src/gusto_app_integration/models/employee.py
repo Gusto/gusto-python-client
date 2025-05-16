@@ -60,7 +60,7 @@ class OnboardingDocumentsConfig(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)
@@ -122,7 +122,7 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
     onboarded: NotRequired[bool]
     r"""Whether the employee has completed onboarding."""
-    onboarding_status: NotRequired[OnboardingStatus]
+    onboarding_status: NotRequired[Nullable[OnboardingStatus]]
     r"""The current onboarding status of the employee"""
     onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
@@ -183,7 +183,7 @@ class Employee(BaseModel):
     onboarded: Optional[bool] = None
     r"""Whether the employee has completed onboarding."""
 
-    onboarding_status: Optional[OnboardingStatus] = None
+    onboarding_status: OptionalNullable[OnboardingStatus] = UNSET
     r"""The current onboarding status of the employee"""
 
     onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
@@ -255,6 +255,7 @@ class Employee(BaseModel):
             "manager_uuid",
             "department",
             "two_percent_shareholder",
+            "onboarding_status",
             "date_of_birth",
             "phone",
             "preferred_first_name",
@@ -267,7 +268,7 @@ class Employee(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)

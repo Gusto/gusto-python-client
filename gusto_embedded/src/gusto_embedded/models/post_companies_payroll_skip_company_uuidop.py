@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 from .payroll_blockers_error import PayrollBlockersErrorData
-from .unprocessable_entity_error_object import UnprocessableEntityErrorObjectData
+from .unprocessable_entity_error_object_error import (
+    UnprocessableEntityErrorObjectErrorData,
+)
 from .versionheader import VersionHeader
 from enum import Enum
 from gusto_embedded import utils
@@ -86,7 +88,7 @@ class PostCompaniesPayrollSkipCompanyUUIDRequest(BaseModel):
 
 PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion = TypeAliasType(
     "PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion",
-    Union[UnprocessableEntityErrorObjectData, PayrollBlockersErrorData],
+    Union[UnprocessableEntityErrorObjectErrorData, PayrollBlockersErrorData],
 )
 r"""Unprocessable Entity"""
 

@@ -65,10 +65,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get_all
 
@@ -253,10 +253,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get_pay_periods
 
@@ -444,10 +444,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## assign
 
@@ -496,7 +496,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |

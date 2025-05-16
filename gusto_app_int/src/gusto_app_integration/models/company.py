@@ -15,7 +15,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class EntityType(str, Enum):
+class CompanyEntityType(str, Enum):
     r"""The tax payer type of the company."""
 
     C_CORPORATION = "C-Corporation"
@@ -166,7 +166,7 @@ class HomeAddress(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)
@@ -248,7 +248,7 @@ class PrimarySignatory(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)
@@ -307,7 +307,7 @@ class PrimaryPayrollAdmin(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)
@@ -335,7 +335,7 @@ class CompanyTypedDict(TypedDict):
     r"""A unique identifier of the company in Gusto."""
     ein: NotRequired[str]
     r"""The Federal Employer Identification Number of the company."""
-    entity_type: NotRequired[Nullable[EntityType]]
+    entity_type: NotRequired[Nullable[CompanyEntityType]]
     r"""The tax payer type of the company."""
     contractor_only: NotRequired[bool]
     r"""Whether the company only supports contractors."""
@@ -378,7 +378,7 @@ class Company(BaseModel):
     ein: Optional[str] = None
     r"""The Federal Employer Identification Number of the company."""
 
-    entity_type: OptionalNullable[EntityType] = UNSET
+    entity_type: OptionalNullable[CompanyEntityType] = UNSET
     r"""The tax payer type of the company."""
 
     contractor_only: Optional[bool] = None
@@ -462,7 +462,7 @@ class Company(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)

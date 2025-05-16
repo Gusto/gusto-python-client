@@ -120,10 +120,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get_document_options
 
@@ -237,9 +237,9 @@ with Gusto(
         {
             "document_type": "us_passport",
             "document_title": "US Passport",
-            "issuing_authority": "USA",
             "document_number": "F12345678",
             "expiration_date": "2026-01-01",
+            "issuing_authority": "USA",
         },
     ])
 
@@ -263,10 +263,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## delete_document
 
@@ -351,7 +351,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |

@@ -1,6 +1,6 @@
 # EmploymentHistoryList
 
-Example response
+The representation of an employee's individual employements.
 
 
 ## Fields

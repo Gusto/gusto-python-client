@@ -11,5 +11,4 @@ The employee's employment status. Supplying an invalid option will set the emplo
 | `FULL_TIME`          | full_time            |
 | `PART_TIME_ELIGIBLE` | part_time_eligible   |
 | `VARIABLE`           | variable             |
-| `SEASONAL`           | seasonal             |
-| `NOT_SET`            | not_set              |
+| `SEASONAL_NOT_SET`   | seasonal - not_set   |

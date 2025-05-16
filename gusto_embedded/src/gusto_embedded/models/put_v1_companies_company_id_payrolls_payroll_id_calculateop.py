@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 from .payroll_blockers_error import PayrollBlockersErrorData
-from .unprocessable_entity_error_object import UnprocessableEntityErrorObjectData
+from .unprocessable_entity_error_object_error import (
+    UnprocessableEntityErrorObjectErrorData,
+)
 from .versionheader import VersionHeader
 from gusto_embedded import utils
 from gusto_embedded.types import BaseModel
@@ -42,7 +44,7 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(BaseModel):
 
 PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion = TypeAliasType(
     "PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion",
-    Union[UnprocessableEntityErrorObjectData, PayrollBlockersErrorData],
+    Union[UnprocessableEntityErrorObjectErrorData, PayrollBlockersErrorData],
 )
 r"""Unprocessable Entity"""
 

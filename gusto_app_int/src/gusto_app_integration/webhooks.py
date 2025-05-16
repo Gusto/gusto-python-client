@@ -99,7 +99,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-webhook-subscription",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -226,7 +226,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="post-v1-webhook-subscription",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -338,7 +338,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscriptions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -444,7 +444,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscriptions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -566,7 +566,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="put-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -694,7 +694,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="put-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -810,7 +810,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -920,7 +920,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1030,7 +1030,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="delete-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1140,7 +1140,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="delete-v1-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1264,7 +1264,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="put-v1-verify-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1394,7 +1394,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="put-v1-verify-webhook-subscription-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1510,7 +1510,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscription-verification-token-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,
@@ -1620,7 +1620,7 @@ class Webhooks(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-v1-webhook-subscription-verification-token-uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=security,
             ),
             request=req,

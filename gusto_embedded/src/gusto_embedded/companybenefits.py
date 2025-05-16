@@ -118,9 +118,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.CompanyBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -250,9 +250,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.CompanyBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -814,9 +814,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.CompanyBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -940,9 +940,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.CompanyBenefit)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
@@ -2135,9 +2135,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, List[models.EmployeeBenefit])
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -2262,9 +2262,9 @@ class CompanyBenefits(BaseSDK):
             return utils.unmarshal_json(http_res.text, List[models.EmployeeBenefit])
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
