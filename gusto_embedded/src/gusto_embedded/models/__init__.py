@@ -106,11 +106,12 @@ from .company_bank_account import (
     VerificationStatus,
     VerificationType,
 )
-from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict
+from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict, Source
 from .company_benefit_with_employee_benefits import (
     CompanyBenefitWithEmployeeBenefits,
     CompanyBenefitWithEmployeeBenefitsContribution,
     CompanyBenefitWithEmployeeBenefitsContributionTypedDict,
+    CompanyBenefitWithEmployeeBenefitsSource,
     CompanyBenefitWithEmployeeBenefitsTypedDict,
     CompanyBenefitWithEmployeeBenefitsValue,
     CompanyBenefitWithEmployeeBenefitsValue2,
@@ -284,6 +285,7 @@ from .delete_v1_employee_benefits_employee_benefit_idop import (
     DeleteV1EmployeeBenefitsEmployeeBenefitIDRequestTypedDict,
 )
 from .delete_v1_employeeop import (
+    DeleteV1EmployeeHeaderXGustoAPIVersion,
     DeleteV1EmployeeRequest,
     DeleteV1EmployeeRequestTypedDict,
 )
@@ -408,7 +410,7 @@ from .employee_onboarding_status import (
     EmployeeOnboardingStatusOnboardingStepTypedDict,
     EmployeeOnboardingStatusTypedDict,
 )
-from .employee_pay_stub import EmployeePayStub, EmployeePayStubTypedDict
+from .employee_pay_stubs_list import EmployeePayStubsList, EmployeePayStubsListTypedDict
 from .employee_payment_method import (
     EmployeePaymentMethod,
     EmployeePaymentMethodType,
@@ -563,6 +565,10 @@ from .get_eventsop import (
     GetEventsSecurity,
     GetEventsSecurityTypedDict,
 )
+from .get_information_requestsop import (
+    GetInformationRequestsRequest,
+    GetInformationRequestsRequestTypedDict,
+)
 from .get_invoices_invoice_periodop import (
     GetInvoicesInvoicePeriodRequest,
     GetInvoicesInvoicePeriodRequestTypedDict,
@@ -647,6 +653,7 @@ from .get_v1_companies_company_id_earning_typesop import (
     GetV1CompaniesCompanyIDEarningTypesRequestTypedDict,
 )
 from .get_v1_companies_company_id_employeesop import (
+    GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion,
     GetV1CompaniesCompanyIDEmployeesRequest,
     GetV1CompaniesCompanyIDEmployeesRequestTypedDict,
     Include,
@@ -858,6 +865,7 @@ from .get_v1_employees_employee_id_employee_benefitsop import (
     GetV1EmployeesEmployeeIDEmployeeBenefitsRequestTypedDict,
 )
 from .get_v1_employees_employee_id_employment_historyop import (
+    GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion,
     GetV1EmployeesEmployeeIDEmploymentHistoryRequest,
     GetV1EmployeesEmployeeIDEmploymentHistoryRequestTypedDict,
 )
@@ -891,6 +899,7 @@ from .get_v1_employees_employee_id_jobsop import (
     GetV1EmployeesEmployeeIDJobsRequestTypedDict,
 )
 from .get_v1_employees_employee_id_onboarding_statusop import (
+    GetV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion,
     GetV1EmployeesEmployeeIDOnboardingStatusRequest,
     GetV1EmployeesEmployeeIDOnboardingStatusRequestTypedDict,
 )
@@ -915,10 +924,12 @@ from .get_v1_employees_employee_id_work_addressesop import (
     GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict,
 )
 from .get_v1_employees_employee_uuid_pay_stubsop import (
+    GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion,
     GetV1EmployeesEmployeeUUIDPayStubsRequest,
     GetV1EmployeesEmployeeUUIDPayStubsRequestTypedDict,
 )
 from .get_v1_employeesop import (
+    GetV1EmployeesHeaderXGustoAPIVersion,
     GetV1EmployeesRequest,
     GetV1EmployeesRequestTypedDict,
     QueryParamInclude,
@@ -960,8 +971,10 @@ from .get_v1_jobs_job_idop import (
 from .get_v1_locations_location_idop import (
     GetV1LocationsLocationIDRequest,
     GetV1LocationsLocationIDRequestTypedDict,
+    XGustoAPIVersion,
 )
 from .get_v1_locations_location_uuid_minimum_wagesop import (
+    GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion,
     GetV1LocationsLocationUUIDMinimumWagesRequest,
     GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict,
 )
@@ -970,6 +983,7 @@ from .get_v1_payment_receipts_payrolls_payroll_uuidop import (
     GetV1PaymentReceiptsPayrollsPayrollUUIDRequestTypedDict,
 )
 from .get_v1_payrolls_payroll_uuid_employees_employee_uuid_pay_stubop import (
+    GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion,
     GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest,
     GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequestTypedDict,
 )
@@ -1077,6 +1091,12 @@ from .i9_authorization_document_option import (
     Section,
 )
 from .industry import Industry, IndustryTypedDict
+from .information_request import (
+    InformationRequest,
+    InformationRequestStatus,
+    InformationRequestType,
+    InformationRequestTypedDict,
+)
 from .invoice_data import (
     ActiveCompanies,
     ActiveCompaniesTypedDict,
@@ -1096,6 +1116,7 @@ from .metadata_with_one_entity import (
 from .minimum_wage import MinimumWage, MinimumWageTypedDict
 from .notification import (
     Notification,
+    NotificationStatus,
     NotificationTypedDict,
     Resources,
     ResourcesTypedDict,
@@ -1547,6 +1568,7 @@ from .post_v1_employees_employee_id_work_addressesop import (
     PostV1EmployeesEmployeeIDWorkAddressesRequestTypedDict,
 )
 from .post_v1_employeesop import (
+    PostV1EmployeesHeaderXGustoAPIVersion,
     PostV1EmployeesRequest,
     PostV1EmployeesRequestBody,
     PostV1EmployeesRequestBodyTypedDict,
@@ -1939,6 +1961,8 @@ from .put_v1_employees_employee_id_onboarding_documents_configop import (
     PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequestTypedDict,
 )
 from .put_v1_employees_employee_id_onboarding_statusop import (
+    PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion,
+    PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus,
     PutV1EmployeesEmployeeIDOnboardingStatusRequest,
     PutV1EmployeesEmployeeIDOnboardingStatusRequestBody,
     PutV1EmployeesEmployeeIDOnboardingStatusRequestBodyTypedDict,
@@ -2031,6 +2055,7 @@ from .put_v1_jobs_job_idop import (
     PutV1JobsJobIDRequestTypedDict,
 )
 from .put_v1_locations_location_idop import (
+    HeaderXGustoAPIVersion,
     PutV1LocationsLocationIDRequest,
     PutV1LocationsLocationIDRequestBody,
     PutV1LocationsLocationIDRequestBodyTypedDict,
@@ -2155,6 +2180,8 @@ from .tax_requirement import (
     ApplicableIf,
     ApplicableIfTypedDict,
     TaxRequirement,
+    TaxRequirementApplicableIfValue,
+    TaxRequirementApplicableIfValueTypedDict,
     TaxRequirementTypedDict,
     TaxRequirementValue,
     TaxRequirementValueTypedDict,
@@ -2183,9 +2210,9 @@ from .time_off_policy import (
     TimeOffPolicyEmployeesTypedDict,
     TimeOffPolicyTypedDict,
 )
-from .unprocessable_entity_error_object import (
-    UnprocessableEntityErrorObject,
-    UnprocessableEntityErrorObjectData,
+from .unprocessable_entity_error_object_error import (
+    UnprocessableEntityErrorObjectError,
+    UnprocessableEntityErrorObjectErrorData,
 )
 from .unprocessed_termination_pay_period import (
     UnprocessedTerminationPayPeriod,
@@ -2294,6 +2321,7 @@ __all__ = [
     "CompanyBenefitWithEmployeeBenefits",
     "CompanyBenefitWithEmployeeBenefitsContribution",
     "CompanyBenefitWithEmployeeBenefitsContributionTypedDict",
+    "CompanyBenefitWithEmployeeBenefitsSource",
     "CompanyBenefitWithEmployeeBenefitsTypedDict",
     "CompanyBenefitWithEmployeeBenefitsValue",
     "CompanyBenefitWithEmployeeBenefitsValue2",
@@ -2423,6 +2451,7 @@ __all__ = [
     "DeleteV1ContractorsContractorUUIDRequestTypedDict",
     "DeleteV1EmployeeBenefitsEmployeeBenefitIDRequest",
     "DeleteV1EmployeeBenefitsEmployeeBenefitIDRequestTypedDict",
+    "DeleteV1EmployeeHeaderXGustoAPIVersion",
     "DeleteV1EmployeeRequest",
     "DeleteV1EmployeeRequestTypedDict",
     "DeleteV1EmployeesEmployeeIDBankAccountsBankAccountIDRequest",
@@ -2502,8 +2531,8 @@ __all__ = [
     "EmployeeOnboardingStatusOnboardingStep",
     "EmployeeOnboardingStatusOnboardingStepTypedDict",
     "EmployeeOnboardingStatusTypedDict",
-    "EmployeePayStub",
-    "EmployeePayStubTypedDict",
+    "EmployeePayStubsList",
+    "EmployeePayStubsListTypedDict",
     "EmployeePaymentMethod",
     "EmployeePaymentMethodType",
     "EmployeePaymentMethodTypedDict",
@@ -2626,6 +2655,8 @@ __all__ = [
     "GetEventsRequestTypedDict",
     "GetEventsSecurity",
     "GetEventsSecurityTypedDict",
+    "GetInformationRequestsRequest",
+    "GetInformationRequestsRequestTypedDict",
     "GetInvoicesInvoicePeriodRequest",
     "GetInvoicesInvoicePeriodRequestTypedDict",
     "GetInvoicesInvoicePeriodSecurity",
@@ -2672,6 +2703,7 @@ __all__ = [
     "GetV1CompaniesCompanyIDCustomFieldsRequestTypedDict",
     "GetV1CompaniesCompanyIDEarningTypesRequest",
     "GetV1CompaniesCompanyIDEarningTypesRequestTypedDict",
+    "GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion",
     "GetV1CompaniesCompanyIDEmployeesRequest",
     "GetV1CompaniesCompanyIDEmployeesRequestTypedDict",
     "GetV1CompaniesCompanyIDFederalTaxDetailsRequest",
@@ -2778,6 +2810,7 @@ __all__ = [
     "GetV1EmployeesEmployeeIDCustomFieldsResponseBodyTypedDict",
     "GetV1EmployeesEmployeeIDEmployeeBenefitsRequest",
     "GetV1EmployeesEmployeeIDEmployeeBenefitsRequestTypedDict",
+    "GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion",
     "GetV1EmployeesEmployeeIDEmploymentHistoryRequest",
     "GetV1EmployeesEmployeeIDEmploymentHistoryRequestTypedDict",
     "GetV1EmployeesEmployeeIDFederalTaxesRequest",
@@ -2795,6 +2828,7 @@ __all__ = [
     "GetV1EmployeesEmployeeIDJobsQueryParamInclude",
     "GetV1EmployeesEmployeeIDJobsRequest",
     "GetV1EmployeesEmployeeIDJobsRequestTypedDict",
+    "GetV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion",
     "GetV1EmployeesEmployeeIDOnboardingStatusRequest",
     "GetV1EmployeesEmployeeIDOnboardingStatusRequestTypedDict",
     "GetV1EmployeesEmployeeIDPaymentMethodRequest",
@@ -2807,8 +2841,10 @@ __all__ = [
     "GetV1EmployeesEmployeeIDTerminationsRequestTypedDict",
     "GetV1EmployeesEmployeeIDWorkAddressesRequest",
     "GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict",
+    "GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion",
     "GetV1EmployeesEmployeeUUIDPayStubsRequest",
     "GetV1EmployeesEmployeeUUIDPayStubsRequestTypedDict",
+    "GetV1EmployeesHeaderXGustoAPIVersion",
     "GetV1EmployeesRequest",
     "GetV1EmployeesRequestTypedDict",
     "GetV1ExternalPayrollCalculateTaxesRequest",
@@ -2831,10 +2867,12 @@ __all__ = [
     "GetV1JobsJobIDRequestTypedDict",
     "GetV1LocationsLocationIDRequest",
     "GetV1LocationsLocationIDRequestTypedDict",
+    "GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion",
     "GetV1LocationsLocationUUIDMinimumWagesRequest",
     "GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict",
     "GetV1PaymentReceiptsPayrollsPayrollUUIDRequest",
     "GetV1PaymentReceiptsPayrollsPayrollUUIDRequestTypedDict",
+    "GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion",
     "GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest",
     "GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequestTypedDict",
     "GetV1TaxLiabilitiesRequest",
@@ -2865,6 +2903,7 @@ __all__ = [
     "GrossUpPay",
     "GrossUpPayTypedDict",
     "Groupings",
+    "HeaderXGustoAPIVersion",
     "HistoricalEmployeeBody",
     "HistoricalEmployeeBodyHomeAddress",
     "HistoricalEmployeeBodyHomeAddressTypedDict",
@@ -2897,6 +2936,10 @@ __all__ = [
     "IndependenceDayTypedDict",
     "Industry",
     "IndustryTypedDict",
+    "InformationRequest",
+    "InformationRequestStatus",
+    "InformationRequestType",
+    "InformationRequestTypedDict",
     "InvoiceData",
     "InvoiceDataTypedDict",
     "Job",
@@ -2934,6 +2977,7 @@ __all__ = [
     "NewYearsDay",
     "NewYearsDayTypedDict",
     "Notification",
+    "NotificationStatus",
     "NotificationTypedDict",
     "OffCycleReason",
     "OffCycleReasonType",
@@ -3263,6 +3307,7 @@ __all__ = [
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBody",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBodyTypedDict",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestTypedDict",
+    "PostV1EmployeesHeaderXGustoAPIVersion",
     "PostV1EmployeesRequest",
     "PostV1EmployeesRequestBody",
     "PostV1EmployeesRequestBodyTypedDict",
@@ -3550,6 +3595,8 @@ __all__ = [
     "PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequestBody",
     "PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequestBodyTypedDict",
     "PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequestTypedDict",
+    "PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion",
+    "PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus",
     "PutV1EmployeesEmployeeIDOnboardingStatusRequest",
     "PutV1EmployeesEmployeeIDOnboardingStatusRequestBody",
     "PutV1EmployeesEmployeeIDOnboardingStatusRequestBodyTypedDict",
@@ -3723,6 +3770,7 @@ __all__ = [
     "Signatory",
     "SignatoryTypedDict",
     "SortOrder",
+    "Source",
     "SplitBy",
     "Splits",
     "SplitsTypedDict",
@@ -3740,6 +3788,8 @@ __all__ = [
     "TaxRefunds",
     "TaxRefundsTypedDict",
     "TaxRequirement",
+    "TaxRequirementApplicableIfValue",
+    "TaxRequirementApplicableIfValueTypedDict",
     "TaxRequirementMetadata",
     "TaxRequirementMetadataOptions",
     "TaxRequirementMetadataOptionsTypedDict",
@@ -3782,8 +3832,8 @@ __all__ = [
     "Type",
     "UnblockOptions",
     "UnblockOptionsTypedDict",
-    "UnprocessableEntityErrorObject",
-    "UnprocessableEntityErrorObjectData",
+    "UnprocessableEntityErrorObjectError",
+    "UnprocessableEntityErrorObjectErrorData",
     "UnprocessedTerminationPayPeriod",
     "UnprocessedTerminationPayPeriodTypedDict",
     "User",
@@ -3812,6 +3862,7 @@ __all__ = [
     "WithholdingPayPeriod",
     "WorkAddress",
     "WorkAddressTypedDict",
+    "XGustoAPIVersion",
     "YtdBenefitAmountsFromDifferentCompany",
     "YtdBenefitAmountsFromDifferentCompanyTypedDict",
 ]

@@ -1,7 +1,5 @@
 # PutV1LocationsLocationIDRequestBody
 
-Update a location
-
 
 ## Fields
 

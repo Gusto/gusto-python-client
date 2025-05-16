@@ -27,6 +27,7 @@ from gusto_app_integration.jobsandcompensations import JobsAndCompensations
 from gusto_app_integration.locations import Locations
 from gusto_app_integration.payrolls import Payrolls
 from gusto_app_integration.payschedules import PaySchedules
+from gusto_app_integration.time_tracking import TimeTracking
 from gusto_app_integration.timeoffpolicies import TimeOffPolicies
 from gusto_app_integration.types import OptionalNullable, UNSET
 from gusto_app_integration.webhooks import Webhooks
@@ -60,6 +61,7 @@ class GustoAppIntegration(BaseSDK):
     employee_benefits: EmployeeBenefits
     garnishments: Garnishments
     events: Events
+    time_tracking: TimeTracking
 
     def __init__(
         self,
@@ -183,6 +185,7 @@ class GustoAppIntegration(BaseSDK):
         self.employee_benefits = EmployeeBenefits(self.sdk_configuration)
         self.garnishments = Garnishments(self.sdk_configuration)
         self.events = Events(self.sdk_configuration)
+        self.time_tracking = TimeTracking(self.sdk_configuration)
 
     def __enter__(self):
         return self

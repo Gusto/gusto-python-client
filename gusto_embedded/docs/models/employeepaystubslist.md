@@ -1,4 +1,4 @@
-# EmployeePayStub
+# EmployeePayStubsList
 
 The representation of an employee pay stub information.
 

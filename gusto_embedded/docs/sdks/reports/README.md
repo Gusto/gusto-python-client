@@ -18,7 +18,7 @@ scope: `company_reports:write`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 import gusto_embedded
 from gusto_embedded import Gusto
 import os
@@ -29,10 +29,12 @@ with Gusto(
 ) as gusto:
 
     res = gusto.reports.create_custom(company_uuid="<id>", columns=[
-        gusto_embedded.Columns.NET_PAY,
+        gusto_embedded.Columns.TOTAL_EMPLOYER_BENEFIT_CONTRIBUTIONS,
+        gusto_embedded.Columns.EMPLOYEE_MEDICARE_ADDITIONAL_TAX,
     ], groupings=[
-        gusto_embedded.Groupings.PAYROLL,
-    ], file_type=gusto_embedded.FileType.CSV, start_date=dateutil.parser.parse("2024-01-01").date(), end_date=dateutil.parser.parse("2024-04-01").date(), dismissed_start_date=dateutil.parser.parse("2024-01-01").date(), dismissed_end_date=dateutil.parser.parse("2024-04-01").date())
+        gusto_embedded.Groupings.WORK_ADDRESS_STATE,
+        gusto_embedded.Groupings.WORK_ADDRESS,
+    ], file_type=gusto_embedded.FileType.CSV, start_date=date.fromisoformat("2024-01-01"), end_date=date.fromisoformat("2024-04-01"), dismissed_start_date=date.fromisoformat("2024-01-01"), dismissed_end_date=date.fromisoformat("2024-04-01"))
 
     # Handle response
     print(res)
@@ -68,10 +70,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get
 

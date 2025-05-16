@@ -97,7 +97,7 @@ class Invoices(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-invoices-invoice-period",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
             ),
             request=req,
@@ -110,9 +110,9 @@ class Invoices(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.InvoiceData)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
@@ -221,7 +221,7 @@ class Invoices(BaseSDK):
             hook_ctx=HookContext(
                 base_url=base_url or "",
                 operation_id="get-invoices-invoice-period",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
             ),
             request=req,
@@ -234,9 +234,9 @@ class Invoices(BaseSDK):
             return utils.unmarshal_json(http_res.text, models.InvoiceData)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+                http_res.text, models.UnprocessableEntityErrorObjectErrorData
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObjectError(data=response_data)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(

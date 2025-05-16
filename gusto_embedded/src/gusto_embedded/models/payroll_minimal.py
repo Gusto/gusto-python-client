@@ -82,6 +82,8 @@ class PayrollMinimalTypedDict(TypedDict):
     r"""Only included for processed or calculated payrolls"""
     credit_blockers: NotRequired[List[PayrollCreditBlockersTypeTypedDict]]
     r"""Only included for processed payrolls"""
+    reversal_payroll_uuids: NotRequired[List[str]]
+    r"""Array of reversal payroll UUIDs, if applicable."""
 
 
 class PayrollMinimal(BaseModel):
@@ -155,6 +157,9 @@ class PayrollMinimal(BaseModel):
     credit_blockers: Optional[List[PayrollCreditBlockersType]] = None
     r"""Only included for processed payrolls"""
 
+    reversal_payroll_uuids: Optional[List[str]] = None
+    r"""Array of reversal payroll UUIDs, if applicable."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
@@ -177,6 +182,7 @@ class PayrollMinimal(BaseModel):
             "created_at",
             "submission_blockers",
             "credit_blockers",
+            "reversal_payroll_uuids",
         ]
         nullable_fields = ["off_cycle_reason"]
         null_default_fields = []
@@ -185,7 +191,7 @@ class PayrollMinimal(BaseModel):
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)

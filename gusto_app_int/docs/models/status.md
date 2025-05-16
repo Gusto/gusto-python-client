@@ -1,13 +1,10 @@
 # Status
 
-The status of the webhook subscription.
-
 
 ## Values
 
-| Name          | Value         |
-| ------------- | ------------- |
-| `PENDING`     | pending       |
-| `VERIFIED`    | verified      |
-| `REMOVED`     | removed       |
-| `UNREACHABLE` | unreachable   |
+| Name       | Value      |
+| ---------- | ---------- |
+| `APPROVED` | approved   |
+| `PENDING`  | pending    |
+| `REJECTED` | rejected   |

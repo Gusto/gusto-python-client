@@ -23,7 +23,9 @@ In the response, you will receive an account claim URL. Redirect the user to thi
 
 > 📘 System Access Authentication
 >
-> This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
+> This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access). 
+
+scope: `accounts:write`
 
 ### Example Usage
 

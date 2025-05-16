@@ -291,8 +291,8 @@ class Locations(BaseSDK):
         *,
         location_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.XGustoAPIVersion
+        ] = models.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -303,6 +303,7 @@ class Locations(BaseSDK):
         Get a location.
 
         scope: `companies:read`
+
 
         :param location_id: The UUID of the location
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -322,8 +323,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationIDRequest(
-            location_id=location_id,
             x_gusto_api_version=x_gusto_api_version,
+            location_id=location_id,
         )
 
         req = self._build_request(
@@ -362,9 +363,15 @@ class Locations(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Location)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -389,8 +396,8 @@ class Locations(BaseSDK):
         *,
         location_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.XGustoAPIVersion
+        ] = models.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -401,6 +408,7 @@ class Locations(BaseSDK):
         Get a location.
 
         scope: `companies:read`
+
 
         :param location_id: The UUID of the location
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -420,8 +428,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationIDRequest(
-            location_id=location_id,
             x_gusto_api_version=x_gusto_api_version,
+            location_id=location_id,
         )
 
         req = self._build_request_async(
@@ -460,9 +468,15 @@ class Locations(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Location)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -488,8 +502,8 @@ class Locations(BaseSDK):
         location_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.HeaderXGustoAPIVersion
+        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         phone_number: Optional[str] = None,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
@@ -509,6 +523,7 @@ class Locations(BaseSDK):
         Update a location.
 
         scope: `companies.write`
+
 
         :param location_id: The UUID of the location
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
@@ -538,8 +553,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1LocationsLocationIDRequest(
-            location_id=location_id,
             x_gusto_api_version=x_gusto_api_version,
+            location_id=location_id,
             request_body=models.PutV1LocationsLocationIDRequestBody(
                 version=version,
                 phone_number=phone_number,
@@ -593,19 +608,19 @@ class Locations(BaseSDK):
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "409", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Location)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "409", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -631,8 +646,8 @@ class Locations(BaseSDK):
         location_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.HeaderXGustoAPIVersion
+        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         phone_number: Optional[str] = None,
         street_1: Optional[str] = None,
         street_2: OptionalNullable[str] = UNSET,
@@ -652,6 +667,7 @@ class Locations(BaseSDK):
         Update a location.
 
         scope: `companies.write`
+
 
         :param location_id: The UUID of the location
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
@@ -681,8 +697,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1LocationsLocationIDRequest(
-            location_id=location_id,
             x_gusto_api_version=x_gusto_api_version,
+            location_id=location_id,
             request_body=models.PutV1LocationsLocationIDRequestBody(
                 version=version,
                 phone_number=phone_number,
@@ -736,19 +752,19 @@ class Locations(BaseSDK):
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "409", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.Location)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "409", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -772,10 +788,10 @@ class Locations(BaseSDK):
         self,
         *,
         location_uuid: str,
-        effective_date: Optional[str] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion
+        ] = models.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        effective_date: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -787,9 +803,10 @@ class Locations(BaseSDK):
 
         scope: `companies:read`
 
+
         :param location_uuid: The UUID of the location
-        :param effective_date:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param effective_date:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -807,8 +824,8 @@ class Locations(BaseSDK):
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
             location_uuid=location_uuid,
-            effective_date=effective_date,
             x_gusto_api_version=x_gusto_api_version,
+            effective_date=effective_date,
         )
 
         req = self._build_request(
@@ -847,9 +864,15 @@ class Locations(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, List[models.MinimumWage])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -873,10 +896,10 @@ class Locations(BaseSDK):
         self,
         *,
         location_uuid: str,
-        effective_date: Optional[str] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion
+        ] = models.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        effective_date: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -888,9 +911,10 @@ class Locations(BaseSDK):
 
         scope: `companies:read`
 
+
         :param location_uuid: The UUID of the location
-        :param effective_date:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param effective_date:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -908,8 +932,8 @@ class Locations(BaseSDK):
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
             location_uuid=location_uuid,
-            effective_date=effective_date,
             x_gusto_api_version=x_gusto_api_version,
+            effective_date=effective_date,
         )
 
         req = self._build_request_async(
@@ -948,9 +972,15 @@ class Locations(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, List[models.MinimumWage])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res

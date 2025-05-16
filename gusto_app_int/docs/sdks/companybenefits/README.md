@@ -446,8 +446,8 @@ with GustoAppIntegration(
 
     res = gai_client.company_benefits.bulk_update_employee_benefits(company_benefit_id="<id>", employee_benefits=[
         {
-            "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e",
             "version": "09j3d29jqdpj92109j9j2d90dq",
+            "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e",
         },
     ])
 

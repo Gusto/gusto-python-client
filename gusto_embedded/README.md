@@ -476,11 +476,11 @@ with Gusto() as gusto:
 
 ### [employees](docs/sdks/employees/README.md)
 
-* [create](docs/sdks/employees/README.md#create) - Create an employee
 * [list](docs/sdks/employees/README.md#list) - Get employees of a company
+* [create](docs/sdks/employees/README.md#create) - Create an employee
 * [create_historical](docs/sdks/employees/README.md#create_historical) - Create a historical employee
 * [get](docs/sdks/employees/README.md#get) - Get an employee
-* [update](docs/sdks/employees/README.md#update) - Update an employee
+* [update](docs/sdks/employees/README.md#update) - Update an employee.
 * [delete](docs/sdks/employees/README.md#delete) - Delete an onboarding employee
 * [get_custom_fields](docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
 * [update_onboarding_documents_config](docs/sdks/employees/README.md#update_onboarding_documents_config) - Update an employee's onboarding documents config
@@ -554,6 +554,10 @@ with Gusto() as gusto:
 
 * [get](docs/sdks/industryselection/README.md#get) - Get a company industry selection
 * [update](docs/sdks/industryselection/README.md#update) - Update a company industry selection
+
+### [information_requests](docs/sdks/informationrequests/README.md)
+
+* [get_information_requests](docs/sdks/informationrequests/README.md#get_information_requests) - Get all information requests for a company
 
 ### [introspection](docs/sdks/introspection/README.md)
 
@@ -774,10 +778,10 @@ By default, an API error will raise a models.APIError exception, which has the f
 
 When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `create_partner_managed_async` method may raise the following exceptions:
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| models.UnprocessableEntityErrorObject | 422         | application/json |
-| models.APIError                       | 4XX, 5XX    | \*/\*            |
+| Error Type                                 | Status Code | Content Type     |
+| ------------------------------------------ | ----------- | ---------------- |
+| models.UnprocessableEntityErrorObjectError | 422         | application/json |
+| models.APIError                            | 4XX, 5XX    | \*/\*            |
 
 ### Example
 
@@ -808,8 +812,8 @@ with Gusto() as gusto:
         # Handle response
         print(res)
 
-    except models.UnprocessableEntityErrorObject as e:
-        # handle e.data: models.UnprocessableEntityErrorObjectData
+    except models.UnprocessableEntityErrorObjectError as e:
+        # handle e.data: models.UnprocessableEntityErrorObjectErrorData
         raise(e)
     except models.APIError as e:
         # handle exception

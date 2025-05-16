@@ -5,5 +5,6 @@
 
 | Name                | Value               |
 | ------------------- | ------------------- |
-| `ALL_COMPENSATIONS` | all_compensations   |
 | `CUSTOM_FIELDS`     | custom_fields       |
+| `ALL_COMPENSATIONS` | all_compensations   |
+| `COMPANY_NAME`      | company_name        |

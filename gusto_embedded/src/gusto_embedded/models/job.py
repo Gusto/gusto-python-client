@@ -31,7 +31,7 @@ class JobTypedDict(TypedDict):
     r"""Whether this is the employee's primary job. The value will be set to true unless an existing job exists for the employee."""
     rate: NotRequired[str]
     r"""The current compensation rate of the job."""
-    payment_unit: NotRequired[str]
+    payment_unit: NotRequired[Nullable[str]]
     r"""The payment unit of the current compensation for the job."""
     current_compensation_uuid: NotRequired[str]
     r"""The UUID of the current compensation of the job."""
@@ -68,7 +68,7 @@ class Job(BaseModel):
     rate: Optional[str] = None
     r"""The current compensation rate of the job."""
 
-    payment_unit: Optional[str] = None
+    payment_unit: OptionalNullable[str] = UNSET
     r"""The payment unit of the current compensation for the job."""
 
     current_compensation_uuid: Optional[str] = None
@@ -101,14 +101,19 @@ class Job(BaseModel):
             "state_wc_class_code",
             "compensations",
         ]
-        nullable_fields = ["title", "state_wc_covered", "state_wc_class_code"]
+        nullable_fields = [
+            "title",
+            "payment_unit",
+            "state_wc_covered",
+            "state_wc_class_code",
+        ]
         null_default_fields = ["title"]
 
         serialized = handler(self)
 
         m = {}
 
-        for n, f in self.model_fields.items():
+        for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k)
             serialized.pop(k, None)

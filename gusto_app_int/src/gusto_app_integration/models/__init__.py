@@ -67,13 +67,13 @@ from .child_support_data import (
 )
 from .company import (
     Company,
+    CompanyEntityType,
     CompanyPaidTimeOff,
     CompanyPaidTimeOffTypedDict,
     CompanyStatus,
     CompanyTypedDict,
     Compensations,
     CompensationsTypedDict,
-    EntityType,
     Fixed,
     FixedTypedDict,
     FundingType,
@@ -89,11 +89,12 @@ from .company import (
     Tier,
 )
 from .company_address import CompanyAddress, CompanyAddressTypedDict
-from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict
+from .company_benefit import CompanyBenefit, CompanyBenefitTypedDict, Source
 from .company_benefit_with_employee_benefits import (
     CompanyBenefitWithEmployeeBenefits,
     CompanyBenefitWithEmployeeBenefitsContribution,
     CompanyBenefitWithEmployeeBenefitsContributionTypedDict,
+    CompanyBenefitWithEmployeeBenefitsSource,
     CompanyBenefitWithEmployeeBenefitsTypedDict,
     CompanyBenefitWithEmployeeBenefitsValue,
     CompanyBenefitWithEmployeeBenefitsValue2,
@@ -175,6 +176,10 @@ from .delete_departmentop import (
     DeleteDepartmentRequest,
     DeleteDepartmentRequestTypedDict,
 )
+from .delete_time_tracking_time_sheets_time_sheet_uuidop import (
+    DeleteTimeTrackingTimeSheetsTimeSheetUUIDRequest,
+    DeleteTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict,
+)
 from .delete_v1_companies_company_id_earning_types_earning_type_uuidop import (
     DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest,
     DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestTypedDict,
@@ -198,6 +203,7 @@ from .delete_v1_employee_benefits_employee_benefit_idop import (
     DeleteV1EmployeeBenefitsEmployeeBenefitIDRequestTypedDict,
 )
 from .delete_v1_employeeop import (
+    DeleteV1EmployeeHeaderXGustoAPIVersion,
     DeleteV1EmployeeRequest,
     DeleteV1EmployeeRequestTypedDict,
 )
@@ -286,6 +292,7 @@ from .entity_error_object import (
     Metadata,
     MetadataTypedDict,
 )
+from .entity_type import EntityType
 from .event import Event, EventTypedDict, ResourceType
 from .flsa_status_type import FlsaStatusType
 from .garnishment import Garnishment, GarnishmentType, GarnishmentTypedDict
@@ -293,6 +300,10 @@ from .garnishment_child_support import (
     GarnishmentChildSupport,
     GarnishmentChildSupportTypedDict,
     PaymentPeriod,
+)
+from .get_companies_company_uuid_time_tracking_time_sheetsop import (
+    GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest,
+    GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict,
 )
 from .get_companies_departmentsop import (
     GetCompaniesDepartmentsRequest,
@@ -308,6 +319,10 @@ from .get_eventsop import (
     GetEventsRequestTypedDict,
     GetEventsSecurity,
     GetEventsSecurityTypedDict,
+)
+from .get_time_tracking_time_sheets_time_sheet_uuidop import (
+    GetTimeTrackingTimeSheetsTimeSheetUUIDRequest,
+    GetTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict,
 )
 from .get_v1_benefits_benefit_idop import (
     GetV1BenefitsBenefitIDRequest,
@@ -353,6 +368,7 @@ from .get_v1_companies_company_id_earning_typesop import (
     GetV1CompaniesCompanyIDEarningTypesRequestTypedDict,
 )
 from .get_v1_companies_company_id_employeesop import (
+    GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion,
     GetV1CompaniesCompanyIDEmployeesRequest,
     GetV1CompaniesCompanyIDEmployeesRequestTypedDict,
     Include,
@@ -433,6 +449,7 @@ from .get_v1_employees_employee_id_employee_benefitsop import (
     GetV1EmployeesEmployeeIDEmployeeBenefitsRequestTypedDict,
 )
 from .get_v1_employees_employee_id_employment_historyop import (
+    GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion,
     GetV1EmployeesEmployeeIDEmploymentHistoryRequest,
     GetV1EmployeesEmployeeIDEmploymentHistoryRequestTypedDict,
 )
@@ -462,6 +479,7 @@ from .get_v1_employees_employee_id_work_addressesop import (
     GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict,
 )
 from .get_v1_employeesop import (
+    GetV1EmployeesHeaderXGustoAPIVersion,
     GetV1EmployeesRequest,
     GetV1EmployeesRequestTypedDict,
     QueryParamInclude,
@@ -491,8 +509,10 @@ from .get_v1_jobs_job_idop import (
 from .get_v1_locations_location_idop import (
     GetV1LocationsLocationIDRequest,
     GetV1LocationsLocationIDRequestTypedDict,
+    XGustoAPIVersion,
 )
 from .get_v1_locations_location_uuid_minimum_wagesop import (
+    GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion,
     GetV1LocationsLocationUUIDMinimumWagesRequest,
     GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict,
 )
@@ -631,6 +651,15 @@ from .payroll_submission_blockers_type import (
 )
 from .payroll_totals_type import PayrollTotalsType, PayrollTotalsTypeTypedDict
 from .payroll_withholding_pay_period_type import PayrollWithholdingPayPeriodType
+from .post_companies_company_uuid_time_tracking_time_sheetsop import (
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsEntries,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsEntriesTypedDict,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsPayClassification,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestBody,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestBodyTypedDict,
+    PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict,
+)
 from .post_departmentsop import (
     PostDepartmentsRequest,
     PostDepartmentsRequestBody,
@@ -740,6 +769,7 @@ from .post_v1_employees_employee_id_work_addressesop import (
     PostV1EmployeesEmployeeIDWorkAddressesRequestTypedDict,
 )
 from .post_v1_employeesop import (
+    PostV1EmployeesHeaderXGustoAPIVersion,
     PostV1EmployeesRequest,
     PostV1EmployeesRequestBody,
     PostV1EmployeesRequestBodyTypedDict,
@@ -807,6 +837,15 @@ from .put_remove_people_from_departmentop import (
     PutRemovePeopleFromDepartmentRequestBody,
     PutRemovePeopleFromDepartmentRequestBodyTypedDict,
     PutRemovePeopleFromDepartmentRequestTypedDict,
+)
+from .put_time_tracking_time_sheets_time_sheet_uuidop import (
+    PutTimeTrackingTimeSheetsTimeSheetUUIDEntries,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDEntriesTypedDict,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDPayClassification,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDRequest,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDRequestBody,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDRequestBodyTypedDict,
+    PutTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict,
 )
 from .put_v1_companies_company_id_earning_types_earning_type_uuidop import (
     PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest,
@@ -916,6 +955,7 @@ from .put_v1_jobs_job_idop import (
     PutV1JobsJobIDRequestTypedDict,
 )
 from .put_v1_locations_location_idop import (
+    HeaderXGustoAPIVersion,
     PutV1LocationsLocationIDRequest,
     PutV1LocationsLocationIDRequestBody,
     PutV1LocationsLocationIDRequestBodyTypedDict,
@@ -966,9 +1006,21 @@ from .revoke_access_tokenop import (
 )
 from .security import Security, SecurityTypedDict
 from .sort_order import SortOrder
+from .status import Status
 from .supported_benefit import SupportedBenefit, SupportedBenefitTypedDict
 from .termination import Termination, TerminationTypedDict
 from .time_off_activity import TimeOffActivity, TimeOffActivityTypedDict, TimeOffType
+from .time_sheet import (
+    Entries,
+    EntriesTypedDict,
+    PayClassification,
+    TimeSheet,
+    TimeSheetEntityType,
+    TimeSheetStatus,
+    TimeSheetTypedDict,
+)
+from .time_sheet_sort_by import TimeSheetSortBy
+from .time_sheet_sort_order import TimeSheetSortOrder
 from .unprocessable_entity_error_object import (
     UnprocessableEntityErrorObject,
     UnprocessableEntityErrorObjectData,
@@ -979,9 +1031,9 @@ from .unprocessed_termination_pay_period import (
 )
 from .versionheader import VersionHeader
 from .webhook_subscription import (
-    Status,
     SubscriptionTypes,
     WebhookSubscription,
+    WebhookSubscriptionStatus,
     WebhookSubscriptionTypedDict,
 )
 from .ytd_benefit_amounts_from_different_company import (
@@ -1046,6 +1098,7 @@ __all__ = [
     "CompanyBenefitWithEmployeeBenefits",
     "CompanyBenefitWithEmployeeBenefitsContribution",
     "CompanyBenefitWithEmployeeBenefitsContributionTypedDict",
+    "CompanyBenefitWithEmployeeBenefitsSource",
     "CompanyBenefitWithEmployeeBenefitsTypedDict",
     "CompanyBenefitWithEmployeeBenefitsValue",
     "CompanyBenefitWithEmployeeBenefitsValue2",
@@ -1059,6 +1112,7 @@ __all__ = [
     "CompanyCustomFieldList",
     "CompanyCustomFieldListTypedDict",
     "CompanyCustomFieldTypedDict",
+    "CompanyEntityType",
     "CompanyPaidTimeOff",
     "CompanyPaidTimeOffTypedDict",
     "CompanyStatus",
@@ -1119,6 +1173,8 @@ __all__ = [
     "DefaultValueTypedDict",
     "DeleteDepartmentRequest",
     "DeleteDepartmentRequestTypedDict",
+    "DeleteTimeTrackingTimeSheetsTimeSheetUUIDRequest",
+    "DeleteTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict",
     "DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest",
     "DeleteV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestTypedDict",
     "DeleteV1CompanyBenefitsCompanyBenefitIDRequest",
@@ -1129,6 +1185,7 @@ __all__ = [
     "DeleteV1CompensationsCompensationIDRequestTypedDict",
     "DeleteV1EmployeeBenefitsEmployeeBenefitIDRequest",
     "DeleteV1EmployeeBenefitsEmployeeBenefitIDRequestTypedDict",
+    "DeleteV1EmployeeHeaderXGustoAPIVersion",
     "DeleteV1EmployeeRequest",
     "DeleteV1EmployeeRequestTypedDict",
     "DeleteV1EmployeesEmployeeIDRehireRequest",
@@ -1183,6 +1240,8 @@ __all__ = [
     "EntityErrorObject",
     "EntityErrorObjectTypedDict",
     "EntityType",
+    "Entries",
+    "EntriesTypedDict",
     "Errors",
     "ErrorsTypedDict",
     "Event",
@@ -1200,6 +1259,8 @@ __all__ = [
     "GarnishmentChildSupportTypedDict",
     "GarnishmentType",
     "GarnishmentTypedDict",
+    "GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest",
+    "GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict",
     "GetCompaniesDepartmentsRequest",
     "GetCompaniesDepartmentsRequestTypedDict",
     "GetDepartmentRequest",
@@ -1210,6 +1271,8 @@ __all__ = [
     "GetEventsRequestTypedDict",
     "GetEventsSecurity",
     "GetEventsSecurityTypedDict",
+    "GetTimeTrackingTimeSheetsTimeSheetUUIDRequest",
+    "GetTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict",
     "GetV1BenefitsBenefitIDRequest",
     "GetV1BenefitsBenefitIDRequestTypedDict",
     "GetV1BenefitsBenefitsIDRequirementsRequest",
@@ -1234,6 +1297,7 @@ __all__ = [
     "GetV1CompaniesCompanyIDCustomFieldsRequestTypedDict",
     "GetV1CompaniesCompanyIDEarningTypesRequest",
     "GetV1CompaniesCompanyIDEarningTypesRequestTypedDict",
+    "GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion",
     "GetV1CompaniesCompanyIDEmployeesRequest",
     "GetV1CompaniesCompanyIDEmployeesRequestTypedDict",
     "GetV1CompaniesCompanyIDLocationsRequest",
@@ -1276,6 +1340,7 @@ __all__ = [
     "GetV1EmployeesEmployeeIDCustomFieldsResponseBodyTypedDict",
     "GetV1EmployeesEmployeeIDEmployeeBenefitsRequest",
     "GetV1EmployeesEmployeeIDEmployeeBenefitsRequestTypedDict",
+    "GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion",
     "GetV1EmployeesEmployeeIDEmploymentHistoryRequest",
     "GetV1EmployeesEmployeeIDEmploymentHistoryRequestTypedDict",
     "GetV1EmployeesEmployeeIDGarnishmentsRequest",
@@ -1291,6 +1356,7 @@ __all__ = [
     "GetV1EmployeesEmployeeIDTerminationsRequestTypedDict",
     "GetV1EmployeesEmployeeIDWorkAddressesRequest",
     "GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict",
+    "GetV1EmployeesHeaderXGustoAPIVersion",
     "GetV1EmployeesRequest",
     "GetV1EmployeesRequestTypedDict",
     "GetV1GarnishmentsChildSupportRequest",
@@ -1307,6 +1373,7 @@ __all__ = [
     "GetV1JobsJobIDRequestTypedDict",
     "GetV1LocationsLocationIDRequest",
     "GetV1LocationsLocationIDRequestTypedDict",
+    "GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion",
     "GetV1LocationsLocationUUIDMinimumWagesRequest",
     "GetV1LocationsLocationUUIDMinimumWagesRequestTypedDict",
     "GetV1TokenInfoRequest",
@@ -1330,6 +1397,7 @@ __all__ = [
     "GetV1WorkAddressesWorkAddressUUIDRequestTypedDict",
     "GetVersionEmployeesTimeOffActivitiesRequest",
     "GetVersionEmployeesTimeOffActivitiesRequestTypedDict",
+    "HeaderXGustoAPIVersion",
     "HomeAddress",
     "HomeAddressTypedDict",
     "Hourly",
@@ -1361,6 +1429,7 @@ __all__ = [
     "OnboardingStatus",
     "PaidTimeOff",
     "PaidTimeOffTypedDict",
+    "PayClassification",
     "PayPeriod",
     "PayPeriodPayroll",
     "PayPeriodPayrollTypedDict",
@@ -1423,6 +1492,13 @@ __all__ = [
     "PayrollTypedDict",
     "PayrollTypes",
     "PayrollWithholdingPayPeriodType",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsEntries",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsEntriesTypedDict",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsPayClassification",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestBody",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestBodyTypedDict",
+    "PostCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict",
     "PostDepartmentsRequest",
     "PostDepartmentsRequestBody",
     "PostDepartmentsRequestBodyTypedDict",
@@ -1499,6 +1575,7 @@ __all__ = [
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBody",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBodyTypedDict",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestTypedDict",
+    "PostV1EmployeesHeaderXGustoAPIVersion",
     "PostV1EmployeesRequest",
     "PostV1EmployeesRequestBody",
     "PostV1EmployeesRequestBodyTypedDict",
@@ -1553,6 +1630,13 @@ __all__ = [
     "PutRemovePeopleFromDepartmentRequestBody",
     "PutRemovePeopleFromDepartmentRequestBodyTypedDict",
     "PutRemovePeopleFromDepartmentRequestTypedDict",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDEntries",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDEntriesTypedDict",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDPayClassification",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDRequest",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDRequestBody",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDRequestBodyTypedDict",
+    "PutTimeTrackingTimeSheetsTimeSheetUUIDRequestTypedDict",
     "PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest",
     "PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBody",
     "PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBodyTypedDict",
@@ -1678,6 +1762,7 @@ __all__ = [
     "Security",
     "SecurityTypedDict",
     "SortOrder",
+    "Source",
     "Status",
     "SubscriptionTypes",
     "SupportedBenefit",
@@ -1692,6 +1777,12 @@ __all__ = [
     "TimeOffActivity",
     "TimeOffActivityTypedDict",
     "TimeOffType",
+    "TimeSheet",
+    "TimeSheetEntityType",
+    "TimeSheetSortBy",
+    "TimeSheetSortOrder",
+    "TimeSheetStatus",
+    "TimeSheetTypedDict",
     "Total",
     "TotalTypedDict",
     "Totals",
@@ -1716,8 +1807,10 @@ __all__ = [
     "VersionHeader",
     "WageType",
     "WebhookSubscription",
+    "WebhookSubscriptionStatus",
     "WebhookSubscriptionTypedDict",
     "WithholdingPayPeriod",
+    "XGustoAPIVersion",
     "YtdBenefitAmountsFromDifferentCompany",
     "YtdBenefitAmountsFromDifferentCompanyTypedDict",
 ]

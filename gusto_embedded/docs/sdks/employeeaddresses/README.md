@@ -71,7 +71,7 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -80,7 +80,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_addresses.create(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
+    res = gusto.employee_addresses.create(employee_id="<id>", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=date.fromisoformat("2021-01-01"), courtesy_withholding=True)
 
     # Handle response
     print(res)
@@ -108,10 +108,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## retrieve_home_address
 
@@ -168,7 +168,7 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -177,7 +177,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_addresses.update(home_address_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=dateutil.parser.parse("2021-01-01").date(), courtesy_withholding=True)
+    res = gusto.employee_addresses.update(home_address_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2=None, city="San Francisco", state="CA", zip_code="94107", effective_date=date.fromisoformat("2021-01-01"), courtesy_withholding=True)
 
     # Handle response
     print(res)
@@ -206,10 +206,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## delete
 
@@ -244,10 +244,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## get_work_addresses
 
@@ -301,7 +301,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -310,7 +310,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_addresses.create_work_address(employee_id="<id>", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
+    res = gusto.employee_addresses.create_work_address(employee_id="<id>", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=date.fromisoformat("2023-05-15"))
 
     # Handle response
     print(res)
@@ -333,10 +333,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## retrieve_work_address
 
@@ -389,7 +389,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
-import dateutil.parser
+from datetime import date
 from gusto_embedded import Gusto
 import os
 
@@ -398,7 +398,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_addresses.update_work_address(work_address_uuid="<id>", version="e6db1baa29d3df1eb307ff6a12c778da", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=dateutil.parser.parse("2023-05-15").date())
+    res = gusto.employee_addresses.update_work_address(work_address_uuid="<id>", version="e6db1baa29d3df1eb307ff6a12c778da", location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=date.fromisoformat("2023-05-15"))
 
     # Handle response
     print(res)
@@ -422,10 +422,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
 ## delete_work_address
 
@@ -460,7 +460,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |

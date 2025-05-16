@@ -6,7 +6,7 @@ from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class EmployeePayStubTypedDict(TypedDict):
+class EmployeePayStubsListTypedDict(TypedDict):
     r"""The representation of an employee pay stub information."""
 
     uuid: str
@@ -23,7 +23,7 @@ class EmployeePayStubTypedDict(TypedDict):
     r"""The check amount for the pay stub."""
 
 
-class EmployeePayStub(BaseModel):
+class EmployeePayStubsList(BaseModel):
     r"""The representation of an employee pay stub information."""
 
     uuid: str

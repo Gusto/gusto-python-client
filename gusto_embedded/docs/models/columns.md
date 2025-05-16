@@ -24,6 +24,7 @@
 | `EMPLOYEE_COMPENSATION`                | employee_compensation                  |
 | `EMPLOYEE_DEDUCTIONS`                  | employee_deductions                    |
 | `EMPLOYEE_DEPARTMENT`                  | employee_department                    |
+| `EMPLOYEE_DONATIONS`                   | employee_donations                     |
 | `EMPLOYEE_EMAIL`                       | employee_email                         |
 | `EMPLOYEE_FEDERAL_INCOME_TAX`          | employee_federal_income_tax            |
 | `EMPLOYEE_FIRST_NAME`                  | employee_first_name                    |
