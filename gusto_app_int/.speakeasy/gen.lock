@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 307f4640-0d05-4c9e-b275-cb7fc716aa23
 management:
-  docChecksum: 61d4e03d26263eadcc71201cb2154ed2
+  docChecksum: 330e026b40f102751343cf8ab04694b6
   docVersion: "2024-04-01"
   speakeasyVersion: 1.545.0
   generationVersion: 2.599.0
-  releaseVersion: 0.3.0
-  configChecksum: 3b380c7ad141e44bd4cfc6861d590598
+  releaseVersion: 0.3.1
+  configChecksum: a69e6caee3b6659b14833f69ce4df8a9
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_app_int
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_app_int
@@ -130,6 +130,7 @@ generatedFiles:
   - docs/models/deletev1jobsjobidrequest.md
   - docs/models/deletev1webhooksubscriptionuuidrequest.md
   - docs/models/deletev1webhooksubscriptionuuidsecurity.md
+  - docs/models/deletev1workaddressesworkaddressuuidheaderxgustoapiversion.md
   - docs/models/deletev1workaddressesworkaddressuuidrequest.md
   - docs/models/department.md
   - docs/models/earningtype.md
@@ -213,6 +214,7 @@ generatedFiles:
   - docs/models/getv1employeesemployeeidjobsrequest.md
   - docs/models/getv1employeesemployeeidrehirerequest.md
   - docs/models/getv1employeesemployeeidterminationsrequest.md
+  - docs/models/getv1employeesemployeeidworkaddressesheaderxgustoapiversion.md
   - docs/models/getv1employeesemployeeidworkaddressesrequest.md
   - docs/models/getv1employeesheaderxgustoapiversion.md
   - docs/models/getv1employeesrequest.md
@@ -235,6 +237,7 @@ generatedFiles:
   - docs/models/getv1webhooksubscriptionuuidsecurity.md
   - docs/models/getv1webhooksubscriptionverificationtokenuuidrequest.md
   - docs/models/getv1webhooksubscriptionverificationtokenuuidsecurity.md
+  - docs/models/getv1workaddressesworkaddressuuidheaderxgustoapiversion.md
   - docs/models/getv1workaddressesworkaddressuuidrequest.md
   - docs/models/getversionemployeestimeoffactivitiesrequest.md
   - docs/models/headerxgustoapiversion.md
@@ -338,6 +341,7 @@ generatedFiles:
   - docs/models/postv1employeesemployeeidrehirerequest.md
   - docs/models/postv1employeesemployeeidterminationsrequest.md
   - docs/models/postv1employeesemployeeidterminationsrequestbody.md
+  - docs/models/postv1employeesemployeeidworkaddressesheaderxgustoapiversion.md
   - docs/models/postv1employeesemployeeidworkaddressesrequest.md
   - docs/models/postv1employeesemployeeidworkaddressesrequestbody.md
   - docs/models/postv1employeesheaderxgustoapiversion.md
@@ -426,6 +430,7 @@ generatedFiles:
   - docs/models/putv1webhooksubscriptionuuidrequestbody.md
   - docs/models/putv1webhooksubscriptionuuidsecurity.md
   - docs/models/putv1webhooksubscriptionuuidsubscriptiontypes.md
+  - docs/models/putv1workaddressesworkaddressuuidheaderxgustoapiversion.md
   - docs/models/putv1workaddressesworkaddressuuidrequest.md
   - docs/models/putv1workaddressesworkaddressuuidrequestbody.md
   - docs/models/queryparaminclude.md
@@ -837,7 +842,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"ein": "00-0000001", "entity_type": "C-Corporation", "contractor_only": false, "tier": "core", "is_suspended": false, "company_status": "Approved", "uuid": "c7a07c73-a703-4462-9343-1b181182b6e0", "name": "Shoppe Studios LLC", "slug": "record-shoppe", "trade_name": "Record Shoppe", "is_partner_managed": false, "pay_schedule_type": "by_department", "join_date": "2023-03-01", "funding_type": "ach", "locations": [{"street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true}, {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": true}], "compensations": {"hourly": [{"name": "Overtime", "multiple": 1.5}, {"name": "Double overtime", "multiple": 2}, {"name": "Regular", "multiple": 1}, {"name": "Outstanding vacation", "multiple": 1}, {"name": "Holiday", "multiple": 1}, {"name": "Emergency sick - self care", "multiple": 1}, {"name": "Emergency sick - caring for others", "multiple": 1}, {"name": "FMLA Public Health Emergency Leave", "multiple": 1}, {"name": "Regular Hours", "multiple": 1}], "fixed": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Severance"}, {"name": "Minimum Wage Adjustment"}, {"name": "Reimbursement"}], "paid_time_off": [{"name": "Vacation Hours"}, {"name": "Sick Hours"}, {"name": "Holiday Hours"}]}, "primary_signatory": {"uuid": "8a2ed9c2-9d1e-443a-8e56-a490d8bf73bb", "first_name": "Alda", "middle_initial": "", "last_name": "Carter", "phone": "1-565-710-7558", "email": "louie.hessel7757869450111547@zemlak.biz", "home_address": {"street_1": "524 Roob Divide", "street_2": "Suite 565", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}}, "primary_payroll_admin": {"first_name": "Ian", "last_name": "Labadie", "phone": "1-565-710-7559", "email": "louie.hessel7757869450111547@zemlak.biz"}}
+          application/json: {"ein": "00-0000001", "entity_type": "C-Corporation", "contractor_only": false, "tier": "core", "is_suspended": false, "company_status": "Approved", "uuid": "c7a07c73-a703-4462-9343-1b181182b6e0", "name": "Shoppe Studios LLC", "slug": "record-shoppe", "trade_name": "Record Shoppe", "is_partner_managed": false, "pay_schedule_type": "by_department", "join_date": "2023-03-01", "funding_type": "ach", "locations": [{"street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}, {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA"}], "compensations": {"hourly": [{"name": "Overtime", "multiple": 1.5}, {"name": "Double overtime", "multiple": 2}, {"name": "Regular", "multiple": 1}, {"name": "Outstanding vacation", "multiple": 1}, {"name": "Holiday", "multiple": 1}, {"name": "Emergency sick - self care", "multiple": 1}, {"name": "Emergency sick - caring for others", "multiple": 1}, {"name": "FMLA Public Health Emergency Leave", "multiple": 1}, {"name": "Regular Hours", "multiple": 1}], "fixed": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Severance"}, {"name": "Minimum Wage Adjustment"}, {"name": "Reimbursement"}], "paid_time_off": [{"name": "Vacation Hours"}, {"name": "Sick Hours"}, {"name": "Holiday Hours"}]}, "primary_signatory": {"uuid": "8a2ed9c2-9d1e-443a-8e56-a490d8bf73bb", "first_name": "Alda", "middle_initial": "", "last_name": "Carter", "phone": "1-565-710-7558", "email": "louie.hessel7757869450111547@zemlak.biz", "home_address": {"street_1": "524 Roob Divide", "street_2": "Suite 565", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}}, "primary_payroll_admin": {"first_name": "Ian", "last_name": "Labadie", "phone": "1-565-710-7559", "email": "louie.hessel7757869450111547@zemlak.biz"}}
   put-v1-companies:
     Example:
       parameters:
@@ -849,7 +854,7 @@ examples:
         application/json: {"contractor_only": false}
       responses:
         "200":
-          application/json: {"ein": "00-0000001", "entity_type": "C-Corporation", "contractor_only": false, "tier": "core", "is_suspended": false, "company_status": "Approved", "uuid": "c7a07c73-a703-4462-9343-1b181182b6e0", "name": "Shoppe Studios LLC", "slug": "record-shoppe", "trade_name": "Record Shoppe", "is_partner_managed": false, "pay_schedule_type": "by_department", "join_date": "2023-03-01", "funding_type": "ach", "locations": [{"street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true}, {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": true}], "compensations": {"hourly": [{"name": "Overtime", "multiple": 1.5}, {"name": "Double overtime", "multiple": 2}, {"name": "Regular", "multiple": 1}, {"name": "Outstanding vacation", "multiple": 1}, {"name": "Holiday", "multiple": 1}, {"name": "Emergency sick - self care", "multiple": 1}, {"name": "Emergency sick - caring for others", "multiple": 1}, {"name": "FMLA Public Health Emergency Leave", "multiple": 1}, {"name": "Regular Hours", "multiple": 1}], "fixed": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Severance"}, {"name": "Minimum Wage Adjustment"}, {"name": "Reimbursement"}], "paid_time_off": [{"name": "Vacation Hours"}, {"name": "Sick Hours"}, {"name": "Holiday Hours"}]}, "primary_signatory": {"uuid": "8a2ed9c2-9d1e-443a-8e56-a490d8bf73bb", "first_name": "Alda", "middle_initial": "", "last_name": "Carter", "phone": "1-565-710-7558", "email": "louie.hessel7757869450111547@zemlak.biz", "home_address": {"street_1": "524 Roob Divide", "street_2": "Suite 565", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}}, "primary_payroll_admin": {"first_name": "Ian", "last_name": "Labadie", "phone": "1-565-710-7559", "email": "louie.hessel7757869450111547@zemlak.biz"}}
+          application/json: {"ein": "00-0000001", "entity_type": "C-Corporation", "contractor_only": false, "tier": "core", "is_suspended": false, "company_status": "Approved", "uuid": "c7a07c73-a703-4462-9343-1b181182b6e0", "name": "Shoppe Studios LLC", "slug": "record-shoppe", "trade_name": "Record Shoppe", "is_partner_managed": false, "pay_schedule_type": "by_department", "join_date": "2023-03-01", "funding_type": "ach", "locations": [{"street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}, {"street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA"}], "compensations": {"hourly": [{"name": "Overtime", "multiple": 1.5}, {"name": "Double overtime", "multiple": 2}, {"name": "Regular", "multiple": 1}, {"name": "Outstanding vacation", "multiple": 1}, {"name": "Holiday", "multiple": 1}, {"name": "Emergency sick - self care", "multiple": 1}, {"name": "Emergency sick - caring for others", "multiple": 1}, {"name": "FMLA Public Health Emergency Leave", "multiple": 1}, {"name": "Regular Hours", "multiple": 1}], "fixed": [{"name": "Bonus"}, {"name": "Commission"}, {"name": "Paycheck Tips"}, {"name": "Cash Tips"}, {"name": "Correction Payment"}, {"name": "Severance"}, {"name": "Minimum Wage Adjustment"}, {"name": "Reimbursement"}], "paid_time_off": [{"name": "Vacation Hours"}, {"name": "Sick Hours"}, {"name": "Holiday Hours"}]}, "primary_signatory": {"uuid": "8a2ed9c2-9d1e-443a-8e56-a490d8bf73bb", "first_name": "Alda", "middle_initial": "", "last_name": "Carter", "phone": "1-565-710-7558", "email": "louie.hessel7757869450111547@zemlak.biz", "home_address": {"street_1": "524 Roob Divide", "street_2": "Suite 565", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA"}}, "primary_payroll_admin": {"first_name": "Ian", "last_name": "Labadie", "phone": "1-565-710-7559", "email": "louie.hessel7757869450111547@zemlak.biz"}}
     Basic:
       parameters:
         path:
@@ -916,7 +921,7 @@ examples:
         application/json: {"phone_number": "8009360383", "street_1": "425 2nd Street", "street_2": "Suite 602", "city": "San Francisco", "state": "CA", "zip": "94107"}
       responses:
         "201":
-          application/json: {"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}
+          application/json: {"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00", "active": true}
     Basic:
       parameters:
         path:
@@ -959,7 +964,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"uuid": "bd6fc55c-1263-4432-aef0-d667b9e0aef7", "version": "2a98f99d7e8e3ede9b04a6494b7f3fcf", "company_uuid": "393b7c66-66a1-4967-ab19-32eca5db9edd", "phone_number": "7425583363", "street_1": "3079 Hackett Landing", "street_2": "Suite 671", "city": "Belmont", "state": "IN", "zip": "47448", "country": "USA", "active": true, "mailing_address": true, "filing_address": false, "created_at": "2025-05-15T08:01:01.000-07:00", "updated_at": "2025-05-15T08:01:01.000-07:00"}
+          application/json: {"uuid": "d79baec2-1bfd-41ad-bd7f-fefc9f4cdb29", "version": "ddcd087920c1f969e25153a9e3fe9d13", "company_uuid": "a0f11a60-0ec0-4f1b-9694-8c6fa7ffedce", "phone_number": "4721978147", "street_1": "58092 Mosciski Spring", "street_2": "Suite 680", "city": "Archie", "state": "LA", "zip": "71343", "country": "USA", "mailing_address": true, "filing_address": false, "created_at": "2025-05-16T09:41:49.000-07:00", "updated_at": "2025-05-16T09:41:49.000-07:00", "active": true}
         "404":
           application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   put-v1-locations-location_id:
@@ -970,7 +975,7 @@ examples:
         header:
           X-Gusto-API-Version: "2024-04-01"
       requestBody:
-        application/json: {"version": "aa2c4db94c2e968aa0cf51f346007c5f", "phone_number": "8009360383", "street_1": "300 3rd Street", "street_2": "Apartment 318", "city": "San Francisco", "zip": "94107", "filing_address": true}
+        application/json: {"version": "14302448d61342a1a25072fcb59df0b3", "phone_number": "8009360383", "street_1": "300 3rd Street", "street_2": "Apartment 318", "city": "San Francisco", "zip": "94107", "filing_address": true}
       responses:
         "200":
           application/json: {"uuid": "d95fa7f0-e743-42ce-b47c-b60cc78135dd", "country": "USA"}
@@ -986,7 +991,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "200":
-          application/json: {"uuid": "a8b2221c-c063-4417-8c72-9b8e535ff7c4", "version": "65aacee259b7169fe6287ddda9fa7d22", "company_uuid": "7692323a-d689-436c-b9f3-df05d4f16f0f", "phone_number": "8009360383", "street_1": "300 3rd Street", "street_2": "Apartment 318", "city": "San Francisco", "state": "MN", "zip": "94107", "country": "USA", "active": true, "mailing_address": true, "filing_address": true, "created_at": "2025-05-15T08:01:03.000-07:00", "updated_at": "2025-05-15T08:01:03.000-07:00"}
+          application/json: {"uuid": "6982ef7e-a318-4a40-b0b6-1d95c52c8263", "version": "226dc9377faecceeb3ec7f6cef066f40", "company_uuid": "07c1ab76-8e02-40a9-9cec-cfe3b8b20b6b", "phone_number": "8009360383", "street_1": "300 3rd Street", "street_2": "Apartment 318", "city": "San Francisco", "state": "MD", "zip": "94107", "country": "USA", "mailing_address": true, "filing_address": true, "created_at": "2025-05-16T09:41:51.000-07:00", "updated_at": "2025-05-16T09:41:51.000-07:00", "active": true}
         "404":
           application/json: {"errors": [{"error_key": "state", "category": "invalid_attribute_value", "message": "State is in the wrong format"}]}
   get-v1-locations-location_uuid-minimum_wages:
@@ -1013,7 +1018,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"uuid": "f236d80d-52d2-495e-8538-884162a383f4", "wage": "15.0", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "City", "notes": "large companies"}, {"uuid": "0f86fd12-a2fd-45b4-b3ab-fb8400b383b2", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "City", "notes": "large companies"}, {"uuid": "648c12be-857b-4c4e-9667-4e4480ddf794", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "State", "notes": "large companies"}, {"uuid": "9eb81bb8-2a5f-4cba-ab74-da2e2cd35a5f", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "Federal", "notes": "large companies"}]
+          application/json: [{"uuid": "ae7ee6b1-1c17-4d4f-a9c5-c5d588d8882d", "wage": "15.0", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "City", "notes": "large companies"}, {"uuid": "4f9e53f1-89ba-43e1-a5af-d5ada47c814f", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "City", "notes": "large companies"}, {"uuid": "4633fce7-f1df-4938-bd67-642ee10174c7", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "State", "notes": "large companies"}, {"uuid": "4db78a28-1561-4fe7-8daf-627abd7e437d", "wage": "10.5", "wage_type": "Regular", "effective_date": "2017-01-01", "authority": "Federal", "notes": "large companies"}]
         "404":
           application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   get-v1-companies-company_id-locations:
@@ -1026,7 +1031,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}, {"uuid": "fa94a2fd-11a8-4024-87ff-85c587d9d2b4", "version": "15e6b9680e00f3122729e64e3cef3224", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "2866070827", "street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "active": true, "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00"}]
+          application/json: [{"uuid": "04552eb9-7829-4b18-ae96-6983552948df", "version": "7d9753112507b9dda4fb97910f39b06e", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "5825710808", "street_1": "412 Kiera Stravenue", "street_2": "Suite 391", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00", "active": true}, {"uuid": "fa94a2fd-11a8-4024-87ff-85c587d9d2b4", "version": "15e6b9680e00f3122729e64e3cef3224", "company_uuid": "6bf7807c-a5a0-4f4d-b2e7-3fbb4b2299fb", "phone_number": "2866070827", "street_1": "644 Fay Vista", "street_2": "Suite 842", "city": "Richmond", "state": "VA", "zip": "23218", "country": "USA", "mailing_address": false, "filing_address": false, "created_at": "2023-09-12T16:42:25.000-07:00", "updated_at": "2023-09-12T16:42:25.000-07:00", "active": true}]
   get-v1-companies-company_id-pay_schedules:
     Example:
       parameters:
@@ -1092,7 +1097,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"uuid": "d6d55ac1-802f-403a-bb0a-0543bb5670c3", "first_name": "Boaty", "middle_initial": null, "last_name": "Jenkins", "email": "freda_gaylord@nikolausgottlieb.com", "company_uuid": "278819f0-5bb9-4af8-8981-5ef539471969", "manager_uuid": null, "version": "b252e3ee842587da40dd4c9206dcb650", "department": null, "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "6e481688-c92b-41ab-ba11-90cd77060846", "version": "7b3c1d34eedab81d57ee2dfe89cec6e1", "employee_uuid": "d6d55ac1-802f-403a-bb0a-0543bb5670c3", "hire_date": "2024-05-15", "title": "", "primary": true, "rate": "80000.00", "payment_unit": "Year", "current_compensation_uuid": "a26f36aa-8255-499e-aabd-7404c40db3c2", "two_percent_shareholder": false, "state_wc_covered": null, "state_wc_class_code": null, "compensations": [{"uuid": "a26f36aa-8255-499e-aabd-7404c40db3c2", "version": "1c5b6d134862dee3598c87e6c6300f51", "job_uuid": "6e481688-c92b-41ab-ba11-90cd77060846", "employee_uuid": "d6d55ac1-802f-403a-bb0a-0543bb5670c3", "rate": "80000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2025-05-15", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": "2005-05-15", "has_ssn": true, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Direct Deposit", "work_email": null, "current_employment_status": "full_time"}, {"uuid": "40bb57f6-3a64-4ab9-9338-1d1a711db7ed", "first_name": "Cathrine", "middle_initial": null, "last_name": "Jacobson", "email": "hai@morissette.ca", "company_uuid": "278819f0-5bb9-4af8-8981-5ef539471969", "manager_uuid": null, "version": "838143794e09a50eab0207f2e7238520", "department": null, "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "db9cd327-96e0-4b53-a94d-1546378c647e", "version": "7b3c1d34eedab81d57ee2dfe89cec6e1", "employee_uuid": "40bb57f6-3a64-4ab9-9338-1d1a711db7ed", "hire_date": "2024-05-15", "title": "", "primary": true, "rate": "80000.00", "payment_unit": "Year", "current_compensation_uuid": "8b7dd287-46f1-4bdf-b245-ec4a8ceaef34", "two_percent_shareholder": false, "state_wc_covered": null, "state_wc_class_code": null, "compensations": [{"uuid": "8b7dd287-46f1-4bdf-b245-ec4a8ceaef34", "version": "1c5b6d134862dee3598c87e6c6300f51", "job_uuid": "db9cd327-96e0-4b53-a94d-1546378c647e", "employee_uuid": "40bb57f6-3a64-4ab9-9338-1d1a711db7ed", "rate": "80000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2025-05-15", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": "2005-05-15", "has_ssn": true, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Direct Deposit", "work_email": null, "current_employment_status": "full_time"}]
+          application/json: [{"uuid": "de2e7947-7ecc-44a5-bec0-1a5510c59c6e", "first_name": "Boaty", "middle_initial": null, "last_name": "Stracke", "email": "kenisha_kozey@marks.info", "company_uuid": "0bf81e9e-d92b-49f2-ac0a-2c4a5b870a58", "manager_uuid": null, "version": "88eee0db8ad79bda9eb546418ca98e90", "department": null, "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "b5bee54d-2fe8-4552-bb99-fd1584e39622", "version": "e9e474cc8e549f1799c0a88fe1e08948", "employee_uuid": "de2e7947-7ecc-44a5-bec0-1a5510c59c6e", "hire_date": "2024-05-16", "title": "", "primary": true, "rate": "80000.00", "payment_unit": "Year", "current_compensation_uuid": "5bf6f514-cb90-4a18-a9ab-a2175d97eea5", "two_percent_shareholder": false, "state_wc_covered": null, "state_wc_class_code": null, "compensations": [{"uuid": "5bf6f514-cb90-4a18-a9ab-a2175d97eea5", "version": "901df6d3e289216ac2e9aac8ea8f0973", "job_uuid": "b5bee54d-2fe8-4552-bb99-fd1584e39622", "employee_uuid": "de2e7947-7ecc-44a5-bec0-1a5510c59c6e", "rate": "80000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2025-05-16", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": "2005-05-16", "has_ssn": true, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Direct Deposit", "work_email": null, "current_employment_status": "full_time", "historical": false, "employee_code": "76ee96", "department_uuid": null}, {"uuid": "33b06016-1ed9-4c64-8fc4-5863e1a8c18f", "first_name": "Kari", "middle_initial": null, "last_name": "Ward", "email": "thelma_rath@schuster.co.uk", "company_uuid": "0bf81e9e-d92b-49f2-ac0a-2c4a5b870a58", "manager_uuid": null, "version": "62a52bbf56d4619ac2f45755bb832e5d", "department": null, "terminated": false, "two_percent_shareholder": false, "onboarded": true, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "5465f758-21aa-4748-8c39-437d21a02295", "version": "e9e474cc8e549f1799c0a88fe1e08948", "employee_uuid": "33b06016-1ed9-4c64-8fc4-5863e1a8c18f", "hire_date": "2024-05-16", "title": "", "primary": true, "rate": "80000.00", "payment_unit": "Year", "current_compensation_uuid": "e1f91158-9f89-4824-8103-9303faa2316e", "two_percent_shareholder": false, "state_wc_covered": null, "state_wc_class_code": null, "compensations": [{"uuid": "e1f91158-9f89-4824-8103-9303faa2316e", "version": "901df6d3e289216ac2e9aac8ea8f0973", "job_uuid": "5465f758-21aa-4748-8c39-437d21a02295", "employee_uuid": "33b06016-1ed9-4c64-8fc4-5863e1a8c18f", "rate": "80000.00", "payment_unit": "Year", "flsa_status": "Exempt", "effective_date": "2025-05-16", "adjust_for_minimum_wage": false, "minimum_wages": []}]}], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": "2005-05-16", "has_ssn": true, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Direct Deposit", "work_email": null, "current_employment_status": "full_time", "historical": false, "employee_code": "19f85c", "department_uuid": null}]
         "404":
           application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   post-v1-employees:
@@ -1117,7 +1122,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "201":
-          application/json: {"uuid": "83f84a60-a44c-49dc-8b61-db364d7cfbf4", "first_name": "Karl", "middle_initial": null, "last_name": "The Fog", "email": null, "company_uuid": "085cb0bf-c271-4f33-9d25-4b7ed5534358", "manager_uuid": null, "version": "5211ee9bb08e51634431a18eff0afc64", "department": null, "terminated": false, "two_percent_shareholder": null, "onboarded": false, "onboarding_status": "admin_onboarding_incomplete", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": null, "has_ssn": false, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Check", "work_email": null, "current_employment_status": null}
+          application/json: {"uuid": "461ec6e0-9e5b-4582-a13f-5498479bdc0f", "first_name": "Karl", "middle_initial": null, "last_name": "The Fog", "email": null, "company_uuid": "1b5bc024-aac4-4bcc-8aa7-36a935750c32", "manager_uuid": null, "version": "5211ee9bb08e51634431a18eff0afc64", "department": null, "terminated": false, "two_percent_shareholder": null, "onboarded": false, "onboarding_status": "admin_onboarding_incomplete", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [], "eligible_paid_time_off": [], "terminations": [], "garnishments": [], "date_of_birth": null, "has_ssn": false, "ssn": "", "phone": null, "preferred_first_name": null, "payment_method": "Check", "work_email": null, "current_employment_status": null, "historical": false, "employee_code": "b93a2f", "department_uuid": null}
         "404":
           application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   get-v1-employees:
@@ -1130,7 +1135,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: {"uuid": "ac151743-4bea-41a3-ac1e-1707d6dcf9b0", "first_name": "Bertram", "middle_initial": null, "last_name": "Fritsch", "email": "talia@stehr.com", "company_uuid": "2f224f94-521b-4ab0-959a-192bb0c00c4d", "version": "56251d892c85d34d80c85b931760161b", "department": "Trivia 1", "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "f2c956af-bc5f-4348-b4aa-7d3ecc2db71b", "employee_uuid": "ac151743-4bea-41a3-ac1e-1707d6dcf9b0", "hire_date": "2024-05-15", "title": "Engineer", "primary": true, "two_percent_shareholder": false}], "date_of_birth": "2005-05-15", "has_ssn": true, "preferred_first_name": null, "payment_method": "Check"}
+          application/json: {"uuid": "d59f0776-107e-4c43-a148-564a14c8cdbf", "first_name": "Kurtis", "middle_initial": null, "last_name": "McKenzie", "email": "jonie@oconner.com", "company_uuid": "cc82c11f-d4ba-4f55-aace-2fb7b1fefa1f", "version": "2929199b9321e6eb9e84c673667971bd", "department": "Renaissance 1", "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "ea980264-f301-4ac2-bbed-169be7b96457", "employee_uuid": "d59f0776-107e-4c43-a148-564a14c8cdbf", "hire_date": "2024-05-16", "title": "Engineer", "primary": true, "two_percent_shareholder": false, "location_uuid": "3ee20a56-8931-47f4-94c7-e637dda8cf74", "location": {"uuid": "3ee20a56-8931-47f4-94c7-e637dda8cf74", "street_1": "3121 Milky Way", "street_2": "", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "inactive": false}}], "date_of_birth": "2005-05-16", "has_ssn": true, "preferred_first_name": null, "payment_method": "Check", "employee_code": "ca217a", "department_uuid": "a52c025f-acb3-43ac-b342-31cfdcac636f", "title": "Engineer", "hired_at": "2024-05-16", "hidden_ssn": "", "flsa_status": "Exempt", "applicable_tax_ids": [3, 7, 6, 2, 1, 4, 5, 109, 107, 108, 106]}
   put-v1-employees:
     request_example_1:
       parameters:
@@ -1138,7 +1143,7 @@ examples:
           employee_id: "<id>"
         header: {}
       requestBody:
-        application/json: {"version": "f0c06d303aab1fd909b40d4a1ad409ac", "first_name": "Weezy", "middle_initial": "F", "last_name": "Baby", "email": "tunechi@cashmoneyrecords.com", "date_of_birth": "1991-01-31", "ssn": "824920233"}
+        application/json: {"version": "9294130ed6ff0c1735ef7b4148c1f320", "first_name": "Weezy", "middle_initial": "F", "last_name": "Baby", "email": "tunechi@cashmoneyrecords.com", "date_of_birth": "1991-01-31", "ssn": "824920233"}
       responses:
         "200":
           application/json: {"uuid": "d95fa7f0-e743-42ce-b47c-b60cc78135dd", "first_name": "Merlin", "last_name": "Harber", "eligible_paid_time_off": [{"accrual_unit": "Hour", "accrual_method": "unlimited", "accrual_period": "Year"}, {"accrual_unit": "Hour", "accrual_method": "unlimited", "accrual_period": "Year"}], "payment_method": "Check"}
@@ -1153,7 +1158,7 @@ examples:
         application/json: {"version": "<value>"}
       responses:
         "200":
-          application/json: {"uuid": "ce755bcc-c8d7-4dcc-aa1a-365fd9cb18c5", "first_name": "Weezy", "middle_initial": "F", "last_name": "Baby", "email": "tunechi@cashmoneyrecords.com", "company_uuid": "3753e3e8-d20b-4a9e-b83e-4a06f2976666", "version": "4eff5441d8f8ecc08f53a88ded36f13e", "department": null, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "ad02c425-fa91-436b-b55a-9bd653306dd2", "employee_uuid": "ce755bcc-c8d7-4dcc-aa1a-365fd9cb18c5", "hire_date": "2024-05-15", "title": "", "primary": true, "two_percent_shareholder": false}], "date_of_birth": "1991-01-31", "has_ssn": true, "preferred_first_name": null, "payment_method": "Check"}
+          application/json: {"uuid": "5612ac40-0609-4138-a77a-d320a8bdb619", "first_name": "Weezy", "middle_initial": "F", "last_name": "Baby", "email": "tunechi@cashmoneyrecords.com", "company_uuid": "7ef5be90-60c9-4a3c-817c-2d96bbf2dc42", "version": "4eff5441d8f8ecc08f53a88ded36f13e", "department": null, "onboarding_status": "onboarding_completed", "onboarding_documents_config": {"uuid": null, "i9_document": false}, "jobs": [{"uuid": "62a9d759-aba8-4107-b170-f29ecf10a9b5", "employee_uuid": "5612ac40-0609-4138-a77a-d320a8bdb619", "hire_date": "2024-05-16", "title": "", "primary": true, "two_percent_shareholder": false, "location_uuid": "368609b9-cab0-440c-ae3d-690b3d7fbaba", "location": {"uuid": "368609b9-cab0-440c-ae3d-690b3d7fbaba", "street_1": "3121 Milky Way", "street_2": "", "city": "San Francisco", "state": "CA", "zip": "94107", "country": "USA", "inactive": false}}], "date_of_birth": "1991-01-31", "has_ssn": true, "preferred_first_name": null, "payment_method": "Check", "employee_code": "f62dc1", "department_uuid": null, "title": "", "hired_at": "2024-05-16", "hidden_ssn": "", "flsa_status": "Exempt", "applicable_tax_ids": [3, 7, 6, 2, 1, 4, 5, 109, 107, 108, 106]}
         "404":
           application/json: {"errors": [{"error_key": "base", "category": "invalid_resource_version", "message": "You are attempting to update a resource using an out-of-date version."}]}
   delete-v1-employee:
@@ -1576,7 +1581,7 @@ examples:
           X-Gusto-API-Version: "2024-04-01"
       responses:
         "200":
-          application/json: [{"hire_date": "2015-05-15", "termination_date": "2025-04-15", "file_new_hire_report": false, "two_percent_shareholder": false, "employment_status": "full_time"}]
+          application/json: [{"hire_date": "2015-05-16", "termination_date": "2025-04-16", "file_new_hire_report": false, "two_percent_shareholder": false, "employment_status": "full_time"}]
         "404":
           application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   get-v1-employees-employee_id-home_addresses:
@@ -1727,6 +1732,17 @@ examples:
       responses:
         "200":
           application/json: [{"uuid": "fc5b87dc-8d88-400d-b2da-c3587a7e5b15", "effective_date": "2022-01-01", "active": false, "location_uuid": "d9456c94-f561-40d2-afec-919da5f59196", "employee_uuid": "7597f3e3-31d4-4953-83a5-f95be78d2fe2", "version": "139f9769a2e543e6a1259173e1ee3b8d", "street_1": "800 Adolfo Gardens", "street_2": "Suite 419", "city": "Bremen", "state": "AL", "zip": "35033", "country": "USA"}, {"uuid": "be1c2e24-af86-4c36-b34e-3a55dbcdbdab", "effective_date": "2023-01-01", "active": true, "location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "employee_uuid": "7597f3e3-31d4-4953-83a5-f95be78d2fe2", "version": "bbe8d4c741339c6b9e0e2e1c1b120816", "street_1": "2216 Icie Villages", "street_2": "Apt. 798", "city": "Big Delta", "state": "AK", "zip": "99737", "country": "USA"}]
+    test_example:
+      parameters:
+        path:
+          employee_id: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      responses:
+        "200":
+          application/json: [{"uuid": "de083b69-1265-49d1-9148-0e45ad81584a", "effective_date": "2021-01-01", "active": false, "location_uuid": "ee498dcd-ad3f-421a-acaf-fccfba7a54b7", "employee_uuid": "db9bdb62-7a02-4dbf-9599-c68375f46117", "version": "2bf1afa0988905127810578fa8f7096f", "street_1": "91678 Farrell Meadow", "street_2": "Apt. 835", "city": "Phoenix", "state": "AZ", "zip": "85016", "country": "USA"}, {"uuid": "855b87c6-b049-4334-be6e-a5e8d53016fb", "effective_date": "2022-01-01", "active": false, "location_uuid": "69c0fcad-9d5a-4f21-ac59-d3a06c1566ed", "employee_uuid": "db9bdb62-7a02-4dbf-9599-c68375f46117", "version": "e4450ac4a8b4f362f315edc55c9ea784", "street_1": "800 Adolfo Gardens", "street_2": "Suite 419", "city": "Bremen", "state": "AL", "zip": "35033", "country": "USA"}, {"uuid": "ff95bce2-11e6-47a7-9635-fa0e3a768b31", "effective_date": "2023-01-01", "active": true, "location_uuid": "6294b652-92ca-474f-9e3e-7961205f728c", "employee_uuid": "db9bdb62-7a02-4dbf-9599-c68375f46117", "version": "dbb907f6fca92b01c14f3b367d4f0b25", "street_1": "2216 Icie Villages", "street_2": "Apt. 798", "city": "Big Delta", "state": "AK", "zip": "99737", "country": "USA"}]
+        "404":
+          application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   post-v1-employees-employee_id-work_addresses:
     Example:
       parameters:
@@ -1772,6 +1788,32 @@ examples:
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+    request_example_1:
+      parameters:
+        path:
+          employee_id: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      requestBody:
+        application/json: {"location_uuid": "f3ce2f31-cba6-4f18-b66b-291de5d52ca2", "effective_date": "2020-01-31"}
+      responses:
+        "201":
+          application/json: {"uuid": "03d260a9-1d58-461f-ae19-322d426f3fdf", "version": "<value>", "country": "USA"}
+        "404":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}, {"error_key": "<value>", "category": "<value>"}, {"error_key": "<value>", "category": "<value>"}]}
+    test_example:
+      parameters:
+        path:
+          employee_id: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      requestBody:
+        application/json: {"location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "effective_date": "2023-05-15"}
+      responses:
+        "201":
+          application/json: {"uuid": "ec995b22-ef41-47eb-b601-fa7ec7b60a62", "effective_date": "2020-01-31", "active": true, "location_uuid": "f3ce2f31-cba6-4f18-b66b-291de5d52ca2", "employee_uuid": "ebdaa937-3574-472d-b383-a5c3c977496e", "version": "5a5318a71ec6f40cffa014e3ff504b8b", "street_1": "977 Marks Viaduct", "street_2": "Apt. 958", "city": "Pink Hill", "state": "NC", "zip": "28572", "country": "USA"}
+        "404":
+          application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   get-v1-work_addresses-work_address_uuid:
     Example:
       parameters:
@@ -1782,6 +1824,17 @@ examples:
       responses:
         "200":
           application/json: {"uuid": "34925ef7-6234-440d-83b8-788a24d0d69a", "effective_date": "2023-05-15", "active": true, "location_uuid": "aba6d0fd-7294-4997-b1a4-bc9268c45932", "employee_uuid": "2363b9c0-6625-4425-9261-47627fd68783", "version": "6a22da647ed391f184a212e6e83a541d", "street_1": "977 Marks Viaduct", "street_2": null, "city": "Pink Hill", "state": "NC", "zip": "28572", "country": "USA"}
+    test_example:
+      parameters:
+        path:
+          work_address_uuid: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      responses:
+        "200":
+          application/json: {"uuid": "a0de01ec-a4ce-46bc-8f4a-56b04d885c87", "effective_date": "2023-01-01", "active": true, "location_uuid": "e08560ad-bfbd-4d07-b6e9-43867e7adffa", "employee_uuid": "b5d23454-3e50-4902-8c3f-90c7a07dfb26", "version": "774485f09e6e1d6021426262af246fa1", "street_1": "229 Virgil Mission", "street_2": "Apt. 360", "city": "Yatesville", "state": "GA", "zip": "31097", "country": "USA"}
+        "404":
+          application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   put-v1-work_addresses-work_address_uuid:
     Example:
       parameters:
@@ -1827,6 +1880,32 @@ examples:
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+    request_example_1:
+      parameters:
+        path:
+          work_address_uuid: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      requestBody:
+        application/json: {"version": "cd2e396aff8925367ff773e771e40488", "location_uuid": "333eb008-db81-4003-9e91-1ad257226518"}
+      responses:
+        "200":
+          application/json: {"uuid": "591f882f-0c62-44c3-ad25-357cc3eb488d", "version": "<value>", "country": "USA"}
+        "404":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}, {"error_key": "<value>", "category": "<value>"}]}
+    test_example:
+      parameters:
+        path:
+          work_address_uuid: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      requestBody:
+        application/json: {"version": "<value>", "location_uuid": "6a119be7-b4b0-4e27-aaa0-89d5f2524635", "effective_date": "2023-05-15"}
+      responses:
+        "200":
+          application/json: {"uuid": "7e40de75-4345-41dc-a187-d8960e853298", "effective_date": "2022-01-01", "active": false, "location_uuid": "333eb008-db81-4003-9e91-1ad257226518", "employee_uuid": "020cb03f-2301-40f5-9d21-bf4a9ca21dd7", "version": "68f2fd4efda1e5ef8072071e49af35e7", "street_1": "5467 Ward Radial", "street_2": "Suite 251", "city": "Holualoa", "state": "HI", "zip": "96725", "country": "USA"}
+        "404":
+          application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   delete-v1-work_addresses-work_address_uuid:
     Basic:
       parameters:
@@ -1855,6 +1934,15 @@ examples:
       responses:
         "422":
           application/json: {"errors": [{"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "72ae4617-daa9-4ed7-85e0-18ed5d0ee835"}}, {"error_key": "contractor_payments", "category": "nested_errors", "metadata": {"contractor_uuid": "2d7bf62c-babf-4a12-8292-340e2d9cab28"}}]}
+    test_example:
+      parameters:
+        path:
+          work_address_uuid: "<id>"
+        header:
+          X-Gusto-API-Version: "2024-04-01"
+      responses:
+        "404":
+          application/json: {"errors": [{"error_key": "request", "category": "not_found", "message": "The requested resource was not found."}]}
   post-v1-jobs-job_id:
     Example:
       parameters:
@@ -3421,6 +3509,7 @@ examples:
       responses:
         "422":
           application/json: {"errors": []}
+        "201": {}
     example:
       parameters:
         path:
@@ -3479,6 +3568,7 @@ examples:
       responses:
         "422":
           application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}, {"error_key": "<value>", "category": "<value>"}]}
+        "200": {}
     example:
       parameters:
         path:

@@ -172,7 +172,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.locations.update(location_id="<id>", version="aa2c4db94c2e968aa0cf51f346007c5f", phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
+    res = gusto.locations.update(location_id="<id>", version="14302448d61342a1a25072fcb59df0b3", phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
 
     # Handle response
     print(res)
