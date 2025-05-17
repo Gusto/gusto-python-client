@@ -324,6 +324,7 @@ from .delete_v1_webhook_subscription_uuidop import (
     DeleteV1WebhookSubscriptionUUIDSecurityTypedDict,
 )
 from .delete_v1_work_addresses_work_address_uuidop import (
+    DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion,
     DeleteV1WorkAddressesWorkAddressUUIDRequest,
     DeleteV1WorkAddressesWorkAddressUUIDRequestTypedDict,
 )
@@ -920,6 +921,7 @@ from .get_v1_employees_employee_id_terminationsop import (
     GetV1EmployeesEmployeeIDTerminationsRequestTypedDict,
 )
 from .get_v1_employees_employee_id_work_addressesop import (
+    GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion,
     GetV1EmployeesEmployeeIDWorkAddressesRequest,
     GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict,
 )
@@ -1021,6 +1023,7 @@ from .get_v1_webhook_subscriptionsop import (
     GetV1WebhookSubscriptionsSecurityTypedDict,
 )
 from .get_v1_work_addresses_work_address_uuidop import (
+    GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion,
     GetV1WorkAddressesWorkAddressUUIDRequest,
     GetV1WorkAddressesWorkAddressUUIDRequestTypedDict,
 )
@@ -1562,6 +1565,7 @@ from .post_v1_employees_employee_id_terminationsop import (
     PostV1EmployeesEmployeeIDTerminationsRequestTypedDict,
 )
 from .post_v1_employees_employee_id_work_addressesop import (
+    PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion,
     PostV1EmployeesEmployeeIDWorkAddressesRequest,
     PostV1EmployeesEmployeeIDWorkAddressesRequestBody,
     PostV1EmployeesEmployeeIDWorkAddressesRequestBodyTypedDict,
@@ -2118,6 +2122,7 @@ from .put_v1_webhook_subscription_uuidop import (
     PutV1WebhookSubscriptionUUIDSubscriptionTypes,
 )
 from .put_v1_work_addresses_work_address_uuidop import (
+    PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion,
     PutV1WorkAddressesWorkAddressUUIDRequest,
     PutV1WorkAddressesWorkAddressUUIDRequestBody,
     PutV1WorkAddressesWorkAddressUUIDRequestBodyTypedDict,
@@ -2472,6 +2477,7 @@ __all__ = [
     "DeleteV1WebhookSubscriptionUUIDRequestTypedDict",
     "DeleteV1WebhookSubscriptionUUIDSecurity",
     "DeleteV1WebhookSubscriptionUUIDSecurityTypedDict",
+    "DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion",
     "DeleteV1WorkAddressesWorkAddressUUIDRequest",
     "DeleteV1WorkAddressesWorkAddressUUIDRequestTypedDict",
     "Department",
@@ -2839,6 +2845,7 @@ __all__ = [
     "GetV1EmployeesEmployeeIDStateTaxesRequestTypedDict",
     "GetV1EmployeesEmployeeIDTerminationsRequest",
     "GetV1EmployeesEmployeeIDTerminationsRequestTypedDict",
+    "GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion",
     "GetV1EmployeesEmployeeIDWorkAddressesRequest",
     "GetV1EmployeesEmployeeIDWorkAddressesRequestTypedDict",
     "GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion",
@@ -2894,6 +2901,7 @@ __all__ = [
     "GetV1WebhookSubscriptionsRequestTypedDict",
     "GetV1WebhookSubscriptionsSecurity",
     "GetV1WebhookSubscriptionsSecurityTypedDict",
+    "GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion",
     "GetV1WorkAddressesWorkAddressUUIDRequest",
     "GetV1WorkAddressesWorkAddressUUIDRequestTypedDict",
     "GetVersionEmployeesTimeOffActivitiesRequest",
@@ -3303,6 +3311,7 @@ __all__ = [
     "PostV1EmployeesEmployeeIDTerminationsRequestBody",
     "PostV1EmployeesEmployeeIDTerminationsRequestBodyTypedDict",
     "PostV1EmployeesEmployeeIDTerminationsRequestTypedDict",
+    "PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion",
     "PostV1EmployeesEmployeeIDWorkAddressesRequest",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBody",
     "PostV1EmployeesEmployeeIDWorkAddressesRequestBodyTypedDict",
@@ -3702,6 +3711,7 @@ __all__ = [
     "PutV1WebhookSubscriptionUUIDSecurity",
     "PutV1WebhookSubscriptionUUIDSecurityTypedDict",
     "PutV1WebhookSubscriptionUUIDSubscriptionTypes",
+    "PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion",
     "PutV1WorkAddressesWorkAddressUUIDRequest",
     "PutV1WorkAddressesWorkAddressUUIDRequestBody",
     "PutV1WorkAddressesWorkAddressUUIDRequestBodyTypedDict",

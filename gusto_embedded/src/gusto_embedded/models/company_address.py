@@ -22,7 +22,7 @@ class CompanyAddressTypedDict(TypedDict):
     state: NotRequired[str]
     zip: NotRequired[str]
     country: NotRequired[str]
-    active: NotRequired[bool]
+    inactive: NotRequired[bool]
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
 
 
@@ -41,7 +41,7 @@ class CompanyAddress(BaseModel):
 
     country: Optional[str] = "USA"
 
-    active: Optional[bool] = None
+    inactive: Optional[bool] = None
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
 
     @model_serializer(mode="wrap")
@@ -53,7 +53,7 @@ class CompanyAddress(BaseModel):
             "state",
             "zip",
             "country",
-            "active",
+            "inactive",
         ]
         nullable_fields = ["street_2"]
         null_default_fields = []
