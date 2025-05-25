@@ -190,7 +190,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
+    res = gusto.companies.migrate(company_uuid="<id>", email="Janice18@gmail.com", ip_address="75.249.55.210", external_user_id="<id>")
 
     # Handle response
     print(res)

@@ -45,8 +45,11 @@ class EmployeeFederalTaxTypedDict(TypedDict):
 
     An exemption from paying a certain amount of income tax.
     """
-    additional_withholding: NotRequired[bool]
-    r"""*does not apply to rev_2020_w4 form*"""
+    additional_withholding: NotRequired[str]
+    r"""*does not apply to rev_2020_w4 form*
+
+    An additional withholding dollar amount
+    """
 
 
 class EmployeeFederalTax(BaseModel):
@@ -88,8 +91,11 @@ class EmployeeFederalTax(BaseModel):
     An exemption from paying a certain amount of income tax.
     """
 
-    additional_withholding: Optional[bool] = None
-    r"""*does not apply to rev_2020_w4 form*"""
+    additional_withholding: Optional[str] = None
+    r"""*does not apply to rev_2020_w4 form*
+
+    An additional withholding dollar amount
+    """
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):

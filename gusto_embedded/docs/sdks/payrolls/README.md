@@ -48,7 +48,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=True, off_cycle_reason=gusto_embedded.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
+    res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=False, off_cycle_reason=gusto_embedded.OffCycleReason.CORRECTION, start_date="<value>", end_date="<value>")
 
     # Handle response
     print(res)
@@ -801,7 +801,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.BOTTOM)
+    res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.TOP)
 
     # Handle response
     print(res)

@@ -308,9 +308,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.preview(company_uuid="<id>", contractor_payments=[
-        {},
-    ])
+    res = gusto.contractor_payments.preview(company_uuid="<id>", contractor_payments=[])
 
     # Handle response
     print(res)

@@ -7,115 +7,218 @@ from .utils.logger import Logger, get_default_logger
 from .utils.retries import RetryConfig
 from gusto_embedded import models, utils
 from gusto_embedded._hooks import SDKHooks
-from gusto_embedded.achtransactions import AchTransactions
-from gusto_embedded.bankaccounts import BankAccounts
-from gusto_embedded.companies import Companies
-from gusto_embedded.companyattachment_sdk import CompanyAttachmentSDK
-from gusto_embedded.companyattachments import CompanyAttachments
-from gusto_embedded.companybenefits import CompanyBenefits
-from gusto_embedded.companyforms import CompanyForms
-from gusto_embedded.contractordocuments import ContractorDocuments
-from gusto_embedded.contractorforms import ContractorForms
-from gusto_embedded.contractorpaymentgroups import ContractorPaymentGroups
-from gusto_embedded.contractorpaymentmethod_sdk import ContractorPaymentMethodSDK
-from gusto_embedded.contractorpaymentmethods import ContractorPaymentMethods
-from gusto_embedded.contractorpayments import ContractorPayments
-from gusto_embedded.contractors import Contractors
-from gusto_embedded.departments import Departments
-from gusto_embedded.earningtypes import EarningTypes
-from gusto_embedded.employeeaddresses import EmployeeAddresses
-from gusto_embedded.employeebenefits import EmployeeBenefits
-from gusto_embedded.employeeemployments import EmployeeEmployments
-from gusto_embedded.employeeforms import EmployeeForms
-from gusto_embedded.employeepaymentmethod_sdk import EmployeePaymentMethodSDK
-from gusto_embedded.employeepaymentmethods import EmployeePaymentMethods
-from gusto_embedded.employees import Employees
-from gusto_embedded.employeetaxsetup import EmployeeTaxSetup
-from gusto_embedded.events import Events
-from gusto_embedded.externalpayrolls import ExternalPayrolls
-from gusto_embedded.federaltaxdetails_sdk import FederalTaxDetailsSDK
-from gusto_embedded.flows import Flows
-from gusto_embedded.garnishments import Garnishments
-from gusto_embedded.generateddocuments import GeneratedDocuments
-from gusto_embedded.historicalemployees import HistoricalEmployees
-from gusto_embedded.holidaypaypolicies import HolidayPayPolicies
-from gusto_embedded.i9verification import I9Verification
-from gusto_embedded.industryselection import IndustrySelection
-from gusto_embedded.information_requests import InformationRequests
-from gusto_embedded.introspection import Introspection
-from gusto_embedded.invoices import Invoices
-from gusto_embedded.jobsandcompensations import JobsAndCompensations
-from gusto_embedded.locations import Locations
-from gusto_embedded.notifications import Notifications
-from gusto_embedded.paymentconfigs_sdk import PaymentConfigsSDK
-from gusto_embedded.payrolls import Payrolls
-from gusto_embedded.payschedules import PaySchedules
-from gusto_embedded.recoverycases import RecoveryCases
-from gusto_embedded.reports import Reports
-from gusto_embedded.signatories import Signatories
-from gusto_embedded.taxrequirements import TaxRequirements
-from gusto_embedded.timeoffpolicies import TimeOffPolicies
 from gusto_embedded.types import OptionalNullable, UNSET
-from gusto_embedded.webhooks import Webhooks
-from gusto_embedded.wireinrequests import WireInRequests
 import httpx
-from typing import Any, Callable, Dict, Optional, Union, cast
+import importlib
+from typing import Any, Callable, Dict, Optional, TYPE_CHECKING, Union, cast
 import weakref
+
+if TYPE_CHECKING:
+    from gusto_embedded.achtransactions import AchTransactions
+    from gusto_embedded.bankaccounts import BankAccounts
+    from gusto_embedded.companies import Companies
+    from gusto_embedded.companyattachment_sdk import CompanyAttachmentSDK
+    from gusto_embedded.companyattachments import CompanyAttachments
+    from gusto_embedded.companybenefits import CompanyBenefits
+    from gusto_embedded.companyforms import CompanyForms
+    from gusto_embedded.contractordocuments import ContractorDocuments
+    from gusto_embedded.contractorforms import ContractorForms
+    from gusto_embedded.contractorpaymentgroups import ContractorPaymentGroups
+    from gusto_embedded.contractorpaymentmethod_sdk import ContractorPaymentMethodSDK
+    from gusto_embedded.contractorpaymentmethods import ContractorPaymentMethods
+    from gusto_embedded.contractorpayments import ContractorPayments
+    from gusto_embedded.contractors import Contractors
+    from gusto_embedded.departments import Departments
+    from gusto_embedded.earningtypes import EarningTypes
+    from gusto_embedded.employeeaddresses import EmployeeAddresses
+    from gusto_embedded.employeebenefits import EmployeeBenefits
+    from gusto_embedded.employeeemployments import EmployeeEmployments
+    from gusto_embedded.employeeforms import EmployeeForms
+    from gusto_embedded.employeepaymentmethod_sdk import EmployeePaymentMethodSDK
+    from gusto_embedded.employeepaymentmethods import EmployeePaymentMethods
+    from gusto_embedded.employees import Employees
+    from gusto_embedded.employeetaxsetup import EmployeeTaxSetup
+    from gusto_embedded.events import Events
+    from gusto_embedded.externalpayrolls import ExternalPayrolls
+    from gusto_embedded.federaltaxdetails_sdk import FederalTaxDetailsSDK
+    from gusto_embedded.flows import Flows
+    from gusto_embedded.garnishments import Garnishments
+    from gusto_embedded.generateddocuments import GeneratedDocuments
+    from gusto_embedded.historicalemployees import HistoricalEmployees
+    from gusto_embedded.holidaypaypolicies import HolidayPayPolicies
+    from gusto_embedded.i9verification import I9Verification
+    from gusto_embedded.industryselection import IndustrySelection
+    from gusto_embedded.information_requests import InformationRequests
+    from gusto_embedded.introspection import Introspection
+    from gusto_embedded.invoices import Invoices
+    from gusto_embedded.jobsandcompensations import JobsAndCompensations
+    from gusto_embedded.locations import Locations
+    from gusto_embedded.notifications import Notifications
+    from gusto_embedded.paymentconfigs_sdk import PaymentConfigsSDK
+    from gusto_embedded.payrolls import Payrolls
+    from gusto_embedded.payschedules import PaySchedules
+    from gusto_embedded.recoverycases import RecoveryCases
+    from gusto_embedded.reports import Reports
+    from gusto_embedded.signatories import Signatories
+    from gusto_embedded.taxrequirements import TaxRequirements
+    from gusto_embedded.timeoffpolicies import TimeOffPolicies
+    from gusto_embedded.webhooks import Webhooks
+    from gusto_embedded.wireinrequests import WireInRequests
 
 
 class Gusto(BaseSDK):
     r"""Gusto API: Welcome to Gusto's Embedded Payroll API documentation!"""
 
-    introspection: Introspection
-    companies: Companies
-    invoices: Invoices
-    company_attachments: CompanyAttachments
-    company_attachment: CompanyAttachmentSDK
-    federal_tax_details: FederalTaxDetailsSDK
-    industry_selection: IndustrySelection
-    signatories: Signatories
-    flows: Flows
-    locations: Locations
-    bank_accounts: BankAccounts
-    external_payrolls: ExternalPayrolls
-    payment_configs: PaymentConfigsSDK
-    pay_schedules: PaySchedules
-    employees: Employees
-    historical_employees: HistoricalEmployees
-    departments: Departments
-    employee_employments: EmployeeEmployments
-    employee_addresses: EmployeeAddresses
-    employee_tax_setup: EmployeeTaxSetup
-    employee_payment_method: EmployeePaymentMethodSDK
-    employee_payment_methods: EmployeePaymentMethods
-    jobs_and_compensations: JobsAndCompensations
-    earning_types: EarningTypes
-    contractors: Contractors
-    contractor_payment_methods: ContractorPaymentMethods
-    contractor_payment_method: ContractorPaymentMethodSDK
-    webhooks: Webhooks
-    contractor_forms: ContractorForms
-    contractor_documents: ContractorDocuments
-    employee_forms: EmployeeForms
-    payrolls: Payrolls
-    time_off_policies: TimeOffPolicies
-    contractor_payments: ContractorPayments
-    contractor_payment_groups: ContractorPaymentGroups
-    company_forms: CompanyForms
-    generated_documents: GeneratedDocuments
-    reports: Reports
-    company_benefits: CompanyBenefits
-    employee_benefits: EmployeeBenefits
-    garnishments: Garnishments
-    i9_verification: I9Verification
-    tax_requirements: TaxRequirements
-    holiday_pay_policies: HolidayPayPolicies
-    notifications: Notifications
-    events: Events
-    information_requests: InformationRequests
-    recovery_cases: RecoveryCases
-    ach_transactions: AchTransactions
-    wire_in_requests: WireInRequests
+    introspection: "Introspection"
+    companies: "Companies"
+    invoices: "Invoices"
+    company_attachments: "CompanyAttachments"
+    company_attachment: "CompanyAttachmentSDK"
+    federal_tax_details: "FederalTaxDetailsSDK"
+    industry_selection: "IndustrySelection"
+    signatories: "Signatories"
+    flows: "Flows"
+    locations: "Locations"
+    bank_accounts: "BankAccounts"
+    external_payrolls: "ExternalPayrolls"
+    payment_configs: "PaymentConfigsSDK"
+    pay_schedules: "PaySchedules"
+    employees: "Employees"
+    historical_employees: "HistoricalEmployees"
+    departments: "Departments"
+    employee_employments: "EmployeeEmployments"
+    employee_addresses: "EmployeeAddresses"
+    employee_tax_setup: "EmployeeTaxSetup"
+    employee_payment_method: "EmployeePaymentMethodSDK"
+    employee_payment_methods: "EmployeePaymentMethods"
+    jobs_and_compensations: "JobsAndCompensations"
+    earning_types: "EarningTypes"
+    contractors: "Contractors"
+    contractor_payment_methods: "ContractorPaymentMethods"
+    contractor_payment_method: "ContractorPaymentMethodSDK"
+    webhooks: "Webhooks"
+    contractor_forms: "ContractorForms"
+    contractor_documents: "ContractorDocuments"
+    employee_forms: "EmployeeForms"
+    payrolls: "Payrolls"
+    time_off_policies: "TimeOffPolicies"
+    contractor_payments: "ContractorPayments"
+    contractor_payment_groups: "ContractorPaymentGroups"
+    company_forms: "CompanyForms"
+    generated_documents: "GeneratedDocuments"
+    reports: "Reports"
+    company_benefits: "CompanyBenefits"
+    employee_benefits: "EmployeeBenefits"
+    garnishments: "Garnishments"
+    i9_verification: "I9Verification"
+    tax_requirements: "TaxRequirements"
+    holiday_pay_policies: "HolidayPayPolicies"
+    notifications: "Notifications"
+    events: "Events"
+    information_requests: "InformationRequests"
+    recovery_cases: "RecoveryCases"
+    ach_transactions: "AchTransactions"
+    wire_in_requests: "WireInRequests"
+    _sub_sdk_map = {
+        "introspection": ("gusto_embedded.introspection", "Introspection"),
+        "companies": ("gusto_embedded.companies", "Companies"),
+        "invoices": ("gusto_embedded.invoices", "Invoices"),
+        "company_attachments": (
+            "gusto_embedded.companyattachments",
+            "CompanyAttachments",
+        ),
+        "company_attachment": (
+            "gusto_embedded.companyattachment_sdk",
+            "CompanyAttachmentSDK",
+        ),
+        "federal_tax_details": (
+            "gusto_embedded.federaltaxdetails_sdk",
+            "FederalTaxDetailsSDK",
+        ),
+        "industry_selection": ("gusto_embedded.industryselection", "IndustrySelection"),
+        "signatories": ("gusto_embedded.signatories", "Signatories"),
+        "flows": ("gusto_embedded.flows", "Flows"),
+        "locations": ("gusto_embedded.locations", "Locations"),
+        "bank_accounts": ("gusto_embedded.bankaccounts", "BankAccounts"),
+        "external_payrolls": ("gusto_embedded.externalpayrolls", "ExternalPayrolls"),
+        "payment_configs": ("gusto_embedded.paymentconfigs_sdk", "PaymentConfigsSDK"),
+        "pay_schedules": ("gusto_embedded.payschedules", "PaySchedules"),
+        "employees": ("gusto_embedded.employees", "Employees"),
+        "historical_employees": (
+            "gusto_embedded.historicalemployees",
+            "HistoricalEmployees",
+        ),
+        "departments": ("gusto_embedded.departments", "Departments"),
+        "employee_employments": (
+            "gusto_embedded.employeeemployments",
+            "EmployeeEmployments",
+        ),
+        "employee_addresses": ("gusto_embedded.employeeaddresses", "EmployeeAddresses"),
+        "employee_tax_setup": ("gusto_embedded.employeetaxsetup", "EmployeeTaxSetup"),
+        "employee_payment_method": (
+            "gusto_embedded.employeepaymentmethod_sdk",
+            "EmployeePaymentMethodSDK",
+        ),
+        "employee_payment_methods": (
+            "gusto_embedded.employeepaymentmethods",
+            "EmployeePaymentMethods",
+        ),
+        "jobs_and_compensations": (
+            "gusto_embedded.jobsandcompensations",
+            "JobsAndCompensations",
+        ),
+        "earning_types": ("gusto_embedded.earningtypes", "EarningTypes"),
+        "contractors": ("gusto_embedded.contractors", "Contractors"),
+        "contractor_payment_methods": (
+            "gusto_embedded.contractorpaymentmethods",
+            "ContractorPaymentMethods",
+        ),
+        "contractor_payment_method": (
+            "gusto_embedded.contractorpaymentmethod_sdk",
+            "ContractorPaymentMethodSDK",
+        ),
+        "webhooks": ("gusto_embedded.webhooks", "Webhooks"),
+        "contractor_forms": ("gusto_embedded.contractorforms", "ContractorForms"),
+        "contractor_documents": (
+            "gusto_embedded.contractordocuments",
+            "ContractorDocuments",
+        ),
+        "employee_forms": ("gusto_embedded.employeeforms", "EmployeeForms"),
+        "payrolls": ("gusto_embedded.payrolls", "Payrolls"),
+        "time_off_policies": ("gusto_embedded.timeoffpolicies", "TimeOffPolicies"),
+        "contractor_payments": (
+            "gusto_embedded.contractorpayments",
+            "ContractorPayments",
+        ),
+        "contractor_payment_groups": (
+            "gusto_embedded.contractorpaymentgroups",
+            "ContractorPaymentGroups",
+        ),
+        "company_forms": ("gusto_embedded.companyforms", "CompanyForms"),
+        "generated_documents": (
+            "gusto_embedded.generateddocuments",
+            "GeneratedDocuments",
+        ),
+        "reports": ("gusto_embedded.reports", "Reports"),
+        "company_benefits": ("gusto_embedded.companybenefits", "CompanyBenefits"),
+        "employee_benefits": ("gusto_embedded.employeebenefits", "EmployeeBenefits"),
+        "garnishments": ("gusto_embedded.garnishments", "Garnishments"),
+        "i9_verification": ("gusto_embedded.i9verification", "I9Verification"),
+        "tax_requirements": ("gusto_embedded.taxrequirements", "TaxRequirements"),
+        "holiday_pay_policies": (
+            "gusto_embedded.holidaypaypolicies",
+            "HolidayPayPolicies",
+        ),
+        "notifications": ("gusto_embedded.notifications", "Notifications"),
+        "events": ("gusto_embedded.events", "Events"),
+        "information_requests": (
+            "gusto_embedded.information_requests",
+            "InformationRequests",
+        ),
+        "recovery_cases": ("gusto_embedded.recoverycases", "RecoveryCases"),
+        "ach_transactions": ("gusto_embedded.achtransactions", "AchTransactions"),
+        "wire_in_requests": ("gusto_embedded.wireinrequests", "WireInRequests"),
+    }
 
     def __init__(
         self,
@@ -214,63 +317,32 @@ class Gusto(BaseSDK):
             self.sdk_configuration.async_client_supplied,
         )
 
-        self._init_sdks()
+    def __getattr__(self, name: str):
+        if name in self._sub_sdk_map:
+            module_path, class_name = self._sub_sdk_map[name]
+            try:
+                module = importlib.import_module(module_path)
+                klass = getattr(module, class_name)
+                instance = klass(self.sdk_configuration)
+                setattr(self, name, instance)
+                return instance
+            except ImportError as e:
+                raise AttributeError(
+                    f"Failed to import module {module_path} for attribute {name}: {e}"
+                ) from e
+            except AttributeError as e:
+                raise AttributeError(
+                    f"Failed to find class {class_name} in module {module_path} for attribute {name}: {e}"
+                ) from e
 
-    def _init_sdks(self):
-        self.introspection = Introspection(self.sdk_configuration)
-        self.companies = Companies(self.sdk_configuration)
-        self.invoices = Invoices(self.sdk_configuration)
-        self.company_attachments = CompanyAttachments(self.sdk_configuration)
-        self.company_attachment = CompanyAttachmentSDK(self.sdk_configuration)
-        self.federal_tax_details = FederalTaxDetailsSDK(self.sdk_configuration)
-        self.industry_selection = IndustrySelection(self.sdk_configuration)
-        self.signatories = Signatories(self.sdk_configuration)
-        self.flows = Flows(self.sdk_configuration)
-        self.locations = Locations(self.sdk_configuration)
-        self.bank_accounts = BankAccounts(self.sdk_configuration)
-        self.external_payrolls = ExternalPayrolls(self.sdk_configuration)
-        self.payment_configs = PaymentConfigsSDK(self.sdk_configuration)
-        self.pay_schedules = PaySchedules(self.sdk_configuration)
-        self.employees = Employees(self.sdk_configuration)
-        self.historical_employees = HistoricalEmployees(self.sdk_configuration)
-        self.departments = Departments(self.sdk_configuration)
-        self.employee_employments = EmployeeEmployments(self.sdk_configuration)
-        self.employee_addresses = EmployeeAddresses(self.sdk_configuration)
-        self.employee_tax_setup = EmployeeTaxSetup(self.sdk_configuration)
-        self.employee_payment_method = EmployeePaymentMethodSDK(self.sdk_configuration)
-        self.employee_payment_methods = EmployeePaymentMethods(self.sdk_configuration)
-        self.jobs_and_compensations = JobsAndCompensations(self.sdk_configuration)
-        self.earning_types = EarningTypes(self.sdk_configuration)
-        self.contractors = Contractors(self.sdk_configuration)
-        self.contractor_payment_methods = ContractorPaymentMethods(
-            self.sdk_configuration
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
         )
-        self.contractor_payment_method = ContractorPaymentMethodSDK(
-            self.sdk_configuration
-        )
-        self.webhooks = Webhooks(self.sdk_configuration)
-        self.contractor_forms = ContractorForms(self.sdk_configuration)
-        self.contractor_documents = ContractorDocuments(self.sdk_configuration)
-        self.employee_forms = EmployeeForms(self.sdk_configuration)
-        self.payrolls = Payrolls(self.sdk_configuration)
-        self.time_off_policies = TimeOffPolicies(self.sdk_configuration)
-        self.contractor_payments = ContractorPayments(self.sdk_configuration)
-        self.contractor_payment_groups = ContractorPaymentGroups(self.sdk_configuration)
-        self.company_forms = CompanyForms(self.sdk_configuration)
-        self.generated_documents = GeneratedDocuments(self.sdk_configuration)
-        self.reports = Reports(self.sdk_configuration)
-        self.company_benefits = CompanyBenefits(self.sdk_configuration)
-        self.employee_benefits = EmployeeBenefits(self.sdk_configuration)
-        self.garnishments = Garnishments(self.sdk_configuration)
-        self.i9_verification = I9Verification(self.sdk_configuration)
-        self.tax_requirements = TaxRequirements(self.sdk_configuration)
-        self.holiday_pay_policies = HolidayPayPolicies(self.sdk_configuration)
-        self.notifications = Notifications(self.sdk_configuration)
-        self.events = Events(self.sdk_configuration)
-        self.information_requests = InformationRequests(self.sdk_configuration)
-        self.recovery_cases = RecoveryCases(self.sdk_configuration)
-        self.ach_transactions = AchTransactions(self.sdk_configuration)
-        self.wire_in_requests = WireInRequests(self.sdk_configuration)
+
+    def __dir__(self):
+        default_attrs = list(super().__dir__())
+        lazy_attrs = list(self._sub_sdk_map.keys())
+        return sorted(list(set(default_attrs + lazy_attrs)))
 
     def __enter__(self):
         return self
