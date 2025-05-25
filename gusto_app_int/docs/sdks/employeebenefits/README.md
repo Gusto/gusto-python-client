@@ -320,7 +320,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56)
 
     # Use the SDK ...
 

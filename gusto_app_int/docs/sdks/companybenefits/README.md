@@ -35,7 +35,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = gai_client.company_benefits.create(company_id="<id>", description="hm pfft surge beyond")
 
     # Handle response
     print(res)

@@ -66,7 +66,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.tax_requirements.get(company_uuid="<id>", state="Oklahoma")
+    res = gusto.tax_requirements.get(company_uuid="<id>", state="South Dakota")
 
     # Handle response
     print(res)
@@ -110,7 +110,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.tax_requirements.update_state(company_uuid="<id>", state="Massachusetts", requirement_sets=[
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="Tennessee", requirement_sets=[
         {
             "key": "registrations",
             "effective_from": None,

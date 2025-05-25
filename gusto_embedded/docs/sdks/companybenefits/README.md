@@ -36,7 +36,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = gusto.company_benefits.create(company_id="<id>", description="hm pfft surge beyond")
 
     # Handle response
     print(res)

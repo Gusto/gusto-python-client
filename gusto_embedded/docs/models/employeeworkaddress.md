@@ -1,7 +1,5 @@
 # EmployeeWorkAddress
 
-List of employee work addresses
-
 
 ## Fields
 

@@ -1172,8 +1172,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1181,10 +1181,11 @@ class EmployeeAddresses(BaseSDK):
     ) -> List[models.EmployeeWorkAddress]:
         r"""Get an employee's work addresses
 
-        Returns a list of an employee's work addresses. Each address includes its effective date and a boolean
-        signifying if it is the currently active work address.
+        Returns a list of an employee's work addresses. Each address includes its effective
+        date and a boolean signifying if it is the currently active work address.
 
         scope: `employees:read`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1244,9 +1245,15 @@ class EmployeeAddresses(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, List[models.EmployeeWorkAddress])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1271,8 +1278,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1280,10 +1287,11 @@ class EmployeeAddresses(BaseSDK):
     ) -> List[models.EmployeeWorkAddress]:
         r"""Get an employee's work addresses
 
-        Returns a list of an employee's work addresses. Each address includes its effective date and a boolean
-        signifying if it is the currently active work address.
+        Returns a list of an employee's work addresses. Each address includes its effective
+        date and a boolean signifying if it is the currently active work address.
 
         scope: `employees:read`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1343,9 +1351,15 @@ class EmployeeAddresses(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, List[models.EmployeeWorkAddress])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1370,8 +1384,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1384,6 +1398,7 @@ class EmployeeAddresses(BaseSDK):
         The work address of an employee describes when an employee began working at an associated company location.
 
         scope: `employees:manage`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1459,12 +1474,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1489,8 +1504,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1503,6 +1518,7 @@ class EmployeeAddresses(BaseSDK):
         The work address of an employee describes when an employee began working at an associated company location.
 
         scope: `employees:manage`
+
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1578,12 +1594,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1608,8 +1624,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1620,6 +1636,7 @@ class EmployeeAddresses(BaseSDK):
         The work address of an employee is used for payroll tax purposes.
 
         scope: `employees:read`
+
 
         :param work_address_uuid: The UUID of the work address
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1679,9 +1696,15 @@ class EmployeeAddresses(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1706,8 +1729,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1718,6 +1741,7 @@ class EmployeeAddresses(BaseSDK):
         The work address of an employee is used for payroll tax purposes.
 
         scope: `employees:read`
+
 
         :param work_address_uuid: The UUID of the work address
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1777,9 +1801,15 @@ class EmployeeAddresses(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = utils.unmarshal_json(
+                http_res.text, models.UnprocessableEntityErrorObjectData
+            )
+            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1805,8 +1835,8 @@ class EmployeeAddresses(BaseSDK):
         work_address_uuid: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1820,8 +1850,9 @@ class EmployeeAddresses(BaseSDK):
 
         scope: `employees:manage`
 
+
         :param work_address_uuid: The UUID of the work address
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param location_uuid: Reference to a company location
         :param effective_date:
@@ -1844,9 +1875,9 @@ class EmployeeAddresses(BaseSDK):
             work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
+                version=version,
                 location_uuid=location_uuid,
                 effective_date=effective_date,
-                version=version,
             ),
         )
 
@@ -1896,12 +1927,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -1927,8 +1958,8 @@ class EmployeeAddresses(BaseSDK):
         work_address_uuid: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         location_uuid: Optional[str] = None,
         effective_date: Optional[date] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1942,8 +1973,9 @@ class EmployeeAddresses(BaseSDK):
 
         scope: `employees:manage`
 
+
         :param work_address_uuid: The UUID of the work address
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param location_uuid: Reference to a company location
         :param effective_date:
@@ -1966,9 +1998,9 @@ class EmployeeAddresses(BaseSDK):
             work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
+                version=version,
                 location_uuid=location_uuid,
                 effective_date=effective_date,
-                version=version,
             ),
         )
 
@@ -2018,12 +2050,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return utils.unmarshal_json(http_res.text, models.EmployeeWorkAddress)
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -2048,8 +2080,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2057,9 +2089,10 @@ class EmployeeAddresses(BaseSDK):
     ):
         r"""Delete an employee's work address
 
-        Used for deleting an employee's work address.  Cannot delete the employee's active work address.
+        Used for deleting an employee's work address. Cannot delete the employee's active work address.
 
         scope: `employees:manage`
+
 
         :param work_address_uuid: The UUID of the work address
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -2122,12 +2155,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res
@@ -2152,8 +2185,8 @@ class EmployeeAddresses(BaseSDK):
         *,
         work_address_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2161,9 +2194,10 @@ class EmployeeAddresses(BaseSDK):
     ):
         r"""Delete an employee's work address
 
-        Used for deleting an employee's work address.  Cannot delete the employee's active work address.
+        Used for deleting an employee's work address. Cannot delete the employee's active work address.
 
         scope: `employees:manage`
+
 
         :param work_address_uuid: The UUID of the work address
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -2226,12 +2260,12 @@ class EmployeeAddresses(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, "422", "application/json"):
+        if utils.match_response(http_res, ["404", "422"], "application/json"):
             response_data = utils.unmarshal_json(
                 http_res.text, models.UnprocessableEntityErrorObjectData
             )
             raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError(
                 "API error occurred", http_res.status_code, http_res_text, http_res

@@ -132,7 +132,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.pay_schedules.get_preview(company_id="<id>", frequency=gusto_embedded.QueryParamFrequency.EVERY_OTHER_WEEK, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
+    res = gusto.pay_schedules.get_preview(company_id="<id>", frequency=gusto_embedded.QueryParamFrequency.MONTHLY, anchor_pay_date="2020-05-15", anchor_end_of_pay_period="2020-05-08")
 
     # Handle response
     print(res)

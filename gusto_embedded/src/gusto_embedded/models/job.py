@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from .compensation import Compensation, CompensationTypedDict
+from .location import Location, LocationTypedDict
 from gusto_embedded.types import (
     BaseModel,
     Nullable,
@@ -42,6 +43,10 @@ class JobTypedDict(TypedDict):
     state_wc_class_code: NotRequired[Nullable[str]]
     r"""The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more."""
     compensations: NotRequired[List[CompensationTypedDict]]
+    location_uuid: NotRequired[str]
+    r"""The uuid of the employee's work location."""
+    location: NotRequired[LocationTypedDict]
+    r"""The representation of an address in Gusto."""
 
 
 class Job(BaseModel):
@@ -85,6 +90,12 @@ class Job(BaseModel):
 
     compensations: Optional[List[Compensation]] = None
 
+    location_uuid: Optional[str] = None
+    r"""The uuid of the employee's work location."""
+
+    location: Optional[Location] = None
+    r"""The representation of an address in Gusto."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
@@ -100,6 +111,8 @@ class Job(BaseModel):
             "state_wc_covered",
             "state_wc_class_code",
             "compensations",
+            "location_uuid",
+            "location",
         ]
         nullable_fields = [
             "title",

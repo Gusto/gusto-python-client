@@ -173,7 +173,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.update(employee_id="<id>", version="f0c06d303aab1fd909b40d4a1ad409ac", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
+    res = gai_client.employees.update(employee_id="<id>", version="9294130ed6ff0c1735ef7b4148c1f320", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
 
     # Handle response
     print(res)

@@ -122,7 +122,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.locations.update(location_id="<id>", version="aa2c4db94c2e968aa0cf51f346007c5f", phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
+    res = gai_client.locations.update(location_id="<id>", version="14302448d61342a1a25072fcb59df0b3", phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
 
     # Handle response
     print(res)

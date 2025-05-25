@@ -327,7 +327,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56)
 
     # Use the SDK ...
 

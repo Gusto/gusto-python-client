@@ -639,7 +639,8 @@ with Gusto() as gusto:
 ### [reports](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md)
 
 * [create_custom](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md#create_custom) - Create a custom report
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md#get) - Get a report
+* [post_payrolls_payroll_uuid_reports_general_ledger](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/reports/README.md#get_template) - Get a report template
 
 ### [signatories](https://github.com/Gusto/gusto-python-client/blob/master/docs/sdks/signatories/README.md)

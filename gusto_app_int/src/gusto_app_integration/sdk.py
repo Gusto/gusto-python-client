@@ -7,61 +7,116 @@ from .utils.logger import Logger, get_default_logger
 from .utils.retries import RetryConfig
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import SDKHooks
-from gusto_app_integration.companies import Companies
-from gusto_app_integration.companybenefits import CompanyBenefits
-from gusto_app_integration.companylocations import CompanyLocations
-from gusto_app_integration.contractorpaymentgroups import ContractorPaymentGroups
-from gusto_app_integration.contractorpayments import ContractorPayments
-from gusto_app_integration.contractors import Contractors
-from gusto_app_integration.departments import Departments
-from gusto_app_integration.earningtypes import EarningTypes
-from gusto_app_integration.employeeaddresses import EmployeeAddresses
-from gusto_app_integration.employeebenefits import EmployeeBenefits
-from gusto_app_integration.employeeemployments import EmployeeEmployments
-from gusto_app_integration.employees import Employees
-from gusto_app_integration.events import Events
-from gusto_app_integration.garnishments import Garnishments
-from gusto_app_integration.introspection import Introspection
-from gusto_app_integration.jobs import Jobs
-from gusto_app_integration.jobsandcompensations import JobsAndCompensations
-from gusto_app_integration.locations import Locations
-from gusto_app_integration.payrolls import Payrolls
-from gusto_app_integration.payschedules import PaySchedules
-from gusto_app_integration.time_tracking import TimeTracking
-from gusto_app_integration.timeoffpolicies import TimeOffPolicies
 from gusto_app_integration.types import OptionalNullable, UNSET
-from gusto_app_integration.webhooks import Webhooks
 import httpx
-from typing import Any, Callable, Dict, Optional, Union, cast
+import importlib
+from typing import Any, Callable, Dict, Optional, TYPE_CHECKING, Union, cast
 import weakref
+
+if TYPE_CHECKING:
+    from gusto_app_integration.companies import Companies
+    from gusto_app_integration.companybenefits import CompanyBenefits
+    from gusto_app_integration.companylocations import CompanyLocations
+    from gusto_app_integration.contractorpaymentgroups import ContractorPaymentGroups
+    from gusto_app_integration.contractorpayments import ContractorPayments
+    from gusto_app_integration.contractors import Contractors
+    from gusto_app_integration.departments import Departments
+    from gusto_app_integration.earningtypes import EarningTypes
+    from gusto_app_integration.employeeaddresses import EmployeeAddresses
+    from gusto_app_integration.employeebenefits import EmployeeBenefits
+    from gusto_app_integration.employeeemployments import EmployeeEmployments
+    from gusto_app_integration.employees import Employees
+    from gusto_app_integration.events import Events
+    from gusto_app_integration.garnishments import Garnishments
+    from gusto_app_integration.introspection import Introspection
+    from gusto_app_integration.jobs import Jobs
+    from gusto_app_integration.jobsandcompensations import JobsAndCompensations
+    from gusto_app_integration.locations import Locations
+    from gusto_app_integration.payrolls import Payrolls
+    from gusto_app_integration.payschedules import PaySchedules
+    from gusto_app_integration.time_tracking import TimeTracking
+    from gusto_app_integration.timeoffpolicies import TimeOffPolicies
+    from gusto_app_integration.webhooks import Webhooks
 
 
 class GustoAppIntegration(BaseSDK):
     r"""Gusto API: Welcome to Gusto's Embedded Payroll API documentation!"""
 
-    introspection: Introspection
-    companies: Companies
-    locations: Locations
-    company_locations: CompanyLocations
-    pay_schedules: PaySchedules
-    employees: Employees
-    departments: Departments
-    employee_employments: EmployeeEmployments
-    employee_addresses: EmployeeAddresses
-    jobs: Jobs
-    jobs_and_compensations: JobsAndCompensations
-    earning_types: EarningTypes
-    contractors: Contractors
-    webhooks: Webhooks
-    payrolls: Payrolls
-    time_off_policies: TimeOffPolicies
-    contractor_payments: ContractorPayments
-    contractor_payment_groups: ContractorPaymentGroups
-    company_benefits: CompanyBenefits
-    employee_benefits: EmployeeBenefits
-    garnishments: Garnishments
-    events: Events
-    time_tracking: TimeTracking
+    introspection: "Introspection"
+    companies: "Companies"
+    locations: "Locations"
+    company_locations: "CompanyLocations"
+    pay_schedules: "PaySchedules"
+    employees: "Employees"
+    departments: "Departments"
+    employee_employments: "EmployeeEmployments"
+    employee_addresses: "EmployeeAddresses"
+    jobs: "Jobs"
+    jobs_and_compensations: "JobsAndCompensations"
+    earning_types: "EarningTypes"
+    contractors: "Contractors"
+    webhooks: "Webhooks"
+    payrolls: "Payrolls"
+    time_off_policies: "TimeOffPolicies"
+    contractor_payments: "ContractorPayments"
+    contractor_payment_groups: "ContractorPaymentGroups"
+    company_benefits: "CompanyBenefits"
+    employee_benefits: "EmployeeBenefits"
+    garnishments: "Garnishments"
+    events: "Events"
+    time_tracking: "TimeTracking"
+    _sub_sdk_map = {
+        "introspection": ("gusto_app_integration.introspection", "Introspection"),
+        "companies": ("gusto_app_integration.companies", "Companies"),
+        "locations": ("gusto_app_integration.locations", "Locations"),
+        "company_locations": (
+            "gusto_app_integration.companylocations",
+            "CompanyLocations",
+        ),
+        "pay_schedules": ("gusto_app_integration.payschedules", "PaySchedules"),
+        "employees": ("gusto_app_integration.employees", "Employees"),
+        "departments": ("gusto_app_integration.departments", "Departments"),
+        "employee_employments": (
+            "gusto_app_integration.employeeemployments",
+            "EmployeeEmployments",
+        ),
+        "employee_addresses": (
+            "gusto_app_integration.employeeaddresses",
+            "EmployeeAddresses",
+        ),
+        "jobs": ("gusto_app_integration.jobs", "Jobs"),
+        "jobs_and_compensations": (
+            "gusto_app_integration.jobsandcompensations",
+            "JobsAndCompensations",
+        ),
+        "earning_types": ("gusto_app_integration.earningtypes", "EarningTypes"),
+        "contractors": ("gusto_app_integration.contractors", "Contractors"),
+        "webhooks": ("gusto_app_integration.webhooks", "Webhooks"),
+        "payrolls": ("gusto_app_integration.payrolls", "Payrolls"),
+        "time_off_policies": (
+            "gusto_app_integration.timeoffpolicies",
+            "TimeOffPolicies",
+        ),
+        "contractor_payments": (
+            "gusto_app_integration.contractorpayments",
+            "ContractorPayments",
+        ),
+        "contractor_payment_groups": (
+            "gusto_app_integration.contractorpaymentgroups",
+            "ContractorPaymentGroups",
+        ),
+        "company_benefits": (
+            "gusto_app_integration.companybenefits",
+            "CompanyBenefits",
+        ),
+        "employee_benefits": (
+            "gusto_app_integration.employeebenefits",
+            "EmployeeBenefits",
+        ),
+        "garnishments": ("gusto_app_integration.garnishments", "Garnishments"),
+        "events": ("gusto_app_integration.events", "Events"),
+        "time_tracking": ("gusto_app_integration.time_tracking", "TimeTracking"),
+    }
 
     def __init__(
         self,
@@ -160,32 +215,32 @@ class GustoAppIntegration(BaseSDK):
             self.sdk_configuration.async_client_supplied,
         )
 
-        self._init_sdks()
+    def __getattr__(self, name: str):
+        if name in self._sub_sdk_map:
+            module_path, class_name = self._sub_sdk_map[name]
+            try:
+                module = importlib.import_module(module_path)
+                klass = getattr(module, class_name)
+                instance = klass(self.sdk_configuration)
+                setattr(self, name, instance)
+                return instance
+            except ImportError as e:
+                raise AttributeError(
+                    f"Failed to import module {module_path} for attribute {name}: {e}"
+                ) from e
+            except AttributeError as e:
+                raise AttributeError(
+                    f"Failed to find class {class_name} in module {module_path} for attribute {name}: {e}"
+                ) from e
 
-    def _init_sdks(self):
-        self.introspection = Introspection(self.sdk_configuration)
-        self.companies = Companies(self.sdk_configuration)
-        self.locations = Locations(self.sdk_configuration)
-        self.company_locations = CompanyLocations(self.sdk_configuration)
-        self.pay_schedules = PaySchedules(self.sdk_configuration)
-        self.employees = Employees(self.sdk_configuration)
-        self.departments = Departments(self.sdk_configuration)
-        self.employee_employments = EmployeeEmployments(self.sdk_configuration)
-        self.employee_addresses = EmployeeAddresses(self.sdk_configuration)
-        self.jobs = Jobs(self.sdk_configuration)
-        self.jobs_and_compensations = JobsAndCompensations(self.sdk_configuration)
-        self.earning_types = EarningTypes(self.sdk_configuration)
-        self.contractors = Contractors(self.sdk_configuration)
-        self.webhooks = Webhooks(self.sdk_configuration)
-        self.payrolls = Payrolls(self.sdk_configuration)
-        self.time_off_policies = TimeOffPolicies(self.sdk_configuration)
-        self.contractor_payments = ContractorPayments(self.sdk_configuration)
-        self.contractor_payment_groups = ContractorPaymentGroups(self.sdk_configuration)
-        self.company_benefits = CompanyBenefits(self.sdk_configuration)
-        self.employee_benefits = EmployeeBenefits(self.sdk_configuration)
-        self.garnishments = Garnishments(self.sdk_configuration)
-        self.events = Events(self.sdk_configuration)
-        self.time_tracking = TimeTracking(self.sdk_configuration)
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )
+
+    def __dir__(self):
+        default_attrs = list(super().__dir__())
+        lazy_attrs = list(self._sub_sdk_map.keys())
+        return sorted(list(set(default_attrs + lazy_attrs)))
 
     def __enter__(self):
         return self

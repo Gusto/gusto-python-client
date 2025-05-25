@@ -153,11 +153,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_documents.sign(document_uuid="<id>", fields=[
-        {},
-        {},
-        {},
-    ], agree=True)
+    res = gusto.contractor_documents.sign(document_uuid="<id>", fields=[], agree=False)
 
     # Handle response
     print(res)

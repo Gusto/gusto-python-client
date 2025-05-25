@@ -30,11 +30,11 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.create(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
+    res = gusto.signatories.create(company_uuid="<id>", ssn="<value>", first_name="Ed", last_name="Reichert", email="Shanny62@hotmail.com", title="<value>", phone="1-346-396-8392 x69356", birthday="<value>", home_address={
         "street_1": "<value>",
-        "city": "North Lilly",
-        "state": "North Carolina",
-        "zip_code": "05065",
+        "city": "East Clydefield",
+        "state": "Kentucky",
+        "zip_code": "13719-5134",
     })
 
     # Handle response
@@ -127,7 +127,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
+    res = gusto.signatories.invite(company_uuid="<id>", email="Kamron.Nikolaus@yahoo.com")
 
     # Handle response
     print(res)
