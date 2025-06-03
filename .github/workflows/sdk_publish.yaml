@@ -23,7 +23,7 @@ jobs:
       pypi_token: ${{ secrets.PYPI_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
   publish-app-int:
-    uses: Gusto/sdk-generation-action/.github/workflows/workflow-executor.yaml@main
+    uses: Gusto/sdk-generation-action/.github/workflows/sdk-publish.yaml@main
     with:
       target: gusto-app-int
       runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
