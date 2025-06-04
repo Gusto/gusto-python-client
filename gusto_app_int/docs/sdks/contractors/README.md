@@ -27,7 +27,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.create(company_uuid="<id>", wage_type=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = gai_client.contractors.create(company_uuid="<id>", wage_type=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, type_=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL, hourly_rate="40.0", self_onboarding=True, email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", file_new_hire_report=False, work_state="CA")
 
     # Handle response
     print(res)
@@ -77,6 +77,7 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -84,7 +85,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.get(company_uuid="<id>")
+    res = gai_client.contractors.get(company_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -121,6 +122,7 @@ scope: `contractors:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -128,7 +130,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.get_by_id(contractor_uuid="<id>")
+    res = gai_client.contractors.get_by_id(contractor_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -174,7 +176,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_app_integration.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = gai_client.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, type_=gusto_app_integration.PutV1ContractorsContractorUUIDType.INDIVIDUAL, wage_type=gusto_app_integration.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", self_onboarding=False, first_name="Chanel", last_name="Boyle", middle_initial="X", file_new_hire_report=False, is_active=True)
 
     # Handle response
     print(res)

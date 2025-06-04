@@ -29,7 +29,7 @@ with Gusto() as gusto:
 
     res = gusto.events.get(security=gusto_embedded.GetEventsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), sort_order=gusto_embedded.SortOrder.ASC)
+    ), sort_order=gusto_embedded.SortOrder.ASC, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

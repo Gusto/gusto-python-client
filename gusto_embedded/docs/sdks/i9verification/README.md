@@ -24,6 +24,7 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -32,7 +33,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.i9_verification.get_authorization(employee_id="<id>")
+    res = gusto.i9_verification.get_authorization(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -93,7 +94,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.i9_verification.update(employee_id="<id>", authorization_status=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.i9_verification.update(employee_id="<id>", authorization_status=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus.CITIZEN, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, version="52b7c567242cb7452e89ba2bc02cb476")
 
     # Handle response
     print(res)
@@ -134,6 +135,7 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -142,7 +144,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.i9_verification.get_document_options(employee_id="<id>")
+    res = gusto.i9_verification.get_document_options(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -176,6 +178,7 @@ scope: `i9_authorizations:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -184,7 +187,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.i9_verification.get_documents(employee_id="<id>")
+    res = gusto.i9_verification.get_documents(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -225,6 +228,7 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -241,7 +245,7 @@ with Gusto(
             "expiration_date": "2026-01-01",
             "issuing_authority": "USA",
         },
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -277,6 +281,7 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -285,7 +290,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.i9_verification.delete_document(employee_id="<id>", document_id="<id>")
+    gusto.i9_verification.delete_document(employee_id="<id>", document_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -315,6 +320,7 @@ scope: `i9_authorizations:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -323,7 +329,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.i9_verification.employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", agree=False)
+    res = gusto.i9_verification.employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", agree=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

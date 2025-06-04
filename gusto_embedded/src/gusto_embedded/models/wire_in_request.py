@@ -13,12 +13,11 @@ class WireInRequestStatus(str, Enum):
     AWAITING_FUNDS = "awaiting_funds"
     PENDING_REVIEW = "pending_review"
     APPROVED = "approved"
-    RFI = "rfi"
     CANCELED = "canceled"
 
 
-class PaymentUUID(str, Enum):
-    r"""Unique identifier of the payment"""
+class PaymentType(str, Enum):
+    r"""Type of payment for the wire in"""
 
     PAYROLL = "payroll"
 
@@ -50,9 +49,9 @@ class WireInRequestTypedDict(TypedDict):
     r"""Date the wire in was sent"""
     unique_tracking_code: NotRequired[str]
     r"""Include in note with bank to track payment"""
-    payment_type: NotRequired[str]
+    payment_type: NotRequired[PaymentType]
     r"""Type of payment for the wire in"""
-    payment_uuid: NotRequired[PaymentUUID]
+    payment_uuid: NotRequired[str]
     r"""Unique identifier of the payment"""
     amount_sent: NotRequired[str]
     r"""Amount sent through wire in"""
@@ -101,10 +100,10 @@ class WireInRequest(BaseModel):
     unique_tracking_code: Optional[str] = None
     r"""Include in note with bank to track payment"""
 
-    payment_type: Optional[str] = None
+    payment_type: Optional[PaymentType] = None
     r"""Type of payment for the wire in"""
 
-    payment_uuid: Optional[PaymentUUID] = None
+    payment_uuid: Optional[str] = None
     r"""Unique identifier of the payment"""
 
     amount_sent: Optional[str] = None

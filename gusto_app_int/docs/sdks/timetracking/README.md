@@ -23,6 +23,7 @@ scope: `time_sheet:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -30,7 +31,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.time_tracking.get_companies_company_uuid_time_tracking_time_sheets(company_uuid="<id>")
+    res = gai_client.time_tracking.get_companies_company_uuid_time_tracking_time_sheets(company_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -85,7 +86,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.time_tracking.post_companies_company_uuid_time_tracking_time_sheets(company_uuid="<id>", entity_uuid="123e4567-e89b-12d3-a456-426614174000", entity_type="Employee", time_zone="America/New_York", shift_started_at=parse_datetime("2024-06-10T09:00:00Z"), job_uuid="123e4567-e89b-12d3-a456-426614174000", shift_ended_at=parse_datetime("2024-06-10T17:00:00Z"), metadata={
+    res = gai_client.time_tracking.post_companies_company_uuid_time_tracking_time_sheets(company_uuid="<id>", entity_uuid="123e4567-e89b-12d3-a456-426614174000", entity_type="Employee", time_zone="America/New_York", shift_started_at=parse_datetime("2024-06-10T09:00:00Z"), x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, job_uuid="123e4567-e89b-12d3-a456-426614174000", shift_ended_at=parse_datetime("2024-06-10T17:00:00Z"), metadata={
         "custom_field": "custom value",
     }, entries=[
         {
@@ -138,6 +139,7 @@ scope: `time_sheet:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -145,7 +147,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.time_tracking.get_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>")
+    res = gai_client.time_tracking.get_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -182,6 +184,7 @@ scope: `time_sheet:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import parse_datetime
 
@@ -190,7 +193,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.time_tracking.put_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>", version="72deb67e16f7b92713c00d3582fa6c68", entity_uuid="123e4567-e89b-12d3-a456-426614174000", entity_type="Employee", job_uuid="123e4567-e89b-12d3-a456-426614174000", time_zone="America/New_York", shift_started_at=parse_datetime("2024-06-10T09:00:00Z"), shift_ended_at=parse_datetime("2024-06-10T17:00:00Z"), metadata={
+    res = gai_client.time_tracking.put_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>", version="72deb67e16f7b92713c00d3582fa6c68", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, entity_uuid="123e4567-e89b-12d3-a456-426614174000", entity_type="Employee", job_uuid="123e4567-e89b-12d3-a456-426614174000", time_zone="America/New_York", shift_started_at=parse_datetime("2024-06-10T09:00:00Z"), shift_ended_at=parse_datetime("2024-06-10T17:00:00Z"), metadata={
         "custom_field": "custom value",
     }, entries=[
         {
@@ -244,6 +247,7 @@ scope: `time_sheet:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -251,7 +255,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.time_tracking.delete_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>", version="<value>")
+    gai_client.time_tracking.delete_time_tracking_time_sheets_time_sheet_uuid(time_sheet_uuid="<id>", version="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

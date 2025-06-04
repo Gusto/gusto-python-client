@@ -24,6 +24,7 @@ scope: `employees:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -32,7 +33,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.generate_w2(employee_id="<id>")
+    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -68,6 +69,7 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -76,7 +78,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.list(employee_id="<id>")
+    res = gusto.employee_forms.list(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -110,6 +112,7 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -118,7 +121,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.get(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get(employee_id="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -153,6 +156,7 @@ scope: `employee_forms:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -161,7 +165,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.get_pdf(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get_pdf(employee_id="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -199,6 +203,7 @@ scope: `employee_forms:sign`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -207,7 +212,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, signed_by_ip_address="192.168.0.1")
 
     # Handle response
     print(res)

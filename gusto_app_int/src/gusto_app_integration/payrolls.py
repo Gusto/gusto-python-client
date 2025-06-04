@@ -106,6 +106,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
@@ -236,6 +237,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
@@ -349,6 +351,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=[],
@@ -462,6 +465,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=[],
@@ -592,6 +596,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
@@ -728,6 +733,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=[],
@@ -774,6 +780,7 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        employee_uuids: Optional[List[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -792,6 +799,7 @@ class Payrolls(BaseSDK):
         :param company_id: The UUID of the company
         :param payroll_id: The UUID of the payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -811,6 +819,9 @@ class Payrolls(BaseSDK):
             company_id=company_id,
             payroll_id=payroll_id,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
+                employee_uuids=employee_uuids,
+            ),
         )
 
         req = self._build_request(
@@ -826,6 +837,15 @@ class Payrolls(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody
+                ],
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -839,6 +859,7 @@ class Payrolls(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=[],
@@ -879,6 +900,7 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.VersionHeader
         ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        employee_uuids: Optional[List[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -897,6 +919,7 @@ class Payrolls(BaseSDK):
         :param company_id: The UUID of the company
         :param payroll_id: The UUID of the payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -916,6 +939,9 @@ class Payrolls(BaseSDK):
             company_id=company_id,
             payroll_id=payroll_id,
             x_gusto_api_version=x_gusto_api_version,
+            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
+                employee_uuids=employee_uuids,
+            ),
         )
 
         req = self._build_request_async(
@@ -931,6 +957,15 @@ class Payrolls(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody
+                ],
+            ),
             timeout_ms=timeout_ms,
         )
 
@@ -944,6 +979,7 @@ class Payrolls(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=[],

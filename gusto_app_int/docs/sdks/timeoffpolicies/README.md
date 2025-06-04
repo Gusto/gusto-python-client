@@ -24,6 +24,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -31,7 +32,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.time_off_policies.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
+    res = gai_client.time_off_policies.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
 
     # Handle response
     print(res)

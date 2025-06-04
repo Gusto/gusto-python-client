@@ -21,6 +21,7 @@ scope: `company_suspensions:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -29,7 +30,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.suspensions.get(company_uuid="<id>")
+    res = gusto.companies.suspensions.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -72,7 +73,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.suspensions.suspend(company_uuid="<id>", file_quarterly_forms=True, file_yearly_forms=True, reconcile_tax_method=gusto_embedded.PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod.PAY_TAXES, reason=gusto_embedded.Reason.SWITCHING_PROVIDER, leaving_for=gusto_embedded.LeavingFor.OTHER)
+    res = gusto.companies.suspensions.suspend(company_uuid="<id>", file_quarterly_forms=True, file_yearly_forms=True, reconcile_tax_method=gusto_embedded.PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod.PAY_TAXES, reason=gusto_embedded.Reason.SWITCHING_PROVIDER, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, leaving_for=gusto_embedded.LeavingFor.OTHER)
 
     # Handle response
     print(res)

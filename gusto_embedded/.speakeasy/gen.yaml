@@ -7,6 +7,7 @@ generation:
   maintainOpenAPIOrder: true
   usageSnippets:
     optionalPropertyRendering: withExample
+    sdkInitStyle: constructor
   useClassNamesForArrayFields: true
   fixes:
     nameResolutionDec2023: true
@@ -19,7 +20,7 @@ generation:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
 python:
-  version: 0.3.0
+  version: 0.4.0
   additionalDependencies:
     dev: {}
     main: {}
@@ -47,8 +48,10 @@ python:
   inputModelSuffix: input
   maxMethodParams: 999
   methodArguments: infer-optional-args
+  moduleName: ""
   outputModelSuffix: output
   packageName: gusto_embedded
+  pytestFilterWarnings: []
   pytestTimeout: 0
   responseFormat: flat
   templateVersion: v2

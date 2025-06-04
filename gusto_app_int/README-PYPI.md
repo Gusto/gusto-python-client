@@ -116,6 +116,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -123,7 +124,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -135,6 +136,7 @@ The same SDK client can also be used to make asychronous requests by importing a
 ```python
 # Asynchronous Example
 import asyncio
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 async def main():
@@ -143,7 +145,7 @@ async def main():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
 
-        res = await gai_client.introspection.get_token_info_async()
+        res = await gai_client.introspection.get_token_info_async(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
@@ -165,6 +167,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -172,7 +175,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -191,7 +194,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.introspection.disconnect_app_integration(security=gusto_app_integration.PostV1DisconnectAppIntegrationSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), company_id="<id>")
+    ), company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -400,6 +403,7 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -408,7 +412,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info(,
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -418,6 +422,7 @@ with GustoAppIntegration(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -427,7 +432,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -501,7 +506,7 @@ with GustoAppIntegration() as gai_client:
                     "phone": "2345678901",
                 },
             ],
-        })
+        }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
@@ -530,6 +535,7 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -538,7 +544,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -549,6 +555,7 @@ with GustoAppIntegration(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -557,7 +564,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

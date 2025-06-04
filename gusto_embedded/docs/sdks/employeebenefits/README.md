@@ -31,10 +31,10 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
+    res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True, employee_deduction="100.00", deduct_as_percentage=False, contribution={
         "type": gusto_embedded.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
         "value": "100.00",
-    })
+    }, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -88,6 +88,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -96,7 +97,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get(employee_id="<id>")
+    res = gusto.employee_benefits.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -134,6 +135,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -142,7 +144,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>")
+    res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -176,6 +178,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -184,7 +187,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, employee_deduction="250.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_embedded.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -234,6 +237,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -242,7 +246,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.delete(employee_benefit_id="<id>")
+    gusto.employee_benefits.delete(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -274,6 +278,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -282,7 +287,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -319,6 +324,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -327,7 +333,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
 
     # Use the SDK ...
 

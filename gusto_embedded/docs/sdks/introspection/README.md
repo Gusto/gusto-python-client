@@ -15,6 +15,7 @@ Returns scope and resource information associated with the current access token.
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -23,7 +24,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -58,6 +59,7 @@ The `expires_in` value is provided in seconds from when the `access_token` was g
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -66,7 +68,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.refresh_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>")
+    res = gusto.introspection.refresh_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

@@ -21,6 +21,7 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -28,7 +29,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.earning_types.create(company_id="<id>", name="Gym Membership Stipend")
+    res = gai_client.earning_types.create(company_id="<id>", name="Gym Membership Stipend", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -70,6 +71,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -77,7 +79,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.earning_types.get(company_id="<id>")
+    res = gai_client.earning_types.get(company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -111,6 +113,7 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -118,7 +121,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.earning_types.update(company_id="<id>", earning_type_uuid="<id>", name="Gym Membership Stipend")
+    res = gai_client.earning_types.update(company_id="<id>", earning_type_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, name="Gym Membership Stipend")
 
     # Handle response
     print(res)
@@ -155,6 +158,7 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -162,7 +166,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.earning_types.deactivate(company_id="<id>", earning_type_uuid="<id>")
+    gai_client.earning_types.deactivate(company_id="<id>", earning_type_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

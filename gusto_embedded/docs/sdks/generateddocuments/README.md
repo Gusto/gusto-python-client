@@ -25,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.generated_documents.get(document_type=gusto_embedded.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
+    res = gusto.generated_documents.get(document_type=gusto_embedded.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

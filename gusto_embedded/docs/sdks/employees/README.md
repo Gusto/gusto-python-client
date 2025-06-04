@@ -27,6 +27,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -35,7 +36,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.list(company_id="<id>")
+    res = gusto.employees.list(company_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -49,6 +50,7 @@ with Gusto(
 | `company_id`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                             | The UUID of the company                                                                                                                                                                                                                                                                        |
 | `x_gusto_api_version`                                                                                                                                                                                                                                                                          | [Optional[models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidemployeesheaderxgustoapiversion.md)                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                   |
 | `search_term`                                                                                                                                                                                                                                                                                  | *Optional[str]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | A string to search for in the object's names                                                                                                                                                                                                                                                   |
+| `uuids`                                                                                                                                                                                                                                                                                        | List[*str*]                                                                                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | N/A                                                                                                                                                                                                                                                                                            |
 | `include`                                                                                                                                                                                                                                                                                      | List[[models.Include](../../models/include.md)]                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>- custom_fields: Include employees' custom fields<br/> |
 | `terminated`                                                                                                                                                                                                                                                                                   | *Optional[bool]*                                                                                                                                                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Filters employees by the provided boolean                                                                                                                                                                                                                                                      |
 | `page`                                                                                                                                                                                                                                                                                         | *Optional[int]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                                                                                         |
@@ -76,6 +78,7 @@ with Gusto(
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -84,7 +87,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.create(company_id="<id>", first_name="Karl", last_name="The Fog")
+    res = gusto.employees.create(company_id="<id>", first_name="Karl", last_name="The Fog", x_gusto_api_version=gusto_embedded.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -128,6 +131,7 @@ scope: `employees:manage`
 
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -148,7 +152,7 @@ with Gusto(
         "effective_date": date.fromisoformat("2022-09-15T00:00:00Z"),
     }, job={
         "hire_date": date.fromisoformat("2018-05-09T00:00:00Z"),
-    }, middle_initial="A", preferred_first_name="Angel", employee_state_taxes={
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, middle_initial="A", preferred_first_name="Angel", employee_state_taxes={
         "wc_covered": True,
         "wc_class_code": "20992",
     })
@@ -199,6 +203,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -207,7 +212,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get(employee_id="<id>")
+    res = gusto.employees.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -251,7 +256,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update(employee_id="<id>", version="f0c06d303aab1fd909b40d4a1ad409ac", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
+    res = gusto.employees.update(employee_id="<id>", version="6da9085f86ecc01e0000a5655c2dfdba", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
 
     # Handle response
     print(res)
@@ -298,6 +303,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -306,7 +312,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employees.delete(employee_id="<id>")
+    gusto.employees.delete(employee_id="<id>", x_gusto_api_version=gusto_embedded.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -335,6 +341,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -343,7 +350,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_custom_fields(employee_id="<id>")
+    res = gusto.employees.get_custom_fields(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -379,6 +386,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -387,7 +395,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update_onboarding_documents_config(employee_id="<id>", i9_document=True)
+    res = gusto.employees.update_onboarding_documents_config(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, i9_document=True)
 
     # Handle response
     print(res)
@@ -459,6 +467,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -467,7 +476,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_onboarding_status(employee_id="<id>")
+    res = gusto.employees.get_onboarding_status(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -520,7 +529,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update_onboarding_status(employee_id="<id>", onboarding_status=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus.ADMIN_ONBOARDING_INCOMPLETE)
+    res = gusto.employees.update_onboarding_status(employee_id="<id>", onboarding_status=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus.ADMIN_ONBOARDING_INCOMPLETE, x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -556,6 +565,7 @@ scope: `employee_time_off_activities:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -564,7 +574,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
+    res = gusto.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

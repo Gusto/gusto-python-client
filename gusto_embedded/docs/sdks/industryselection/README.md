@@ -17,6 +17,7 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.industry_selection.get(company_id="<id>")
+    res = gusto.industry_selection.get(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -59,6 +60,7 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -67,7 +69,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.industry_selection.update(company_id="<id>", naics_code="611420", title="Computer Training", sic_codes=[
+    res = gusto.industry_selection.update(company_id="<id>", naics_code="611420", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, title="Computer Training", sic_codes=[
         "8243",
     ])
 

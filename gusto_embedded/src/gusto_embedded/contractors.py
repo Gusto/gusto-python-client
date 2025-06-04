@@ -131,6 +131,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_uuid-contractors",
                 oauth2_scopes=[],
@@ -293,6 +294,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_uuid-contractors",
                 oauth2_scopes=[],
@@ -408,6 +410,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-contractors",
                 oauth2_scopes=[],
@@ -517,6 +520,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-contractors",
                 oauth2_scopes=[],
@@ -617,6 +621,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -717,6 +722,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -880,6 +886,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -1049,6 +1056,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -1155,6 +1163,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -1255,6 +1264,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-contractors-contractor_uuid",
                 oauth2_scopes=[],
@@ -1386,6 +1396,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-onboarding_status",
                 oauth2_scopes=[],
@@ -1519,6 +1530,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-onboarding_status",
                 oauth2_scopes=[],
@@ -1645,6 +1657,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid-onboarding_status",
                 oauth2_scopes=[],
@@ -1777,6 +1790,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid-onboarding_status",
                 oauth2_scopes=[],
@@ -1885,6 +1899,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-address",
                 oauth2_scopes=[],
@@ -1985,6 +2000,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-address",
                 oauth2_scopes=[],
@@ -2112,6 +2128,7 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid-address",
                 oauth2_scopes=[],
@@ -2245,6 +2262,7 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid-address",
                 oauth2_scopes=[],

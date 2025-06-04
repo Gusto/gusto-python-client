@@ -105,6 +105,7 @@ class TimeTracking(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=[],
@@ -233,6 +234,7 @@ class TimeTracking(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=[],
@@ -383,6 +385,7 @@ class TimeTracking(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=[],
@@ -539,6 +542,7 @@ class TimeTracking(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=[],
@@ -646,6 +650,7 @@ class TimeTracking(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],
@@ -747,6 +752,7 @@ class TimeTracking(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],
@@ -894,6 +900,7 @@ class TimeTracking(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],
@@ -1047,6 +1054,7 @@ class TimeTracking(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],
@@ -1157,6 +1165,7 @@ class TimeTracking(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],
@@ -1267,6 +1276,7 @@ class TimeTracking(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=[],

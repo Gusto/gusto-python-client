@@ -54,7 +54,7 @@ with Gusto() as gusto:
         "trade_name": "Frank’s Ocean",
         "ein": "123456789",
         "contractor_only": False,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -94,6 +94,7 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -102,7 +103,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get(company_id="<id>")
+    res = gusto.companies.get(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -136,6 +137,7 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -144,7 +146,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.update(company_id="<id>", contractor_only=False)
+    res = gusto.companies.update(company_id="<id>", contractor_only=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -182,6 +184,7 @@ scope: `partner_managed_companies:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -190,7 +193,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
+    res = gusto.companies.migrate(company_uuid="<id>", email="Janice18@gmail.com", ip_address="75.249.55.210", external_user_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -229,6 +232,7 @@ scope: `terms_of_services:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -237,7 +241,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
+    res = gusto.companies.accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -275,6 +279,7 @@ scope: `terms_of_services:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -283,7 +288,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
+    res = gusto.companies.retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -320,6 +325,7 @@ scope: `company_admin:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -328,7 +334,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.create_admin(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
+    res = gusto.companies.create_admin(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -366,6 +372,7 @@ scope: `company_admin:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -374,7 +381,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.list_admins(company_id="<id>")
+    res = gusto.companies.list_admins(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -411,6 +418,7 @@ scope: `company_onboarding_status:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -419,7 +427,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_onboarding_status(company_uuid="<id>", additional_steps="external_payroll")
+    res = gusto.companies.get_onboarding_status(company_uuid="<id>", additional_steps="external_payroll", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -466,6 +474,7 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -474,7 +483,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.finish_onboarding(company_uuid="<id>")
+    res = gusto.companies.finish_onboarding(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -509,6 +518,7 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -517,7 +527,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_custom_fields(company_id="<id>")
+    res = gusto.companies.get_custom_fields(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

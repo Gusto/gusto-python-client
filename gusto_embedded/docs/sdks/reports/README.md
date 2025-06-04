@@ -6,12 +6,13 @@
 ### Available Operations
 
 * [create_custom](#create_custom) - Create a custom report
-* [get](#get) - Get a report
+* [post_payrolls_payroll_uuid_reports_general_ledger](#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](#get_reports_request_uuid) - Get a report
 * [get_template](#get_template) - Get a report template
 
 ## create_custom
 
-Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the report GET endpoint. This URL is valid for 10 minutes.
+Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid). This URL is valid for 10 minutes.
 
 scope: `company_reports:write`
 
@@ -29,12 +30,8 @@ with Gusto(
 ) as gusto:
 
     res = gusto.reports.create_custom(company_uuid="<id>", columns=[
-        gusto_embedded.Columns.TOTAL_EMPLOYER_BENEFIT_CONTRIBUTIONS,
-        gusto_embedded.Columns.EMPLOYEE_MEDICARE_ADDITIONAL_TAX,
-    ], groupings=[
-        gusto_embedded.Groupings.WORK_ADDRESS_STATE,
-        gusto_embedded.Groupings.WORK_ADDRESS,
-    ], file_type=gusto_embedded.FileType.CSV, start_date=date.fromisoformat("2024-01-01"), end_date=date.fromisoformat("2024-04-01"), dismissed_start_date=date.fromisoformat("2024-01-01"), dismissed_end_date=date.fromisoformat("2024-04-01"))
+        gusto_embedded.Columns.TOTAL_TIME_OFF_EARNINGS,
+    ], groupings=[], file_type=gusto_embedded.FileType.JSON, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, with_totals=False, start_date=date.fromisoformat("2024-01-01"), end_date=date.fromisoformat("2024-04-01"), dismissed_start_date=date.fromisoformat("2024-01-01"), dismissed_end_date=date.fromisoformat("2024-04-01"))
 
     # Handle response
     print(res)
@@ -75,15 +72,18 @@ with Gusto(
 | models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
 | models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
 
-## get
+## post_payrolls_payroll_uuid_reports_general_ledger
 
-Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+Create a general ledger report for a payroll. The report can be aggregated by different dimensions such as job or department.
 
-scope: `company_reports:read`
+Use the `request_uuid` in the response with the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid) to poll for the status and report URL upon completion. The retrieved report will be generated in a JSON format.
+
+scope: `company_reports:write`
 
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -92,7 +92,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.reports.get(report_uuid="<id>")
+    res = gusto.reports.post_payrolls_payroll_uuid_reports_general_ledger(payroll_uuid="<id>", aggregation=gusto_embedded.PostPayrollsPayrollUUIDReportsGeneralLedgerAggregation.DEFAULT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -103,7 +103,52 @@ with Gusto(
 
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `report_uuid`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the report request                                                                                                                                                                                               |
+| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `aggregation`                                                                                                                                                                                                                | [models.PostPayrollsPayrollUUIDReportsGeneralLedgerAggregation](../../models/postpayrollspayrolluuidreportsgeneralledgeraggregation.md)                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | The breakdown of the report. Use 'default' for no split.                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.GeneralLedgerReport](../../models/generalledgerreport.md)**
+
+### Errors
+
+| Error Type                                 | Status Code                                | Content Type                               |
+| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
+| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
+| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+
+## get_reports_request_uuid
+
+Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+
+scope: `company_reports:read`
+
+### Example Usage
+
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.reports.get_reports_request_uuid(request_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `request_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.                                                                        |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -126,6 +171,7 @@ scope: `company_reports:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -134,7 +180,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.reports.get_template(company_uuid="<id>", report_type="<value>")
+    res = gusto.reports.get_template(company_uuid="<id>", report_type="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

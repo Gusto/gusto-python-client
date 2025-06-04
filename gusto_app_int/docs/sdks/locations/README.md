@@ -21,6 +21,7 @@ scope: `companies:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -28,7 +29,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.locations.create(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", street_2="Suite 602")
+    res = gai_client.locations.create(company_id="<id>", phone_number="8009360383", street_1="425 2nd Street", city="San Francisco", state="CA", zip_code="94107", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, street_2="Suite 602")
 
     # Handle response
     print(res)
@@ -72,6 +73,7 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -79,7 +81,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.locations.get(location_id="<id>")
+    res = gai_client.locations.get(location_id="<id>", x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -115,6 +117,7 @@ scope: `companies.write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -122,7 +125,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.locations.update(location_id="<id>", version="aa2c4db94c2e968aa0cf51f346007c5f", phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
+    res = gai_client.locations.update(location_id="<id>", version="756aee0bdbf26def096673bb7f9a7b97", x_gusto_api_version=gusto_app_integration.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107", filing_address=True)
 
     # Handle response
     print(res)
@@ -168,6 +171,7 @@ scope: `companies:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -175,7 +179,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.locations.get_minimum_wages(location_uuid="<id>", effective_date="2020-01-31")
+    res = gai_client.locations.get_minimum_wages(location_uuid="<id>", x_gusto_api_version=gusto_app_integration.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, effective_date="2020-01-31")
 
     # Handle response
     print(res)

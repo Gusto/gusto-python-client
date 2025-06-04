@@ -75,6 +75,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-bank_accounts",
                 oauth2_scopes=[],
@@ -177,6 +178,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-bank_accounts",
                 oauth2_scopes=[],
@@ -281,6 +283,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-payment_method",
                 oauth2_scopes=[],
@@ -383,6 +386,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid-payment_method",
                 oauth2_scopes=[],
@@ -499,6 +503,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_id-payment_method",
                 oauth2_scopes=[],
@@ -621,6 +626,7 @@ class ContractorPaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_id-payment_method",
                 oauth2_scopes=[],

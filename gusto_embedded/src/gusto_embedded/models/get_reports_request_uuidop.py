@@ -9,18 +9,18 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class GetReportsReportUUIDRequestTypedDict(TypedDict):
-    report_uuid: str
-    r"""The UUID of the report request"""
+class GetReportsRequestUUIDRequestTypedDict(TypedDict):
+    request_uuid: str
+    r"""The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint."""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
-class GetReportsReportUUIDRequest(BaseModel):
-    report_uuid: Annotated[
+class GetReportsRequestUUIDRequest(BaseModel):
+    request_uuid: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""The UUID of the report request"""
+    r"""The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint."""
 
     x_gusto_api_version: Annotated[
         Optional[VersionHeader],

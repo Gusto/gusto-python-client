@@ -31,7 +31,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.create(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_method.create(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -71,6 +71,7 @@ scope: `employee_payment_methods:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -79,7 +80,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_payment_method.delete_bank_account(employee_id="<id>", bank_account_uuid="<id>")
+    gusto.employee_payment_method.delete_bank_account(employee_id="<id>", bank_account_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -118,7 +119,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.update_bank_account(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_method.update_bank_account(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -160,6 +161,7 @@ scope: `employee_payment_methods:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -168,7 +170,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.get(employee_id="<id>")
+    res = gusto.employee_payment_method.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -212,7 +214,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.update(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, split_by=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
+    res = gusto.employee_payment_method.update(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, split_by=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
         {
             "uuid": "e88f9436-b74e-49a8-87e9-777b9bfe715e",
             "name": "BoA Checking Account",

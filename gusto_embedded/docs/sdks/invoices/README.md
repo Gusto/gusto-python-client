@@ -29,7 +29,7 @@ with Gusto() as gusto:
 
     res = gusto.invoices.get(security=gusto_embedded.GetInvoicesInvoicePeriodSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), invoice_period="2020-01")
+    ), invoice_period="2020-01", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

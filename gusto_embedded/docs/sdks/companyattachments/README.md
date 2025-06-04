@@ -18,6 +18,7 @@ scope: `company_attachments:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -26,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_attachments.get_details(company_id="<id>", company_attachment_uuid="<id>")
+    res = gusto.company_attachments.get_details(company_id="<id>", company_attachment_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -61,6 +62,7 @@ scope: `company_attachments:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +71,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_attachments.get_list(company_id="<id>")
+    res = gusto.company_attachments.get_list(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -117,7 +119,7 @@ with Gusto(
     res = gusto.company_attachments.create(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

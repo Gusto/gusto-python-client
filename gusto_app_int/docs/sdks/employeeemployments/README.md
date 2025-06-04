@@ -25,6 +25,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -32,7 +33,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.create_termination(employee_id="<id>", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gai_client.employee_employments.create_termination(employee_id="<id>", effective_date="2020-06-30", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, run_termination_payroll=True)
 
     # Handle response
     print(res)
@@ -69,6 +70,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -76,7 +78,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_employments.delete_termination(employee_id="<id>")
+    gai_client.employee_employments.delete_termination(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -108,6 +110,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -115,7 +118,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.update_termination(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gai_client.employee_employments.update_termination(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, run_termination_payroll=True)
 
     # Handle response
     print(res)
@@ -153,6 +156,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -160,7 +164,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.create_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gai_client.employee_employments.create_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -200,6 +204,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -207,7 +212,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.update_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gai_client.employee_employments.update_rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -248,6 +253,7 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -255,7 +261,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.get_rehire(employee_id="<id>")
+    res = gai_client.employee_employments.get_rehire(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -290,6 +296,7 @@ scope: `employments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -297,7 +304,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_employments.delete_rehire(employee_id="<id>")
+    gai_client.employee_employments.delete_rehire(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -328,6 +335,7 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -335,7 +343,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_employments.get_history(employee_id="<id>")
+    res = gai_client.employee_employments.get_history(employee_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

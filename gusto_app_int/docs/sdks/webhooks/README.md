@@ -37,7 +37,7 @@ with GustoAppIntegration() as gai_client:
     ), url="https://partner-app.com/subscriber", subscription_types=[
         gusto_app_integration.PostV1WebhookSubscriptionSubscriptionTypes.COMPANY,
         gusto_app_integration.PostV1WebhookSubscriptionSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -86,7 +86,7 @@ with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.list_subscriptions(security=gusto_app_integration.GetV1WebhookSubscriptionsSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ))
+    ), x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -136,7 +136,7 @@ with GustoAppIntegration() as gai_client:
     ), webhook_subscription_uuid="<id>", subscription_types=[
         gusto_app_integration.PutV1WebhookSubscriptionUUIDSubscriptionTypes.COMPANY,
         gusto_app_integration.PutV1WebhookSubscriptionUUIDSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -186,7 +186,7 @@ with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.get_subscription(security=gusto_app_integration.GetV1WebhookSubscriptionUUIDSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -234,7 +234,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.webhooks.delete_subscription(security=gusto_app_integration.DeleteV1WebhookSubscriptionUUIDSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -279,7 +279,7 @@ with GustoAppIntegration() as gai_client:
 
     res = gai_client.webhooks.verify(security=gusto_app_integration.PutV1VerifyWebhookSubscriptionUUIDSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd")
+    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -329,7 +329,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.webhooks.request_verification_token(security=gusto_app_integration.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

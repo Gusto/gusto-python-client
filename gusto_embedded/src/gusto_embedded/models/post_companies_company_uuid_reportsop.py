@@ -113,6 +113,7 @@ class FileType(str, Enum):
 
     CSV = "csv"
     JSON = "json"
+    PDF = "pdf"
 
 
 class PostCompaniesCompanyUUIDReportsPaymentMethod(str, Enum):

@@ -227,6 +227,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -235,7 +236,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -265,7 +266,7 @@ with Gusto() as gusto:
         "trade_name": "Frank’s Ocean",
         "ein": "123456789",
         "contractor_only": False,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -639,7 +640,8 @@ with Gusto() as gusto:
 ### [reports](docs/sdks/reports/README.md)
 
 * [create_custom](docs/sdks/reports/README.md#create_custom) - Create a custom report
-* [get](docs/sdks/reports/README.md#get) - Get a report
+* [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](docs/sdks/reports/README.md#get_template) - Get a report template
 
 ### [signatories](docs/sdks/signatories/README.md)
@@ -710,7 +712,7 @@ with Gusto(
     res = gusto.company_attachments.create(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -725,6 +727,7 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
@@ -734,7 +737,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(,
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -744,6 +747,7 @@ with Gusto(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
@@ -754,7 +758,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -807,7 +811,7 @@ with Gusto() as gusto:
             "trade_name": "Frank’s Ocean",
             "ein": "123456789",
             "contractor_only": False,
-        })
+        }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
@@ -836,6 +840,7 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -845,7 +850,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -856,6 +861,7 @@ with Gusto(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -865,7 +871,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

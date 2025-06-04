@@ -91,6 +91,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
@@ -212,6 +213,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
@@ -316,6 +318,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
@@ -420,6 +423,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-terminations",
                 oauth2_scopes=[],
@@ -544,6 +548,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-terminations-employee_id",
                 oauth2_scopes=[],
@@ -668,6 +673,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-terminations-employee_id",
                 oauth2_scopes=[],
@@ -792,6 +798,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -916,6 +923,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1049,6 +1057,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1182,6 +1191,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1286,6 +1296,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1390,6 +1401,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1494,6 +1506,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1598,6 +1611,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-rehire",
                 oauth2_scopes=[],
@@ -1703,6 +1717,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-employment_history",
                 oauth2_scopes=[],
@@ -1810,6 +1825,7 @@ class EmployeeEmployments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-employment_history",
                 oauth2_scopes=[],

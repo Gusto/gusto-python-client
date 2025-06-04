@@ -38,7 +38,7 @@ with Gusto() as gusto:
     ), url="https://partner-app.com/subscriber", subscription_types=[
         gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.COMPANY,
         gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -88,7 +88,7 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.list_subscriptions(security=gusto_embedded.GetV1WebhookSubscriptionsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ))
+    ), x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -139,7 +139,7 @@ with Gusto() as gusto:
     ), webhook_subscription_uuid="<id>", subscription_types=[
         gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.COMPANY,
         gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -190,7 +190,7 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.get_subscription(security=gusto_embedded.GetV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -239,7 +239,7 @@ with Gusto() as gusto:
 
     gusto.webhooks.delete_subscription(security=gusto_embedded.DeleteV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -285,7 +285,7 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd")
+    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -336,7 +336,7 @@ with Gusto() as gusto:
 
     gusto.webhooks.request_verification_token(security=gusto_embedded.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

@@ -22,6 +22,7 @@ scope: `payrolls:run`
 
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -30,14 +31,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[
-        {
-            "wage": 5000,
-            "hours": 40,
-            "bonus": 500,
-            "reimbursement": 20,
-        },
-    ], creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e")
+    res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e")
 
     # Handle response
     print(res)
@@ -75,6 +69,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -83,7 +78,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.get_list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
+    res = gusto.contractor_payment_groups.get_list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -122,6 +117,7 @@ scope: `payrolls:read`
 
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -130,14 +126,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.preview(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[
-        {
-            "wage": 5000,
-            "hours": 40,
-            "bonus": 500,
-            "reimbursement": 20,
-        },
-    ], creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e")
+    res = gusto.contractor_payment_groups.preview(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), contractor_payments=[], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e")
 
     # Handle response
     print(res)
@@ -175,6 +164,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -183,7 +173,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.get(contractor_payment_group_uuid="<id>")
+    res = gusto.contractor_payment_groups.get(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -217,6 +207,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -225,7 +216,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.contractor_payment_groups.delete(contractor_payment_group_uuid="<id>")
+    gusto.contractor_payment_groups.delete(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -259,6 +250,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -267,7 +259,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.fund(contractor_payment_group_uuid="<id>")
+    res = gusto.contractor_payment_groups.fund(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

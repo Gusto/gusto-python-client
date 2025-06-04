@@ -128,6 +128,7 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-garnishments",
                 oauth2_scopes=[],
@@ -287,6 +288,7 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-garnishments",
                 oauth2_scopes=[],
@@ -399,6 +401,7 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-garnishments",
                 oauth2_scopes=[],
@@ -505,6 +508,7 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-garnishments",
                 oauth2_scopes=[],
@@ -605,6 +609,7 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-garnishment_id",
                 oauth2_scopes=[],
@@ -705,6 +710,7 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-garnishment_id",
                 oauth2_scopes=[],
@@ -856,6 +862,7 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-garnishments-garnishment_id",
                 oauth2_scopes=[],
@@ -1013,6 +1020,7 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-garnishments-garnishment_id",
                 oauth2_scopes=[],
@@ -1116,6 +1124,7 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-child_support",
                 oauth2_scopes=[],
@@ -1213,6 +1222,7 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-child_support",
                 oauth2_scopes=[],

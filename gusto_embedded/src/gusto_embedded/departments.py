@@ -87,6 +87,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-departments",
                 oauth2_scopes=[],
@@ -205,6 +206,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-departments",
                 oauth2_scopes=[],
@@ -311,6 +313,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-departments",
                 oauth2_scopes=[],
@@ -411,6 +414,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-departments",
                 oauth2_scopes=[],
@@ -512,6 +516,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-department",
                 oauth2_scopes=[],
@@ -613,6 +618,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-department",
                 oauth2_scopes=[],
@@ -728,6 +734,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-departments",
                 oauth2_scopes=[],
@@ -849,6 +856,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-departments",
                 oauth2_scopes=[],
@@ -956,6 +964,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-department",
                 oauth2_scopes=[],
@@ -1063,6 +1072,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-department",
                 oauth2_scopes=[],
@@ -1203,6 +1213,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-add-people-to-department",
                 oauth2_scopes=[],
@@ -1337,6 +1348,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-add-people-to-department",
                 oauth2_scopes=[],
@@ -1472,6 +1484,7 @@ class Departments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-remove-people-from-department",
                 oauth2_scopes=[],
@@ -1607,6 +1620,7 @@ class Departments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-remove-people-from-department",
                 oauth2_scopes=[],

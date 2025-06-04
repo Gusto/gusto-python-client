@@ -20,6 +20,7 @@ scope: `garnishments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -27,7 +28,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gai_client.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True, description="Back taxes", times=None, recurring=True, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -74,6 +75,7 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -81,7 +83,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get(employee_id="<id>")
+    res = gai_client.garnishments.get(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -117,6 +119,7 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -124,7 +127,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get_by_id(garnishment_id="<id>")
+    res = gai_client.garnishments.get_by_id(garnishment_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -158,6 +161,7 @@ scope: `garnishments:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -165,7 +169,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gai_client.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=False, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -212,6 +216,7 @@ scope: `garnishments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -219,7 +224,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get_child_support()
+    res = gai_client.garnishments.get_child_support(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

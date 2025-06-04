@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 from .employee_custom_field import EmployeeCustomField, EmployeeCustomFieldTypedDict
+from .flsa_status_type import FlsaStatusType
 from .garnishment import Garnishment, GarnishmentTypedDict
 from .job import Job, JobTypedDict
 from .paid_time_off import PaidTimeOff, PaidTimeOffTypedDict
 from .termination import Termination, TerminationTypedDict
+from datetime import date
 from enum import Enum
 from gusto_embedded.types import (
     BaseModel,
@@ -145,6 +147,18 @@ class EmployeeTypedDict(TypedDict):
     r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
+    historical: NotRequired[bool]
+    employee_code: NotRequired[str]
+    r"""The short format code of the employee"""
+    department_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the department the employee is under"""
+    title: NotRequired[str]
+    hired_at: NotRequired[date]
+    r"""The date when the employee was hired to the company"""
+    hidden_ssn: NotRequired[str]
+    flsa_status: NotRequired[FlsaStatusType]
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+    applicable_tax_ids: NotRequired[List[float]]
 
 
 class Employee(BaseModel):
@@ -221,6 +235,26 @@ class Employee(BaseModel):
     current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
+    historical: Optional[bool] = None
+
+    employee_code: Optional[str] = None
+    r"""The short format code of the employee"""
+
+    department_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the department the employee is under"""
+
+    title: Optional[str] = None
+
+    hired_at: Optional[date] = None
+    r"""The date when the employee was hired to the company"""
+
+    hidden_ssn: Optional[str] = None
+
+    flsa_status: Optional[FlsaStatusType] = None
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+
+    applicable_tax_ids: Optional[List[float]] = None
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
@@ -248,6 +282,14 @@ class Employee(BaseModel):
             "payment_method",
             "work_email",
             "current_employment_status",
+            "historical",
+            "employee_code",
+            "department_uuid",
+            "title",
+            "hired_at",
+            "hidden_ssn",
+            "flsa_status",
+            "applicable_tax_ids",
         ]
         nullable_fields = [
             "middle_initial",
@@ -261,6 +303,7 @@ class Employee(BaseModel):
             "preferred_first_name",
             "work_email",
             "current_employment_status",
+            "department_uuid",
         ]
         null_default_fields = []
 

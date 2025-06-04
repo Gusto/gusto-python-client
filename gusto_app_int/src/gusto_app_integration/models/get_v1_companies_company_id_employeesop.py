@@ -35,6 +35,7 @@ class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     search_term: NotRequired[str]
     r"""A string to search for in the object's names"""
+    uuids: NotRequired[List[str]]
     include: NotRequired[List[Include]]
     r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
     - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
@@ -67,6 +68,11 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""A string to search for in the object's names"""
+
+    uuids: Annotated[
+        Optional[List[str]],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
 
     include: Annotated[
         Optional[List[Include]],

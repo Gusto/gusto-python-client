@@ -104,6 +104,7 @@ class Companies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-provision",
                 oauth2_scopes=None,
@@ -240,6 +241,7 @@ class Companies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-provision",
                 oauth2_scopes=None,
@@ -349,6 +351,7 @@ class Companies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies",
                 oauth2_scopes=[],
@@ -450,6 +453,7 @@ class Companies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies",
                 oauth2_scopes=[],
@@ -560,6 +564,7 @@ class Companies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies",
                 oauth2_scopes=[],
@@ -676,6 +681,7 @@ class Companies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies",
                 oauth2_scopes=[],
@@ -786,6 +792,7 @@ class Companies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-admins",
                 oauth2_scopes=[],
@@ -890,6 +897,7 @@ class Companies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-admins",
                 oauth2_scopes=[],
@@ -994,6 +1002,7 @@ class Companies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-custom_fields",
                 oauth2_scopes=[],
@@ -1098,6 +1107,7 @@ class Companies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-custom_fields",
                 oauth2_scopes=[],

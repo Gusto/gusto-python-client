@@ -30,10 +30,10 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True, employee_deduction="100.00", deduct_as_percentage=False, contribution={
         "type": gusto_app_integration.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
         "value": "100.00",
-    })
+    }, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -87,6 +87,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -94,7 +95,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get_all(employee_id="<id>")
+    res = gai_client.employee_benefits.get_all(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -132,6 +133,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -139,7 +141,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get(employee_benefit_id="<id>")
+    res = gai_client.employee_benefits.get(employee_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -173,6 +175,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -180,7 +183,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, employee_deduction="250.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -230,6 +233,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -237,7 +241,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_benefits.delete(employee_benefit_id="<id>")
+    gai_client.employee_benefits.delete(employee_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -269,6 +273,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -276,7 +281,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gai_client.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -313,6 +318,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -320,7 +326,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
 
     # Use the SDK ...
 

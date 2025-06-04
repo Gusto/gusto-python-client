@@ -37,7 +37,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.create(company_id="<id>", routing_number="115092013", account_number="9775014007", account_type=gusto_embedded.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
+    res = gusto.bank_accounts.create(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, routing_number="115092013", account_number="9775014007", account_type=gusto_embedded.PostV1CompaniesCompanyIDBankAccountsAccountType.CHECKING)
 
     # Handle response
     print(res)
@@ -75,6 +75,7 @@ scope: `company_bank_accounts:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -83,7 +84,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.get(company_id="<id>")
+    res = gusto.bank_accounts.get(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -130,6 +131,7 @@ scope: `company_bank_accounts:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -138,7 +140,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42)
+    res = gusto.bank_accounts.verify(bank_account_uuid="<id>", company_id="<id>", deposit_1=0.02, deposit_2=0.42, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -192,7 +194,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.bank_accounts.create_from_plaid_token(owner_type=gusto_embedded.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc")
+    res = gusto.bank_accounts.create_from_plaid_token(owner_type=gusto_embedded.OwnerType.COMPANY, owner_id="ef279fbd-0fc6-4cf1-a977-6939d621c429", processor_token="processor-sandbox-0asd1-a92nc", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

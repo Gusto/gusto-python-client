@@ -17,6 +17,7 @@ scope: `employees:manage`
 
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -37,7 +38,7 @@ with Gusto(
         "effective_date": date.fromisoformat("2022-09-15T00:00:00Z"),
     }, job={
         "hire_date": date.fromisoformat("2018-05-09T00:00:00Z"),
-    }, middle_initial="A", employee_state_taxes={
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, middle_initial="A", employee_state_taxes={
         "wc_covered": True,
         "wc_class_code": "20992",
     })

@@ -22,6 +22,7 @@ scope: `signatories:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -30,12 +31,12 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.create(company_uuid="<id>", ssn="<value>", first_name="Jed", last_name="Johnson", email="Annie.Wiegand16@gmail.com", title="<value>", phone="857-932-0220 x31016", birthday="<value>", home_address={
+    res = gusto.signatories.create(company_uuid="<id>", ssn="<value>", first_name="Ed", last_name="Reichert", email="Shanny62@hotmail.com", title="<value>", phone="1-346-396-8392 x69356", birthday="<value>", home_address={
         "street_1": "<value>",
-        "city": "North Lilly",
-        "state": "North Carolina",
-        "zip_code": "05065",
-    })
+        "city": "East Clydefield",
+        "state": "Kentucky",
+        "zip_code": "13719-5134",
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -79,6 +80,7 @@ scope: `signatories:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -87,7 +89,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.list(company_uuid="<id>")
+    res = gusto.signatories.list(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -119,6 +121,7 @@ Create a signatory with minimal information. This signatory can be invited to pr
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -127,7 +130,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.invite(company_uuid="<id>", email="Maureen_Wyman@yahoo.com")
+    res = gusto.signatories.invite(company_uuid="<id>", email="Kamron.Nikolaus@yahoo.com", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -166,6 +169,7 @@ scope: `signatories:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -174,7 +178,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.signatories.update(company_uuid="<id>", signatory_uuid="<id>")
+    res = gusto.signatories.update(company_uuid="<id>", signatory_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -219,6 +223,7 @@ scope: `signatories:manage`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -227,7 +232,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.signatories.delete(company_uuid="<id>", signatory_uuid="<id>")
+    gusto.signatories.delete(company_uuid="<id>", signatory_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

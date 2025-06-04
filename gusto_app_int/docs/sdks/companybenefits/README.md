@@ -28,6 +28,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -35,7 +36,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = gai_client.company_benefits.create(company_id="<id>", description="hm pfft surge beyond", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True)
 
     # Handle response
     print(res)
@@ -79,6 +80,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -86,7 +88,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.list(company_id="<id>")
+    res = gai_client.company_benefits.list(company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -126,6 +128,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -133,7 +136,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get_by_id(company_benefit_id="<id>")
+    res = gai_client.company_benefits.get_by_id(company_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -170,6 +173,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -177,7 +181,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", active=False)
+    res = gai_client.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=False)
 
     # Handle response
     print(res)
@@ -218,6 +222,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -225,7 +230,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.company_benefits.delete(company_benefit_id="<id>")
+    gai_client.company_benefits.delete(company_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -257,6 +262,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -264,7 +270,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.list_supported()
+    res = gai_client.company_benefits.list_supported(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -299,6 +305,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -306,7 +313,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get(benefit_id="<id>")
+    res = gai_client.company_benefits.get(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -342,6 +349,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -349,7 +357,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31")
+    res = gai_client.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -390,6 +398,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -397,7 +406,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get_employee_benefits(company_benefit_id="<id>")
+    res = gai_client.company_benefits.get_employee_benefits(company_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -437,6 +446,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -447,9 +457,10 @@ with GustoAppIntegration(
     res = gai_client.company_benefits.bulk_update_employee_benefits(company_benefit_id="<id>", employee_benefits=[
         {
             "version": "09j3d29jqdpj92109j9j2d90dq",
+            "employee_deduction": "250.00",
             "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e",
         },
-    ])
+    ], x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -485,6 +496,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -492,7 +504,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get_requirements(benefit_id="<id>")
+    res = gai_client.company_benefits.get_requirements(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

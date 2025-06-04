@@ -28,6 +28,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -36,7 +37,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = gusto.company_benefits.create(company_id="<id>", description="hm pfft surge beyond", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True)
 
     # Handle response
     print(res)
@@ -80,6 +81,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -88,7 +90,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.list(company_id="<id>")
+    res = gusto.company_benefits.list(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -128,6 +130,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -136,7 +139,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get(company_benefit_id="<id>")
+    res = gusto.company_benefits.get(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -173,6 +176,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -181,7 +185,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", active=False)
+    res = gusto.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=False)
 
     # Handle response
     print(res)
@@ -222,6 +226,7 @@ scope: `company_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -230,7 +235,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.company_benefits.delete(company_benefit_id="<id>")
+    gusto.company_benefits.delete(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -262,6 +267,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -270,7 +276,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_all()
+    res = gusto.company_benefits.get_all(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -305,6 +311,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -313,7 +320,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_supported(benefit_id="<id>")
+    res = gusto.company_benefits.get_supported(benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -349,6 +356,7 @@ scope: `company_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -357,7 +365,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31")
+    res = gusto.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -398,6 +406,7 @@ scope: `employee_benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -406,7 +415,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_employee_benefits(company_benefit_id="<id>")
+    res = gusto.company_benefits.get_employee_benefits(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -446,6 +455,7 @@ scope: `employee_benefits:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -457,9 +467,10 @@ with Gusto(
     res = gusto.company_benefits.update_employee_benefits(company_benefit_id="<id>", employee_benefits=[
         {
             "version": "09j3d29jqdpj92109j9j2d90dq",
+            "employee_deduction": "250.00",
             "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e",
         },
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -495,6 +506,7 @@ scope: `benefits:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -503,7 +515,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_requirements(benefit_id="<id>")
+    res = gusto.company_benefits.get_requirements(benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

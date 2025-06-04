@@ -19,6 +19,7 @@ Get attributes relevant for an employee's federal taxes.
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -27,7 +28,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.get_federal_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_federal_taxes(employee_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -61,6 +62,7 @@ scope: `employee_federal_taxes:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +71,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.update_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
+    res = gusto.employee_tax_setup.update_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, filing_status="Single", extra_withholding="0.0", two_jobs=True, dependents_amount="0.0", other_income="0.0", deductions="0.0", w4_data_type="rev_2020_w4")
 
     # Handle response
     print(res)
@@ -124,6 +126,7 @@ scope: `employee_state_taxes:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -132,7 +135,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_tax_setup.get_state_taxes(employee_uuid="<id>")
+    res = gusto.employee_tax_setup.get_state_taxes(employee_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -168,6 +171,7 @@ scope: `employee_state_taxes:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -222,7 +226,7 @@ with Gusto(
                 },
             ],
         },
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

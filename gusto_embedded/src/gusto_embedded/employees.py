@@ -18,6 +18,7 @@ class Employees(BaseSDK):
             models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         search_term: Optional[str] = None,
+        uuids: Optional[List[str]] = None,
         include: Optional[List[models.Include]] = None,
         terminated: Optional[bool] = None,
         page: Optional[int] = None,
@@ -37,6 +38,7 @@ class Employees(BaseSDK):
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param search_term: A string to search for in the object's names
+        :param uuids:
         :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
         :param terminated: Filters employees by the provided boolean
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
@@ -58,8 +60,9 @@ class Employees(BaseSDK):
 
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
             search_term=search_term,
+            company_id=company_id,
+            uuids=uuids,
             include=include,
             terminated=terminated,
             page=page,
@@ -92,6 +95,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-employees",
                 oauth2_scopes=[],
@@ -140,6 +144,7 @@ class Employees(BaseSDK):
             models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         search_term: Optional[str] = None,
+        uuids: Optional[List[str]] = None,
         include: Optional[List[models.Include]] = None,
         terminated: Optional[bool] = None,
         page: Optional[int] = None,
@@ -159,6 +164,7 @@ class Employees(BaseSDK):
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param search_term: A string to search for in the object's names
+        :param uuids:
         :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
         :param terminated: Filters employees by the provided boolean
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
@@ -180,8 +186,9 @@ class Employees(BaseSDK):
 
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
             search_term=search_term,
+            company_id=company_id,
+            uuids=uuids,
             include=include,
             terminated=terminated,
             page=page,
@@ -214,6 +221,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-employees",
                 oauth2_scopes=[],
@@ -354,6 +362,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees",
                 oauth2_scopes=[],
@@ -494,6 +503,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees",
                 oauth2_scopes=[],
@@ -661,6 +671,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-historical_employees",
                 oauth2_scopes=[],
@@ -828,6 +839,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-historical_employees",
                 oauth2_scopes=[],
@@ -938,6 +950,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees",
                 oauth2_scopes=[],
@@ -1042,6 +1055,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees",
                 oauth2_scopes=[],
@@ -1177,6 +1191,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees",
                 oauth2_scopes=[],
@@ -1318,6 +1333,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees",
                 oauth2_scopes=[],
@@ -1427,6 +1443,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employee",
                 oauth2_scopes=[],
@@ -1530,6 +1547,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employee",
                 oauth2_scopes=[],
@@ -1636,6 +1654,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-custom_fields",
                 oauth2_scopes=[],
@@ -1744,6 +1763,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-custom_fields",
                 oauth2_scopes=[],
@@ -1858,6 +1878,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-onboarding_documents_config",
                 oauth2_scopes=[],
@@ -1972,6 +1993,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-onboarding_documents_config",
                 oauth2_scopes=[],
@@ -2111,6 +2133,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-onboarding_status",
                 oauth2_scopes=[],
@@ -2248,6 +2271,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-onboarding_status",
                 oauth2_scopes=[],
@@ -2370,6 +2394,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-onboarding_status",
                 oauth2_scopes=[],
@@ -2498,6 +2523,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-onboarding_status",
                 oauth2_scopes=[],
@@ -2607,6 +2633,7 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-version-employees-time_off_activities",
                 oauth2_scopes=[],
@@ -2710,6 +2737,7 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-version-employees-time_off_activities",
                 oauth2_scopes=[],

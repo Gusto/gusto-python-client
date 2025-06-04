@@ -24,6 +24,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -31,7 +32,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.get(company_id="<id>")
+    res = gai_client.employees.get(company_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -45,6 +46,7 @@ with GustoAppIntegration(
 | `company_id`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                             | The UUID of the company                                                                                                                                                                                                                                                                        |
 | `x_gusto_api_version`                                                                                                                                                                                                                                                                          | [Optional[models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidemployeesheaderxgustoapiversion.md)                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                   |
 | `search_term`                                                                                                                                                                                                                                                                                  | *Optional[str]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | A string to search for in the object's names                                                                                                                                                                                                                                                   |
+| `uuids`                                                                                                                                                                                                                                                                                        | List[*str*]                                                                                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | N/A                                                                                                                                                                                                                                                                                            |
 | `include`                                                                                                                                                                                                                                                                                      | List[[models.Include](../../models/include.md)]                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>- custom_fields: Include employees' custom fields<br/> |
 | `terminated`                                                                                                                                                                                                                                                                                   | *Optional[bool]*                                                                                                                                                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Filters employees by the provided boolean                                                                                                                                                                                                                                                      |
 | `page`                                                                                                                                                                                                                                                                                         | *Optional[int]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                                                                                         |
@@ -72,6 +74,7 @@ with GustoAppIntegration(
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -79,7 +82,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.create(company_id="<id>", first_name="Karl", last_name="The Fog")
+    res = gai_client.employees.create(company_id="<id>", first_name="Karl", last_name="The Fog", x_gusto_api_version=gusto_app_integration.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -123,6 +126,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -130,7 +134,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.get_by_id(employee_id="<id>")
+    res = gai_client.employees.get_by_id(employee_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -173,7 +177,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.update(employee_id="<id>", version="f0c06d303aab1fd909b40d4a1ad409ac", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
+    res = gai_client.employees.update(employee_id="<id>", version="6da9085f86ecc01e0000a5655c2dfdba", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
 
     # Handle response
     print(res)
@@ -220,6 +224,7 @@ scope: `employees:manage`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -227,7 +232,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employees.delete(employee_id="<id>")
+    gai_client.employees.delete(employee_id="<id>", x_gusto_api_version=gusto_app_integration.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -256,6 +261,7 @@ scope: `employees:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -263,7 +269,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.get_custom_fields(employee_id="<id>")
+    res = gai_client.employees.get_custom_fields(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -299,6 +305,7 @@ scope: `employee_time_off_activities:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -306,7 +313,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
+    res = gai_client.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -343,6 +350,7 @@ scope: `employments:read`
 ### Example Usage
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -350,7 +358,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employees.get_terminations(employee_id="<id>")
+    res = gai_client.employees.get_terminations(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

@@ -25,6 +25,7 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -33,7 +34,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21")
+    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -73,6 +74,7 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -81,7 +83,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>")
+    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -118,6 +120,7 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -126,7 +129,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_job(job_id="<id>")
+    res = gusto.jobs_and_compensations.get_job(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -161,6 +164,7 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -169,7 +173,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.update(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
+    res = gusto.jobs_and_compensations.update(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, title="Regional Manager", hire_date="2020-12-21")
 
     # Handle response
     print(res)
@@ -210,6 +214,7 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -218,7 +223,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.jobs_and_compensations.delete(job_id="<id>")
+    gusto.jobs_and_compensations.delete(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -251,6 +256,7 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -259,7 +265,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_compensations(job_id="<id>")
+    res = gusto.jobs_and_compensations.get_compensations(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -305,7 +311,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.create_compensation(job_id="<id>", payment_unit=gusto_embedded.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT, rate="60000.00")
+    res = gusto.jobs_and_compensations.create_compensation(job_id="<id>", payment_unit=gusto_embedded.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, rate="60000.00")
 
     # Handle response
     print(res)
@@ -347,6 +353,7 @@ scope: `jobs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -355,7 +362,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_compensation(compensation_id="<id>")
+    res = gusto.jobs_and_compensations.get_compensation(compensation_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -398,7 +405,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", rate="60000.00", payment_unit=gusto_embedded.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT)
+    res = gusto.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, rate="60000.00", payment_unit=gusto_embedded.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT)
 
     # Handle response
     print(res)
@@ -440,6 +447,7 @@ scope: `jobs:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -448,7 +456,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.jobs_and_compensations.delete_compensation(compensation_id="<id>")
+    gusto.jobs_and_compensations.delete_compensation(compensation_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

@@ -17,6 +17,7 @@ scope: `company_payment_configs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payment_configs.get(company_uuid="<id>")
+    res = gusto.payment_configs.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -71,7 +72,7 @@ with Gusto(
     res = gusto.payment_configs.update(company_uuid="<id>", request_body={
         "fast_payment_limit": "5000",
         "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_MINUS_DAY,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

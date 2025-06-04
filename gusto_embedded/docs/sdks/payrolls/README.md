@@ -48,7 +48,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=True, off_cycle_reason=gusto_embedded.OffCycleReason.DISMISSED_EMPLOYEE, start_date="<value>", end_date="<value>")
+    res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=False, off_cycle_reason=gusto_embedded.OffCycleReason.CORRECTION, start_date="<value>", end_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -108,7 +108,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.list(company_id="<id>", sort_order=gusto_embedded.SortOrder.ASC)
+    res = gusto.payrolls.list(company_id="<id>", sort_order=gusto_embedded.SortOrder.ASC, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -150,6 +150,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -158,7 +159,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_approved_reversals(company_id="<id>")
+    res = gusto.payrolls.get_approved_reversals(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -201,6 +202,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -209,7 +211,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.get(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -248,6 +250,7 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -258,9 +261,7 @@ with Gusto(
 
     res = gusto.payrolls.update(company_id="<id>", payroll_id="<id>", employee_compensations=[
         {},
-        {},
-        {},
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -302,6 +303,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -310,7 +312,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.delete(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.delete(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -345,6 +347,7 @@ scope: `payrolls:write`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -353,7 +356,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.prepare(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.prepare(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -367,6 +370,7 @@ with Gusto(
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
 | `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `employee_uuids`                                                                                                                                                                                                             | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | An array of employee UUIDs. If passed, only those employees payroll items will be prepared.                                                                                                                                  |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -393,6 +397,7 @@ scope: `payrolls:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -401,7 +406,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_receipt(payroll_uuid="<id>")
+    res = gusto.payrolls.get_receipt(payroll_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -437,6 +442,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -445,7 +451,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_blockers(company_uuid="<id>")
+    res = gusto.payrolls.get_blockers(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -490,7 +496,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.skip(company_uuid="<id>", payroll_type=gusto_embedded.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
+    gusto.payrolls.skip(company_uuid="<id>", payroll_type=gusto_embedded.PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, start_date="2023-05-26T00:00:00Z", end_date="2023-06-25T00:00:00Z", pay_schedule_uuid="85100524-4b42-4d2d-bd62-9d864f9aea64")
 
     # Use the SDK ...
 
@@ -528,6 +534,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -536,7 +543,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.calculate_gross_up(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00")
+    res = gusto.payrolls.calculate_gross_up(payroll_uuid="<id>", employee_uuid="be48c41e-142d-4116-9430-5aba2313fac7", net_pay="1000.00", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -577,6 +584,7 @@ If the company is blocked from running payroll due to issues like incomplete set
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -585,7 +593,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.calculate(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.calculate(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -621,6 +629,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -629,7 +638,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.submit(company_id="<id>", payroll_id="<id>")
+    gusto.payrolls.submit(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -665,6 +674,7 @@ scope: `payrolls:run`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -673,7 +683,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.cancel(company_id="<id>", payroll_id="<id>")
+    res = gusto.payrolls.cancel(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -710,6 +720,7 @@ scope: `pay_stubs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -718,7 +729,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.payrolls.get_pay_stub(payroll_id="<id>", employee_id="<id>")
+    gusto.payrolls.get_pay_stub(payroll_id="<id>", employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -749,6 +760,7 @@ scope: `pay_stubs:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -757,7 +769,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.get_pay_stubs(employee_id="<id>")
+    res = gusto.payrolls.get_pay_stubs(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -801,7 +813,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.BOTTOM)
+    res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded.PrintingFormat.TOP, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

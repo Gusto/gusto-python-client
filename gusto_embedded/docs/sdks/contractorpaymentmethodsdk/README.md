@@ -18,6 +18,7 @@ scope: `contractor_payment_methods:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -26,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_method.get_bank_accounts(contractor_uuid="<id>")
+    res = gusto.contractor_payment_method.get_bank_accounts(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -62,6 +63,7 @@ scope: `contractor_payment_methods:read`
 ### Example Usage
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -70,7 +72,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_method.get(contractor_uuid="<id>")
+    res = gusto.contractor_payment_method.get(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -114,7 +116,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_method.update(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT)
+    res = gusto.contractor_payment_method.update(contractor_uuid="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1ContractorsContractorIDPaymentMethodType.DIRECT_DEPOSIT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
