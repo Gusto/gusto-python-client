@@ -9,6 +9,7 @@
 * [get](#get) - Get contractors of a company
 * [get_by_id](#get_by_id) - Get a contractor
 * [update](#update) - Update a contractor
+* [get_v1_companies_company_id_contractors_payment_details](#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 
 ## create
 
@@ -18,6 +19,7 @@ scope: `contractors:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-company_uuid-contractors" method="post" path="/v1/companies/{company_uuid}/contractors" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -27,7 +29,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.create(company_uuid="<id>", wage_type=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = gai_client.contractors.create(company_uuid="<id>", wage_type=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, type_=gusto_app_integration.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL, hourly_rate="40.0", self_onboarding=True, email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", file_new_hire_report=False, work_state="CA")
 
     # Handle response
     print(res)
@@ -76,7 +78,9 @@ scope: `contractors:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_uuid-contractors" method="get" path="/v1/companies/{company_uuid}/contractors" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -84,7 +88,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.get(company_uuid="<id>")
+    res = gai_client.contractors.get(company_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -120,7 +124,9 @@ scope: `contractors:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractors-contractor_uuid" method="get" path="/v1/contractors/{contractor_uuid}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -128,7 +134,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.get_by_id(contractor_uuid="<id>")
+    res = gai_client.contractors.get_by_id(contractor_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -165,6 +171,7 @@ scope: `contractors:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid" method="put" path="/v1/contractors/{contractor_uuid}" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -174,7 +181,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_app_integration.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = gai_client.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, type_=gusto_app_integration.PutV1ContractorsContractorUUIDType.INDIVIDUAL, wage_type=gusto_app_integration.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", self_onboarding=False, first_name="Chanel", last_name="Boyle", middle_initial="X", file_new_hire_report=False, is_active=True)
 
     # Handle response
     print(res)
@@ -186,7 +193,7 @@ with GustoAppIntegration(
 | Parameter                                                                                                                                                                                                                                                                                   | Type                                                                                                                                                                                                                                                                                        | Required                                                                                                                                                                                                                                                                                    | Description                                                                                                                                                                                                                                                                                 | Example                                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `contractor_uuid`                                                                                                                                                                                                                                                                           | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The UUID of the contractor                                                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                                             |
-| `version`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                                                           |                                                                                                                                                                                                                                                                                             |
+| `version`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                                                           | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                                                                                            |
 | `x_gusto_api_version`                                                                                                                                                                                                                                                                       | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                |                                                                                                                                                                                                                                                                                             |
 | `type`                                                                                                                                                                                                                                                                                      | [Optional[models.PutV1ContractorsContractorUUIDType]](../../models/putv1contractorscontractoruuidtype.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor type.                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                             |
 | `wage_type`                                                                                                                                                                                                                                                                                 | [Optional[models.PutV1ContractorsContractorUUIDWageType]](../../models/putv1contractorscontractoruuidwagetype.md)                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s wage type.<br/>                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                             |
@@ -214,4 +221,57 @@ with GustoAppIntegration(
 | Error Type                            | Status Code                           | Content Type                          |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_companies_company_id_contractors_payment_details
+
+Get payment details for contractors in a company. This endpoint returns a list of all contractors associated with the specified company, including their payment methods and bank account details if they are paid via direct deposit.
+
+For contractors paid by direct deposit, the response includes their bank account information.
+
+For contractors paid by check, only the basic payment method information is returned.
+
+`encrypted_account_number` is available only with the additional scope `contractor_payment_methods:read:account_numbers`.
+
+scope: `contractor_payment_methods:read`
+
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-contractors-payment_details" method="get" path="/v1/companies/{company_id}/contractors/payment_details" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.contractors.get_v1_companies_company_id_contractors_payment_details(company_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.                                                                                                                  |
+| `contractor_uuid`                                                                                                                                                                                                            | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.                                                                         |
+| `contractor_payment_group_uuid`                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorspaymentdetailsheaderxgustoapiversion.md)                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.ContractorPaymentDetailsList]](../../models/.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

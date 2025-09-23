@@ -2,26 +2,33 @@
 
 from __future__ import annotations
 from .entity_error_object import EntityErrorObject
-from gusto_app_integration import utils
+from dataclasses import dataclass, field
+from gusto_app_integration.models import GustoAppIntegrationError
 from gusto_app_integration.types import BaseModel
-from typing import List
+import httpx
+from typing import List, Optional
 
 
 class UnprocessableEntityErrorObjectData(BaseModel):
     errors: List[EntityErrorObject]
 
 
-class UnprocessableEntityErrorObject(Exception):
+@dataclass(frozen=True)
+class UnprocessableEntityErrorObject(GustoAppIntegrationError):
     r"""Unprocessable Entity
 
     This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details.
 
     """
 
-    data: UnprocessableEntityErrorObjectData
+    data: UnprocessableEntityErrorObjectData = field(hash=False)
 
-    def __init__(self, data: UnprocessableEntityErrorObjectData):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(self.data, UnprocessableEntityErrorObjectData)
+    def __init__(
+        self,
+        data: UnprocessableEntityErrorObjectData,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
+    ):
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

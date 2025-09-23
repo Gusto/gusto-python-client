@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from datetime import date
+from enum import Enum
 from gusto_embedded.types import BaseModel
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -21,6 +22,15 @@ class ContractorPaymentReceiptTotals(BaseModel):
     r"""The total company debit for the contractor payment."""
 
 
+class ContractorPaymentReceiptPaymentMethod(str, Enum):
+    r"""The payment method."""
+
+    DIRECT_DEPOSIT = "Direct Deposit"
+    CHECK = "Check"
+    HISTORICAL_PAYMENT = "Historical Payment"
+    CORRECTION_PAYMENT = "Correction Payment"
+
+
 class ContractorPaymentsModelTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
     r"""The UUID of the contractor."""
@@ -35,11 +45,8 @@ class ContractorPaymentsModelTypedDict(TypedDict):
 
     `Individual` `Business`
     """
-    payment_method: NotRequired[str]
-    r"""The payment method.
-
-    `Direct Deposit` `Check` `Historical Payment` `Correction Payment`
-    """
+    payment_method: NotRequired[ContractorPaymentReceiptPaymentMethod]
+    r"""The payment method."""
     wage: NotRequired[str]
     r"""The fixed wage of the payment, regardless of hours worked."""
     bonus: NotRequired[str]
@@ -67,11 +74,8 @@ class ContractorPaymentsModel(BaseModel):
     `Individual` `Business`
     """
 
-    payment_method: Optional[str] = None
-    r"""The payment method.
-
-    `Direct Deposit` `Check` `Historical Payment` `Correction Payment`
-    """
+    payment_method: Optional[ContractorPaymentReceiptPaymentMethod] = None
+    r"""The payment method."""
 
     wage: Optional[str] = None
     r"""The fixed wage of the payment, regardless of hours worked."""

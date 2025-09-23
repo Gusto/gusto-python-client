@@ -3,10 +3,25 @@
 from __future__ import annotations
 from .versionheader import VersionHeader
 from gusto_app_integration.types import BaseModel
-from gusto_app_integration.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
+from gusto_app_integration.utils import (
+    FieldMetadata,
+    HeaderMetadata,
+    PathParamMetadata,
+    RequestMetadata,
+)
 import pydantic
-from typing import Optional
+from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
+
+
+class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBodyTypedDict(TypedDict):
+    employee_uuids: NotRequired[List[str]]
+    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
+
+
+class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(BaseModel):
+    employee_uuids: Optional[List[str]] = None
+    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
 
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestTypedDict(TypedDict):
@@ -16,6 +31,9 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestTypedDict(TypedDict)
     r"""The UUID of the payroll"""
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    request_body: NotRequired[
+        PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBodyTypedDict
+    ]
 
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequest(BaseModel):
@@ -35,3 +53,8 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequest(BaseModel):
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
     ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    request_body: Annotated[
+        Optional[PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody],
+        FieldMetadata(request=RequestMetadata(media_type="application/json")),
+    ] = None

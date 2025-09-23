@@ -19,7 +19,9 @@ scope: `garnishments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -28,7 +30,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gusto.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=True, description="Back taxes", times=None, recurring=True, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -74,7 +76,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-garnishments" method="get" path="/v1/employees/{employee_id}/garnishments" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -83,7 +87,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.list(employee_id="<id>")
+    res = gusto.garnishments.list(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -118,7 +122,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-garnishment_id" method="get" path="/v1/garnishments/{garnishment_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -127,7 +133,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get(garnishment_id="<id>")
+    res = gusto.garnishments.get(garnishment_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -160,7 +166,9 @@ scope: `garnishments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -169,7 +177,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, active=False, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -215,7 +223,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-child_support" method="get" path="/v1/garnishments/child_support" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -224,7 +234,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get_child_support_data()
+    res = gusto.garnishments.get_child_support_data(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

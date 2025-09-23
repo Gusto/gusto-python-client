@@ -2,8 +2,15 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
-from typing import Optional
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
+from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -15,11 +22,6 @@ class ReconcileTaxMethod(str, Enum):
 
 
 class TaxRefundsTypedDict(TypedDict):
-    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded, or paid
-    by Gusto, depending on the value in `reconcile_tax_method`.
-
-    """
-
     amount: NotRequired[str]
     r"""Dollar amount."""
     description: NotRequired[str]
@@ -27,11 +29,6 @@ class TaxRefundsTypedDict(TypedDict):
 
 
 class TaxRefunds(BaseModel):
-    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded, or paid
-    by Gusto, depending on the value in `reconcile_tax_method`.
-
-    """
-
     amount: Optional[str] = None
     r"""Dollar amount."""
 
@@ -48,27 +45,24 @@ class CompanySuspensionTypedDict(TypedDict):
     r"""Unique identifier for the company which is suspended."""
     effective_date: NotRequired[str]
     r"""Date that the suspension took effect."""
-    leaving_for: NotRequired[str]
+    leaving_for: NotRequired[Nullable[str]]
     r"""Which competitor the company is joining instead. Only required if `reason` is `'switching_provider'`."""
     reason: NotRequired[str]
     r"""Explanation for why the company's account was suspended."""
     reconcile_tax_method: NotRequired[ReconcileTaxMethod]
     r"""How Gusto will handle taxes already collected."""
     file_quarterly_forms: NotRequired[bool]
-    r"""Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company
-    is suspending their account, and how taxes are being reconciled.
+    r"""Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
 
     """
     file_yearly_forms: NotRequired[bool]
-    r"""Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company
-    is suspending their account, and how taxes are being reconciled.
+    r"""Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
 
     """
-    comments: NotRequired[str]
-    r"""User-supplied comments describing why then are suspending their account."""
-    tax_refunds: NotRequired[TaxRefundsTypedDict]
-    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded, or paid
-    by Gusto, depending on the value in `reconcile_tax_method`.
+    comments: NotRequired[Nullable[str]]
+    r"""User-supplied comments describing why they are suspending their account."""
+    tax_refunds: NotRequired[List[TaxRefundsTypedDict]]
+    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded or paid by Gusto depending on the value in `reconcile_tax_method`.
 
     """
 
@@ -85,7 +79,7 @@ class CompanySuspension(BaseModel):
     effective_date: Optional[str] = None
     r"""Date that the suspension took effect."""
 
-    leaving_for: Optional[str] = None
+    leaving_for: OptionalNullable[str] = UNSET
     r"""Which competitor the company is joining instead. Only required if `reason` is `'switching_provider'`."""
 
     reason: Optional[str] = None
@@ -95,22 +89,60 @@ class CompanySuspension(BaseModel):
     r"""How Gusto will handle taxes already collected."""
 
     file_quarterly_forms: Optional[bool] = None
-    r"""Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company
-    is suspending their account, and how taxes are being reconciled.
+    r"""Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
 
     """
 
     file_yearly_forms: Optional[bool] = None
-    r"""Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company
-    is suspending their account, and how taxes are being reconciled.
+    r"""Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
 
     """
 
-    comments: Optional[str] = None
-    r"""User-supplied comments describing why then are suspending their account."""
+    comments: OptionalNullable[str] = UNSET
+    r"""User-supplied comments describing why they are suspending their account."""
 
-    tax_refunds: Optional[TaxRefunds] = None
-    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded, or paid
-    by Gusto, depending on the value in `reconcile_tax_method`.
+    tax_refunds: Optional[List[TaxRefunds]] = None
+    r"""Describes the taxes which are refundable to the company for this suspension. These may be refunded or paid by Gusto depending on the value in `reconcile_tax_method`.
 
     """
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "uuid",
+            "company_uuid",
+            "effective_date",
+            "leaving_for",
+            "reason",
+            "reconcile_tax_method",
+            "file_quarterly_forms",
+            "file_yearly_forms",
+            "comments",
+            "tax_refunds",
+        ]
+        nullable_fields = ["leaving_for", "comments"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

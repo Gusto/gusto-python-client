@@ -16,7 +16,9 @@ Returns scope and resource information associated with the current access token.
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-token-info" method="get" path="/v1/token_info" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -24,7 +26,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -54,7 +56,9 @@ Revokes the given access token. After revoking, this token can no longer be used
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="revoke-access-token" method="post" path="/oauth/revoke" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -62,7 +66,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.introspection.revoke(client_id="<id>", client_secret="<value>", token="<value>")
+    gai_client.introspection.revoke(client_id="<id>", client_secret="<value>", token="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -94,7 +98,9 @@ The `expires_in` value is provided in seconds from when the `access_token` was g
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="refresh-access-token" method="post" path="/oauth/token" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -102,7 +108,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.refresh_access_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>")
+    res = gai_client.introspection.refresh_access_token(client_id="<id>", client_secret="<value>", refresh_token="<value>", grant_type="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -143,6 +149,7 @@ scope: `companies:disconnect_app_integration`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-disconnect-app-integration" method="post" path="/v1/companies/{company_id}/disconnect_app_integration" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -152,7 +159,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.introspection.disconnect_app_integration(security=gusto_app_integration.PostV1DisconnectAppIntegrationSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), company_id="<id>")
+    ), company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

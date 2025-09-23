@@ -15,7 +15,9 @@ scope: `flows:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-company-flows" method="post" path="/v1/companies/{company_uuid}/flows" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -24,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.flows.create(company_uuid="<id>", flow_type="company_onboarding")
+    res = gusto.flows.create(company_uuid="<id>", flow_type="company_onboarding", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

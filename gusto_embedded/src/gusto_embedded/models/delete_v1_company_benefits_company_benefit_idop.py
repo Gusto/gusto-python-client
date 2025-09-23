@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded import utils
+from dataclasses import dataclass, field
+from gusto_embedded.models import GustoError
 from gusto_embedded.types import BaseModel
 from gusto_embedded.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
+import httpx
 import pydantic
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
@@ -57,15 +59,18 @@ class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData(BaseModel):
     errors: Optional[DeleteV1CompanyBenefitsCompanyBenefitIDErrors] = None
 
 
-class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(Exception):
+@dataclass(frozen=True)
+class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(GustoError):
     r"""Unprocessable Entity"""
 
-    data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
+    data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData = field(hash=False)
 
-    def __init__(self, data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
-        )
+    def __init__(
+        self,
+        data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
+    ):
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

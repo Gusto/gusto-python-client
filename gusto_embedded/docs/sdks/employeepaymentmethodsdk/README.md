@@ -21,6 +21,7 @@ scope: `employee_payment_methods:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-bank_accounts" method="post" path="/v1/employees/{employee_id}/bank_accounts" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -31,7 +32,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.create(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_method.create(employee_id="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -70,7 +71,9 @@ scope: `employee_payment_methods:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employees-employee_id-bank_accounts-bank_account_id" method="delete" path="/v1/employees/{employee_id}/bank_accounts/{bank_account_uuid}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -79,7 +82,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_payment_method.delete_bank_account(employee_id="<id>", bank_account_uuid="<id>")
+    gusto.employee_payment_method.delete_bank_account(employee_id="<id>", bank_account_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -108,6 +111,7 @@ scope: `employee_payment_methods:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-bank_accounts" method="put" path="/v1/employees/{employee_id}/bank_accounts/{bank_account_uuid}" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -118,7 +122,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.update_bank_account(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING)
+    res = gusto.employee_payment_method.update_bank_account(employee_id="<id>", bank_account_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PutV1EmployeesEmployeeIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -159,7 +163,9 @@ scope: `employee_payment_methods:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-payment_method" method="get" path="/v1/employees/{employee_id}/payment_method" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -168,7 +174,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.get(employee_id="<id>")
+    res = gusto.employee_payment_method.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -202,6 +208,7 @@ scope: `employee_payment_methods:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-payment_method" method="put" path="/v1/employees/{employee_id}/payment_method" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -212,7 +219,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_payment_method.update(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, split_by=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
+    res = gusto.employee_payment_method.update(employee_id="<id>", version="63859768485e218ccf8a449bb60f14ed", type_=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodType.DIRECT_DEPOSIT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, split_by=gusto_embedded.PutV1EmployeesEmployeeIDPaymentMethodSplitBy.AMOUNT, splits=[
         {
             "uuid": "e88f9436-b74e-49a8-87e9-777b9bfe715e",
             "name": "BoA Checking Account",
@@ -244,10 +251,10 @@ with Gusto(
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
 | `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.                                                |
-| `type`                                                                                                                                                                                                                       | [models.PutV1EmployeesEmployeeIDPaymentMethodType](../../models/putv1employeesemployeeidpaymentmethodtype.md)                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required.                                                                |
+| `type`                                                                                                                                                                                                                       | [models.PutV1EmployeesEmployeeIDPaymentMethodType](../../models/putv1employeesemployeeidpaymentmethodtype.md)                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required.                                                        |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `split_by`                                                                                                                                                                                                                   | [Optional[models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy]](../../models/putv1employeesemployeeidpaymentmethodsplitby.md)                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder.               |
-| `splits`                                                                                                                                                                                                                     | List[[models.Splits](../../models/splits.md)]                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `split_by`                                                                                                                                                                                                                   | [Optional[models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy]](../../models/putv1employeesemployeeidpaymentmethodsplitby.md)                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Describes how the payment will be split. If `split_by` is Percentage, then the `split` amounts must add up to exactly 100. If `split_by` is Amount, then the last `split` amount must be `null` to capture the remainder.    |
+| `splits`                                                                                                                                                                                                                     | List[[models.PutV1EmployeesEmployeeIDPaymentMethodSplits](../../models/putv1employeesemployeeidpaymentmethodsplits.md)]                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response

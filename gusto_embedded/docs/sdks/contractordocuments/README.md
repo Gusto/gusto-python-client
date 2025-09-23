@@ -18,7 +18,9 @@ scope: `contractor_documents:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-documents" method="get" path="/v1/contractors/{contractor_uuid}/documents" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -27,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_documents.get_all(contractor_uuid="<id>")
+    res = gusto.contractor_documents.get_all(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -60,7 +62,9 @@ scope: `contractor_documents:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-document" method="get" path="/v1/documents/{document_uuid}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +73,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_documents.get(document_uuid="<id>")
+    res = gusto.contractor_documents.get(document_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -102,7 +106,9 @@ scope: `contractor_documents:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-document-pdf" method="get" path="/v1/documents/{document_uuid}/pdf" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -111,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_documents.get_pdf(document_uuid="<id>")
+    res = gusto.contractor_documents.get_pdf(document_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -144,7 +150,9 @@ scope: `contractor_documents:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-contractor-document-sign" method="put" path="/v1/documents/{document_uuid}/sign" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -153,11 +161,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_documents.sign(document_uuid="<id>", fields=[
-        {},
-        {},
-        {},
-    ], agree=True)
+    res = gusto.contractor_documents.sign(document_uuid="<id>", fields=[], agree=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

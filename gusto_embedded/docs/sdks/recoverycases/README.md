@@ -16,7 +16,9 @@ scope: `recovery_cases:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-recovery-cases" method="get" path="/v1/companies/{company_uuid}/recovery_cases" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.recovery_cases.get(company_uuid="<id>")
+    res = gusto.recovery_cases.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -62,7 +64,9 @@ scope: `recovery_cases:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="redebit-recovery-case" method="put" path="/v1/recovery_cases/{recovery_case_uuid}/redebit" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -71,7 +75,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.recovery_cases.redebit(recovery_case_uuid="<id>")
+    gusto.recovery_cases.redebit(recovery_case_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 

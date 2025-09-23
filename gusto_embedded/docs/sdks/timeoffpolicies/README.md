@@ -31,7 +31,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours" method="post" path="/v1/payrolls/{payroll_id}/employees/{employee_id}/calculate_accruing_time_off_hours" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -40,7 +42,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
+    res = gusto.time_off_policies.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, regular_hours_worked=30.25, overtime_hours_worked=10, double_overtime_hours_worked=0, pto_hours_used=5.5, sick_hours_used=0)
 
     # Handle response
     print(res)
@@ -80,7 +82,9 @@ scope: `time_off_policies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-time_off_policies-time_off_policy_uuid" method="get" path="/v1/time_off_policies/{time_off_policy_uuid}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -89,7 +93,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.get(time_off_policy_uuid="<id>")
+    res = gusto.time_off_policies.get(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -122,6 +126,7 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-time_off_policies-time_off_policy_uuid" method="put" path="/v1/time_off_policies/{time_off_policy_uuid}" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -132,7 +137,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.update(time_off_policy_uuid="<id>", name="Hourly Vacation Policy", accrual_method=gusto_embedded.AccrualMethod.PER_HOUR_PAID, accrual_rate="4.0", accrual_rate_unit="80.0", paid_out_on_termination=True, accrual_waiting_period_days=30, carryover_limit_hours="200.0", max_accrual_hours_per_year="120.0", max_hours="240.0")
+    res = gusto.time_off_policies.update(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, name="Hourly Vacation Policy", accrual_method=gusto_embedded.AccrualMethod.PER_HOUR_PAID, accrual_rate="4.0", accrual_rate_unit="80.0", paid_out_on_termination=True, accrual_waiting_period_days=30, carryover_limit_hours="200.0", max_accrual_hours_per_year="120.0", max_hours="240.0")
 
     # Handle response
     print(res)
@@ -175,7 +180,9 @@ scope: `time_off_policies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-companies-company_uuid-time_off_policies" method="get" path="/v1/companies/{company_uuid}/time_off_policies" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -184,7 +191,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.get_all(company_uuid="<id>")
+    res = gusto.time_off_policies.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -217,6 +224,7 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-companies-company_uuid-time_off_policies" method="post" path="/v1/companies/{company_uuid}/time_off_policies" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -227,7 +235,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.create(company_uuid="<id>", name="Unlimited Vacation Policy", policy_type="vacation", accrual_method=gusto_embedded.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod.UNLIMITED)
+    res = gusto.time_off_policies.create(company_uuid="<id>", name="Unlimited Vacation Policy", policy_type="vacation", accrual_method=gusto_embedded.PostCompaniesCompanyUUIDTimeOffPoliciesAccrualMethod.UNLIMITED, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -271,7 +279,9 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-version-time_off_policies-time_off_policy_uuid-add_employees" method="put" path="/v1/time_off_policies/{time_off_policy_uuid}/add_employees" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -280,7 +290,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.add_employees(time_off_policy_uuid="<id>")
+    res = gusto.time_off_policies.add_employees(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -315,7 +325,9 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-time_off_policies-time_off_policy_uuid-remove_employees" method="put" path="/v1/time_off_policies/{time_off_policy_uuid}/remove_employees" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -324,7 +336,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.remove_employees(time_off_policy_uuid="<id>")
+    res = gusto.time_off_policies.remove_employees(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -359,7 +371,9 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-version-time_off_policies-time_off_policy_uuid-balance" method="put" path="/v1/time_off_policies/{time_off_policy_uuid}/balance" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -368,7 +382,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.update_balance(time_off_policy_uuid="<id>")
+    res = gusto.time_off_policies.update_balance(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -403,7 +417,9 @@ scope: `time_off_policies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-time_off_policies-time_off_policy_uuid-deactivate" method="put" path="/v1/time_off_policies/{time_off_policy_uuid}/deactivate" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -412,7 +428,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.time_off_policies.deactivate(time_off_policy_uuid="<id>")
+    res = gusto.time_off_policies.deactivate(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

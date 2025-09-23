@@ -18,7 +18,9 @@ scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-forms" method="get" path="/v1/companies/{company_id}/forms" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -27,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get_all(company_id="<id>")
+    res = gusto.company_forms.get_all(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -60,7 +62,9 @@ scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-form" method="get" path="/v1/forms/{form_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +73,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get(form_id="<id>")
+    res = gusto.company_forms.get(form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -102,7 +106,9 @@ scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-form-pdf" method="get" path="/v1/forms/{form_id}/pdf" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -111,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get_pdf(form_id="<id>")
+    res = gusto.company_forms.get_pdf(form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -144,7 +150,9 @@ scope: `company_forms:sign`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-company-form-sign" method="put" path="/v1/forms/{form_id}/sign" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -153,7 +161,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.sign(form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = gusto.company_forms.sign(form_id="<id>", signature_text="Jane Smith", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, signed_by_ip_address="192.168.0.1")
 
     # Handle response
     print(res)

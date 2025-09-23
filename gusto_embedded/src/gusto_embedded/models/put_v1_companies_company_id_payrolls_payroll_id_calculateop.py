@@ -6,9 +6,11 @@ from .unprocessable_entity_error_object_error import (
     UnprocessableEntityErrorObjectErrorData,
 )
 from .versionheader import VersionHeader
-from gusto_embedded import utils
+from dataclasses import dataclass, field
+from gusto_embedded.models import GustoError
 from gusto_embedded.types import BaseModel
 from gusto_embedded.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
+import httpx
 import pydantic
 from typing import Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
@@ -49,18 +51,20 @@ PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion = TypeAliasTy
 r"""Unprocessable Entity"""
 
 
-class PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBody(Exception):
+@dataclass(frozen=True)
+class PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBody(GustoError):
     r"""Unprocessable Entity"""
 
-    data: PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion
+    data: PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion = field(
+        hash=False
+    )
 
     def __init__(
-        self, data: PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion
+        self,
+        data: PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
     ):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data,
-            PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateResponseBodyUnion,
-        )
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

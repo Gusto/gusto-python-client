@@ -46,7 +46,15 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 >
 > Once a Python version reaches its [official end of life date](https://devguide.python.org/versions/), a 3-month grace period is provided for users to upgrade. Following this grace period, the minimum python version supported in the SDK will be updated.
 
-The SDK can be installed with either *pip* or *poetry* package managers.
+The SDK can be installed with *uv*, *pip*, or *poetry* package managers.
+
+### uv
+
+*uv* is a fast Python package installer and resolver, designed as a drop-in replacement for pip and pip-tools. It's recommended for its speed and modern Python tooling capabilities.
+
+```bash
+uv add gusto_embedded
+```
 
 ### PIP
 
@@ -227,6 +235,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -235,7 +244,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -265,7 +274,7 @@ with Gusto() as gusto:
         "trade_name": "Frank’s Ocean",
         "ein": "123456789",
         "contractor_only": False,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -285,10 +294,11 @@ with Gusto() as gusto:
 
 ### [bank_accounts](docs/sdks/bankaccounts/README.md)
 
-* [create](docs/sdks/bankaccounts/README.md#create) - Create a company bank account
 * [get](docs/sdks/bankaccounts/README.md#get) - Get all company bank accounts
+* [create](docs/sdks/bankaccounts/README.md#create) - Create a company bank account
 * [verify](docs/sdks/bankaccounts/README.md#verify) - Verify a company bank account
 * [create_from_plaid_token](docs/sdks/bankaccounts/README.md#create_from_plaid_token) - Create a bank account from a plaid processor token
+* [delete_v1_companies_company_id_bank_accounts_bank_account_id](docs/sdks/bankaccounts/README.md#delete_v1_companies_company_id_bank_accounts_bank_account_id) - Delete a company bank account
 
 ### [companies](docs/sdks/companies/README.md)
 
@@ -332,6 +342,8 @@ with Gusto() as gusto:
 * [get_employee_benefits](docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
 * [update_employee_benefits](docs/sdks/companybenefits/README.md#update_employee_benefits) - Bulk update employee benefits for a company benefit
 * [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by ID
+* [get_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
+* [put_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
 ### [company_forms](docs/sdks/companyforms/README.md)
 
@@ -356,12 +368,14 @@ with Gusto() as gusto:
 
 ### [contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md)
 
-* [create](docs/sdks/contractorpaymentgroups/README.md#create) - Create a contractor payment group
 * [get_list](docs/sdks/contractorpaymentgroups/README.md#get_list) - Get contractor payment groups for a company
+* [create](docs/sdks/contractorpaymentgroups/README.md#create) - Create a contractor payment group
 * [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
-* [get](docs/sdks/contractorpaymentgroups/README.md#get) - Fetch a contractor payment group
+* [get](docs/sdks/contractorpaymentgroups/README.md#get) - Get a contractor payment group
 * [delete](docs/sdks/contractorpaymentgroups/README.md#delete) - Cancel a contractor payment group
 * [fund](docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
+* [get_v1_contractor_payment_groups_id_partner_disbursements](docs/sdks/contractorpaymentgroups/README.md#get_v1_contractor_payment_groups_id_partner_disbursements) - Get partner disbursements for a contractor payment group
+* [patch_v1_contractor_payment_groups_id_partner_disbursements](docs/sdks/contractorpaymentgroups/README.md#patch_v1_contractor_payment_groups_id_partner_disbursements) - Update partner disbursements for a contractor payment group
 
 ### [contractor_payment_method](docs/sdks/contractorpaymentmethodsdk/README.md)
 
@@ -394,6 +408,7 @@ with Gusto() as gusto:
 * [update_onboarding_status](docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
 * [get_address](docs/sdks/contractors/README.md#get_address) - Get a contractor address
 * [update_address](docs/sdks/contractors/README.md#update_address) - Update a contractor's address
+* [get_v1_companies_company_id_contractors_payment_details](docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 
 ### [departments](docs/sdks/departments/README.md)
 
@@ -478,6 +493,7 @@ with Gusto() as gusto:
 
 * [list](docs/sdks/employees/README.md#list) - Get employees of a company
 * [create](docs/sdks/employees/README.md#create) - Create an employee
+* [get_v1_companies_company_id_employees_payment_details](docs/sdks/employees/README.md#get_v1_companies_company_id_employees_payment_details) - Get employee payment details for a company
 * [create_historical](docs/sdks/employees/README.md#create_historical) - Create a historical employee
 * [get](docs/sdks/employees/README.md#get) - Get an employee
 * [update](docs/sdks/employees/README.md#update) - Update an employee.
@@ -592,6 +608,7 @@ with Gusto() as gusto:
 ### [notifications](docs/sdks/notifications/README.md)
 
 * [get_details](docs/sdks/notifications/README.md#get_details) - Get a notification's details
+* [get_company_notifications](docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
 
 ### [pay_schedules](docs/sdks/payschedules/README.md)
 
@@ -613,8 +630,8 @@ with Gusto() as gusto:
 
 ### [payrolls](docs/sdks/payrolls/README.md)
 
-* [create_off_cycle](docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
 * [list](docs/sdks/payrolls/README.md#list) - Get all payrolls for a company
+* [create_off_cycle](docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
 * [get_approved_reversals](docs/sdks/payrolls/README.md#get_approved_reversals) - Get approved payroll reversals
 * [get](docs/sdks/payrolls/README.md#get) - Get a single payroll
 * [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
@@ -630,6 +647,8 @@ with Gusto() as gusto:
 * [get_pay_stub](docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
 * [get_pay_stubs](docs/sdks/payrolls/README.md#get_pay_stubs) - Get an employee's pay stubs
 * [generate_printable_checks](docs/sdks/payrolls/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
+* [get_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
+* [patch_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
 
 ### [recovery_cases](docs/sdks/recoverycases/README.md)
 
@@ -639,7 +658,8 @@ with Gusto() as gusto:
 ### [reports](docs/sdks/reports/README.md)
 
 * [create_custom](docs/sdks/reports/README.md#create_custom) - Create a custom report
-* [get](docs/sdks/reports/README.md#get) - Get a report
+* [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](docs/sdks/reports/README.md#get_template) - Get a report template
 
 ### [signatories](docs/sdks/signatories/README.md)
@@ -677,6 +697,7 @@ with Gusto() as gusto:
 * [delete_subscription](docs/sdks/webhooks/README.md#delete_subscription) - Delete a webhook subscription
 * [verify](docs/sdks/webhooks/README.md#verify) - Verify the webhook subscription
 * [request_verification_token](docs/sdks/webhooks/README.md#request_verification_token) - Request the webhook subscription verification_token
+* [get_v1_webhooks_health_check](docs/sdks/webhooks/README.md#get_v1_webhooks_health_check) - Get the webhooks health status
 
 ### [wire_in_requests](docs/sdks/wireinrequests/README.md)
 
@@ -710,7 +731,7 @@ with Gusto(
     res = gusto.company_attachments.create(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -725,6 +746,7 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
@@ -734,7 +756,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(,
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -744,6 +766,7 @@ with Gusto(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 from gusto_embedded.utils import BackoffStrategy, RetryConfig
 import os
@@ -754,7 +777,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -765,26 +788,18 @@ with Gusto(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-Handling errors in this SDK should largely match your expectations. All operations return a response object or raise an exception.
+[`GustoError`](./src/gusto_embedded/models/gustoerror.py) is the base class for all HTTP error responses. It has the following properties:
 
-By default, an API error will raise a models.APIError exception, which has the following properties:
-
-| Property        | Type             | Description           |
-|-----------------|------------------|-----------------------|
-| `.status_code`  | *int*            | The HTTP status code  |
-| `.message`      | *str*            | The error message     |
-| `.raw_response` | *httpx.Response* | The raw HTTP response |
-| `.body`         | *str*            | The response content  |
-
-When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `create_partner_managed_async` method may raise the following exceptions:
-
-| Error Type                                 | Status Code | Content Type     |
-| ------------------------------------------ | ----------- | ---------------- |
-| models.UnprocessableEntityErrorObjectError | 422         | application/json |
-| models.APIError                            | 4XX, 5XX    | \*/\*            |
+| Property           | Type             | Description                                                                             |
+| ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
+| `err.message`      | `str`            | Error message                                                                           |
+| `err.status_code`  | `int`            | HTTP response status code eg `404`                                                      |
+| `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
+| `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
+| `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
-
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto, models
@@ -807,18 +822,51 @@ with Gusto() as gusto:
             "trade_name": "Frank’s Ocean",
             "ein": "123456789",
             "contractor_only": False,
-        })
+        }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
 
-    except models.UnprocessableEntityErrorObjectError as e:
-        # handle e.data: models.UnprocessableEntityErrorObjectErrorData
-        raise(e)
-    except models.APIError as e:
-        # handle exception
-        raise(e)
+
+    except models.GustoError as e:
+        # The base class for HTTP error responses
+        print(e.message)
+        print(e.status_code)
+        print(e.body)
+        print(e.headers)
+        print(e.raw_response)
+
+        # Depending on the method different errors may be thrown
+        if isinstance(e, models.UnprocessableEntityErrorObjectError):
+            print(e.data.errors)  # List[gusto_embedded.EntityErrorObject]
 ```
+
+### Error Classes
+**Primary error:**
+* [`GustoError`](./src/gusto_embedded/models/gustoerror.py): The base class for HTTP error responses.
+
+<details><summary>Less common errors (11)</summary>
+
+<br />
+
+**Network errors:**
+* [`httpx.RequestError`](https://www.python-httpx.org/exceptions/#httpx.RequestError): Base class for request errors.
+    * [`httpx.ConnectError`](https://www.python-httpx.org/exceptions/#httpx.ConnectError): HTTP client was unable to make a request to a server.
+    * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
+
+
+**Inherit from [`GustoError`](./src/gusto_embedded/models/gustoerror.py)**:
+* [`UnprocessableEntityErrorObjectError`](./src/gusto_embedded/models/unprocessableentityerrorobjecterror.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 144 of 263 methods.*
+* [`NotFoundErrorObject`](./src/gusto_embedded/models/notfounderrorobject.py): Not Found     The requested resource does not exist. Make sure the provided ID/UUID is valid. Status code `404`. Applicable to 4 of 263 methods.*
+* [`PayrollBlockersError`](./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 4 of 263 methods.*
+* [`GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody`](./src/gusto_embedded/models/getcompaniescompanyuuidcontractorpaymentspreviewcontractorpaymentsresponsebody.py): Unprocessable Entity (WebDAV). Status code `422`. Applicable to 1 of 263 methods.*
+* [`DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody`](./src/gusto_embedded/models/deletev1companybenefitscompanybenefitidresponsebody.py): Unprocessable Entity. Status code `422`. Applicable to 1 of 263 methods.*
+* [`CompanySuspensionCreationErrorsError`](./src/gusto_embedded/models/companysuspensioncreationerrorserror.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `422`. Applicable to 1 of 263 methods.*
+* [`ResponseValidationError`](./src/gusto_embedded/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+
+</details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -836,6 +884,7 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -845,7 +894,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -856,6 +905,7 @@ with Gusto(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -865,7 +915,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

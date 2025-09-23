@@ -17,6 +17,7 @@ scope: `contractor_payment_methods:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-contractors-contractor_uuid-bank_accounts" method="post" path="/v1/contractors/{contractor_uuid}/bank_accounts" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -27,7 +28,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING)
+    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

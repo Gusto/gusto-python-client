@@ -38,17 +38,15 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class PayrollPreparedTypedDict(TypedDict):
-    r"""A prepared payroll"""
-
     payroll_deadline: NotRequired[datetime]
     r"""A timestamp that is the deadline for the payroll to be run in order for employees to be paid on time.  If payroll has not been run by the deadline, a prepare request will update both the check date and deadline to reflect the soonest employees can be paid and the deadline by which the payroll must be run in order for said check date to be met."""
     check_date: NotRequired[str]
     r"""The date on which employees will be paid for the payroll."""
     processed: NotRequired[bool]
     r"""Whether or not the payroll has been successfully processed. Note that processed payrolls cannot be updated. Additionally, a payroll is not guaranteed to be processed just because the payroll deadline has passed. Late payrolls are not uncommon. Conversely, users may choose to run payroll before the payroll deadline."""
-    processed_date: NotRequired[str]
+    processed_date: NotRequired[Nullable[str]]
     r"""The date at which the payroll was processed. Null if the payroll isn't processed yet."""
-    calculated_at: NotRequired[str]
+    calculated_at: NotRequired[Nullable[datetime]]
     r"""A timestamp of the last valid payroll calculation. Null if there isn't a valid calculation."""
     uuid: NotRequired[str]
     r"""The UUID of the payroll."""
@@ -84,11 +82,11 @@ class PayrollPreparedTypedDict(TypedDict):
         List[PayrollFixedCompensationTypesTypeTypedDict]
     ]
     processing_request: NotRequired[Nullable[PayrollProcessingRequestTypedDict]]
+    partner_owned_disbursement: NotRequired[Nullable[bool]]
+    r"""Will money movement for the payroll be performed by the partner rather than by Gusto?"""
 
 
 class PayrollPrepared(BaseModel):
-    r"""A prepared payroll"""
-
     payroll_deadline: Optional[datetime] = None
     r"""A timestamp that is the deadline for the payroll to be run in order for employees to be paid on time.  If payroll has not been run by the deadline, a prepare request will update both the check date and deadline to reflect the soonest employees can be paid and the deadline by which the payroll must be run in order for said check date to be met."""
 
@@ -98,10 +96,10 @@ class PayrollPrepared(BaseModel):
     processed: Optional[bool] = None
     r"""Whether or not the payroll has been successfully processed. Note that processed payrolls cannot be updated. Additionally, a payroll is not guaranteed to be processed just because the payroll deadline has passed. Late payrolls are not uncommon. Conversely, users may choose to run payroll before the payroll deadline."""
 
-    processed_date: Optional[str] = None
+    processed_date: OptionalNullable[str] = UNSET
     r"""The date at which the payroll was processed. Null if the payroll isn't processed yet."""
 
-    calculated_at: Optional[str] = None
+    calculated_at: OptionalNullable[datetime] = UNSET
     r"""A timestamp of the last valid payroll calculation. Null if there isn't a valid calculation."""
 
     uuid: Optional[str] = None
@@ -154,6 +152,9 @@ class PayrollPrepared(BaseModel):
 
     processing_request: OptionalNullable[PayrollProcessingRequest] = UNSET
 
+    partner_owned_disbursement: OptionalNullable[bool] = UNSET
+    r"""Will money movement for the payroll be performed by the partner rather than by Gusto?"""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
@@ -180,8 +181,15 @@ class PayrollPrepared(BaseModel):
             "created_at",
             "fixed_compensation_types",
             "processing_request",
+            "partner_owned_disbursement",
         ]
-        nullable_fields = ["off_cycle_reason", "processing_request"]
+        nullable_fields = [
+            "processed_date",
+            "calculated_at",
+            "off_cycle_reason",
+            "processing_request",
+            "partner_owned_disbursement",
+        ]
         null_default_fields = []
 
         serialized = handler(self)

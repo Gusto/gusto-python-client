@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -22,7 +29,7 @@ class EmploymentHistoryListTypedDict(TypedDict):
 
     hire_date: NotRequired[str]
     r"""The employee's start day of work for an employment."""
-    termination_date: NotRequired[str]
+    termination_date: NotRequired[Nullable[str]]
     r"""The employee's last day of work for an employment."""
     file_new_hire_report: NotRequired[bool]
     r"""The boolean flag indicating whether Gusto will file a new hire report for the employee."""
@@ -38,7 +45,7 @@ class EmploymentHistoryList(BaseModel):
     hire_date: Optional[str] = None
     r"""The employee's start day of work for an employment."""
 
-    termination_date: Optional[str] = None
+    termination_date: OptionalNullable[str] = UNSET
     r"""The employee's last day of work for an employment."""
 
     file_new_hire_report: Optional[bool] = None
@@ -49,3 +56,39 @@ class EmploymentHistoryList(BaseModel):
 
     employment_status: Optional[EmploymentHistoryListEmploymentStatus] = None
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "hire_date",
+            "termination_date",
+            "file_new_hire_report",
+            "two_percent_shareholder",
+            "employment_status",
+        ]
+        nullable_fields = ["termination_date"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

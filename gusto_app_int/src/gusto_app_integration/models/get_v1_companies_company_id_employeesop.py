@@ -21,9 +21,12 @@ class GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion(str, Enum):
 
 
 class Include(str, Enum):
-    CUSTOM_FIELDS = "custom_fields"
     ALL_COMPENSATIONS = "all_compensations"
+    ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
+    CURRENT_HOME_ADDRESS = "current_home_address"
+    CUSTOM_FIELDS = "custom_fields"
+    PORTAL_INVITATIONS = "portal_invitations"
 
 
 class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
@@ -36,13 +39,15 @@ class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
     search_term: NotRequired[str]
     r"""A string to search for in the object's names"""
     include: NotRequired[List[Include]]
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
-
-    """
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
+    onboarded: NotRequired[bool]
+    r"""Filters employees by those who have completed onboarding"""
     terminated: NotRequired[bool]
-    r"""Filters employees by the provided boolean"""
+    r"""Filters employees by those who have been or are scheduled to be terminated"""
+    terminated_today: NotRequired[bool]
+    r"""Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)"""
+    uuids: NotRequired[List[str]]
+    r"""Optional subset of employees to fetch."""
     page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
@@ -72,17 +77,31 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
         Optional[List[Include]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
-    """
+    onboarded: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filters employees by those who have completed onboarding"""
 
     terminated: Annotated[
         Optional[bool],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
-    r"""Filters employees by the provided boolean"""
+    r"""Filters employees by those who have been or are scheduled to be terminated"""
+
+    terminated_today: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)"""
+
+    uuids: Annotated[
+        Optional[List[str]],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
+    ] = None
+    r"""Optional subset of employees to fetch."""
 
     page: Annotated[
         Optional[int],

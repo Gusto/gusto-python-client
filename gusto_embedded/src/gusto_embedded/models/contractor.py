@@ -139,7 +139,7 @@ class ContractorTypedDict(TypedDict):
     r"""The contractor’s home address."""
     hourly_rate: NotRequired[str]
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
-    file_new_hire_report: NotRequired[bool]
+    file_new_hire_report: NotRequired[Nullable[bool]]
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
     work_state: NotRequired[Nullable[str]]
     r"""State where the contractor will be conducting the majority of their work for the company.
@@ -208,7 +208,7 @@ class Contractor(BaseModel):
     hourly_rate: Optional[str] = None
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
 
-    file_new_hire_report: Optional[bool] = False
+    file_new_hire_report: OptionalNullable[bool] = UNSET
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
 
     work_state: OptionalNullable[str] = UNSET
@@ -266,6 +266,7 @@ class Contractor(BaseModel):
             "has_ein",
             "email",
             "address",
+            "file_new_hire_report",
             "work_state",
             "payment_method",
             "department_uuid",
