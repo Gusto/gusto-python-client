@@ -10,13 +10,15 @@
 
 ## get
 
-Get payment speed for the company and fast payment limit (1-day is only applicable to partners that opt in).
+Get payment speed configurations for the company and fast payment limit (1-day is only applicable to partners that opt in).
 
 scope: `company_payment_configs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-payment-configs" method="get" path="/v1/companies/{company_uuid}/payment_configs" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payment_configs.get(company_uuid="<id>")
+    res = gusto.payment_configs.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -58,6 +60,7 @@ scope: `company_payment_configs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-company-payment-configs" method="put" path="/v1/companies/{company_uuid}/payment_configs" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -71,7 +74,7 @@ with Gusto(
     res = gusto.payment_configs.update(company_uuid="<id>", request_body={
         "fast_payment_limit": "5000",
         "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_MINUS_DAY,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -93,7 +96,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

@@ -9,3 +9,4 @@ The type of file to generate
 | ------ | ------ |
 | `CSV`  | csv    |
 | `JSON` | json   |
+| `PDF`  | pdf    |

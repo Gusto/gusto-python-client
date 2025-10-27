@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 from .payroll_blockers_error import PayrollBlockersErrorData
-from .unprocessable_entity_error_object_error import (
-    UnprocessableEntityErrorObjectErrorData,
-)
+from .unprocessable_entity_error_object import UnprocessableEntityErrorObjectData
 from .versionheader import VersionHeader
+from dataclasses import dataclass, field
 from enum import Enum
-from gusto_embedded import utils
+from gusto_embedded.models import GustoError
 from gusto_embedded.types import BaseModel
 from gusto_embedded.utils import (
     FieldMetadata,
@@ -15,6 +14,7 @@ from gusto_embedded.utils import (
     PathParamMetadata,
     RequestMetadata,
 )
+import httpx
 import pydantic
 from typing import List, Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
@@ -88,20 +88,23 @@ class PostCompaniesPayrollSkipCompanyUUIDRequest(BaseModel):
 
 PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion = TypeAliasType(
     "PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion",
-    Union[UnprocessableEntityErrorObjectErrorData, PayrollBlockersErrorData],
+    Union[UnprocessableEntityErrorObjectData, PayrollBlockersErrorData],
 )
 r"""Unprocessable Entity"""
 
 
-class PostCompaniesPayrollSkipCompanyUUIDResponseBody(Exception):
+@dataclass(unsafe_hash=True)
+class PostCompaniesPayrollSkipCompanyUUIDResponseBody(GustoError):
     r"""Unprocessable Entity"""
 
-    data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion
+    data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion = field(hash=False)
 
-    def __init__(self, data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion
-        )
+    def __init__(
+        self,
+        data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
+    ):
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

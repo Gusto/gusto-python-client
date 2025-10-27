@@ -14,8 +14,6 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class EmployeeWorkAddressTypedDict(TypedDict):
-    r"""List of employee work addresses"""
-
     uuid: str
     r"""The unique identifier of this work address."""
     version: str
@@ -37,8 +35,6 @@ class EmployeeWorkAddressTypedDict(TypedDict):
 
 
 class EmployeeWorkAddress(BaseModel):
-    r"""List of employee work addresses"""
-
     uuid: str
     r"""The unique identifier of this work address."""
 

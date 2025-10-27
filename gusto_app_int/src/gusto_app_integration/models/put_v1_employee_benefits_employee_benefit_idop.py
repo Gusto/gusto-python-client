@@ -43,11 +43,15 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDValue2TypedDict(TypedDict):
     rate: NotRequired[str]
     r"""The percentage of employee deduction within this tier the company contribution will match."""
     threshold: NotRequired[str]
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and rate of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
 
 
@@ -58,11 +62,15 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDValue2(BaseModel):
     r"""The percentage of employee deduction within this tier the company contribution will match."""
 
     threshold: Optional[str] = None
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and rate of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
 
 

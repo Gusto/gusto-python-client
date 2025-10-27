@@ -15,10 +15,11 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class PayrollEmployeeCompensationsTypePaymentMethod(str, Enum):
-    r"""The employee's compensation payment method."""
+    r"""The employee's compensation payment method. Is *only* `Historical` when retrieving external payrolls initially run outside of Gusto, then put into Gusto."""
 
-    CHECK = "Check"
     DIRECT_DEPOSIT = "Direct Deposit"
+    CHECK = "Check"
+    HISTORICAL = "Historical"
 
 
 class FixedCompensationsTypedDict(TypedDict):
@@ -96,46 +97,95 @@ class PayrollEmployeeCompensationsTypePaidTimeOff(BaseModel):
     r"""The outstanding hours paid upon termination. This field is only applicable for termination payrolls."""
 
 
-class BenefitsTypedDict(TypedDict):
-    name: NotRequired[str]
-    employee_deduction: NotRequired[float]
-    company_contribution: NotRequired[float]
-    imputed: NotRequired[bool]
+class AmountType(str, Enum):
+    r"""The amount type of the deduction for the pay period."""
 
-
-class Benefits(BaseModel):
-    name: Optional[str] = None
-
-    employee_deduction: Optional[float] = None
-
-    company_contribution: Optional[float] = None
-
-    imputed: Optional[bool] = None
+    FIXED = "fixed"
+    PERCENT = "percent"
 
 
 class DeductionsTypedDict(TypedDict):
+    r"""An array of deductions for the employee."""
+
     name: NotRequired[str]
+    r"""The name of the deduction."""
     amount: NotRequired[float]
+    r"""The amount of the deduction for the pay period."""
+    amount_type: NotRequired[AmountType]
+    r"""The amount type of the deduction for the pay period."""
+    uuid: NotRequired[str]
+    r"""The UUID of the deduction. This parameter is optional and can be provided in order to update an existing deduction."""
 
 
 class Deductions(BaseModel):
+    r"""An array of deductions for the employee."""
+
     name: Optional[str] = None
+    r"""The name of the deduction."""
 
     amount: Optional[float] = None
+    r"""The amount of the deduction for the pay period."""
+
+    amount_type: Optional[AmountType] = None
+    r"""The amount type of the deduction for the pay period."""
+
+    uuid: Optional[str] = None
+    r"""The UUID of the deduction. This parameter is optional and can be provided in order to update an existing deduction."""
 
 
-class TaxesTypedDict(TypedDict):
-    name: str
-    employer: bool
-    amount: float
+class ReimbursementsTypedDict(TypedDict):
+    amount: str
+    r"""The dollar amount of the reimbursement for the pay period."""
+    description: Nullable[str]
+    r"""The description of the reimbursement. Null for unnamed reimbursements."""
+    uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the reimbursement. Null for unnamed reimbursements. This field is only available for unprocessed payrolls."""
+    recurring: NotRequired[bool]
+    r"""Whether the reimbursement is recurring. This field is only available for unprocessed payrolls."""
 
 
-class Taxes(BaseModel):
-    name: str
+class Reimbursements(BaseModel):
+    amount: str
+    r"""The dollar amount of the reimbursement for the pay period."""
 
-    employer: bool
+    description: Nullable[str]
+    r"""The description of the reimbursement. Null for unnamed reimbursements."""
 
-    amount: float
+    uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the reimbursement. Null for unnamed reimbursements. This field is only available for unprocessed payrolls."""
+
+    recurring: Optional[bool] = None
+    r"""Whether the reimbursement is recurring. This field is only available for unprocessed payrolls."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = ["uuid", "recurring"]
+        nullable_fields = ["description", "uuid"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m
 
 
 class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
@@ -145,6 +195,12 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
     r"""This employee will be excluded (skipped) from payroll calculation and will not be paid for the payroll. Cancelling a payroll would reset all employees' excluded back to false."""
     version: NotRequired[str]
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
+    first_name: NotRequired[Nullable[str]]
+    r"""The first name of the employee. Requires `employees:read` scope."""
+    preferred_first_name: NotRequired[Nullable[str]]
+    r"""The preferred first name of the employee. Requires `employees:read` scope."""
+    last_name: NotRequired[Nullable[str]]
+    r"""The last name of the employee. Requires `employees:read` scope."""
     gross_pay: NotRequired[Nullable[float]]
     r"""The employee's gross pay, equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income. This value is only available for processed payrolls."""
     net_pay: NotRequired[Nullable[float]]
@@ -152,7 +208,7 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
     check_amount: NotRequired[Nullable[float]]
     r"""The employee's check amount, equal to net_pay + reimbursements. This value is only available for processed payrolls."""
     payment_method: NotRequired[Nullable[PayrollEmployeeCompensationsTypePaymentMethod]]
-    r"""The employee's compensation payment method."""
+    r"""The employee's compensation payment method. Is *only* `Historical` when retrieving external payrolls initially run outside of Gusto, then put into Gusto."""
     memo: NotRequired[Nullable[str]]
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
     fixed_compensations: NotRequired[List[FixedCompensationsTypedDict]]
@@ -163,12 +219,9 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
         List[PayrollEmployeeCompensationsTypePaidTimeOffTypedDict]
     ]
     r"""An array of all paid time off the employee is eligible for this pay period."""
-    benefits: NotRequired[List[BenefitsTypedDict]]
-    r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
     deductions: NotRequired[List[DeductionsTypedDict]]
-    r"""An array of employee deductions for the pay period. Deductions are only included for processed payroll when the include parameter is present."""
-    taxes: NotRequired[List[TaxesTypedDict]]
-    r"""An array of employer and employee taxes for the pay period. Only included for processed or calculated payrolls when `taxes` is present in the `include` parameter."""
+    reimbursements: NotRequired[List[ReimbursementsTypedDict]]
+    r"""An array of reimbursements for the employee."""
 
 
 class PayrollEmployeeCompensationsType(BaseModel):
@@ -180,6 +233,15 @@ class PayrollEmployeeCompensationsType(BaseModel):
 
     version: Optional[str] = None
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
+
+    first_name: OptionalNullable[str] = UNSET
+    r"""The first name of the employee. Requires `employees:read` scope."""
+
+    preferred_first_name: OptionalNullable[str] = UNSET
+    r"""The preferred first name of the employee. Requires `employees:read` scope."""
+
+    last_name: OptionalNullable[str] = UNSET
+    r"""The last name of the employee. Requires `employees:read` scope."""
 
     gross_pay: OptionalNullable[float] = UNSET
     r"""The employee's gross pay, equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income. This value is only available for processed payrolls."""
@@ -193,7 +255,7 @@ class PayrollEmployeeCompensationsType(BaseModel):
     payment_method: OptionalNullable[PayrollEmployeeCompensationsTypePaymentMethod] = (
         UNSET
     )
-    r"""The employee's compensation payment method."""
+    r"""The employee's compensation payment method. Is *only* `Historical` when retrieving external payrolls initially run outside of Gusto, then put into Gusto."""
 
     memo: OptionalNullable[str] = UNSET
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
@@ -207,14 +269,10 @@ class PayrollEmployeeCompensationsType(BaseModel):
     paid_time_off: Optional[List[PayrollEmployeeCompensationsTypePaidTimeOff]] = None
     r"""An array of all paid time off the employee is eligible for this pay period."""
 
-    benefits: Optional[List[Benefits]] = None
-    r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
-
     deductions: Optional[List[Deductions]] = None
-    r"""An array of employee deductions for the pay period. Deductions are only included for processed payroll when the include parameter is present."""
 
-    taxes: Optional[List[Taxes]] = None
-    r"""An array of employer and employee taxes for the pay period. Only included for processed or calculated payrolls when `taxes` is present in the `include` parameter."""
+    reimbursements: Optional[List[Reimbursements]] = None
+    r"""An array of reimbursements for the employee."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
@@ -222,6 +280,9 @@ class PayrollEmployeeCompensationsType(BaseModel):
             "employee_uuid",
             "excluded",
             "version",
+            "first_name",
+            "preferred_first_name",
+            "last_name",
             "gross_pay",
             "net_pay",
             "check_amount",
@@ -230,11 +291,13 @@ class PayrollEmployeeCompensationsType(BaseModel):
             "fixed_compensations",
             "hourly_compensations",
             "paid_time_off",
-            "benefits",
             "deductions",
-            "taxes",
+            "reimbursements",
         ]
         nullable_fields = [
+            "first_name",
+            "preferred_first_name",
+            "last_name",
             "gross_pay",
             "net_pay",
             "check_amount",

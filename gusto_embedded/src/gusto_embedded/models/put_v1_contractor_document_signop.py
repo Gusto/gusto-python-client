@@ -51,7 +51,7 @@ class PutV1ContractorDocumentSignRequestBody(BaseModel):
 
 class PutV1ContractorDocumentSignRequestTypedDict(TypedDict):
     document_uuid: str
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
     request_body: PutV1ContractorDocumentSignRequestBodyTypedDict
     x_gusto_client_ip: NotRequired[str]
     r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
@@ -63,7 +63,7 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
     document_uuid: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
 
     request_body: Annotated[
         PutV1ContractorDocumentSignRequestBody,

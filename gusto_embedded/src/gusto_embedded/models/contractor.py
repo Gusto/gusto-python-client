@@ -139,7 +139,7 @@ class ContractorTypedDict(TypedDict):
     r"""The contractor’s home address."""
     hourly_rate: NotRequired[str]
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
-    file_new_hire_report: NotRequired[bool]
+    file_new_hire_report: NotRequired[Nullable[bool]]
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
     work_state: NotRequired[Nullable[str]]
     r"""State where the contractor will be conducting the majority of their work for the company.
@@ -153,6 +153,10 @@ class ContractorTypedDict(TypedDict):
     r"""The contractor's payment method."""
     has_ssn: NotRequired[bool]
     r"""Indicates whether the contractor has an SSN in Gusto."""
+    department: NotRequired[Nullable[str]]
+    r"""The contractor's department in the company."""
+    dismissal_date: NotRequired[Nullable[str]]
+    r"""The contractor's dismissal date."""
     department_uuid: NotRequired[Nullable[str]]
     r"""The UUID of the department the contractor is under"""
 
@@ -208,7 +212,7 @@ class Contractor(BaseModel):
     hourly_rate: Optional[str] = None
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
 
-    file_new_hire_report: Optional[bool] = False
+    file_new_hire_report: OptionalNullable[bool] = UNSET
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
 
     work_state: OptionalNullable[str] = UNSET
@@ -227,6 +231,12 @@ class Contractor(BaseModel):
 
     has_ssn: Optional[bool] = None
     r"""Indicates whether the contractor has an SSN in Gusto."""
+
+    department: OptionalNullable[str] = UNSET
+    r"""The contractor's department in the company."""
+
+    dismissal_date: OptionalNullable[str] = UNSET
+    r"""The contractor's dismissal date."""
 
     department_uuid: OptionalNullable[str] = UNSET
     r"""The UUID of the department the contractor is under"""
@@ -255,6 +265,8 @@ class Contractor(BaseModel):
             "onboarding_status",
             "payment_method",
             "has_ssn",
+            "department",
+            "dismissal_date",
             "department_uuid",
         ]
         nullable_fields = [
@@ -266,8 +278,11 @@ class Contractor(BaseModel):
             "has_ein",
             "email",
             "address",
+            "file_new_hire_report",
             "work_state",
             "payment_method",
+            "department",
+            "dismissal_date",
             "department_uuid",
         ]
         null_default_fields = []

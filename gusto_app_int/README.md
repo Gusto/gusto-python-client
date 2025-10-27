@@ -49,7 +49,15 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 >
 > Once a Python version reaches its [official end of life date](https://devguide.python.org/versions/), a 3-month grace period is provided for users to upgrade. Following this grace period, the minimum python version supported in the SDK will be updated.
 
-The SDK can be installed with either *pip* or *poetry* package managers.
+The SDK can be installed with *uv*, *pip*, or *poetry* package managers.
+
+### uv
+
+*uv* is a fast Python package installer and resolver, designed as a drop-in replacement for pip and pip-tools. It's recommended for its speed and modern Python tooling capabilities.
+
+```bash
+uv add gusto_app_integration
+```
 
 ### PIP
 
@@ -116,6 +124,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -123,7 +132,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -131,10 +140,12 @@ with GustoAppIntegration(
 
 </br>
 
-The same SDK client can also be used to make asychronous requests by importing asyncio.
+The same SDK client can also be used to make asynchronous requests by importing asyncio.
+
 ```python
 # Asynchronous Example
 import asyncio
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 async def main():
@@ -143,7 +154,7 @@ async def main():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
 
-        res = await gai_client.introspection.get_token_info_async()
+        res = await gai_client.introspection.get_token_info_async(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
@@ -165,6 +176,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -172,7 +184,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -191,7 +203,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.introspection.disconnect_app_integration(security=gusto_app_integration.PostV1DisconnectAppIntegrationSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), company_id="<id>")
+    ), company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -225,16 +237,12 @@ with GustoAppIntegration() as gai_client:
 * [get_employee_benefits](docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
 * [bulk_update_employee_benefits](docs/sdks/companybenefits/README.md#bulk_update_employee_benefits) - Bulk update employee benefits for a company benefit
 * [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by ID
+* [get_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
+* [put_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
 ### [company_locations](docs/sdks/companylocations/README.md)
 
 * [list](docs/sdks/companylocations/README.md#list) - Get company locations
-
-### [contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md)
-
-* [get](docs/sdks/contractorpaymentgroups/README.md#get) - Get contractor payment groups for a company
-* [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
-* [fetch](docs/sdks/contractorpaymentgroups/README.md#fetch) - Fetch a contractor payment group
 
 ### [contractor_payments](docs/sdks/contractorpayments/README.md)
 
@@ -247,6 +255,7 @@ with GustoAppIntegration() as gai_client:
 * [get](docs/sdks/contractors/README.md#get) - Get contractors of a company
 * [get_by_id](docs/sdks/contractors/README.md#get_by_id) - Get a contractor
 * [update](docs/sdks/contractors/README.md#update) - Update a contractor
+* [get_v1_companies_company_id_contractors_payment_details](docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 
 ### [departments](docs/sdks/departments/README.md)
 
@@ -322,7 +331,6 @@ with GustoAppIntegration() as gai_client:
 * [update](docs/sdks/garnishments/README.md#update) - Update a garnishment
 * [get_child_support](docs/sdks/garnishments/README.md#get_child_support) - Get child support garnishment data
 
-
 ### [introspection](docs/sdks/introspection/README.md)
 
 * [get_token_info](docs/sdks/introspection/README.md#get_token_info) - Get info about the current access token
@@ -353,6 +361,10 @@ with GustoAppIntegration() as gai_client:
 * [update](docs/sdks/locations/README.md#update) - Update a location
 * [get_minimum_wages](docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
 
+### [notifications](docs/sdks/notifications/README.md)
+
+* [get_company_notifications](docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
+
 ### [pay_schedules](docs/sdks/payschedules/README.md)
 
 * [list](docs/sdks/payschedules/README.md#list) - Get the pay schedules for a company
@@ -368,9 +380,18 @@ with GustoAppIntegration() as gai_client:
 * [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
 * [prepare](docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
 
+### [reports](docs/sdks/reports/README.md)
+
+* [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
+
 ### [time_off_policies](docs/sdks/timeoffpolicies/README.md)
 
 * [calculate_accruing_time_off_hours](docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
+
+### [time_off_requests](docs/sdks/timeoffrequests/README.md)
+
+* [get_v1_companies_company_id_time_off_requests](docs/sdks/timeoffrequests/README.md#get_v1_companies_company_id_time_off_requests) - Get time off requests for a company
 
 ### [time_tracking](docs/sdks/timetracking/README.md)
 
@@ -389,6 +410,7 @@ with GustoAppIntegration() as gai_client:
 * [delete_subscription](docs/sdks/webhooks/README.md#delete_subscription) - Delete a webhook subscription
 * [verify](docs/sdks/webhooks/README.md#verify) - Verify the webhook subscription
 * [request_verification_token](docs/sdks/webhooks/README.md#request_verification_token) - Request the webhook subscription verification_token
+* [get_v1_webhooks_health_check](docs/sdks/webhooks/README.md#get_v1_webhooks_health_check) - Get the webhooks health status
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -400,6 +422,7 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -408,7 +431,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info(,
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -418,6 +441,7 @@ with GustoAppIntegration(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -427,7 +451,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -438,26 +462,18 @@ with GustoAppIntegration(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-Handling errors in this SDK should largely match your expectations. All operations return a response object or raise an exception.
+[`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py) is the base class for all HTTP error responses. It has the following properties:
 
-By default, an API error will raise a models.APIError exception, which has the following properties:
-
-| Property        | Type             | Description           |
-|-----------------|------------------|-----------------------|
-| `.status_code`  | *int*            | The HTTP status code  |
-| `.message`      | *str*            | The error message     |
-| `.raw_response` | *httpx.Response* | The raw HTTP response |
-| `.body`         | *str*            | The response content  |
-
-When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `provision_async` method may raise the following exceptions:
-
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| models.UnprocessableEntityErrorObject | 422         | application/json |
-| models.APIError                       | 4XX, 5XX    | \*/\*            |
+| Property           | Type             | Description                                                                             |
+| ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
+| `err.message`      | `str`            | Error message                                                                           |
+| `err.status_code`  | `int`            | HTTP response status code eg `404`                                                      |
+| `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
+| `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
+| `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
-
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration, models
@@ -501,18 +517,47 @@ with GustoAppIntegration() as gai_client:
                     "phone": "2345678901",
                 },
             ],
-        })
+        }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)
 
-    except models.UnprocessableEntityErrorObject as e:
-        # handle e.data: models.UnprocessableEntityErrorObjectData
-        raise(e)
-    except models.APIError as e:
-        # handle exception
-        raise(e)
+
+    except models.GustoAppIntegrationError as e:
+        # The base class for HTTP error responses
+        print(e.message)
+        print(e.status_code)
+        print(e.body)
+        print(e.headers)
+        print(e.raw_response)
+
+        # Depending on the method different errors may be thrown
+        if isinstance(e, models.UnprocessableEntityErrorObject):
+            print(e.data.errors)  # List[gusto_app_integration.EntityErrorObject]
 ```
+
+### Error Classes
+**Primary error:**
+* [`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py): The base class for HTTP error responses.
+
+<details><summary>Less common errors (7)</summary>
+
+<br />
+
+**Network errors:**
+* [`httpx.RequestError`](https://www.python-httpx.org/exceptions/#httpx.RequestError): Base class for request errors.
+    * [`httpx.ConnectError`](https://www.python-httpx.org/exceptions/#httpx.ConnectError): HTTP client was unable to make a request to a server.
+    * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
+
+
+**Inherit from [`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py)**:
+* [`UnprocessableEntityErrorObject`](./src/gusto_app_integration/models/unprocessableentityerrorobject.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 59 of 121 methods.*
+* [`DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody`](./src/gusto_app_integration/models/deletev1companybenefitscompanybenefitidresponsebody.py): Unprocessable Entity. Status code `422`. Applicable to 1 of 121 methods.*
+* [`ResponseValidationError`](./src/gusto_app_integration/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+
+</details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -530,6 +575,7 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -538,7 +584,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -549,6 +595,7 @@ with GustoAppIntegration(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -557,7 +604,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

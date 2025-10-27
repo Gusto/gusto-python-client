@@ -29,6 +29,8 @@ class SupportedBenefitTypedDict(TypedDict):
     r"""Whether the benefit has a government mandated yearly limit. If the benefit has a government mandated yearly limit, employees cannot be added to more than one benefit of this type."""
     category: NotRequired[str]
     r"""Category where the benefit belongs to."""
+    writable_by_application: NotRequired[bool]
+    r"""Whether this benefit can be written (created, updated, or destroyed). Returns true if the benefit type is permitted for the application, false otherwise."""
 
 
 class SupportedBenefit(BaseModel):
@@ -63,3 +65,6 @@ class SupportedBenefit(BaseModel):
 
     category: Optional[str] = None
     r"""Category where the benefit belongs to."""
+
+    writable_by_application: Optional[bool] = None
+    r"""Whether this benefit can be written (created, updated, or destroyed). Returns true if the benefit type is permitted for the application, false otherwise."""

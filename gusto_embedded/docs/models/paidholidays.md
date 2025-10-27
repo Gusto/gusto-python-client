@@ -1,6 +1,6 @@
 # PaidHolidays
 
-Representation of a company's paid holidays as descibed by their Holiday Pay Policy
+Representation of a company's paid holidays as described by their Holiday Pay Policy
 
 
 ## Fields

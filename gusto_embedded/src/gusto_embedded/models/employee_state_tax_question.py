@@ -9,7 +9,8 @@ from .employee_state_tax_input_question_format import (
     EmployeeStateTaxInputQuestionFormat,
     EmployeeStateTaxInputQuestionFormatTypedDict,
 )
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, Nullable, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import List
 from typing_extensions import TypedDict
 
@@ -17,10 +18,11 @@ from typing_extensions import TypedDict
 class EmployeeStateTaxQuestionTypedDict(TypedDict):
     label: str
     r"""A short title for the question"""
-    description: str
+    description: Nullable[str]
     r"""An explaination of the question - this may contain inline html formatted links."""
     key: str
     r"""A unique identifier of the question (for the given state) - used for updating the answer."""
+    is_question_for_admin_only: bool
     input_question_format: EmployeeStateTaxInputQuestionFormatTypedDict
     answers: List[EmployeeStateTaxAnswerTypedDict]
 
@@ -29,12 +31,44 @@ class EmployeeStateTaxQuestion(BaseModel):
     label: str
     r"""A short title for the question"""
 
-    description: str
+    description: Nullable[str]
     r"""An explaination of the question - this may contain inline html formatted links."""
 
     key: str
     r"""A unique identifier of the question (for the given state) - used for updating the answer."""
 
+    is_question_for_admin_only: bool
+
     input_question_format: EmployeeStateTaxInputQuestionFormat
 
     answers: List[EmployeeStateTaxAnswer]
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = []
+        nullable_fields = ["description"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

@@ -21,9 +21,12 @@ class GetV1EmployeesHeaderXGustoAPIVersion(str, Enum):
 
 
 class QueryParamInclude(str, Enum):
-    CUSTOM_FIELDS = "custom_fields"
     ALL_COMPENSATIONS = "all_compensations"
+    ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
+    CURRENT_HOME_ADDRESS = "current_home_address"
+    CUSTOM_FIELDS = "custom_fields"
+    PORTAL_INVITATIONS = "portal_invitations"
 
 
 class GetV1EmployeesRequestTypedDict(TypedDict):
@@ -32,11 +35,7 @@ class GetV1EmployeesRequestTypedDict(TypedDict):
     x_gusto_api_version: NotRequired[GetV1EmployeesHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     include: NotRequired[List[QueryParamInclude]]
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
-
-    """
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
 
 class GetV1EmployeesRequest(BaseModel):
@@ -56,8 +55,4 @@ class GetV1EmployeesRequest(BaseModel):
         Optional[List[QueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
-
-    """
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""

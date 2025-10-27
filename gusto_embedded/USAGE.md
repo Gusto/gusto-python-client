@@ -1,6 +1,7 @@
 <!-- Start SDK Example Usage [usage] -->
 ```python
 # Synchronous Example
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -9,7 +10,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info()
+    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -17,10 +18,12 @@ with Gusto(
 
 </br>
 
-The same SDK client can also be used to make asychronous requests by importing asyncio.
+The same SDK client can also be used to make asynchronous requests by importing asyncio.
+
 ```python
 # Asynchronous Example
 import asyncio
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -30,7 +33,7 @@ async def main():
         company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
     ) as gusto:
 
-        res = await gusto.introspection.get_info_async()
+        res = await gusto.introspection.get_info_async(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
         # Handle response
         print(res)

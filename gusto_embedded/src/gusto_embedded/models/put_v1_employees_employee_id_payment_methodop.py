@@ -23,20 +23,20 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodType(str, Enum):
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodSplitBy(str, Enum):
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the `split` amounts must add up to exactly 100. If `split_by` is Amount, then the last `split` amount must be `null` to capture the remainder."""
 
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
 
 
-class SplitsTypedDict(TypedDict):
+class PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict(TypedDict):
     uuid: NotRequired[str]
     r"""The bank account ID
 
@@ -49,7 +49,7 @@ class SplitsTypedDict(TypedDict):
     r"""The cents amount allocated for each payment split"""
 
 
-class Splits(BaseModel):
+class PutV1EmployeesEmployeeIDPaymentMethodSplits(BaseModel):
     uuid: Optional[str] = None
     r"""The bank account ID
 
@@ -99,10 +99,10 @@ class PutV1EmployeesEmployeeIDPaymentMethodRequestBodyTypedDict(TypedDict):
     version: str
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
     type: PutV1EmployeesEmployeeIDPaymentMethodType
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
     split_by: NotRequired[PutV1EmployeesEmployeeIDPaymentMethodSplitBy]
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
-    splits: NotRequired[List[SplitsTypedDict]]
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the `split` amounts must add up to exactly 100. If `split_by` is Amount, then the last `split` amount must be `null` to capture the remainder."""
+    splits: NotRequired[List[PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict]]
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodRequestBody(BaseModel):
@@ -110,12 +110,12 @@ class PutV1EmployeesEmployeeIDPaymentMethodRequestBody(BaseModel):
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
 
     type: PutV1EmployeesEmployeeIDPaymentMethodType
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
     split_by: Optional[PutV1EmployeesEmployeeIDPaymentMethodSplitBy] = None
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the `split` amounts must add up to exactly 100. If `split_by` is Amount, then the last `split` amount must be `null` to capture the remainder."""
 
-    splits: Optional[List[Splits]] = None
+    splits: Optional[List[PutV1EmployeesEmployeeIDPaymentMethodSplits]] = None
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodRequestTypedDict(TypedDict):

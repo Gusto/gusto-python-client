@@ -1,6 +1,6 @@
 # WithholdingPayPeriod
 
-The payment schedule tax rate the payroll is based on.
+The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
 
 
 ## Values

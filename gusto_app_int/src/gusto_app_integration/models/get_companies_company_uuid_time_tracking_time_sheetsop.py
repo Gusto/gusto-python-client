@@ -30,7 +30,7 @@ class GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict(TypedDict):
     sort_by: NotRequired[TimeSheetSortBy]
     r"""Field to sort by. One of: \"created_at\", \"updated_at\", \"shift_started_at\", \"shift_ended_at\" """
     sort_order: NotRequired[TimeSheetSortOrder]
-    r"""Sortinng order. One of: \"asc\", \"desc\" """
+    r"""Sorting order. One of: \"asc\", \"desc\" """
     before: NotRequired[str]
     r"""time sheets that were created before ISO 8601 timestamp. Filtering by \"created_at\" """
     after: NotRequired[str]
@@ -77,7 +77,7 @@ class GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(BaseModel):
         Optional[TimeSheetSortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
-    r"""Sortinng order. One of: \"asc\", \"desc\" """
+    r"""Sorting order. One of: \"asc\", \"desc\" """
 
     before: Annotated[
         Optional[str],

@@ -15,7 +15,9 @@ scope: `flows:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-company-flows" method="post" path="/v1/companies/{company_uuid}/flows" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -24,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.flows.create(company_uuid="<id>", flow_type="company_onboarding")
+    res = gusto.flows.create(company_uuid="<id>", flow_type="company_retirement_benefits", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -40,6 +42,7 @@ with Gusto(
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `entity_uuid`                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | UUID of the target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.                                                                     |
 | `entity_type`                                                                                                                                                                                                                | [Optional[models.PostV1CompanyFlowsEntityType]](../../models/postv1companyflowsentitytype.md)                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | the type of target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.                                                                     |
+| `options`                                                                                                                                                                                                                    | Dict[str, *Any*]                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Optional configuration object that varies based on the flow_type. This can contain arbitrary key-value pairs specific to the flow being generated (e.g., { "provider": "guideline" }).                                       |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -48,7 +51,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

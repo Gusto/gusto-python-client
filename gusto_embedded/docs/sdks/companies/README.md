@@ -34,6 +34,7 @@ IMPORTANT: the returned access and refresh tokens are reserved for this company 
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-partner-managed-companies" method="post" path="/v1/partner_managed_companies" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -54,7 +55,7 @@ with Gusto() as gusto:
         "trade_name": "Frank’s Ocean",
         "ein": "123456789",
         "contractor_only": False,
-    })
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -77,10 +78,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get
 
@@ -93,7 +94,9 @@ scope: `companies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies" method="get" path="/v1/companies/{company_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -102,7 +105,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get(company_id="<id>")
+    res = gusto.companies.get(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -135,7 +138,9 @@ scope: `companies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-companies" method="put" path="/v1/companies/{company_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -144,7 +149,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.update(company_id="<id>", contractor_only=False)
+    res = gusto.companies.update(company_id="<id>", contractor_only=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -166,10 +171,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## migrate
 
@@ -181,7 +186,9 @@ scope: `partner_managed_companies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-partner-managed-companies-company-uuid-migrate" method="put" path="/v1/partner_managed_companies/{company_uuid}/migrate" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -190,7 +197,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.migrate(company_uuid="<id>", email="Benjamin_Kihn44@yahoo.com", ip_address="198.52.136.51", external_user_id="<id>")
+    res = gusto.companies.migrate(company_uuid="<id>", email="Janice18@gmail.com", ip_address="75.249.55.210", external_user_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -214,10 +221,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## accept_terms_of_service
 
@@ -228,7 +235,9 @@ scope: `terms_of_services:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-partner-managed-companies-company_uuid-accept_terms_of_service" method="post" path="/v1/partner_managed_companies/{company_uuid}/accept_terms_of_service" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -237,7 +246,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132")
+    res = gusto.companies.accept_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", ip_address="192.168.1.2", external_user_id="2005648946132", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -261,10 +270,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## retrieve_terms_of_service
 
@@ -274,7 +283,9 @@ scope: `terms_of_services:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-partner-managed-companies-company_uuid-retrieve_terms_of_service" method="post" path="/v1/partner_managed_companies/{company_uuid}/retrieve_terms_of_service" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -283,7 +294,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com")
+    res = gusto.companies.retrieve_terms_of_service(company_uuid="<id>", email="jsmith99@gmail.com", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -305,10 +316,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## create_admin
 
@@ -319,7 +330,9 @@ scope: `company_admin:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-company_id-admins" method="post" path="/v1/companies/{company_id}/admins" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -328,7 +341,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.create_admin(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com")
+    res = gusto.companies.create_admin(company_id="<id>", first_name="John", last_name="Smith", email="jsmith99@gmail.com", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -352,10 +365,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list_admins
 
@@ -365,7 +378,9 @@ scope: `company_admin:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-admins" method="get" path="/v1/companies/{company_id}/admins" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -374,7 +389,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.list_admins(company_id="<id>")
+    res = gusto.companies.list_admins(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -410,7 +425,9 @@ scope: `company_onboarding_status:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-onboarding-status" method="get" path="/v1/companies/{company_uuid}/onboarding_status" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -419,7 +436,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_onboarding_status(company_uuid="<id>", additional_steps="external_payroll")
+    res = gusto.companies.get_onboarding_status(company_uuid="<id>", additional_steps="external_payroll", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -465,7 +482,9 @@ scope: `companies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-finish-onboarding" method="put" path="/v1/companies/{company_uuid}/finish_onboarding" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -474,7 +493,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.finish_onboarding(company_uuid="<id>")
+    res = gusto.companies.finish_onboarding(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -495,10 +514,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_custom_fields
 
@@ -508,7 +527,9 @@ scope: `companies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-custom_fields" method="get" path="/v1/companies/{company_id}/custom_fields" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -517,7 +538,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.companies.get_custom_fields(company_id="<id>")
+    res = gusto.companies.get_custom_fields(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)

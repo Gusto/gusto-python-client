@@ -12,7 +12,7 @@ class AdminTypedDict(TypedDict):
     uuid: str
     r"""The unique id of the admin."""
     email: NotRequired[str]
-    r"""The email of the admin for Gusto's system. If the email matches an existing user, this will create an admin account for them."""
+    r"""The email of the admin for Gusto's system."""
     first_name: NotRequired[str]
     r"""The first name of the admin."""
     last_name: NotRequired[str]
@@ -26,7 +26,7 @@ class Admin(BaseModel):
     r"""The unique id of the admin."""
 
     email: Optional[str] = None
-    r"""The email of the admin for Gusto's system. If the email matches an existing user, this will create an admin account for them."""
+    r"""The email of the admin for Gusto's system."""
 
     first_name: Optional[str] = None
     r"""The first name of the admin."""

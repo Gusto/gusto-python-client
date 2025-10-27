@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 from .payroll_blockers_error import PayrollBlockersErrorData
-from .unprocessable_entity_error_object_error import (
-    UnprocessableEntityErrorObjectErrorData,
-)
+from .unprocessable_entity_error_object import UnprocessableEntityErrorObjectData
 from .versionheader import VersionHeader
-from gusto_embedded import utils
+from dataclasses import dataclass, field
+from gusto_embedded.models import GustoError
 from gusto_embedded.types import BaseModel
 from gusto_embedded.utils import (
     FieldMetadata,
@@ -14,6 +13,7 @@ from gusto_embedded.utils import (
     PathParamMetadata,
     RequestMetadata,
 )
+import httpx
 import pydantic
 from typing import List, Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
@@ -80,22 +80,25 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(BaseModel):
 
 PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion = TypeAliasType(
     "PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion",
-    Union[UnprocessableEntityErrorObjectErrorData, PayrollBlockersErrorData],
+    Union[UnprocessableEntityErrorObjectData, PayrollBlockersErrorData],
 )
 r"""Unprocessable Entity"""
 
 
-class PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBody(Exception):
+@dataclass(unsafe_hash=True)
+class PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBody(GustoError):
     r"""Unprocessable Entity"""
 
-    data: PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion
+    data: PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion = field(
+        hash=False
+    )
 
     def __init__(
-        self, data: PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion
+        self,
+        data: PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
     ):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitResponseBodyUnion
-        )
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

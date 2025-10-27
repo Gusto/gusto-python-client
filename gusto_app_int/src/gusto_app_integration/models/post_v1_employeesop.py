@@ -27,6 +27,8 @@ class PostV1EmployeesRequestBodyTypedDict(TypedDict):
     middle_initial: NotRequired[str]
     email: NotRequired[str]
     r"""The employee's personal email address."""
+    work_email: NotRequired[str]
+    r"""The employee's work email address."""
     date_of_birth: NotRequired[date]
     ssn: NotRequired[str]
     preferred_first_name: NotRequired[str]
@@ -43,6 +45,9 @@ class PostV1EmployeesRequestBody(BaseModel):
 
     email: Optional[str] = None
     r"""The employee's personal email address."""
+
+    work_email: Optional[str] = None
+    r"""The employee's work email address."""
 
     date_of_birth: Optional[date] = None
 

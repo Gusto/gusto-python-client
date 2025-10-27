@@ -33,12 +33,12 @@ class Schema(BaseModel):
 
 
 class PaidHolidaysTypedDict(TypedDict):
-    r"""Representation of a company's paid holidays as descibed by their Holiday Pay Policy"""
+    r"""Representation of a company's paid holidays as described by their Holiday Pay Policy"""
 
     schema_: NotRequired[SchemaTypedDict]
 
 
 class PaidHolidays(BaseModel):
-    r"""Representation of a company's paid holidays as descibed by their Holiday Pay Policy"""
+    r"""Representation of a company's paid holidays as described by their Holiday Pay Policy"""
 
     schema_: Annotated[Optional[Schema], pydantic.Field(alias="schema")] = None

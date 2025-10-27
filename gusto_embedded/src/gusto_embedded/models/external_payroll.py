@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -31,13 +38,13 @@ class Earnings(BaseModel):
     earning_id: Optional[int] = None
 
 
-class ExternalPayrollBenefitsTypedDict(TypedDict):
+class BenefitsTypedDict(TypedDict):
     benefit_id: NotRequired[int]
     company_contribution_amount: NotRequired[str]
     employee_deduction_amount: NotRequired[str]
 
 
-class ExternalPayrollBenefits(BaseModel):
+class Benefits(BaseModel):
     benefit_id: Optional[int] = None
 
     company_contribution_amount: Optional[str] = None
@@ -59,7 +66,7 @@ class ExternalPayrollTaxes(BaseModel):
 class ExternalPayrollItemsTypedDict(TypedDict):
     employee_uuid: NotRequired[str]
     earnings: NotRequired[List[EarningsTypedDict]]
-    benefits: NotRequired[List[ExternalPayrollBenefitsTypedDict]]
+    benefits: NotRequired[List[BenefitsTypedDict]]
     taxes: NotRequired[List[ExternalPayrollTaxesTypedDict]]
 
 
@@ -68,7 +75,7 @@ class ExternalPayrollItems(BaseModel):
 
     earnings: Optional[List[Earnings]] = None
 
-    benefits: Optional[List[ExternalPayrollBenefits]] = None
+    benefits: Optional[List[Benefits]] = None
 
     taxes: Optional[List[ExternalPayrollTaxes]] = None
 
@@ -161,7 +168,7 @@ class ExternalPayrollTypedDict(TypedDict):
     r"""External payroll items for employees"""
     applicable_earnings: NotRequired[List[ApplicableEarningsTypedDict]]
     r"""Applicable earnings based on company provisioning."""
-    applicable_benefits: NotRequired[List[ApplicableBenefitsTypedDict]]
+    applicable_benefits: NotRequired[Nullable[List[ApplicableBenefitsTypedDict]]]
     r"""Applicable benefits based on company provisioning."""
     applicable_taxes: NotRequired[List[ApplicableTaxesTypedDict]]
     r"""Applicable taxes based on company provisioning."""
@@ -196,7 +203,7 @@ class ExternalPayroll(BaseModel):
     applicable_earnings: Optional[List[ApplicableEarnings]] = None
     r"""Applicable earnings based on company provisioning."""
 
-    applicable_benefits: Optional[List[ApplicableBenefits]] = None
+    applicable_benefits: OptionalNullable[List[ApplicableBenefits]] = UNSET
     r"""Applicable benefits based on company provisioning."""
 
     applicable_taxes: Optional[List[ApplicableTaxes]] = None
@@ -204,3 +211,44 @@ class ExternalPayroll(BaseModel):
 
     metadata: Optional[ExternalPayrollMetadata] = None
     r"""Stores metadata of the external payroll."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "company_uuid",
+            "check_date",
+            "payment_period_start_date",
+            "payment_period_end_date",
+            "status",
+            "external_payroll_items",
+            "applicable_earnings",
+            "applicable_benefits",
+            "applicable_taxes",
+            "metadata",
+        ]
+        nullable_fields = ["applicable_benefits"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

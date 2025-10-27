@@ -31,6 +31,8 @@ class AccrualMethod(str, Enum):
 class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBodyTypedDict(TypedDict):
     r"""Can update any attributes of the time off policy except policy_type, is_active, complete & employees"""
 
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
     name: NotRequired[str]
     r"""Name of the time off policy"""
     accrual_method: NotRequired[AccrualMethod]
@@ -53,6 +55,9 @@ class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBodyTypedDict(TypedDict):
 
 class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody(BaseModel):
     r"""Can update any attributes of the time off policy except policy_type, is_active, complete & employees"""
+
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
 
     name: Optional[str] = None
     r"""Name of the time off policy"""

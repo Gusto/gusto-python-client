@@ -21,11 +21,15 @@ class ValueTiersTypedDict(TypedDict):
     rate: NotRequired[str]
     r"""The percentage of employee deduction within this tier the company contribution will match."""
     threshold: NotRequired[str]
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and `rate` of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
     threshold_delta: NotRequired[str]
     r"""The step up difference between this tier's threshold and the previous tier's threshold. In the first tier, this is equivalent to threshold."""
@@ -38,11 +42,15 @@ class ValueTiers(BaseModel):
     r"""The percentage of employee deduction within this tier the company contribution will match."""
 
     threshold: Optional[str] = None
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and `rate` of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
 
     threshold_delta: Optional[str] = None
@@ -150,8 +158,8 @@ class EmployeeBenefitForCompanyBenefitTypedDict(TypedDict):
 
     `Joint Filing or Single` and `Married and Filing Separately` are applicable to Dependent Care FSA benefit.
     """
-    catch_up: NotRequired[bool]
-    r"""Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50."""
+    catch_up: NotRequired[Nullable[bool]]
+    r"""Whether the employee should use a benefit's \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50."""
     retirement_loan_identifier: NotRequired[str]
     r"""Identifier for a 401(k) loan assigned by the 401(k) provider"""
     coverage_amount: NotRequired[Nullable[str]]
@@ -160,8 +168,8 @@ class EmployeeBenefitForCompanyBenefitTypedDict(TypedDict):
         Nullable[EmployeeBenefitForCompanyBenefitDeductionReducesTaxableIncome]
     ]
     r"""Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored."""
-    coverage_salary_multiplier: NotRequired[str]
-    r"""The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set."""
+    coverage_salary_multiplier: NotRequired[Nullable[str]]
+    r"""The coverage amount as a multiple of the employee's salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set."""
     company_contribution: NotRequired[str]
     r"""The amount to be paid, per pay period, by the company. This field will not appear for tiered contribution types."""
     contribute_as_percentage: NotRequired[bool]
@@ -206,8 +214,8 @@ class EmployeeBenefitForCompanyBenefit(BaseModel):
     `Joint Filing or Single` and `Married and Filing Separately` are applicable to Dependent Care FSA benefit.
     """
 
-    catch_up: Optional[bool] = False
-    r"""Whether the employee should use a benefit’s \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50."""
+    catch_up: OptionalNullable[bool] = False
+    r"""Whether the employee should use a benefit's \"catch up\" rate. Only Roth 401k and 401k benefits use this value for employees over 50."""
 
     retirement_loan_identifier: Optional[str] = None
     r"""Identifier for a 401(k) loan assigned by the 401(k) provider"""
@@ -220,8 +228,8 @@ class EmployeeBenefitForCompanyBenefit(BaseModel):
     ] = EmployeeBenefitForCompanyBenefitDeductionReducesTaxableIncome.UNSET
     r"""Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not \"unset\", coverage amount and coverage salary multiplier are ignored."""
 
-    coverage_salary_multiplier: Optional[str] = "0.00"
-    r"""The coverage amount as a multiple of the employee’s salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set."""
+    coverage_salary_multiplier: OptionalNullable[str] = "0.00"
+    r"""The coverage amount as a multiple of the employee's salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set."""
 
     company_contribution: Annotated[
         Optional[str],
@@ -263,8 +271,10 @@ class EmployeeBenefitForCompanyBenefit(BaseModel):
             "employee_deduction_annual_maximum",
             "company_contribution_annual_maximum",
             "limit_option",
+            "catch_up",
             "coverage_amount",
             "deduction_reduces_taxable_income",
+            "coverage_salary_multiplier",
         ]
         null_default_fields = []
 

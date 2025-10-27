@@ -28,7 +28,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor_payments-contractor_payment_uuid-receipt" method="get" path="/v1/contractor_payments/{contractor_payment_uuid}/receipt" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -37,7 +39,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.get_receipt(contractor_payment_uuid="<id>")
+    res = gusto.contractor_payments.get_receipt(contractor_payment_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -74,7 +76,9 @@ scope: `payrolls:run`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor_payments-contractor_payment_uuid-fund" method="put" path="/v1/contractor_payments/{contractor_payment_uuid}/fund" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -83,7 +87,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.fund(contractor_payment_uuid="<id>")
+    res = gusto.contractor_payments.fund(contractor_payment_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -104,10 +108,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## create
 
@@ -117,8 +121,10 @@ scope: `payrolls:run`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-company_id-contractor_payments" method="post" path="/v1/companies/{company_id}/contractor_payments" -->
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -127,7 +133,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.create(company_id="<id>", contractor_uuid="<id>", date_=date.fromisoformat("2020-01-01"), wage=5000, hours=40, bonus=500, reimbursement=20)
+    res = gusto.contractor_payments.create(company_id="<id>", contractor_uuid="<id>", date_=date.fromisoformat("2020-01-01"), x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01, payment_method=gusto_embedded.PostV1CompaniesCompanyIDContractorPaymentsPaymentMethod.DIRECT_DEPOSIT, wage=5000, hours=40, bonus=500, reimbursement=20)
 
     # Handle response
     print(res)
@@ -155,10 +161,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -168,7 +174,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-contractor_payments" method="get" path="/v1/companies/{company_id}/contractor_payments" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -177,7 +185,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31")
+    res = gusto.contractor_payments.list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -215,7 +223,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-contractor_payment-contractor-payment" method="get" path="/v1/companies/{company_id}/contractor_payments/{contractor_payment_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -224,7 +234,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.get(company_id="<id>", contractor_payment_id="<id>")
+    res = gusto.contractor_payments.get(company_id="<id>", contractor_payment_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
@@ -258,7 +268,9 @@ scope: `payrolls:run`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-companies-company_id-contractor_payment-contractor-payment" method="delete" path="/v1/companies/{company_id}/contractor_payments/{contractor_payment_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -267,7 +279,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.contractor_payments.delete(company_id="<id>", contractor_payment_id="<id>")
+    gusto.contractor_payments.delete(company_id="<id>", contractor_payment_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Use the SDK ...
 
@@ -284,10 +296,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## preview
 
@@ -299,7 +311,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-companies-company_uuid-contractor_payments-preview" method="get" path="/v1/companies/{company_uuid}/contractor_payments/preview" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -308,9 +322,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payments.preview(company_uuid="<id>", contractor_payments=[
-        {},
-    ])
+    res = gusto.contractor_payments.preview(company_uuid="<id>", contractor_payments=[], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
 
     # Handle response
     print(res)
