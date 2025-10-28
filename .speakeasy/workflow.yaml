@@ -3,7 +3,7 @@ speakeasyVersion: latest
 sources:
     Gusto-App-Int-OAS:
         inputs:
-            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2024-04-01.app-integrations.yaml
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-06-15.app-integrations.yaml
               authHeader: Authorization
               authSecret: $openapi_doc_auth_token
         overlays:
@@ -15,7 +15,7 @@ sources:
             location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
     Gusto-OAS:
         inputs:
-            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-06-15.embedded.yaml
               authHeader: Authorization
               authSecret: $openapi_doc_auth_token
         overlays:
