@@ -30,7 +30,7 @@ class GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequestTypedDict(TypedDict):
     sort_by: NotRequired[TimeSheetSortBy]
     r"""Field to sort by. One of: \"created_at\", \"updated_at\", \"shift_started_at\", \"shift_ended_at\" """
     sort_order: NotRequired[TimeSheetSortOrder]
-    r"""Sortinng order. One of: \"asc\", \"desc\" """
+    r"""Sorting order. One of: \"asc\", \"desc\" """
     before: NotRequired[str]
     r"""time sheets that were created before ISO 8601 timestamp. Filtering by \"created_at\" """
     after: NotRequired[str]
@@ -77,7 +77,7 @@ class GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(BaseModel):
         Optional[TimeSheetSortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
-    r"""Sortinng order. One of: \"asc\", \"desc\" """
+    r"""Sorting order. One of: \"asc\", \"desc\" """
 
     before: Annotated[
         Optional[str],
@@ -107,5 +107,5 @@ class GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""

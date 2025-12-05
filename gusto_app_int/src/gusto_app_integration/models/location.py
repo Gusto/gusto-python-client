@@ -30,8 +30,6 @@ class LocationTypedDict(TypedDict):
     state: NotRequired[str]
     zip: NotRequired[str]
     country: NotRequired[str]
-    active: NotRequired[bool]
-    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
     mailing_address: NotRequired[bool]
     r"""Specifies if the location is the company's mailing address. Only included if the location belongs to a company."""
     filing_address: NotRequired[bool]
@@ -40,6 +38,10 @@ class LocationTypedDict(TypedDict):
     r"""Datetime for when location is created"""
     updated_at: NotRequired[str]
     r"""Datetime for when location is updated"""
+    active: NotRequired[bool]
+    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
+    inactive: NotRequired[bool]
+    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
 
 
 class Location(BaseModel):
@@ -69,9 +71,6 @@ class Location(BaseModel):
 
     country: Optional[str] = "USA"
 
-    active: Optional[bool] = None
-    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
-
     mailing_address: Optional[bool] = None
     r"""Specifies if the location is the company's mailing address. Only included if the location belongs to a company."""
 
@@ -83,6 +82,12 @@ class Location(BaseModel):
 
     updated_at: Optional[str] = None
     r"""Datetime for when location is updated"""
+
+    active: Optional[bool] = None
+    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
+
+    inactive: Optional[bool] = None
+    r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
@@ -96,11 +101,12 @@ class Location(BaseModel):
             "state",
             "zip",
             "country",
-            "active",
             "mailing_address",
             "filing_address",
             "created_at",
             "updated_at",
+            "active",
+            "inactive",
         ]
         nullable_fields = ["street_2"]
         null_default_fields = []

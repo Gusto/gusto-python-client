@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -39,13 +46,13 @@ class TimeOffPolicyTypedDict(TypedDict):
     r"""boolean representing if a policy is active or not"""
     employees: List[TimeOffPolicyEmployeesTypedDict]
     r"""List of employee UUIDs under a time off policy"""
-    accrual_rate: NotRequired[str]
+    accrual_rate: NotRequired[Nullable[str]]
     r"""The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\"."""
-    accrual_rate_unit: NotRequired[str]
+    accrual_rate_unit: NotRequired[Nullable[str]]
     r"""The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\"."""
     paid_out_on_termination: NotRequired[bool]
     r"""Boolean representing if an employee's accrued time off hours will be paid out on termination"""
-    accrual_waiting_period_days: NotRequired[int]
+    accrual_waiting_period_days: NotRequired[Nullable[int]]
     r"""Number of days before an employee on the policy will begin accruing time off hours"""
     carryover_limit_hours: NotRequired[str]
     r"""The max number of hours an employee can carryover from one year to the next"""
@@ -83,16 +90,16 @@ class TimeOffPolicy(BaseModel):
     employees: List[TimeOffPolicyEmployees]
     r"""List of employee UUIDs under a time off policy"""
 
-    accrual_rate: Optional[str] = None
+    accrual_rate: OptionalNullable[str] = UNSET
     r"""The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\"."""
 
-    accrual_rate_unit: Optional[str] = None
+    accrual_rate_unit: OptionalNullable[str] = UNSET
     r"""The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\"."""
 
     paid_out_on_termination: Optional[bool] = None
     r"""Boolean representing if an employee's accrued time off hours will be paid out on termination"""
 
-    accrual_waiting_period_days: Optional[int] = None
+    accrual_waiting_period_days: OptionalNullable[int] = UNSET
     r"""Number of days before an employee on the policy will begin accruing time off hours"""
 
     carryover_limit_hours: Optional[str] = None
@@ -109,3 +116,47 @@ class TimeOffPolicy(BaseModel):
 
     version: Optional[str] = None
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "accrual_rate",
+            "accrual_rate_unit",
+            "paid_out_on_termination",
+            "accrual_waiting_period_days",
+            "carryover_limit_hours",
+            "max_accrual_hours_per_year",
+            "max_hours",
+            "complete",
+            "version",
+        ]
+        nullable_fields = [
+            "accrual_rate",
+            "accrual_rate_unit",
+            "accrual_waiting_period_days",
+        ]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

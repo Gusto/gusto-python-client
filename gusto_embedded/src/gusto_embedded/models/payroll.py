@@ -10,10 +10,6 @@ from .payroll_credit_blockers_type import (
     PayrollCreditBlockersType,
     PayrollCreditBlockersTypeTypedDict,
 )
-from .payroll_employee_compensations_type import (
-    PayrollEmployeeCompensationsType,
-    PayrollEmployeeCompensationsTypeTypedDict,
-)
 from .payroll_pay_period_type import PayrollPayPeriodType, PayrollPayPeriodTypeTypedDict
 from .payroll_payment_speed_changed_type import (
     PayrollPaymentSpeedChangedType,
@@ -31,6 +27,7 @@ from .payroll_submission_blockers_type import (
     PayrollSubmissionBlockersType,
     PayrollSubmissionBlockersTypeTypedDict,
 )
+from .payroll_taxes_type import PayrollTaxesType, PayrollTaxesTypeTypedDict
 from .payroll_totals_type import PayrollTotalsType, PayrollTotalsTypeTypedDict
 from .payroll_withholding_pay_period_type import PayrollWithholdingPayPeriodType
 from datetime import datetime
@@ -47,17 +44,15 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class PayrollTypedDict(TypedDict):
-    r"""Example response"""
-
     payroll_deadline: NotRequired[datetime]
     r"""A timestamp that is the deadline for the payroll to be run in order for employees to be paid on time.  If payroll has not been run by the deadline, a prepare request will update both the check date and deadline to reflect the soonest employees can be paid and the deadline by which the payroll must be run in order for said check date to be met."""
     check_date: NotRequired[str]
     r"""The date on which employees will be paid for the payroll."""
     processed: NotRequired[bool]
     r"""Whether or not the payroll has been successfully processed. Note that processed payrolls cannot be updated. Additionally, a payroll is not guaranteed to be processed just because the payroll deadline has passed. Late payrolls are not uncommon. Conversely, users may choose to run payroll before the payroll deadline."""
-    processed_date: NotRequired[str]
+    processed_date: NotRequired[Nullable[str]]
     r"""The date at which the payroll was processed. Null if the payroll isn't processed yet."""
-    calculated_at: NotRequired[str]
+    calculated_at: NotRequired[Nullable[datetime]]
     r"""A timestamp of the last valid payroll calculation. Null if there isn't a valid calculation."""
     uuid: NotRequired[str]
     r"""The UUID of the payroll."""
@@ -77,18 +72,19 @@ class PayrollTypedDict(TypedDict):
     r"""Indicates whether the payroll is the final payroll for a terminated employee. Only included for off-cycle payrolls."""
     withholding_pay_period: NotRequired[PayrollWithholdingPayPeriodType]
     r"""The payment schedule tax rate the payroll is based on. Only included for off-cycle payrolls."""
-    skip_regular_deductions: NotRequired[bool]
+    skip_regular_deductions: NotRequired[Nullable[bool]]
     r"""Block regular deductions and contributions for this payroll.  Only included for off-cycle payrolls."""
-    fixed_withholding_rate: NotRequired[bool]
+    fixed_withholding_rate: NotRequired[Nullable[bool]]
     r"""Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only included for off-cycle payrolls."""
     pay_period: NotRequired[PayrollPayPeriodTypeTypedDict]
     payroll_status_meta: NotRequired[PayrollPayrollStatusMetaTypeTypedDict]
     r"""Information about the payroll's status and expected dates"""
     totals: NotRequired[PayrollTotalsTypeTypedDict]
     r"""The subtotals for the payroll."""
-    employee_compensations: NotRequired[List[PayrollEmployeeCompensationsTypeTypedDict]]
     company_taxes: NotRequired[List[PayrollCompanyTaxesTypeTypedDict]]
     r"""An array of taxes applicable to this payroll in addition to taxes included in `employee_compensations`. Only included for processed or calculated payrolls when `taxes` is present in the `include` parameter."""
+    payroll_taxes: NotRequired[List[PayrollTaxesTypeTypedDict]]
+    r"""An array of tax totals applicable to this payroll. Only included for processed or calculated payrolls when `payroll_taxes` is present in the `include` parameter."""
     payment_speed_changed: NotRequired[PayrollPaymentSpeedChangedTypeTypedDict]
     r"""Only applicable when a payroll is moved to four day processing instead of fast ach."""
     created_at: NotRequired[datetime]
@@ -98,11 +94,11 @@ class PayrollTypedDict(TypedDict):
     credit_blockers: NotRequired[List[PayrollCreditBlockersTypeTypedDict]]
     r"""Only included for processed payrolls"""
     processing_request: NotRequired[Nullable[PayrollProcessingRequestTypedDict]]
+    partner_owned_disbursement: NotRequired[Nullable[bool]]
+    r"""Will money movement for the payroll be performed by the partner rather than by Gusto?"""
 
 
 class Payroll(BaseModel):
-    r"""Example response"""
-
     payroll_deadline: Optional[datetime] = None
     r"""A timestamp that is the deadline for the payroll to be run in order for employees to be paid on time.  If payroll has not been run by the deadline, a prepare request will update both the check date and deadline to reflect the soonest employees can be paid and the deadline by which the payroll must be run in order for said check date to be met."""
 
@@ -112,10 +108,10 @@ class Payroll(BaseModel):
     processed: Optional[bool] = None
     r"""Whether or not the payroll has been successfully processed. Note that processed payrolls cannot be updated. Additionally, a payroll is not guaranteed to be processed just because the payroll deadline has passed. Late payrolls are not uncommon. Conversely, users may choose to run payroll before the payroll deadline."""
 
-    processed_date: Optional[str] = None
+    processed_date: OptionalNullable[str] = UNSET
     r"""The date at which the payroll was processed. Null if the payroll isn't processed yet."""
 
-    calculated_at: Optional[str] = None
+    calculated_at: OptionalNullable[datetime] = UNSET
     r"""A timestamp of the last valid payroll calculation. Null if there isn't a valid calculation."""
 
     uuid: Optional[str] = None
@@ -145,10 +141,10 @@ class Payroll(BaseModel):
     withholding_pay_period: Optional[PayrollWithholdingPayPeriodType] = None
     r"""The payment schedule tax rate the payroll is based on. Only included for off-cycle payrolls."""
 
-    skip_regular_deductions: Optional[bool] = None
+    skip_regular_deductions: OptionalNullable[bool] = UNSET
     r"""Block regular deductions and contributions for this payroll.  Only included for off-cycle payrolls."""
 
-    fixed_withholding_rate: Optional[bool] = None
+    fixed_withholding_rate: OptionalNullable[bool] = UNSET
     r"""Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only included for off-cycle payrolls."""
 
     pay_period: Optional[PayrollPayPeriodType] = None
@@ -159,10 +155,11 @@ class Payroll(BaseModel):
     totals: Optional[PayrollTotalsType] = None
     r"""The subtotals for the payroll."""
 
-    employee_compensations: Optional[List[PayrollEmployeeCompensationsType]] = None
-
     company_taxes: Optional[List[PayrollCompanyTaxesType]] = None
     r"""An array of taxes applicable to this payroll in addition to taxes included in `employee_compensations`. Only included for processed or calculated payrolls when `taxes` is present in the `include` parameter."""
+
+    payroll_taxes: Optional[List[PayrollTaxesType]] = None
+    r"""An array of tax totals applicable to this payroll. Only included for processed or calculated payrolls when `payroll_taxes` is present in the `include` parameter."""
 
     payment_speed_changed: Optional[PayrollPaymentSpeedChangedType] = None
     r"""Only applicable when a payroll is moved to four day processing instead of fast ach."""
@@ -177,6 +174,9 @@ class Payroll(BaseModel):
     r"""Only included for processed payrolls"""
 
     processing_request: OptionalNullable[PayrollProcessingRequest] = UNSET
+
+    partner_owned_disbursement: OptionalNullable[bool] = UNSET
+    r"""Will money movement for the payroll be performed by the partner rather than by Gusto?"""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
@@ -200,15 +200,24 @@ class Payroll(BaseModel):
             "pay_period",
             "payroll_status_meta",
             "totals",
-            "employee_compensations",
             "company_taxes",
+            "payroll_taxes",
             "payment_speed_changed",
             "created_at",
             "submission_blockers",
             "credit_blockers",
             "processing_request",
+            "partner_owned_disbursement",
         ]
-        nullable_fields = ["off_cycle_reason", "processing_request"]
+        nullable_fields = [
+            "processed_date",
+            "calculated_at",
+            "off_cycle_reason",
+            "skip_regular_deductions",
+            "fixed_withholding_rate",
+            "processing_request",
+            "partner_owned_disbursement",
+        ]
         null_default_fields = []
 
         serialized = handler(self)

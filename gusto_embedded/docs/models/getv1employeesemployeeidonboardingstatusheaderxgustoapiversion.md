@@ -7,4 +7,4 @@ Determines the date-based API version associated with your API call. If none is 
 
 | Name                                             | Value                                            |
 | ------------------------------------------------ | ------------------------------------------------ |
-| `TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01` | 2024-04-01                                       |
+| `TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15` | 2025-06-15                                       |

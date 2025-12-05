@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -34,7 +41,7 @@ class RecoveryCaseTypedDict(TypedDict):
     r"""Check date for the associated payroll or contractor payments"""
     payroll_uuid: NotRequired[str]
     r"""The uuid of the associated payroll for which the recovery case was created. If the recovery case was created for a contractor payment, this field will be null."""
-    contractor_payment_uuids: NotRequired[List[str]]
+    contractor_payment_uuids: NotRequired[Nullable[List[str]]]
     r"""The uuids of the associated contractor payments for which the recovery case was created. If the recovery case was created for a payroll, this field will be null."""
     amount_outstanding: NotRequired[str]
     r"""Amount outstanding for the recovery case"""
@@ -66,7 +73,7 @@ class RecoveryCase(BaseModel):
     payroll_uuid: Optional[str] = None
     r"""The uuid of the associated payroll for which the recovery case was created. If the recovery case was created for a contractor payment, this field will be null."""
 
-    contractor_payment_uuids: Optional[List[str]] = None
+    contractor_payment_uuids: OptionalNullable[List[str]] = UNSET
     r"""The uuids of the associated contractor payments for which the recovery case was created. If the recovery case was created for a payroll, this field will be null."""
 
     amount_outstanding: Optional[str] = None
@@ -74,3 +81,43 @@ class RecoveryCase(BaseModel):
 
     event_total_amount: Optional[str] = None
     r"""Total amount to be debited from the payroll or contractor payments"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "company_uuid",
+            "status",
+            "latest_error_code",
+            "original_debit_date",
+            "check_date",
+            "payroll_uuid",
+            "contractor_payment_uuids",
+            "amount_outstanding",
+            "event_total_amount",
+        ]
+        nullable_fields = ["contractor_payment_uuids"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional
 
 
@@ -14,8 +15,8 @@ class Suspensions(BaseSDK):
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -25,11 +26,12 @@ class Suspensions(BaseSDK):
 
         Get existing suspension records for this company. A company may have multiple suspension records if they have suspended their Gusto account more than once.
 
-        > 📘 To check if company is already suspended
+        >📘 To check if company is already suspended
         >
         > To determine if a company is _currently_ suspended, use the `is_suspended` and `company_status` fields in the [Get a company](https://docs.gusto.com/embedded-payroll/reference/get-v1-companies) endpoint.
 
         scope: `company_suspensions:read`
+
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -49,8 +51,8 @@ class Suspensions(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDSuspensionsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -66,6 +68,7 @@ class Suspensions(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -79,9 +82,10 @@ class Suspensions(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-suspensions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -91,35 +95,30 @@ class Suspensions(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanySuspension])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.CompanySuspension], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -129,11 +128,12 @@ class Suspensions(BaseSDK):
 
         Get existing suspension records for this company. A company may have multiple suspension records if they have suspended their Gusto account more than once.
 
-        > 📘 To check if company is already suspended
+        >📘 To check if company is already suspended
         >
         > To determine if a company is _currently_ suspended, use the `is_suspended` and `company_status` fields in the [Get a company](https://docs.gusto.com/embedded-payroll/reference/get-v1-companies) endpoint.
 
         scope: `company_suspensions:read`
+
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -153,8 +153,8 @@ class Suspensions(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDSuspensionsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -170,6 +170,7 @@ class Suspensions(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -183,9 +184,10 @@ class Suspensions(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-suspensions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -195,27 +197,22 @@ class Suspensions(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanySuspension])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.CompanySuspension], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def suspend(
         self,
@@ -226,8 +223,8 @@ class Suspensions(BaseSDK):
         reconcile_tax_method: models.PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod,
         reason: models.Reason,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         comments: Optional[str] = None,
         leaving_for: Optional[models.LeavingFor] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -241,14 +238,23 @@ class Suspensions(BaseSDK):
 
         scope: `company_suspensions:write`
 
+
         :param company_uuid: The UUID of the company
         :param file_quarterly_forms: Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
         :param file_yearly_forms: Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
         :param reconcile_tax_method: How Gusto will handle taxes already collected.
-        :param reason: Explanation for why the company is suspending their account.  > 🚧 FEIN or entity type changes require Customer Support > > If a company is switching FEIN or changing their entity type, this change must be performed by Gusto Customer Support and cannot be performed via the API at this time.
+        :param reason: Explanation for why the company is suspending their account.
+
+            > 🚧 FEIN or entity type changes require Customer Support
+            > If a company is switching FEIN or changing their entity type, this change must be performed by Gusto Customer Support and cannot be performed via the API at this time.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param comments: User-supplied comments describing why they are suspending their account.
-        :param leaving_for: Which competitor the company is joining instead. Required if `reason` is `'switching_provider'`.
+        :param comments: User-supplied comments describing why they are suspending their account. Required if the user is leaving for another provider and selects \"other\" instead of a defined provider.
+        :param leaving_for: The competitor the company is switching to. Required if `reason` is `'switching_provider'`.
+
+            > 🚧 Switching to Gusto requires Customer Support
+            > If `'gusto_com'` is selected, this change must be completed by Gusto Customer Support and cannot be performed via the API. This endpoint will return a 422 error in that case.
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -265,8 +271,8 @@ class Suspensions(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDSuspensionsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             request_body=models.PostCompaniesCompanyUUIDSuspensionsRequestBody(
                 file_quarterly_forms=file_quarterly_forms,
                 file_yearly_forms=file_yearly_forms,
@@ -297,6 +303,7 @@ class Suspensions(BaseSDK):
                 "json",
                 models.PostCompaniesCompanyUUIDSuspensionsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -310,9 +317,10 @@ class Suspensions(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-companies-company_uuid-suspensions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -324,31 +332,20 @@ class Suspensions(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanySuspension)
+            return unmarshal_json_response(models.CompanySuspension, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.CompanySuspensionCreationErrorsErrorData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.CompanySuspensionCreationErrorsError(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def suspend_async(
         self,
@@ -359,8 +356,8 @@ class Suspensions(BaseSDK):
         reconcile_tax_method: models.PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod,
         reason: models.Reason,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         comments: Optional[str] = None,
         leaving_for: Optional[models.LeavingFor] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -374,14 +371,23 @@ class Suspensions(BaseSDK):
 
         scope: `company_suspensions:write`
 
+
         :param company_uuid: The UUID of the company
         :param file_quarterly_forms: Should Gusto file quarterly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
         :param file_yearly_forms: Should Gusto file yearly tax forms on behalf of the company? The correct answer can depend on why the company is suspending their account, and how taxes are being reconciled.
         :param reconcile_tax_method: How Gusto will handle taxes already collected.
-        :param reason: Explanation for why the company is suspending their account.  > 🚧 FEIN or entity type changes require Customer Support > > If a company is switching FEIN or changing their entity type, this change must be performed by Gusto Customer Support and cannot be performed via the API at this time.
+        :param reason: Explanation for why the company is suspending their account.
+
+            > 🚧 FEIN or entity type changes require Customer Support
+            > If a company is switching FEIN or changing their entity type, this change must be performed by Gusto Customer Support and cannot be performed via the API at this time.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param comments: User-supplied comments describing why they are suspending their account.
-        :param leaving_for: Which competitor the company is joining instead. Required if `reason` is `'switching_provider'`.
+        :param comments: User-supplied comments describing why they are suspending their account. Required if the user is leaving for another provider and selects \"other\" instead of a defined provider.
+        :param leaving_for: The competitor the company is switching to. Required if `reason` is `'switching_provider'`.
+
+            > 🚧 Switching to Gusto requires Customer Support
+            > If `'gusto_com'` is selected, this change must be completed by Gusto Customer Support and cannot be performed via the API. This endpoint will return a 422 error in that case.
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -398,8 +404,8 @@ class Suspensions(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostCompaniesCompanyUUIDSuspensionsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             request_body=models.PostCompaniesCompanyUUIDSuspensionsRequestBody(
                 file_quarterly_forms=file_quarterly_forms,
                 file_yearly_forms=file_yearly_forms,
@@ -430,6 +436,7 @@ class Suspensions(BaseSDK):
                 "json",
                 models.PostCompaniesCompanyUUIDSuspensionsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -443,9 +450,10 @@ class Suspensions(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-companies-company_uuid-suspensions",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -457,28 +465,17 @@ class Suspensions(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanySuspension)
+            return unmarshal_json_response(models.CompanySuspension, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.CompanySuspensionCreationErrorsErrorData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.CompanySuspensionCreationErrorsError(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

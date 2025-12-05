@@ -36,9 +36,7 @@ class ContractorPaymentSummaryByDatesContractorPaymentsTypedDict(TypedDict):
     wage_total: NotRequired[str]
     r"""The total wages for the contractor within a given time period."""
     payments: NotRequired[List[ContractorPaymentTypedDict]]
-    r"""The contractor’s payments within a given time period.
-
-    """
+    r"""The contractor's payments within a given time period."""
 
 
 class ContractorPaymentSummaryByDatesContractorPayments(BaseModel):
@@ -55,9 +53,7 @@ class ContractorPaymentSummaryByDatesContractorPayments(BaseModel):
     r"""The total wages for the contractor within a given time period."""
 
     payments: Optional[List[ContractorPayment]] = None
-    r"""The contractor’s payments within a given time period.
-
-    """
+    r"""The contractor's payments within a given time period."""
 
 
 class ContractorPaymentSummaryByDatesTypedDict(TypedDict):

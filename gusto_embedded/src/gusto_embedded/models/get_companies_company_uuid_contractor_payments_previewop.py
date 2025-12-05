@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded import utils
+from dataclasses import dataclass, field
+from gusto_embedded.models import GustoError
 from gusto_embedded.types import BaseModel
 from gusto_embedded.utils import (
     FieldMetadata,
@@ -10,6 +11,7 @@ from gusto_embedded.utils import (
     PathParamMetadata,
     RequestMetadata,
 )
+import httpx
 import pydantic
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
@@ -87,7 +89,7 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -138,24 +140,25 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponse
     errors: Optional[GetCompaniesCompanyUUIDContractorPaymentsPreviewErrors] = None
 
 
+@dataclass(unsafe_hash=True)
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody(
-    Exception
+    GustoError
 ):
     r"""Unprocessable Entity (WebDAV)"""
 
-    data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData
+    data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData = field(
+        hash=False
+    )
 
     def __init__(
         self,
         data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
     ):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data,
-            GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
-        )
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)
 
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBodyTypedDict(TypedDict):

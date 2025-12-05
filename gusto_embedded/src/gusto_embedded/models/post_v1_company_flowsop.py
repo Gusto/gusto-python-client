@@ -11,7 +11,7 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
-from typing import Optional
+from typing import Any, Dict, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
@@ -29,6 +29,8 @@ class PostV1CompanyFlowsRequestBodyTypedDict(TypedDict):
     r"""UUID of the target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details."""
     entity_type: NotRequired[PostV1CompanyFlowsEntityType]
     r"""the type of target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details."""
+    options: NotRequired[Dict[str, Any]]
+    r"""Optional configuration object that varies based on the flow_type. This can contain arbitrary key-value pairs specific to the flow being generated (e.g., { \"provider\": \"guideline\" })."""
 
 
 class PostV1CompanyFlowsRequestBody(BaseModel):
@@ -40,6 +42,9 @@ class PostV1CompanyFlowsRequestBody(BaseModel):
 
     entity_type: Optional[PostV1CompanyFlowsEntityType] = None
     r"""the type of target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details."""
+
+    options: Optional[Dict[str, Any]] = None
+    r"""Optional configuration object that varies based on the flow_type. This can contain arbitrary key-value pairs specific to the flow being generated (e.g., { \"provider\": \"guideline\" })."""
 
 
 class PostV1CompanyFlowsRequestTypedDict(TypedDict):
@@ -65,5 +70,5 @@ class PostV1CompanyFlowsRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""

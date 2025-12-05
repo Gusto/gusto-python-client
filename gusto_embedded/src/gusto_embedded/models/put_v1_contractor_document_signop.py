@@ -51,7 +51,7 @@ class PutV1ContractorDocumentSignRequestBody(BaseModel):
 
 class PutV1ContractorDocumentSignRequestTypedDict(TypedDict):
     document_uuid: str
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
     request_body: PutV1ContractorDocumentSignRequestBodyTypedDict
     x_gusto_client_ip: NotRequired[str]
     r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
@@ -63,7 +63,7 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
     document_uuid: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
 
     request_body: Annotated[
         PutV1ContractorDocumentSignRequestBody,
@@ -81,5 +81,5 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""

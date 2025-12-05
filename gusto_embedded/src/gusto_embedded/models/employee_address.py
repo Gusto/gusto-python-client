@@ -15,8 +15,16 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class EmployeeAddressTypedDict(TypedDict):
-    version: NotRequired[str]
+    uuid: str
+    r"""The UUID of the employee address"""
+    version: str
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
+    employee_uuid: NotRequired[str]
+    r"""The UUID of the employee"""
+    effective_date: NotRequired[date]
+    r"""The date the employee started living at the address."""
+    courtesy_withholding: NotRequired[bool]
+    r"""Determines if home taxes should be withheld and paid for employee."""
     street_1: NotRequired[str]
     street_2: NotRequired[Nullable[str]]
     city: NotRequired[str]
@@ -25,19 +33,23 @@ class EmployeeAddressTypedDict(TypedDict):
     country: NotRequired[str]
     active: NotRequired[bool]
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
-    uuid: NotRequired[str]
-    r"""The UUID of the employee address"""
-    employee_uuid: NotRequired[str]
-    r"""The UUID of the employee"""
-    effective_date: NotRequired[date]
-    r"""The date the employee started living at the address."""
-    courtesy_withholding: NotRequired[bool]
-    r"""Determines if home taxes should be withheld and paid for employee."""
 
 
 class EmployeeAddress(BaseModel):
-    version: Optional[str] = None
+    uuid: str
+    r"""The UUID of the employee address"""
+
+    version: str
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
+
+    employee_uuid: Optional[str] = None
+    r"""The UUID of the employee"""
+
+    effective_date: Optional[date] = None
+    r"""The date the employee started living at the address."""
+
+    courtesy_withholding: Optional[bool] = None
+    r"""Determines if home taxes should be withheld and paid for employee."""
 
     street_1: Optional[str] = None
 
@@ -54,22 +66,12 @@ class EmployeeAddress(BaseModel):
     active: Optional[bool] = None
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
 
-    uuid: Optional[str] = None
-    r"""The UUID of the employee address"""
-
-    employee_uuid: Optional[str] = None
-    r"""The UUID of the employee"""
-
-    effective_date: Optional[date] = None
-    r"""The date the employee started living at the address."""
-
-    courtesy_withholding: Optional[bool] = None
-    r"""Determines if home taxes should be withheld and paid for employee."""
-
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = [
-            "version",
+            "employee_uuid",
+            "effective_date",
+            "courtesy_withholding",
             "street_1",
             "street_2",
             "city",
@@ -77,10 +79,6 @@ class EmployeeAddress(BaseModel):
             "zip",
             "country",
             "active",
-            "uuid",
-            "employee_uuid",
-            "effective_date",
-            "courtesy_withholding",
         ]
         nullable_fields = ["street_2"]
         null_default_fields = []

@@ -31,6 +31,8 @@ class AccrualMethod(str, Enum):
 class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBodyTypedDict(TypedDict):
     r"""Can update any attributes of the time off policy except policy_type, is_active, complete & employees"""
 
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
     name: NotRequired[str]
     r"""Name of the time off policy"""
     accrual_method: NotRequired[AccrualMethod]
@@ -53,6 +55,9 @@ class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBodyTypedDict(TypedDict):
 
 class PutTimeOffPoliciesTimeOffPolicyUUIDRequestBody(BaseModel):
     r"""Can update any attributes of the time off policy except policy_type, is_active, complete & employees"""
+
+    version: str
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
 
     name: Optional[str] = None
     r"""Name of the time off policy"""
@@ -107,5 +112,5 @@ class PutTimeOffPoliciesTimeOffPolicyUUIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""

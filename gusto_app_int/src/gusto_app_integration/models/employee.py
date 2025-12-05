@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 from .employee_custom_field import EmployeeCustomField, EmployeeCustomFieldTypedDict
+from .flsa_status_type import FlsaStatusType
 from .garnishment import Garnishment, GarnishmentTypedDict
 from .job import Job, JobTypedDict
 from .paid_time_off import PaidTimeOff, PaidTimeOffTypedDict
 from .termination import Termination, TerminationTypedDict
+from datetime import date
 from enum import Enum
 from gusto_app_integration.types import (
     BaseModel,
@@ -19,7 +21,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class OnboardingStatus(str, Enum):
+class EmployeeOnboardingStatus(str, Enum):
     r"""The current onboarding status of the employee"""
 
     ONBOARDING_COMPLETED = "onboarding_completed"
@@ -32,7 +34,7 @@ class OnboardingStatus(str, Enum):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class OnboardingDocumentsConfigTypedDict(TypedDict):
+class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -41,7 +43,7 @@ class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class OnboardingDocumentsConfig(BaseModel):
+class EmployeeOnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -81,14 +83,14 @@ class OnboardingDocumentsConfig(BaseModel):
         return m
 
 
-class PaymentMethod(str, Enum):
+class EmployeePaymentMethod(str, Enum):
     r"""The employee's payment method"""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
-class CurrentEmploymentStatus(str, Enum):
+class EmployeeCurrentEmploymentStatus(str, Enum):
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
     FULL_TIME = "full_time"
@@ -120,11 +122,13 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee is terminated."""
     two_percent_shareholder: NotRequired[Nullable[bool]]
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     onboarded: NotRequired[bool]
     r"""Whether the employee has completed onboarding."""
-    onboarding_status: NotRequired[Nullable[OnboardingStatus]]
+    onboarding_status: NotRequired[Nullable[EmployeeOnboardingStatus]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[EmployeeOnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -139,12 +143,22 @@ class EmployeeTypedDict(TypedDict):
     r"""Deprecated. This field always returns an empty string."""
     phone: NotRequired[Nullable[str]]
     preferred_first_name: NotRequired[Nullable[str]]
-    payment_method: NotRequired[PaymentMethod]
+    payment_method: NotRequired[EmployeePaymentMethod]
     r"""The employee's payment method"""
-    work_email: NotRequired[Nullable[str]]
-    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
-    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
+    current_employment_status: NotRequired[Nullable[EmployeeCurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
+    historical: NotRequired[bool]
+    employee_code: NotRequired[str]
+    r"""The short format code of the employee"""
+    department_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the department the employee is under"""
+    title: NotRequired[str]
+    hired_at: NotRequired[date]
+    r"""The date when the employee was hired to the company"""
+    hidden_ssn: NotRequired[str]
+    flsa_status: NotRequired[FlsaStatusType]
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+    applicable_tax_ids: NotRequired[List[float]]
 
 
 class Employee(BaseModel):
@@ -180,13 +194,16 @@ class Employee(BaseModel):
     two_percent_shareholder: OptionalNullable[bool] = UNSET
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
 
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     onboarded: Optional[bool] = None
     r"""Whether the employee has completed onboarding."""
 
-    onboarding_status: OptionalNullable[OnboardingStatus] = UNSET
+    onboarding_status: OptionalNullable[EmployeeOnboardingStatus] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[EmployeeOnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -212,14 +229,31 @@ class Employee(BaseModel):
 
     preferred_first_name: OptionalNullable[str] = UNSET
 
-    payment_method: Optional[PaymentMethod] = PaymentMethod.CHECK
+    payment_method: Optional[EmployeePaymentMethod] = EmployeePaymentMethod.CHECK
     r"""The employee's payment method"""
 
-    work_email: OptionalNullable[str] = UNSET
-    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
-
-    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[EmployeeCurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
+
+    historical: Optional[bool] = None
+
+    employee_code: Optional[str] = None
+    r"""The short format code of the employee"""
+
+    department_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the department the employee is under"""
+
+    title: Optional[str] = None
+
+    hired_at: Optional[date] = None
+    r"""The date when the employee was hired to the company"""
+
+    hidden_ssn: Optional[str] = None
+
+    flsa_status: Optional[FlsaStatusType] = None
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+
+    applicable_tax_ids: Optional[List[float]] = None
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
@@ -232,6 +266,7 @@ class Employee(BaseModel):
             "department",
             "terminated",
             "two_percent_shareholder",
+            "work_email",
             "onboarded",
             "onboarding_status",
             "onboarding_documents_config",
@@ -246,8 +281,15 @@ class Employee(BaseModel):
             "phone",
             "preferred_first_name",
             "payment_method",
-            "work_email",
             "current_employment_status",
+            "historical",
+            "employee_code",
+            "department_uuid",
+            "title",
+            "hired_at",
+            "hidden_ssn",
+            "flsa_status",
+            "applicable_tax_ids",
         ]
         nullable_fields = [
             "middle_initial",
@@ -255,12 +297,13 @@ class Employee(BaseModel):
             "manager_uuid",
             "department",
             "two_percent_shareholder",
+            "work_email",
             "onboarding_status",
             "date_of_birth",
             "phone",
             "preferred_first_name",
-            "work_email",
             "current_employment_status",
+            "department_uuid",
         ]
         null_default_fields = []
 

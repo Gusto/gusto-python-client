@@ -18,7 +18,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class PostV1EmployeesHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
-    TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01 = "2024-04-01"
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class PostV1EmployeesRequestBodyTypedDict(TypedDict):
@@ -27,6 +27,8 @@ class PostV1EmployeesRequestBodyTypedDict(TypedDict):
     middle_initial: NotRequired[str]
     email: NotRequired[str]
     r"""The employee's personal email address."""
+    work_email: NotRequired[str]
+    r"""The employee's work email address."""
     date_of_birth: NotRequired[date]
     ssn: NotRequired[str]
     preferred_first_name: NotRequired[str]
@@ -43,6 +45,9 @@ class PostV1EmployeesRequestBody(BaseModel):
 
     email: Optional[str] = None
     r"""The employee's personal email address."""
+
+    work_email: Optional[str] = None
+    r"""The employee's work email address."""
 
     date_of_birth: Optional[date] = None
 
@@ -72,7 +77,7 @@ class PostV1EmployeesRequest(BaseModel):
         Optional[PostV1EmployeesHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     request_body: Annotated[

@@ -16,12 +16,12 @@ from typing_extensions import NotRequired, TypedDict
 class ContractorAddressTypedDict(TypedDict):
     version: NotRequired[str]
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
-    street_1: NotRequired[str]
+    street_1: NotRequired[Nullable[str]]
     street_2: NotRequired[Nullable[str]]
-    city: NotRequired[str]
-    state: NotRequired[str]
-    zip: NotRequired[str]
-    country: NotRequired[str]
+    city: NotRequired[Nullable[str]]
+    state: NotRequired[Nullable[str]]
+    zip: NotRequired[Nullable[str]]
+    country: NotRequired[Nullable[str]]
     active: NotRequired[bool]
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
     contractor_uuid: NotRequired[str]
@@ -32,17 +32,17 @@ class ContractorAddress(BaseModel):
     version: Optional[str] = None
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
-    street_1: Optional[str] = None
+    street_1: OptionalNullable[str] = UNSET
 
     street_2: OptionalNullable[str] = UNSET
 
-    city: Optional[str] = None
+    city: OptionalNullable[str] = UNSET
 
-    state: Optional[str] = None
+    state: OptionalNullable[str] = UNSET
 
-    zip: Optional[str] = None
+    zip: OptionalNullable[str] = UNSET
 
-    country: Optional[str] = "USA"
+    country: OptionalNullable[str] = "USA"
 
     active: Optional[bool] = None
     r"""The status of the location. Inactive locations have been deleted, but may still have historical data associated with them."""
@@ -63,7 +63,7 @@ class ContractorAddress(BaseModel):
             "active",
             "contractor_uuid",
         ]
-        nullable_fields = ["street_2"]
+        nullable_fields = ["street_1", "street_2", "city", "state", "zip", "country"]
         null_default_fields = []
 
         serialized = handler(self)

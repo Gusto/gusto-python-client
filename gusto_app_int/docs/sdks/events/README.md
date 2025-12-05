@@ -19,6 +19,7 @@ scope: `events:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-events" method="get" path="/v1/events" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -28,7 +29,7 @@ with GustoAppIntegration() as gai_client:
 
     res = gai_client.events.get_all(security=gusto_app_integration.GetEventsSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), sort_order=gusto_app_integration.SortOrder.ASC)
+    ), sort_order=gusto_app_integration.SortOrder.ASC, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

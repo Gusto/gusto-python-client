@@ -75,12 +75,12 @@ class ApplicableIf(BaseModel):
 
 
 TaxRequirementValueTypedDict = TypeAliasType(
-    "TaxRequirementValueTypedDict", Union[str, bool]
+    "TaxRequirementValueTypedDict", Union[bool, str, float]
 )
 r"""The \"answer\" """
 
 
-TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[str, bool])
+TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[bool, str, float])
 r"""The \"answer\" """
 
 

@@ -12,15 +12,22 @@
 * [delete](#delete) - Delete an employee benefit
 * [get_ytd_benefit_amounts_from_different_company](#get_ytd_benefit_amounts_from_different_company) - Get year-to-date benefit amounts from a different company
 * [create_ytd_benefit_amounts_from_different_company](#create_ytd_benefit_amounts_from_different_company) - Create year-to-date benefit amounts from a different company
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses](#get_v1_employees_employee_uuid_section603_high_earner_statuses) - Get all Section 603 high earner statuses for an employee
+* [post_v1_employees_employee_uuid_section603_high_earner_statuses](#post_v1_employees_employee_uuid_section603_high_earner_statuses) - Create a Section 603 high earner status
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](#get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Get a Section 603 high earner status for a specific year
+* [patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](#patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Update a Section 603 high earner status
 
 ## create
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only create employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -31,10 +38,10 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
+    res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="100.00", deduct_as_percentage=False, contribution={
         "type": gusto_embedded.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
         "value": "100.00",
-    })
+    }, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -70,10 +77,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get
 
@@ -87,7 +94,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-employee_benefits" method="get" path="/v1/employees/{employee_id}/employee_benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -96,7 +105,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get(employee_id="<id>")
+    res = gusto.employee_benefits.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -133,7 +142,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employee_benefits-employee_benefit_id" method="get" path="/v1/employee_benefits/{employee_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -142,7 +153,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>")
+    res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -169,13 +180,17 @@ with Gusto(
 
 ## update
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only update employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -184,7 +199,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="250.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_embedded.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -220,20 +235,24 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only delete employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employee_benefits-employee_benefit_id" method="delete" path="/v1/employee_benefits/{employee_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -242,7 +261,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.delete(employee_benefit_id="<id>")
+    gusto.employee_benefits.delete(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -273,7 +292,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-employee-ytd-benefit-amounts-from-different-company" method="get" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -282,7 +303,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -318,7 +339,9 @@ scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-employee-ytd-benefit-amounts-from-different-company" method="post" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -327,7 +350,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
 
     # Use the SDK ...
 
@@ -347,7 +370,208 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_employees_employee_uuid_section603_high_earner_statuses
+
+Get all Section 603 high earner statuses for an employee across all years.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:read`
+
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_uuid-section603_high_earner_statuses" method="get" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeuuidsection603highearnerstatusesheaderxgustoapiversion.md)                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.EmployeeSection603HighEarnerStatus]](../../models/.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## post_v1_employees_employee_uuid_section603_high_earner_statuses
+
+Create a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:write`
+
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_uuid-section603_high_earner_statuses" method="post" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_benefits.post_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", effective_year=2026, is_high_earner=True, x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The year for which this high earner status applies                                                                                                                                                                           | 2026                                                                                                                                                                                                                         |
+| `is_high_earner`                                                                                                                                                                                                             | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | Whether the employee is classified as a high earner for Section 603 purposes                                                                                                                                                 | true                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion]](../../models/postv1employeesemployeeuuidsection603highearnerstatusesheaderxgustoapiversion.md)                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 409, 422                         | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year
+
+Get a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:read`
+
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_uuid-section603_high_earner_statuses-effective_year" method="get" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses/{effective_year}" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=857230, x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The effective year for the Section 603 status                                                                                                                                                                                |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearheaderxgustoapiversion.md)      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year
+
+Update a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:write`
+
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="patch-v1-employees-employee_uuid-section603_high_earner_statuses-effective_year" method="patch" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses/{effective_year}" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_benefits.patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=152322, is_high_earner=True, x_gusto_api_version=gusto_embedded.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The effective year for the Section 603 status                                                                                                                                                                                |                                                                                                                                                                                                                              |
+| `is_high_earner`                                                                                                                                                                                                             | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | Whether the employee is classified as a high earner for Section 603 purposes                                                                                                                                                 | true                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion]](../../models/patchv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearheaderxgustoapiversion.md)  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

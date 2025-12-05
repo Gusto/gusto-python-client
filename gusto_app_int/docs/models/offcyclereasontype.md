@@ -7,6 +7,7 @@ The off-cycle reason. Only included for off-cycle payrolls.
 
 | Name                                | Value                               |
 | ----------------------------------- | ----------------------------------- |
+| `ADHOC`                             | Adhoc                               |
 | `BENEFIT_REVERSAL`                  | Benefit reversal                    |
 | `BONUS`                             | Bonus                               |
 | `CORRECTION`                        | Correction                          |

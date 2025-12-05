@@ -7,6 +7,7 @@ from enum import Enum
 class OffCycleReasonType(str, Enum):
     r"""The off-cycle reason. Only included for off-cycle payrolls."""
 
+    ADHOC = "Adhoc"
     BENEFIT_REVERSAL = "Benefit reversal"
     BONUS = "Bonus"
     CORRECTION = "Correction"

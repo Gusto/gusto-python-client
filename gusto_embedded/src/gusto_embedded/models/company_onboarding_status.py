@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -44,10 +51,12 @@ class OnboardingStepTypedDict(TypedDict):
     r"""The boolean flag indicating whether the step is required or optional"""
     completed: NotRequired[bool]
     r"""The boolean flag indicating whether the step is completed or not."""
+    completed_at: NotRequired[Nullable[str]]
+    r"""The ISO 8601 timestamp indicating when the onboarding step was completed."""
     skippable: NotRequired[bool]
     r"""The boolean flag indicating whether the step can be skipped or not."""
     requirements: NotRequired[List[Requirements]]
-    r"""A list of onboarding step that are required to be completed in order to proceed with the current onboarding step."""
+    r"""A list of onboarding steps that are required to be completed in order to proceed with the current onboarding step."""
 
 
 class OnboardingStep(BaseModel):
@@ -63,11 +72,52 @@ class OnboardingStep(BaseModel):
     completed: Optional[bool] = None
     r"""The boolean flag indicating whether the step is completed or not."""
 
+    completed_at: OptionalNullable[str] = UNSET
+    r"""The ISO 8601 timestamp indicating when the onboarding step was completed."""
+
     skippable: Optional[bool] = None
     r"""The boolean flag indicating whether the step can be skipped or not."""
 
     requirements: Optional[List[Requirements]] = None
-    r"""A list of onboarding step that are required to be completed in order to proceed with the current onboarding step."""
+    r"""A list of onboarding steps that are required to be completed in order to proceed with the current onboarding step."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "title",
+            "id",
+            "required",
+            "completed",
+            "completed_at",
+            "skippable",
+            "requirements",
+        ]
+        nullable_fields = ["completed_at"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m
 
 
 class CompanyOnboardingStatusTypedDict(TypedDict):

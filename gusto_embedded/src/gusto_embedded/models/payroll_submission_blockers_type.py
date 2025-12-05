@@ -10,16 +10,8 @@ from gusto_embedded.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
-
-
-class PayrollSubmissionBlockersTypeMetadataTypedDict(TypedDict):
-    r"""Additional data associated with the unblock option."""
-
-
-class PayrollSubmissionBlockersTypeMetadata(BaseModel):
-    r"""Additional data associated with the unblock option."""
 
 
 class UnblockOptionsTypedDict(TypedDict):
@@ -27,7 +19,7 @@ class UnblockOptionsTypedDict(TypedDict):
     r"""The type of unblock option for the submission blocker."""
     check_date: NotRequired[str]
     r"""The payment check date associated with the unblock option."""
-    metadata: NotRequired[PayrollSubmissionBlockersTypeMetadataTypedDict]
+    metadata: NotRequired[Dict[str, Any]]
     r"""Additional data associated with the unblock option."""
 
 
@@ -38,7 +30,7 @@ class UnblockOptions(BaseModel):
     check_date: Optional[str] = None
     r"""The payment check date associated with the unblock option."""
 
-    metadata: Optional[PayrollSubmissionBlockersTypeMetadata] = None
+    metadata: Optional[Dict[str, Any]] = None
     r"""Additional data associated with the unblock option."""
 
 

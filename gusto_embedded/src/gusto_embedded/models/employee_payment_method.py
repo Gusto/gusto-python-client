@@ -19,14 +19,14 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class EmployeePaymentMethodType(str, Enum):
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
-class SplitBy(str, Enum):
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+class EmployeePaymentMethodSplitBy(str, Enum):
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, then the last split `amount` must be `null` to capture the remainder."""
 
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
@@ -38,9 +38,9 @@ class EmployeePaymentMethodTypedDict(TypedDict):
     version: NotRequired[str]
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
     type: NotRequired[EmployeePaymentMethodType]
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
-    split_by: NotRequired[Nullable[SplitBy]]
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
+    split_by: NotRequired[Nullable[EmployeePaymentMethodSplitBy]]
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, then the last split `amount` must be `null` to capture the remainder."""
     splits: NotRequired[Nullable[List[PaymentMethodBankAccountTypedDict]]]
 
 
@@ -51,10 +51,10 @@ class EmployeePaymentMethod(BaseModel):
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
     type: Optional[EmployeePaymentMethodType] = None
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
-    split_by: OptionalNullable[SplitBy] = UNSET
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    split_by: OptionalNullable[EmployeePaymentMethodSplitBy] = UNSET
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, then the last split `amount` must be `null` to capture the remainder."""
 
     splits: OptionalNullable[List[PaymentMethodBankAccount]] = UNSET
 

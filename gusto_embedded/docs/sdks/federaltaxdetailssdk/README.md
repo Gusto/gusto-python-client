@@ -16,7 +16,9 @@ scope: `company_federal_taxes:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-federal_tax_details" method="get" path="/v1/companies/{company_id}/federal_tax_details" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.federal_tax_details.get(company_id="<id>")
+    res = gusto.federal_tax_details.get(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -59,6 +61,7 @@ scope: `company_federal_taxes:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-federal_tax_details" method="put" path="/v1/companies/{company_id}/federal_tax_details" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -69,7 +72,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.federal_tax_details.update(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", legal_name="Acme Corp.", tax_payer_type=gusto_embedded.TaxPayerType.LLP, filing_form=gusto_embedded.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
+    res = gusto.federal_tax_details.update(company_id="<id>", version="6cb95e00540706ca48d4577b3c839fbe", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, legal_name="Acme Corp.", tax_payer_type=gusto_embedded.TaxPayerType.LLP, filing_form=gusto_embedded.FilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
 
     # Handle response
     print(res)
@@ -96,7 +99,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

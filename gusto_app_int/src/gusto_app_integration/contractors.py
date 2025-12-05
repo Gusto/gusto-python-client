@@ -4,6 +4,7 @@ from .basesdk import BaseSDK
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
+from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional
 
 
@@ -16,7 +17,7 @@ class Contractors(BaseSDK):
         start_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         type_: Optional[
             models.PostV1CompaniesCompanyUUIDContractorsType
         ] = models.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL,
@@ -45,20 +46,32 @@ class Contractors(BaseSDK):
 
         :param company_uuid: The UUID of the company
         :param wage_type: The contractor’s wage type.
+
         :param start_date: The day when the contractor will start working for the company.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param type: The contractor type.
         :param hourly_rate: The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.
-        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto. Self-onboarding is recommended so that contractors receive Gusto accounts. If self_onboarding is true, then email is required.
+        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto.
+            Self-onboarding is recommended so that contractors receive Gusto accounts.
+            If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
-        :param first_name: The contractor’s first name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param last_name: The contractor’s last name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param middle_initial: The contractor’s middle initial. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param work_state: State where the contractor will be conducting the majority of their work for the company. This value is used when generating the new hire report. This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
-        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors. Social security number is needed to file the annual 1099 tax form.
+        :param first_name: The contractor’s first name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param last_name: The contractor’s last name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param middle_initial: The contractor’s middle initial.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param work_state: State where the contractor will be conducting the majority of their work for the company.
+            This value is used when generating the new hire report.
+            This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
+        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+            Social security number is needed to file the annual 1099 tax form.
         :param business_name: The name of the contractor business. This attribute is required for `Business` contractors and will be ignored for `Individual` contractors.
-        :param ein: The employer identification number of the contractor business. This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
+        :param ein: The employer identification number of the contractor business.
+            This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
         :param is_active: The status of the contractor. If the contractor's start date is in the future, updating this field to true means we are setting the start date to today.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -117,6 +130,7 @@ class Contractors(BaseSDK):
                 "json",
                 models.PostV1CompaniesCompanyUUIDContractorsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -130,9 +144,10 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_uuid-contractors",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -142,31 +157,20 @@ class Contractors(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -176,7 +180,7 @@ class Contractors(BaseSDK):
         start_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         type_: Optional[
             models.PostV1CompaniesCompanyUUIDContractorsType
         ] = models.PostV1CompaniesCompanyUUIDContractorsType.INDIVIDUAL,
@@ -205,20 +209,32 @@ class Contractors(BaseSDK):
 
         :param company_uuid: The UUID of the company
         :param wage_type: The contractor’s wage type.
+
         :param start_date: The day when the contractor will start working for the company.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param type: The contractor type.
         :param hourly_rate: The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.
-        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto. Self-onboarding is recommended so that contractors receive Gusto accounts. If self_onboarding is true, then email is required.
+        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto.
+            Self-onboarding is recommended so that contractors receive Gusto accounts.
+            If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
-        :param first_name: The contractor’s first name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param last_name: The contractor’s last name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param middle_initial: The contractor’s middle initial. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param work_state: State where the contractor will be conducting the majority of their work for the company. This value is used when generating the new hire report. This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
-        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors. Social security number is needed to file the annual 1099 tax form.
+        :param first_name: The contractor’s first name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param last_name: The contractor’s last name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param middle_initial: The contractor’s middle initial.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param work_state: State where the contractor will be conducting the majority of their work for the company.
+            This value is used when generating the new hire report.
+            This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
+        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+            Social security number is needed to file the annual 1099 tax form.
         :param business_name: The name of the contractor business. This attribute is required for `Business` contractors and will be ignored for `Individual` contractors.
-        :param ein: The employer identification number of the contractor business. This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
+        :param ein: The employer identification number of the contractor business.
+            This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
         :param is_active: The status of the contractor. If the contractor's start date is in the future, updating this field to true means we are setting the start date to today.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -277,6 +293,7 @@ class Contractors(BaseSDK):
                 "json",
                 models.PostV1CompaniesCompanyUUIDContractorsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -290,9 +307,10 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_uuid-contractors",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -302,31 +320,20 @@ class Contractors(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get(
         self,
@@ -335,9 +342,10 @@ class Contractors(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         search_term: Optional[str] = None,
+        sort_by: Optional[models.ContractorsSortBy] = None,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -353,6 +361,7 @@ class Contractors(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param search_term: A string to search for in the object's names
+        :param sort_by: Sort contractors. Options: type, onboarding_status, name, created_at
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -374,6 +383,7 @@ class Contractors(BaseSDK):
             page=page,
             per=per,
             search_term=search_term,
+            sort_by=sort_by,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -390,6 +400,7 @@ class Contractors(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -403,9 +414,10 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-contractors",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -414,26 +426,15 @@ class Contractors(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Contractor])
+            return unmarshal_json_response(List[models.Contractor], http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
@@ -442,9 +443,10 @@ class Contractors(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         search_term: Optional[str] = None,
+        sort_by: Optional[models.ContractorsSortBy] = None,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -460,6 +462,7 @@ class Contractors(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param search_term: A string to search for in the object's names
+        :param sort_by: Sort contractors. Options: type, onboarding_status, name, created_at
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -481,6 +484,7 @@ class Contractors(BaseSDK):
             page=page,
             per=per,
             search_term=search_term,
+            sort_by=sort_by,
             x_gusto_api_version=x_gusto_api_version,
         )
 
@@ -497,6 +501,7 @@ class Contractors(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -510,9 +515,10 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-contractors",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -521,26 +527,15 @@ class Contractors(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Contractor])
+            return unmarshal_json_response(List[models.Contractor], http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_by_id(
         self,
@@ -548,7 +543,7 @@ class Contractors(BaseSDK):
         contractor_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -595,6 +590,7 @@ class Contractors(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -608,9 +604,10 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -619,26 +616,15 @@ class Contractors(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_by_id_async(
         self,
@@ -646,7 +632,7 @@ class Contractors(BaseSDK):
         contractor_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -693,6 +679,7 @@ class Contractors(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -706,9 +693,10 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractors-contractor_uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -717,26 +705,15 @@ class Contractors(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
@@ -745,7 +722,7 @@ class Contractors(BaseSDK):
         version: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         type_: Optional[
             models.PutV1ContractorsContractorUUIDType
         ] = models.PutV1ContractorsContractorUUIDType.INDIVIDUAL,
@@ -783,18 +760,30 @@ class Contractors(BaseSDK):
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param type: The contractor type.
         :param wage_type: The contractor’s wage type.
+
         :param start_date: The day when the contractor will start working for the company.
+
         :param hourly_rate: The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.
-        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto. Self-onboarding is recommended so that contractors receive Gusto accounts. If self_onboarding is true, then email is required.
+        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto.
+            Self-onboarding is recommended so that contractors receive Gusto accounts.
+            If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
-        :param first_name: The contractor’s first name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param last_name: The contractor’s last name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param middle_initial: The contractor’s middle initial. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param work_state: State where the contractor will be conducting the majority of their work for the company. This value is used when generating the new hire report. This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
-        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors. Social security number is needed to file the annual 1099 tax form.
+        :param first_name: The contractor’s first name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param last_name: The contractor’s last name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param middle_initial: The contractor’s middle initial.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param work_state: State where the contractor will be conducting the majority of their work for the company.
+            This value is used when generating the new hire report.
+            This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
+        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+            Social security number is needed to file the annual 1099 tax form.
         :param business_name: The name of the contractor business. This attribute is required for `Business` contractors and will be ignored for `Individual` contractors.
-        :param ein: The employer identification number of the contractor business. This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
+        :param ein: The employer identification number of the contractor business.
+            This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
         :param is_active: The status of the contractor. If the contractor's start date is in the future, updating this field to true means we are setting the start date to today.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -854,6 +843,7 @@ class Contractors(BaseSDK):
                 "json",
                 models.PutV1ContractorsContractorUUIDRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -867,9 +857,10 @@ class Contractors(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -879,31 +870,20 @@ class Contractors(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
@@ -912,7 +892,7 @@ class Contractors(BaseSDK):
         version: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         type_: Optional[
             models.PutV1ContractorsContractorUUIDType
         ] = models.PutV1ContractorsContractorUUIDType.INDIVIDUAL,
@@ -950,18 +930,30 @@ class Contractors(BaseSDK):
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param type: The contractor type.
         :param wage_type: The contractor’s wage type.
+
         :param start_date: The day when the contractor will start working for the company.
+
         :param hourly_rate: The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.
-        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto. Self-onboarding is recommended so that contractors receive Gusto accounts. If self_onboarding is true, then email is required.
+        :param self_onboarding: Whether the contractor or the payroll admin will complete onboarding in Gusto.
+            Self-onboarding is recommended so that contractors receive Gusto accounts.
+            If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
-        :param first_name: The contractor’s first name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param last_name: The contractor’s last name. This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
-        :param middle_initial: The contractor’s middle initial. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor. This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
-        :param work_state: State where the contractor will be conducting the majority of their work for the company. This value is used when generating the new hire report. This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
-        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors. Social security number is needed to file the annual 1099 tax form.
+        :param first_name: The contractor’s first name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param last_name: The contractor’s last name.
+            This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
+        :param middle_initial: The contractor’s middle initial.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param file_new_hire_report: The boolean flag indicating whether Gusto will file a new hire report for the contractor.
+            This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+        :param work_state: State where the contractor will be conducting the majority of their work for the company.
+            This value is used when generating the new hire report.
+            This attribute is required for `Individual` contractors if `file_new_hire_report` is true and will be ignored for `Business` contractors.
+        :param ssn: This attribute is optional for `Individual` contractors and will be ignored for `Business` contractors.
+            Social security number is needed to file the annual 1099 tax form.
         :param business_name: The name of the contractor business. This attribute is required for `Business` contractors and will be ignored for `Individual` contractors.
-        :param ein: The employer identification number of the contractor business. This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
+        :param ein: The employer identification number of the contractor business.
+            This attribute is optional for `Business` contractors and will be ignored for `Individual` contractors.
         :param is_active: The status of the contractor. If the contractor's start date is in the future, updating this field to true means we are setting the start date to today.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1021,6 +1013,7 @@ class Contractors(BaseSDK):
                 "json",
                 models.PutV1ContractorsContractorUUIDRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -1034,9 +1027,10 @@ class Contractors(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-contractors-contractor_uuid",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -1046,28 +1040,273 @@ class Contractors(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Contractor)
+            return unmarshal_json_response(models.Contractor, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_v1_companies_company_id_contractors_payment_details(
+        self,
+        *,
+        company_id: str,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.ContractorPaymentDetailsList]:
+        r"""List contractor payment details
+
+        Get payment details for contractors in a company. This endpoint returns a list of all contractors
+        associated with the specified company, including their payment methods and bank account details
+        if they are paid via direct deposit.
+
+        For contractors paid by direct deposit, the response includes their bank account information
+        with sensitive data masked for security. The payment details also include information about
+        how their payments are split if they have multiple bank accounts configured.
+
+        For contractors paid by check, only the basic payment method information is returned.
+
+        ### Response Details
+        - For direct deposit contractors:
+        - Bank account details (masked)
+        - Payment splits configuration
+        - Routing numbers
+        - Account types
+        - For check payments:
+        - Basic payment method designation
+
+        ### Common Use Cases
+        - Fetching contractor payment information for payroll processing
+        - Verifying contractor payment methods
+        - Reviewing payment split configurations
+
+        `encrypted_account_number` is available only with the additional scope `contractor_payment_methods:read:account_numbers`.
+
+        scope: `contractor_payment_methods:read`
+
+
+        :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
+        :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            company_id=company_id,
+            contractor_uuid=contractor_uuid,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
+            x_gusto_api_version=x_gusto_api_version,
         )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/contractors/payment_details",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-contractors-payment_details",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                List[models.ContractorPaymentDetailsList], http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_companies_company_id_contractors_payment_details_async(
+        self,
+        *,
+        company_id: str,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.ContractorPaymentDetailsList]:
+        r"""List contractor payment details
+
+        Get payment details for contractors in a company. This endpoint returns a list of all contractors
+        associated with the specified company, including their payment methods and bank account details
+        if they are paid via direct deposit.
+
+        For contractors paid by direct deposit, the response includes their bank account information
+        with sensitive data masked for security. The payment details also include information about
+        how their payments are split if they have multiple bank accounts configured.
+
+        For contractors paid by check, only the basic payment method information is returned.
+
+        ### Response Details
+        - For direct deposit contractors:
+        - Bank account details (masked)
+        - Payment splits configuration
+        - Routing numbers
+        - Account types
+        - For check payments:
+        - Basic payment method designation
+
+        ### Common Use Cases
+        - Fetching contractor payment information for payroll processing
+        - Verifying contractor payment methods
+        - Reviewing payment split configurations
+
+        `encrypted_account_number` is available only with the additional scope `contractor_payment_methods:read:account_numbers`.
+
+        scope: `contractor_payment_methods:read`
+
+
+        :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
+        :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            company_id=company_id,
+            contractor_uuid=contractor_uuid,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/contractors/payment_details",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-contractors-payment_details",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                List[models.ContractorPaymentDetailsList], http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)

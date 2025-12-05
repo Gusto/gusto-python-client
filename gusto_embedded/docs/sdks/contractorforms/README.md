@@ -18,7 +18,9 @@ scope: `contractor_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-forms" method="get" path="/v1/contractors/{contractor_uuid}/forms" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -27,7 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.list(contractor_uuid="<id>")
+    res = gusto.contractor_forms.list(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -60,7 +62,9 @@ scope: `contractor_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-form" method="get" path="/v1/contractors/{contractor_uuid}/forms/{form_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +73,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.get(contractor_uuid="<id>", form_id="<id>")
+    res = gusto.contractor_forms.get(contractor_uuid="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -103,7 +107,9 @@ scope: `contractor_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractor-form-pdf" method="get" path="/v1/contractors/{contractor_uuid}/forms/{form_id}/pdf" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -112,7 +118,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.get_pdf(contractor_uuid="<id>", form_id="<id>")
+    res = gusto.contractor_forms.get_pdf(contractor_uuid="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -150,7 +156,9 @@ scope: `contractors:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_1099" method="post" path="/v1/sandbox/generate_1099" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -159,7 +167,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_forms.generate1099(contractor_id="<id>")
+    res = gusto.contractor_forms.generate1099(contractor_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -181,7 +189,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

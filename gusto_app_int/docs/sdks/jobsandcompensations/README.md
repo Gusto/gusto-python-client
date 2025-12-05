@@ -22,7 +22,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-jobs" method="get" path="/v1/employees/{employee_id}/jobs" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -30,7 +32,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.get_jobs(employee_id="<id>")
+    res = gai_client.jobs_and_compensations.get_jobs(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -66,7 +68,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id" method="get" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -74,7 +78,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.get(job_id="<id>")
+    res = gai_client.jobs_and_compensations.get(job_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -108,7 +112,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-jobs-job_id" method="put" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -116,7 +122,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.update_job(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
+    res = gai_client.jobs_and_compensations.update_job(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, title="Regional Manager", hire_date="2020-12-21")
 
     # Handle response
     print(res)
@@ -156,7 +162,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-jobs-job_id" method="delete" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -164,7 +172,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.jobs_and_compensations.delete(job_id="<id>")
+    gai_client.jobs_and_compensations.delete(job_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -196,7 +204,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id-compensations" method="get" path="/v1/jobs/{job_id}/compensations" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -204,7 +214,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.get_compensations_for_job(job_id="<id>")
+    res = gai_client.jobs_and_compensations.get_compensations_for_job(job_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -241,7 +251,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-compensations-compensation_id" method="get" path="/v1/compensations/{compensation_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -249,7 +261,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.get_compensation(compensation_id="<id>")
+    res = gai_client.jobs_and_compensations.get_compensation(compensation_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -282,6 +294,7 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-compensations-compensation_id" method="put" path="/v1/compensations/{compensation_id}" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -291,7 +304,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", rate="60000.00", payment_unit=gusto_app_integration.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_app_integration.FlsaStatusType.EXEMPT)
+    res = gai_client.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, rate="60000.00", payment_unit=gusto_app_integration.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_app_integration.FlsaStatusType.EXEMPT)
 
     # Handle response
     print(res)
@@ -332,7 +345,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-compensations-compensation_id" method="delete" path="/v1/compensations/{compensation_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -340,7 +355,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.jobs_and_compensations.delete_compensation(compensation_id="<id>")
+    gai_client.jobs_and_compensations.delete_compensation(compensation_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 

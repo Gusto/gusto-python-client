@@ -5,6 +5,14 @@ from .contractor_payment_for_group import (
     ContractorPaymentForGroup,
     ContractorPaymentForGroupTypedDict,
 )
+from .payroll_credit_blockers_type import (
+    PayrollCreditBlockersType,
+    PayrollCreditBlockersTypeTypedDict,
+)
+from .payroll_submission_blockers_type import (
+    PayrollSubmissionBlockersType,
+    PayrollSubmissionBlockersTypeTypedDict,
+)
 from enum import Enum
 from gusto_embedded.types import (
     BaseModel,
@@ -34,6 +42,8 @@ class ContractorPaymentGroupTotalsTypedDict(TypedDict):
     r"""The total wage amount for the group of contractor payments."""
     reimbursement_amount: NotRequired[str]
     r"""The total reimbursement amount for the group of contractor payments."""
+    check_amount: NotRequired[str]
+    r"""The total check amount for the group of contractor payments."""
 
 
 class ContractorPaymentGroupTotals(BaseModel):
@@ -48,6 +58,9 @@ class ContractorPaymentGroupTotals(BaseModel):
 
     reimbursement_amount: Optional[str] = None
     r"""The total reimbursement amount for the group of contractor payments."""
+
+    check_amount: Optional[str] = None
+    r"""The total check amount for the group of contractor payments."""
 
 
 class ContractorPaymentGroupTypedDict(TypedDict):
@@ -65,6 +78,12 @@ class ContractorPaymentGroupTypedDict(TypedDict):
     r"""The status of the contractor payment group.  Will be `Funded` if all payments that should be funded (i.e. have `Direct Deposit` for payment method) are funded.  A group can have status `Funded` while having associated payments that have status `Unfunded`, i.e. payment with `Check` payment method."""
     creation_token: NotRequired[Nullable[str]]
     r"""Token used to make contractor payment group creation idempotent.  Will error if attempting to create a group with a duplicate token."""
+    partner_owned_disbursement: NotRequired[Nullable[bool]]
+    r"""Whether the disbursement is partner owned."""
+    submission_blockers: NotRequired[List[List[PayrollSubmissionBlockersTypeTypedDict]]]
+    r"""List of submission blockers for the contractor payment group."""
+    credit_blockers: NotRequired[List[List[PayrollCreditBlockersTypeTypedDict]]]
+    r"""List of credit blockers for the contractor payment group."""
     totals: NotRequired[ContractorPaymentGroupTotalsTypedDict]
     contractor_payments: NotRequired[List[ContractorPaymentForGroupTypedDict]]
 
@@ -90,6 +109,15 @@ class ContractorPaymentGroup(BaseModel):
     creation_token: OptionalNullable[str] = UNSET
     r"""Token used to make contractor payment group creation idempotent.  Will error if attempting to create a group with a duplicate token."""
 
+    partner_owned_disbursement: OptionalNullable[bool] = UNSET
+    r"""Whether the disbursement is partner owned."""
+
+    submission_blockers: Optional[List[List[PayrollSubmissionBlockersType]]] = None
+    r"""List of submission blockers for the contractor payment group."""
+
+    credit_blockers: Optional[List[List[PayrollCreditBlockersType]]] = None
+    r"""List of credit blockers for the contractor payment group."""
+
     totals: Optional[ContractorPaymentGroupTotals] = None
 
     contractor_payments: Optional[List[ContractorPaymentForGroup]] = None
@@ -103,10 +131,13 @@ class ContractorPaymentGroup(BaseModel):
             "debit_date",
             "status",
             "creation_token",
+            "partner_owned_disbursement",
+            "submission_blockers",
+            "credit_blockers",
             "totals",
             "contractor_payments",
         ]
-        nullable_fields = ["creation_token"]
+        nullable_fields = ["creation_token", "partner_owned_disbursement"]
         null_default_fields = []
 
         serialized = handler(self)

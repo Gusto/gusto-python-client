@@ -19,7 +19,9 @@ scope: `garnishments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -27,7 +29,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gai_client.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, description="Back taxes", times=None, recurring=True, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -50,7 +52,7 @@ with GustoAppIntegration(
 | `annual_maximum`                                                                                                                                                                                                             | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".                                                                                                                   |
 | `pay_period_maximum`                                                                                                                                                                                                         | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".                                                                                                               |
 | `deduct_as_percentage`                                                                                                                                                                                                       | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the amount should be treated as a percentage to be deducted per pay period.                                                                                                                                          |
-| `total_amount`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
+| `total_amount`                                                                                                                                                                                                               | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
 | `child_support`                                                                                                                                                                                                              | [OptionalNullable[models.GarnishmentChildSupport]](../../models/garnishmentchildsupport.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Additional child support order details                                                                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -73,7 +75,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-garnishments" method="get" path="/v1/employees/{employee_id}/garnishments" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -81,7 +85,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get(employee_id="<id>")
+    res = gai_client.garnishments.get(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -116,7 +120,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-garnishment_id" method="get" path="/v1/garnishments/{garnishment_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -124,7 +130,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get_by_id(garnishment_id="<id>")
+    res = gai_client.garnishments.get_by_id(garnishment_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -157,7 +163,9 @@ scope: `garnishments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -165,7 +173,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gai_client.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=False, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -188,7 +196,7 @@ with GustoAppIntegration(
 | `annual_maximum`                                                                                                                                                                                                             | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".                                                                                                                   |
 | `pay_period_maximum`                                                                                                                                                                                                         | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".                                                                                                               |
 | `deduct_as_percentage`                                                                                                                                                                                                       | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the amount should be treated as a percentage to be deducted per pay period.                                                                                                                                          |
-| `total_amount`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
+| `total_amount`                                                                                                                                                                                                               | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
 | `child_support`                                                                                                                                                                                                              | [OptionalNullable[models.GarnishmentChildSupport]](../../models/garnishmentchildsupport.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Additional child support order details                                                                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -211,7 +219,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-child_support" method="get" path="/v1/garnishments/child_support" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -219,7 +229,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.garnishments.get_child_support()
+    res = gai_client.garnishments.get_child_support(x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

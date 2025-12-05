@@ -19,6 +19,7 @@ scope: `events:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-events" method="get" path="/v1/events" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -29,7 +30,7 @@ with Gusto() as gusto:
 
     res = gusto.events.get(security=gusto_embedded.GetEventsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), sort_order=gusto_embedded.SortOrder.ASC)
+    ), sort_order=gusto_embedded.SortOrder.ASC, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

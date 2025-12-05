@@ -24,7 +24,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-jobs-job_id" method="post" path="/v1/employees/{employee_id}/jobs" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -33,7 +35,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21")
+    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -59,10 +61,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_jobs
 
@@ -72,7 +74,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-jobs" method="get" path="/v1/employees/{employee_id}/jobs" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -81,7 +85,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>")
+    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -117,7 +121,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id" method="get" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -126,7 +132,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_job(job_id="<id>")
+    res = gusto.jobs_and_compensations.get_job(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -160,7 +166,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-jobs-job_id" method="put" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -169,7 +177,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.update(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", title="Regional Manager", hire_date="2020-12-21")
+    res = gusto.jobs_and_compensations.update(job_id="<id>", version="gr78930htutrz444kuytr3s5hgxykuveb523fwl8sir", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, title="Regional Manager", hire_date="2020-12-21")
 
     # Handle response
     print(res)
@@ -196,10 +204,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete
 
@@ -209,7 +217,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-jobs-job_id" method="delete" path="/v1/jobs/{job_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -218,7 +228,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.jobs_and_compensations.delete(job_id="<id>")
+    gusto.jobs_and_compensations.delete(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -250,7 +260,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id-compensations" method="get" path="/v1/jobs/{job_id}/compensations" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -259,7 +271,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_compensations(job_id="<id>")
+    res = gusto.jobs_and_compensations.get_compensations(job_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -295,6 +307,7 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-compensations-compensation_id" method="post" path="/v1/jobs/{job_id}/compensations" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -305,7 +318,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.create_compensation(job_id="<id>", payment_unit=gusto_embedded.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT, rate="60000.00")
+    res = gusto.jobs_and_compensations.create_compensation(job_id="<id>", payment_unit=gusto_embedded.PostV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, rate="60000.00")
 
     # Handle response
     print(res)
@@ -332,10 +345,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_compensation
 
@@ -346,7 +359,9 @@ scope: `jobs:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-compensations-compensation_id" method="get" path="/v1/compensations/{compensation_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -355,7 +370,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.get_compensation(compensation_id="<id>")
+    res = gusto.jobs_and_compensations.get_compensation(compensation_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -388,6 +403,7 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-compensations-compensation_id" method="put" path="/v1/compensations/{compensation_id}" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -398,7 +414,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", rate="60000.00", payment_unit=gusto_embedded.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT)
+    res = gusto.jobs_and_compensations.update_compensation(compensation_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, rate="60000.00", payment_unit=gusto_embedded.PutV1CompensationsCompensationIDPaymentUnit.YEAR, flsa_status=gusto_embedded.FlsaStatusType.EXEMPT)
 
     # Handle response
     print(res)
@@ -425,10 +441,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete_compensation
 
@@ -439,7 +455,9 @@ scope: `jobs:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-compensations-compensation_id" method="delete" path="/v1/compensations/{compensation_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -448,7 +466,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.jobs_and_compensations.delete_compensation(compensation_id="<id>")
+    gusto.jobs_and_compensations.delete_compensation(compensation_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 

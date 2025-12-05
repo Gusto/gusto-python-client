@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_app_integration import utils
+from dataclasses import dataclass, field
+from gusto_app_integration.models import GustoAppIntegrationError
 from gusto_app_integration.types import BaseModel
 from gusto_app_integration.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
+import httpx
 import pydantic
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
@@ -27,7 +29,7 @@ class DeleteV1CompanyBenefitsCompanyBenefitIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -57,15 +59,18 @@ class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData(BaseModel):
     errors: Optional[Errors] = None
 
 
-class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(Exception):
+@dataclass(unsafe_hash=True)
+class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(GustoAppIntegrationError):
     r"""Unprocessable Entity"""
 
-    data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
+    data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData = field(hash=False)
 
-    def __init__(self, data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
-        )
+    def __init__(
+        self,
+        data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
+    ):
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

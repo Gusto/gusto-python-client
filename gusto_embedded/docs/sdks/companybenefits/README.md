@@ -16,6 +16,8 @@
 * [get_employee_benefits](#get_employee_benefits) - Get all employee benefits for a company benefit
 * [update_employee_benefits](#update_employee_benefits) - Bulk update employee benefits for a company benefit
 * [get_requirements](#get_requirements) - Get benefit fields requirements by ID
+* [get_v1_company_benefits_company_benefit_id_contribution_exclusions](#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
+* [put_v1_company_benefits_company_benefit_id_contribution_exclusions](#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
 ## create
 
@@ -23,11 +25,15 @@ Company benefits represent the benefits that a company is offering to employees.
 
 Note that company benefits can be deactivated only when no employees are enrolled.
 
+When the application has the `company_benefits:write:benefit_type_limited` data scope, the application can only create company benefits for benefit types that are permitted for the application.
+
 scope: `company_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-company_id-company_benefits" method="post" path="/v1/companies/{company_id}/company_benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -36,7 +42,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.create(company_id="<id>", description="yuck vice between gee ugh ha")
+    res = gusto.company_benefits.create(company_id="<id>", description="hm pfft surge beyond", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True)
 
     # Handle response
     print(res)
@@ -62,10 +68,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -79,7 +85,9 @@ scope: `company_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-company_benefits" method="get" path="/v1/companies/{company_id}/company_benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -88,7 +96,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.list(company_id="<id>")
+    res = gusto.company_benefits.list(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -127,7 +135,9 @@ scope: `company_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company_benefits-company_benefit_id" method="get" path="/v1/company_benefits/{company_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -136,7 +146,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get(company_benefit_id="<id>")
+    res = gusto.company_benefits.get(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -168,11 +178,15 @@ Company benefits represent the benefits that a company is offering to employees.
 
 Note that company benefits can be deactivated only when no employees are enrolled.
 
+When the application has the `company_benefits:write:benefit_type_limited` data scope, the application can only update company benefits for benefit types that are permitted for the application.
+
 scope: `company_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-company_benefits-company_benefit_id" method="put" path="/v1/company_benefits/{company_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -181,7 +195,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", active=False)
+    res = gusto.company_benefits.update(company_benefit_id="<id>", version="98jr3289h3298hr9329gf9egskt3kagri32qqgiqe3872", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=False)
 
     # Handle response
     print(res)
@@ -205,10 +219,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete
 
@@ -217,11 +231,15 @@ The following must be true in order to delete a company benefit
   - There are no payroll items associated with the company benefit
   - The benefit is not managed by a Partner or by Gusto (type must be 'External')
 
+When the application has the `company_benefits:write:benefit_type_limited` data scope, the application can only delete company benefits for benefit types that are permitted for the application.
+
 scope: `company_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-company_benefits-company_benefit_id" method="delete" path="/v1/company_benefits/{company_benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -230,7 +248,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.company_benefits.delete(company_benefit_id="<id>")
+    gusto.company_benefits.delete(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -261,7 +279,9 @@ scope: `benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-benefits" method="get" path="/v1/benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -270,7 +290,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_all()
+    res = gusto.company_benefits.get_all(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -304,7 +324,9 @@ scope: `benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefit_id" method="get" path="/v1/benefits/{benefit_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -313,7 +335,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_supported(benefit_id="<id>")
+    res = gusto.company_benefits.get_supported(benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -348,7 +370,9 @@ scope: `company_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-company_benefit_id-summary" method="get" path="/v1/company_benefits/{company_benefit_id}/summary" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -357,7 +381,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31")
+    res = gusto.company_benefits.get_summary(company_benefit_id="<id>", start_date="2022-01-01", end_date="2022-12-31", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -397,7 +421,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company_benefits-company_benefit_id-employee_benefits" method="get" path="/v1/company_benefits/{company_benefit_id}/employee_benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -406,7 +432,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_employee_benefits(company_benefit_id="<id>")
+    res = gusto.company_benefits.get_employee_benefits(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -435,17 +461,21 @@ with Gusto(
 
 ## update_employee_benefits
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
 
 Create or update(if the employee is already enrolled in the company benefit previously) an employee benefit for the company benefit.
 
 Benefits containing PHI are only visible to applications with the `employee_benefits:read:phi` scope.
 
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only create or update employee benefits for benefit types that are permitted for the application.
+
 scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-company_benefits-company_benefit_id-employee_benefits" method="put" path="/v1/company_benefits/{company_benefit_id}/employee_benefits" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -457,9 +487,10 @@ with Gusto(
     res = gusto.company_benefits.update_employee_benefits(company_benefit_id="<id>", employee_benefits=[
         {
             "version": "09j3d29jqdpj92109j9j2d90dq",
+            "employee_deduction": "250.00",
             "employee_uuid": "8f9f3f68-8fd3-499d-ade7-4a052e56494e",
         },
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -481,10 +512,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_requirements
 
@@ -494,7 +525,9 @@ scope: `benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefits_id-requirements" method="get" path="/v1/benefits/{benefit_id}/requirements" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -503,7 +536,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_benefits.get_requirements(benefit_id="<id>")
+    res = gusto.company_benefits.get_requirements(benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -527,3 +560,113 @@ with Gusto(
 | Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_v1_company_benefits_company_benefit_id_contribution_exclusions
+
+Returns all contributions for a given company benefit and whether they are excluded or not.
+
+Currently this endpoint only works for 401-k and Roth 401-k benefit types.
+
+scope: `company_benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-company_benefits-company_benefit_id-contribution_exclusions" method="get" path="/v1/company_benefits/{company_benefit_id}/contribution_exclusions" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.company_benefits.get_v1_company_benefits_company_benefit_id_contribution_exclusions(company_benefit_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_benefit_id`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company benefit                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.ContributionExclusion]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## put_v1_company_benefits_company_benefit_id_contribution_exclusions
+
+Updates contribution exclusions for a given company benefit.
+
+Currently this endpoint only works for 401-k and Roth 401-k benefit types.
+
+scope: `company_benefits:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-company_benefits-company_benefit_id-contribution_exclusions" method="put" path="/v1/company_benefits/{company_benefit_id}/contribution_exclusions" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.company_benefits.put_v1_company_benefits_company_benefit_id_contribution_exclusions(company_benefit_id="<id>", contribution_exclusions=[
+        {
+            "contribution_uuid": "082dfd3e-5b55-11f0-bb42-ab7136ba04e2",
+            "contribution_type": "Bonus",
+            "excluded": True,
+        },
+        {
+            "contribution_uuid": "082e034c-5b55-11f0-bb42-ab7136ba04e2",
+            "contribution_type": "Commission",
+            "excluded": False,
+        },
+        {
+            "contribution_uuid": "082e1f6c-5b55-11f0-bb42-ab7136ba04e2",
+            "contribution_type": "Regular",
+            "excluded": True,
+        },
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_benefit_id`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company benefit                                                                                                                                                                                              |
+| `contribution_exclusions`                                                                                                                                                                                                    | List[[models.ContributionExclusion](../../models/contributionexclusion.md)]                                                                                                                                                  | :heavy_check_mark:                                                                                                                                                                                                           | The list of contribution exclusions to update                                                                                                                                                                                |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.ContributionExclusion]](../../models/.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

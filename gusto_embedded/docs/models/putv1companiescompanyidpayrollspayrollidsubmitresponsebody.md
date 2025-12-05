@@ -5,10 +5,10 @@ Unprocessable Entity
 
 ## Supported Types
 
-### `models.UnprocessableEntityErrorObjectError`
+### `models.UnprocessableEntityErrorObject`
 
 ```python
-value: models.UnprocessableEntityErrorObjectError = /* values here */
+value: models.UnprocessableEntityErrorObject = /* values here */
 ```
 
 ### `models.PayrollBlockersError`

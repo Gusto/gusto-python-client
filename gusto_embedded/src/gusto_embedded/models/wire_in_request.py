@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -13,14 +20,13 @@ class WireInRequestStatus(str, Enum):
     AWAITING_FUNDS = "awaiting_funds"
     PENDING_REVIEW = "pending_review"
     APPROVED = "approved"
-    RFI = "rfi"
     CANCELED = "canceled"
 
 
-class PaymentUUID(str, Enum):
-    r"""Unique identifier of the payment"""
+class PaymentType(str, Enum):
+    r"""Type of payment for the wire in"""
 
-    PAYROLL = "payroll"
+    PAYROLL = "Payroll"
 
 
 class WireInRequestTypedDict(TypedDict):
@@ -42,19 +48,19 @@ class WireInRequestTypedDict(TypedDict):
     r"""Recipient bank account number"""
     recipient_routing_number: NotRequired[str]
     r"""Recipient bank routing number"""
-    additional_notes: NotRequired[str]
+    additional_notes: NotRequired[Nullable[str]]
     r"""Notes for the wire in request"""
-    bank_name: NotRequired[str]
+    bank_name: NotRequired[Nullable[str]]
     r"""Name of the bank initiating the wire in"""
-    date_sent: NotRequired[str]
+    date_sent: NotRequired[Nullable[str]]
     r"""Date the wire in was sent"""
     unique_tracking_code: NotRequired[str]
     r"""Include in note with bank to track payment"""
-    payment_type: NotRequired[str]
+    payment_type: NotRequired[PaymentType]
     r"""Type of payment for the wire in"""
-    payment_uuid: NotRequired[PaymentUUID]
+    payment_uuid: NotRequired[str]
     r"""Unique identifier of the payment"""
-    amount_sent: NotRequired[str]
+    amount_sent: NotRequired[Nullable[str]]
     r"""Amount sent through wire in"""
     requested_amount: NotRequired[str]
     r"""Requested amount for the payment"""
@@ -89,25 +95,25 @@ class WireInRequest(BaseModel):
     recipient_routing_number: Optional[str] = None
     r"""Recipient bank routing number"""
 
-    additional_notes: Optional[str] = None
+    additional_notes: OptionalNullable[str] = UNSET
     r"""Notes for the wire in request"""
 
-    bank_name: Optional[str] = None
+    bank_name: OptionalNullable[str] = UNSET
     r"""Name of the bank initiating the wire in"""
 
-    date_sent: Optional[str] = None
+    date_sent: OptionalNullable[str] = UNSET
     r"""Date the wire in was sent"""
 
     unique_tracking_code: Optional[str] = None
     r"""Include in note with bank to track payment"""
 
-    payment_type: Optional[str] = None
+    payment_type: Optional[PaymentType] = None
     r"""Type of payment for the wire in"""
 
-    payment_uuid: Optional[PaymentUUID] = None
+    payment_uuid: Optional[str] = None
     r"""Unique identifier of the payment"""
 
-    amount_sent: Optional[str] = None
+    amount_sent: OptionalNullable[str] = UNSET
     r"""Amount sent through wire in"""
 
     requested_amount: Optional[str] = None
@@ -115,3 +121,51 @@ class WireInRequest(BaseModel):
 
     wire_in_deadline: Optional[str] = None
     r"""Deadline to submit the wire in"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = [
+            "uuid",
+            "status",
+            "origination_bank",
+            "origination_bank_address",
+            "recipient_name",
+            "recipient_address",
+            "recipient_account_number",
+            "recipient_routing_number",
+            "additional_notes",
+            "bank_name",
+            "date_sent",
+            "unique_tracking_code",
+            "payment_type",
+            "payment_uuid",
+            "amount_sent",
+            "requested_amount",
+            "wire_in_deadline",
+        ]
+        nullable_fields = ["additional_notes", "bank_name", "date_sent", "amount_sent"]
+        null_default_fields = []
+
+        serialized = handler(self)
+
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k)
+            serialized.pop(k, None)
+
+            optional_nullable = k in optional_fields and k in nullable_fields
+            is_set = (
+                self.__pydantic_fields_set__.intersection({n})
+                or k in null_default_fields
+            )  # pylint: disable=no-member
+
+            if val is not None and val != UNSET_SENTINEL:
+                m[k] = val
+            elif val != UNSET_SENTINEL and (
+                not k in optional_fields or (optional_nullable and is_set)
+            ):
+                m[k] = val
+
+        return m

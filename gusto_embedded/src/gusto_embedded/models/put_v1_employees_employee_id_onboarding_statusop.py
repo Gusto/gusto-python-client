@@ -17,14 +17,19 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
-    TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01 = "2024-04-01"
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus(str, Enum):
     r"""Onboarding status value"""
 
-    SELF_ONBOARDING_INVITED = "self_onboarding_invited"
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
+    SELF_ONBOARDING_PENDING_INVITE = "self_onboarding_pending_invite"
+    SELF_ONBOARDING_INVITED = "self_onboarding_invited"
+    SELF_ONBOARDING_INVITED_STARTED = "self_onboarding_invited_started"
+    SELF_ONBOARDING_INVITED_OVERDUE = "self_onboarding_invited_overdue"
+    SELF_ONBOARDING_COMPLETED_BY_EMPLOYEE = "self_onboarding_completed_by_employee"
+    SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
     ONBOARDING_COMPLETED = "onboarding_completed"
 
 
@@ -63,5 +68,5 @@ class PutV1EmployeesEmployeeIDOnboardingStatusRequest(BaseModel):
         Optional[PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""

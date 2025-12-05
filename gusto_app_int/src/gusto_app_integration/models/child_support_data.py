@@ -88,9 +88,7 @@ class AgenciesTypedDict(TypedDict):
     name: NotRequired[str]
     r"""Name of state child support agency"""
     manual_payment_required: NotRequired[bool]
-    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment.
-
-    """
+    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment."""
     fips_codes: NotRequired[List[FipsCodesTypedDict]]
     r"""FIPS codes for state or county child support orders"""
     required_attributes: NotRequired[List[RequiredAttributesTypedDict]]
@@ -105,9 +103,7 @@ class Agencies(BaseModel):
     r"""Name of state child support agency"""
 
     manual_payment_required: Optional[bool] = None
-    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment.
-
-    """
+    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment."""
 
     fips_codes: Optional[List[FipsCodes]] = None
     r"""FIPS codes for state or county child support orders"""
