@@ -1,5 +1,4 @@
 # EmployeeForms
-(*employee_forms*)
 
 ## Overview
 
@@ -21,9 +20,11 @@ Generates a W2 document for testing purposes.
 
 scope: `employees:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_w2" method="post" path="/v1/sandbox/generate_w2" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -32,7 +33,45 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.generate_w2(employee_id="<id>")
+    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_w2" method="post" path="/v1/sandbox/generate_w2" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_w2" method="post" path="/v1/sandbox/generate_w2" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -54,10 +93,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -67,7 +106,9 @@ scope: `employee_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employee-forms" method="get" path="/v1/employees/{employee_id}/forms" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -76,7 +117,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.list(employee_id="<id>")
+    res = gusto.employee_forms.list(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -109,7 +150,9 @@ scope: `employee_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employee-form" method="get" path="/v1/employees/{employee_id}/forms/{form_id}" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -118,7 +161,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.get(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get(employee_id="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -152,7 +195,9 @@ scope: `employee_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employee-form-pdf" method="get" path="/v1/employees/{employee_id}/forms/{form_id}/pdf" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -161,7 +206,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.get_pdf(employee_id="<id>", form_id="<id>")
+    res = gusto.employee_forms.get_pdf(employee_id="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -196,9 +241,11 @@ first name, last name, street address, city, state, and zip for that preparer ar
 
 scope: `employee_forms:sign`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-employee-form-sign" method="put" path="/v1/employees/{employee_id}/forms/{form_id}/sign" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -207,7 +254,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="<value>", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee-form-sign" method="put" path="/v1/employees/{employee_id}/forms/{form_id}/sign" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="Jane Smith", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, signed_by_ip_address="192.168.0.1")
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee-form-sign" method="put" path="/v1/employees/{employee_id}/forms/{form_id}/sign" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="<value>", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee-form-sign" method="put" path="/v1/employees/{employee_id}/forms/{form_id}/sign" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.sign(employee_id="<id>", form_id="<id>", signature_text="<value>", agree=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -269,7 +373,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

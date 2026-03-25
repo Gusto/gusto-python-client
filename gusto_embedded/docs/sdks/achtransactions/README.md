@@ -1,5 +1,4 @@
 # AchTransactions
-(*ach_transactions*)
 
 ## Overview
 
@@ -15,7 +14,9 @@ scope: `ach_transactions:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-ach-transactions" method="get" path="/v1/companies/{company_uuid}/ach_transactions" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -24,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.ach_transactions.get_all(company_uuid="<id>")
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

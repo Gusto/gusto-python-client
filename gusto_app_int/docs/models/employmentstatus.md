@@ -2,6 +2,14 @@
 
 The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import EmploymentStatus
+
+value = EmploymentStatus.PART_TIME
+```
+
 
 ## Values
 

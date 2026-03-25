@@ -1,5 +1,4 @@
 # WireInRequests
-(*wire_in_requests*)
 
 ## Overview
 
@@ -17,7 +16,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-wire_in_requests-wire_in_request_uuid" method="get" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -26,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.wire_in_requests.get(wire_in_request_uuid="<id>")
+    res = gusto.wire_in_requests.get(wire_in_request_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -57,9 +58,11 @@ Submit a wire in request for a payment
 
 scope: `payrolls:run`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-wire_in_requests-wire_in_request_uuid" method="put" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -68,7 +71,83 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="2024-06-10T00:00:00Z", bank_name="Chase", amount_sent="314500", additional_notes="Wire for 2024-06-15 payroll.")
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="<value>", bank_name="<value>", amount_sent="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-wire_in_requests-wire_in_request_uuid" method="put" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="2024-06-10T00:00:00Z", bank_name="Chase", amount_sent="314500", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, additional_notes="Wire for 2024-06-15 payroll.")
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-wire_in_requests-wire_in_request_uuid" method="put" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="<value>", bank_name="<value>", amount_sent="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-wire_in_requests-wire_in_request_uuid" method="put" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="<value>", bank_name="<value>", amount_sent="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: example
+
+<!-- UsageSnippet language="python" operationID="put-wire_in_requests-wire_in_request_uuid" method="put" path="/v1/wire_in_requests/{wire_in_request_uuid}" example="example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="<value>", bank_name="<value>", amount_sent="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -93,10 +172,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -106,7 +185,9 @@ scope: `payrolls:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-companies-company_uuid-wire_in_request_uuid" method="get" path="/v1/companies/{company_uuid}/wire_in_requests" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -115,7 +196,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.wire_in_requests.list(company_uuid="<id>")
+    res = gusto.wire_in_requests.list(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

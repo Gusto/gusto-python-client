@@ -1,5 +1,13 @@
 # Status
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import Status
+
+value = Status.APPROVED
+```
+
 
 ## Values
 

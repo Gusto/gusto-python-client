@@ -4,7 +4,8 @@ from .basesdk import BaseSDK
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
-from typing import Any, Mapping, Optional
+from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
+from typing import Any, List, Mapping, Optional, Union
 
 
 class TimeOffPolicies(BaseSDK):
@@ -14,27 +15,28 @@ class TimeOffPolicies(BaseSDK):
         payroll_id: str,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        regular_hours_worked: Optional[float] = None,
-        overtime_hours_worked: Optional[float] = None,
-        double_overtime_hours_worked: Optional[float] = None,
-        pto_hours_used: Optional[float] = None,
-        sick_hours_used: Optional[float] = None,
+            models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursHeaderXGustoAPIVersion
+        ] = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        regular_hours_worked: OptionalNullable[str] = UNSET,
+        overtime_hours_worked: OptionalNullable[str] = UNSET,
+        double_overtime_hours_worked: OptionalNullable[str] = UNSET,
+        pto_hours_used: OptionalNullable[str] = UNSET,
+        sick_hours_used: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.AccruingTimeOffHourObject:
+    ) -> models.PayrollCalculateAccruingTimeOffHoursResponse:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
 
         Factors affecting the accrued hours:
-        * the time off policy accrual method (whether they get pay per hour worked, per hour paid, with / without overtime, accumulate time off based on pay period / calendar year / anniversary)
-        * how many hours of work during this pay period
-        * how many hours of PTO / sick hours taken during this pay period (for per hour paid policies only)
-        * company pay schedule frequency (for per pay period)
+
+        - the time off policy accrual method (whether they get pay per hour worked, per hour paid, with / without overtime, accumulate time off based on pay period / calendar year / anniversary)
+        - how many hours of work during this pay period
+        - how many hours of PTO / sick hours taken during this pay period (for per hour paid policies only)
+        - company pay schedule frequency (for per pay period)
 
         If none of the parameters is passed in, the accrued time off hour will be 0.
 
@@ -43,11 +45,11 @@ class TimeOffPolicies(BaseSDK):
         :param payroll_id: The UUID of the payroll
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param regular_hours_worked: regular hours worked in this pay period
-        :param overtime_hours_worked: overtime hours worked in this pay period
-        :param double_overtime_hours_worked: double overtime hours worked in this pay period
-        :param pto_hours_used: paid time off hours used in this pay period
-        :param sick_hours_used: sick hours used in this pay period
+        :param regular_hours_worked: Regular hours worked in this pay period
+        :param overtime_hours_worked: Overtime hours worked in this pay period
+        :param double_overtime_hours_worked: Double overtime hours worked in this pay period
+        :param pto_hours_used: Paid time off hours used in this pay period
+        :param sick_hours_used: Sick hours used in this pay period
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -64,10 +66,10 @@ class TimeOffPolicies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequest(
+            x_gusto_api_version=x_gusto_api_version,
             payroll_id=payroll_id,
             employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequestBody(
+            payroll_calculate_accruing_time_off_hours_request=models.PayrollCalculateAccruingTimeOffHoursRequest(
                 regular_hours_worked=regular_hours_worked,
                 overtime_hours_worked=overtime_hours_worked,
                 double_overtime_hours_worked=double_overtime_hours_worked,
@@ -82,7 +84,7 @@ class TimeOffPolicies(BaseSDK):
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
@@ -90,12 +92,15 @@ class TimeOffPolicies(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.payroll_calculate_accruing_time_off_hours_request
+                if request is not None
+                else None,
                 False,
-                False,
+                True,
                 "json",
-                models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequestBody,
+                Optional[models.PayrollCalculateAccruingTimeOffHoursRequest],
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -109,43 +114,40 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["422", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(
+                models.PayrollCalculateAccruingTimeOffHoursResponse, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def calculate_accruing_time_off_hours_async(
         self,
@@ -153,27 +155,28 @@ class TimeOffPolicies(BaseSDK):
         payroll_id: str,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        regular_hours_worked: Optional[float] = None,
-        overtime_hours_worked: Optional[float] = None,
-        double_overtime_hours_worked: Optional[float] = None,
-        pto_hours_used: Optional[float] = None,
-        sick_hours_used: Optional[float] = None,
+            models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursHeaderXGustoAPIVersion
+        ] = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        regular_hours_worked: OptionalNullable[str] = UNSET,
+        overtime_hours_worked: OptionalNullable[str] = UNSET,
+        double_overtime_hours_worked: OptionalNullable[str] = UNSET,
+        pto_hours_used: OptionalNullable[str] = UNSET,
+        sick_hours_used: OptionalNullable[str] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.AccruingTimeOffHourObject:
+    ) -> models.PayrollCalculateAccruingTimeOffHoursResponse:
         r"""Calculate accruing time off hours
 
         Returns a list of accruing time off for each time off policy associated with the employee.
 
         Factors affecting the accrued hours:
-        * the time off policy accrual method (whether they get pay per hour worked, per hour paid, with / without overtime, accumulate time off based on pay period / calendar year / anniversary)
-        * how many hours of work during this pay period
-        * how many hours of PTO / sick hours taken during this pay period (for per hour paid policies only)
-        * company pay schedule frequency (for per pay period)
+
+        - the time off policy accrual method (whether they get pay per hour worked, per hour paid, with / without overtime, accumulate time off based on pay period / calendar year / anniversary)
+        - how many hours of work during this pay period
+        - how many hours of PTO / sick hours taken during this pay period (for per hour paid policies only)
+        - company pay schedule frequency (for per pay period)
 
         If none of the parameters is passed in, the accrued time off hour will be 0.
 
@@ -182,11 +185,11 @@ class TimeOffPolicies(BaseSDK):
         :param payroll_id: The UUID of the payroll
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param regular_hours_worked: regular hours worked in this pay period
-        :param overtime_hours_worked: overtime hours worked in this pay period
-        :param double_overtime_hours_worked: double overtime hours worked in this pay period
-        :param pto_hours_used: paid time off hours used in this pay period
-        :param sick_hours_used: sick hours used in this pay period
+        :param regular_hours_worked: Regular hours worked in this pay period
+        :param overtime_hours_worked: Overtime hours worked in this pay period
+        :param double_overtime_hours_worked: Double overtime hours worked in this pay period
+        :param pto_hours_used: Paid time off hours used in this pay period
+        :param sick_hours_used: Sick hours used in this pay period
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -203,10 +206,10 @@ class TimeOffPolicies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequest(
+            x_gusto_api_version=x_gusto_api_version,
             payroll_id=payroll_id,
             employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequestBody(
+            payroll_calculate_accruing_time_off_hours_request=models.PayrollCalculateAccruingTimeOffHoursRequest(
                 regular_hours_worked=regular_hours_worked,
                 overtime_hours_worked=overtime_hours_worked,
                 double_overtime_hours_worked=double_overtime_hours_worked,
@@ -218,6 +221,512 @@ class TimeOffPolicies(BaseSDK):
         req = self._build_request_async(
             method="POST",
             path="/v1/payrolls/{payroll_id}/employees/{employee_id}/calculate_accruing_time_off_hours",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.payroll_calculate_accruing_time_off_hours_request
+                if request is not None
+                else None,
+                False,
+                True,
+                "json",
+                Optional[models.PayrollCalculateAccruingTimeOffHoursRequest],
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.PayrollCalculateAccruingTimeOffHoursResponse, http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_v1_time_off_policies_time_off_policy_uuid(
+        self,
+        *,
+        time_off_policy_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeOffPolicy:
+        r"""Get a time off policy
+
+        Get a time off policy
+
+        scope: `time_off_policies:read`
+
+        :param time_off_policy_uuid: The UUID of the time off policy
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1TimeOffPoliciesTimeOffPolicyUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_off_policy_uuid=time_off_policy_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/time_off_policies/{time_off_policy_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-time_off_policies-time_off_policy_uuid",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.TimeOffPolicy, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_time_off_policies_time_off_policy_uuid_async(
+        self,
+        *,
+        time_off_policy_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeOffPolicy:
+        r"""Get a time off policy
+
+        Get a time off policy
+
+        scope: `time_off_policies:read`
+
+        :param time_off_policy_uuid: The UUID of the time off policy
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1TimeOffPoliciesTimeOffPolicyUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_off_policy_uuid=time_off_policy_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/time_off_policies/{time_off_policy_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-time_off_policies-time_off_policy_uuid",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.TimeOffPolicy, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_v1_companies_company_uuid_time_off_policies(
+        self,
+        *,
+        company_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.TimeOffPolicy]:
+        r"""Get all time off policies for a company
+
+        Get all time off policies for a company
+
+        scope: `time_off_policies:read`
+
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyUUIDTimeOffPoliciesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_uuid}/time_off_policies",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_uuid-time_off_policies",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.TimeOffPolicy], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_companies_company_uuid_time_off_policies_async(
+        self,
+        *,
+        company_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.TimeOffPolicy]:
+        r"""Get all time off policies for a company
+
+        Get all time off policies for a company
+
+        scope: `time_off_policies:read`
+
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyUUIDTimeOffPoliciesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_uuid}/time_off_policies",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_uuid-time_off_policies",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.TimeOffPolicy], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def put_v1_time_off_policies_time_off_policy_uuid_add_employees(
+        self,
+        *,
+        time_off_policy_uuid: str,
+        employees: Union[
+            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            List[
+                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
+            ],
+        ],
+        x_gusto_api_version: Optional[
+            models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesHeaderXGustoAPIVersion
+        ] = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeOffPolicy:
+        r"""Add employees to a time off policy
+
+        Add employees to a time off policy. Employees are required to have at least one job to be added to a time off policy. Accepts starting balances for non-unlimited policies
+
+        scope: `time_off_policies:write`
+
+        :param time_off_policy_uuid: The UUID of the time off policy
+        :param employees:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_off_policy_uuid=time_off_policy_uuid,
+            request_body=models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody(
+                employees=utils.get_pydantic_model(
+                    employees,
+                    List[
+                        models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
+                    ],
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/time_off_policies/{time_off_policy_uuid}/add_employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -233,8 +742,131 @@ class TimeOffPolicies(BaseSDK):
                 False,
                 False,
                 "json",
-                models.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursRequestBody,
+                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody,
             ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-time_off_policies-time_off_policy_uuid-add_employees",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.TimeOffPolicy, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def put_v1_time_off_policies_time_off_policy_uuid_add_employees_async(
+        self,
+        *,
+        time_off_policy_uuid: str,
+        employees: Union[
+            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            List[
+                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
+            ],
+        ],
+        x_gusto_api_version: Optional[
+            models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesHeaderXGustoAPIVersion
+        ] = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeOffPolicy:
+        r"""Add employees to a time off policy
+
+        Add employees to a time off policy. Employees are required to have at least one job to be added to a time off policy. Accepts starting balances for non-unlimited policies
+
+        scope: `time_off_policies:write`
+
+        :param time_off_policy_uuid: The UUID of the time off policy
+        :param employees:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_off_policy_uuid=time_off_policy_uuid,
+            request_body=models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody(
+                employees=utils.get_pydantic_model(
+                    employees,
+                    List[
+                        models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees
+                    ],
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/time_off_policies/{time_off_policy_uuid}/add_employees",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesRequestBody,
+            ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -248,40 +880,35 @@ class TimeOffPolicies(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours",
-                oauth2_scopes=[],
+                operation_id="put-v1-time_off_policies-time_off_policy_uuid-add_employees",
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["422", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.AccruingTimeOffHourObject)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(models.TimeOffPolicy, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

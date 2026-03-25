@@ -1,5 +1,13 @@
 # Columns
 
+## Example Usage
+
+```python
+from gusto_embedded.models import Columns
+
+value = Columns.BANK_ACCOUNT_ACCOUNT_NUMBER
+```
+
 
 ## Values
 

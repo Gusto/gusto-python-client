@@ -2,20 +2,27 @@
 
 from __future__ import annotations
 from .payroll_blockers_error import PayrollBlockersErrorData
-from .unprocessable_entity_error_object_error import (
-    UnprocessableEntityErrorObjectErrorData,
-)
+from .unprocessable_entity_error_object import UnprocessableEntityErrorObjectData
 from .versionheader import VersionHeader
+from dataclasses import dataclass, field
 from enum import Enum
-from gusto_embedded import utils
-from gusto_embedded.types import BaseModel
+from gusto_embedded.models import GustoError
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
     PathParamMetadata,
     RequestMetadata,
 )
+import httpx
 import pydantic
+from pydantic import model_serializer
 from typing import List, Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
 
@@ -38,7 +45,7 @@ class PostCompaniesPayrollSkipCompanyUUIDRequestBodyTypedDict(TypedDict):
     r"""Pay period end date. If left empty, defaults to today's date."""
     pay_schedule_uuid: NotRequired[str]
     r"""The UUID of the pay schedule"""
-    employee_uuids: NotRequired[List[str]]
+    employee_uuids: NotRequired[Nullable[List[str]]]
     r"""An array of employees. This field is only applicable to new hire payroll and termination payroll"""
 
 
@@ -55,8 +62,35 @@ class PostCompaniesPayrollSkipCompanyUUIDRequestBody(BaseModel):
     pay_schedule_uuid: Optional[str] = None
     r"""The UUID of the pay schedule"""
 
-    employee_uuids: Optional[List[str]] = None
+    employee_uuids: OptionalNullable[List[str]] = UNSET
     r"""An array of employees. This field is only applicable to new hire payroll and termination payroll"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["start_date", "end_date", "pay_schedule_uuid", "employee_uuids"]
+        )
+        nullable_fields = set(["employee_uuids"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class PostCompaniesPayrollSkipCompanyUUIDRequestTypedDict(TypedDict):
@@ -82,26 +116,45 @@ class PostCompaniesPayrollSkipCompanyUUIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion = TypeAliasType(
     "PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion",
-    Union[UnprocessableEntityErrorObjectErrorData, PayrollBlockersErrorData],
+    Union[UnprocessableEntityErrorObjectData, PayrollBlockersErrorData],
 )
 r"""Unprocessable Entity"""
 
 
-class PostCompaniesPayrollSkipCompanyUUIDResponseBody(Exception):
+@dataclass(unsafe_hash=True)
+class PostCompaniesPayrollSkipCompanyUUIDResponseBody(GustoError):
     r"""Unprocessable Entity"""
 
-    data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion
+    data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion = field(hash=False)
 
-    def __init__(self, data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion
-        )
+    def __init__(
+        self,
+        data: PostCompaniesPayrollSkipCompanyUUIDResponseBodyUnion,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
+    ):
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)

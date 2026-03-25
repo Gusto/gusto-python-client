@@ -3,7 +3,7 @@
 from __future__ import annotations
 from .versionheader import VersionHeader
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -11,6 +11,7 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -60,6 +61,22 @@ class PutV1EmployeesEmployeeIDRehireRequestBody(BaseModel):
     two_percent_shareholder: Optional[bool] = None
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["employment_status", "two_percent_shareholder"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class PutV1EmployeesEmployeeIDRehireRequestTypedDict(TypedDict):
     employee_id: str
@@ -84,5 +101,21 @@ class PutV1EmployeesEmployeeIDRehireRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

@@ -2,6 +2,14 @@
 
 The status of the webhook subscription.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import WebhookSubscriptionStatus
+
+value = WebhookSubscriptionStatus.PENDING
+```
+
 
 ## Values
 

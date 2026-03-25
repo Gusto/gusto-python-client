@@ -3,8 +3,16 @@
 Explanation for why the company is suspending their account.
 
 > 🚧 FEIN or entity type changes require Customer Support
->
 > If a company is switching FEIN or changing their entity type, this change must be performed by Gusto Customer Support and cannot be performed via the API at this time.
+
+
+## Example Usage
+
+```python
+from gusto_embedded.models import Reason
+
+value = Reason.SWITCHING_PROVIDER
+```
 
 
 ## Values

@@ -3,7 +3,8 @@
 from __future__ import annotations
 from datetime import datetime
 from enum import Enum
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -49,6 +50,22 @@ class Entries(BaseModel):
 
     pay_classification: Optional[PayClassification] = None
     r"""Pay classification for the entry."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["uuid", "hours_worked", "pay_classification"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class TimeSheetTypedDict(TypedDict):
@@ -128,3 +145,36 @@ class TimeSheet(BaseModel):
 
     entries: Optional[List[Entries]] = None
     r"""Entries associated with the time sheet."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "uuid",
+                "status",
+                "company_uuid",
+                "time_zone",
+                "entity_type",
+                "entity_uuid",
+                "version",
+                "job_uuid",
+                "shift_started_at",
+                "shift_ended_at",
+                "created_at",
+                "updated_at",
+                "metadata",
+                "entries",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

@@ -9,7 +9,8 @@ from .pay_schedule_assignment_transition_pay_period import (
     PayScheduleAssignmentTransitionPayPeriod,
     PayScheduleAssignmentTransitionPayPeriodTypedDict,
 )
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -49,3 +50,28 @@ class PayScheduleAssignmentEmployeeChange(BaseModel):
 
     transition_pay_period: Optional[PayScheduleAssignmentTransitionPayPeriod] = None
     r"""Pay schedule assignment transition pay period information."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "employee_uuid",
+                "first_name",
+                "last_name",
+                "pay_frequency",
+                "first_pay_period",
+                "transition_pay_period",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

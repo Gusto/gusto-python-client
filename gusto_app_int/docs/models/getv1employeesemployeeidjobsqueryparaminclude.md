@@ -3,6 +3,14 @@
 Available options:
 - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import GetV1EmployeesEmployeeIDJobsQueryParamInclude
+
+value = GetV1EmployeesEmployeeIDJobsQueryParamInclude.ALL_COMPENSATIONS
+```
+
 
 ## Values
 

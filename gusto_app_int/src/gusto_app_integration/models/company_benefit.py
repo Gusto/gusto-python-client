@@ -22,6 +22,13 @@ class Source(str, Enum):
     PARTNERED = "partnered"
 
 
+class CatchUpType(str, Enum):
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
+    ELECTIVE = "elective"
+    DEEMED = "deemed"
+
+
 class CompanyBenefitTypedDict(TypedDict):
     r"""The representation of a company benefit."""
 
@@ -51,6 +58,8 @@ class CompanyBenefitTypedDict(TypedDict):
     r"""Whether the employer is subject to pay employer taxes when an employee is on leave. Only applicable to third party sick pay benefits."""
     responsible_for_employee_w2: NotRequired[bool]
     r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to third party sick pay benefits."""
+    catch_up_type: NotRequired[Nullable[CatchUpType]]
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
 
 
 class CompanyBenefit(BaseModel):
@@ -95,45 +104,46 @@ class CompanyBenefit(BaseModel):
     responsible_for_employee_w2: Optional[bool] = None
     r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to third party sick pay benefits."""
 
+    catch_up_type: OptionalNullable[CatchUpType] = UNSET
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "version",
-            "enrollment_count",
-            "company_uuid",
-            "benefit_type",
-            "active",
-            "description",
-            "source",
-            "partner_name",
-            "deletable",
-            "supports_percentage_amounts",
-            "responsible_for_employer_taxes",
-            "responsible_for_employee_w2",
-        ]
-        nullable_fields = ["partner_name"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "version",
+                "enrollment_count",
+                "company_uuid",
+                "benefit_type",
+                "active",
+                "description",
+                "source",
+                "partner_name",
+                "deletable",
+                "supports_percentage_amounts",
+                "responsible_for_employer_taxes",
+                "responsible_for_employee_w2",
+                "catch_up_type",
+            ]
+        )
+        nullable_fields = set(["partner_name", "catch_up_type"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

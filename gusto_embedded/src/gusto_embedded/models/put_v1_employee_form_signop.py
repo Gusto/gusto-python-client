@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -10,6 +10,7 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -157,6 +158,62 @@ class PutV1EmployeeFormSignRequestBody(BaseModel):
     preparer4_agree: Optional[str] = None
     r"""Whether 4th preparer agrees to sign electronically"""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "signed_by_ip_address",
+                "preparer",
+                "preparer_first_name",
+                "preparer_last_name",
+                "preparer_street_1",
+                "preparer_street_2",
+                "preparer_city",
+                "preparer_state",
+                "preparer_zip",
+                "preparer_agree",
+                "preparer2",
+                "preparer2_first_name",
+                "preparer2_last_name",
+                "preparer2_street_1",
+                "preparer2_street_2",
+                "preparer2_city",
+                "preparer2_state",
+                "preparer2_zip",
+                "preparer2_agree",
+                "preparer3",
+                "preparer3_first_name",
+                "preparer3_last_name",
+                "preparer3_street_1",
+                "preparer3_street_2",
+                "preparer3_city",
+                "preparer3_state",
+                "preparer3_zip",
+                "preparer3_agree",
+                "preparer4",
+                "preparer4_first_name",
+                "preparer4_last_name",
+                "preparer4_street_1",
+                "preparer4_street_2",
+                "preparer4_city",
+                "preparer4_state",
+                "preparer4_zip",
+                "preparer4_agree",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class PutV1EmployeeFormSignRequestTypedDict(TypedDict):
     employee_id: str
@@ -197,5 +254,21 @@ class PutV1EmployeeFormSignRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["x-gusto-client-ip", "X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

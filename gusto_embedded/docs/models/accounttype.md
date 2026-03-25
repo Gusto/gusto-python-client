@@ -2,6 +2,14 @@
 
 Bank account type
 
+## Example Usage
+
+```python
+from gusto_embedded.models import AccountType
+
+value = AccountType.CHECKING
+```
+
 
 ## Values
 

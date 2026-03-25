@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from .contractor_payment import ContractorPayment, ContractorPaymentTypedDict
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -25,6 +26,22 @@ class ContractorPaymentSummaryByDatesTotal(BaseModel):
     wages: Optional[str] = None
     r"""The total wages for contractor payments within a given time period."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["reimbursements", "wages"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class ContractorPaymentSummaryByDatesContractorPaymentsTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
@@ -36,9 +53,7 @@ class ContractorPaymentSummaryByDatesContractorPaymentsTypedDict(TypedDict):
     wage_total: NotRequired[str]
     r"""The total wages for the contractor within a given time period."""
     payments: NotRequired[List[ContractorPaymentTypedDict]]
-    r"""The contractor’s payments within a given time period.
-
-    """
+    r"""The contractor's payments within a given time period."""
 
 
 class ContractorPaymentSummaryByDatesContractorPayments(BaseModel):
@@ -55,9 +70,31 @@ class ContractorPaymentSummaryByDatesContractorPayments(BaseModel):
     r"""The total wages for the contractor within a given time period."""
 
     payments: Optional[List[ContractorPayment]] = None
-    r"""The contractor’s payments within a given time period.
+    r"""The contractor's payments within a given time period."""
 
-    """
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "contractor_uuid",
+                "check_date",
+                "reimbursement_total",
+                "wage_total",
+                "payments",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ContractorPaymentSummaryByDatesTypedDict(TypedDict):
@@ -81,3 +118,19 @@ class ContractorPaymentSummaryByDates(BaseModel):
         List[ContractorPaymentSummaryByDatesContractorPayments]
     ] = None
     r"""The individual contractor payments, within a given time period, grouped by check date."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["total", "contractor_payments"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

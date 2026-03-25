@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_app_integration import utils
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
 from gusto_app_integration.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
 import pydantic
-from typing import List, Optional
+from pydantic import model_serializer
+from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
@@ -27,45 +27,21 @@ class DeleteV1CompanyBenefitsCompanyBenefitIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
 
-class BaseTypedDict(TypedDict):
-    type: NotRequired[str]
-    message: NotRequired[str]
-    full_message: NotRequired[str]
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
 
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
 
-class Base(BaseModel):
-    type: Optional[str] = None
-
-    message: Optional[str] = None
-
-    full_message: Optional[str] = None
-
-
-class ErrorsTypedDict(TypedDict):
-    base: NotRequired[List[BaseTypedDict]]
-
-
-class Errors(BaseModel):
-    base: Optional[List[Base]] = None
-
-
-class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData(BaseModel):
-    errors: Optional[Errors] = None
-
-
-class DeleteV1CompanyBenefitsCompanyBenefitIDResponseBody(Exception):
-    r"""Unprocessable Entity"""
-
-    data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
-
-    def __init__(self, data: DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data, DeleteV1CompanyBenefitsCompanyBenefitIDResponseBodyData
-        )
+        return m

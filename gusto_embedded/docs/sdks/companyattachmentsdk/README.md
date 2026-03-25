@@ -1,5 +1,4 @@
-# CompanyAttachmentSDK
-(*company_attachment*)
+# CompanyAttachment
 
 ## Overview
 
@@ -16,7 +15,9 @@ scope: `company_attachments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-attachment-url" method="get" path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}/download_url" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_attachment.get_download_url(company_id="<id>", company_attachment_uuid="<id>")
+    res = gusto.company_attachment.get_download_url(company_id="<id>", company_attachment_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

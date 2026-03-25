@@ -5,7 +5,14 @@ from enum import Enum
 
 
 class PayScheduleFrequencyCreateUpdate(str, Enum):
-    r"""The frequency that employees on this pay schedule are paid with Gusto."""
+    r"""Pay frequency when creating or updating a schedule. Only weekly, bi-weekly, twice per month, and monthly are supported via the API.
+
+    - `Every week`: Weekly pay.
+    - `Every other week`: Biweekly pay.
+    - `Twice per month`: Two pay dates per month; require day_1 and day_2 (use 31 for last day of month).
+    - `Monthly`: One pay date per month; require day_1 (1-31).
+
+    """
 
     EVERY_WEEK = "Every week"
     EVERY_OTHER_WEEK = "Every other week"

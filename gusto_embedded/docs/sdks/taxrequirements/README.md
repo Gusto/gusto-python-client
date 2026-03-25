@@ -1,5 +1,4 @@
 # TaxRequirements
-(*tax_requirements*)
 
 ## Overview
 
@@ -57,7 +56,9 @@ scope: `company_tax_requirements:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_uuid-tax_requirements-state" method="get" path="/v1/companies/{company_uuid}/tax_requirements/{state}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -66,7 +67,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.tax_requirements.get(company_uuid="<id>", state="Oklahoma")
+    res = gusto.tax_requirements.get(company_uuid="<id>", state="South Dakota", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -99,9 +100,11 @@ Update State Tax Requirements
 
 scope: `company_tax_requirements:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_uuid-tax_requirements-state" method="put" path="/v1/companies/{company_uuid}/tax_requirements/{state}" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -110,7 +113,25 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.tax_requirements.update_state(company_uuid="<id>", state="Massachusetts", requirement_sets=[
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="West Virginia", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_uuid-tax_requirements-state" method="put" path="/v1/companies/{company_uuid}/tax_requirements/{state}" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="Tennessee", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, requirement_sets=[
         {
             "key": "registrations",
             "effective_from": None,
@@ -153,6 +174,42 @@ with Gusto(
     # Use the SDK ...
 
 ```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_uuid-tax_requirements-state" method="put" path="/v1/companies/{company_uuid}/tax_requirements/{state}" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="Maryland", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_uuid-tax_requirements-state" method="put" path="/v1/companies/{company_uuid}/tax_requirements/{state}" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.tax_requirements.update_state(company_uuid="<id>", state="Vermont", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
 
 ### Parameters
 
@@ -166,10 +223,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_all
 
@@ -179,7 +236,9 @@ scope: `company_tax_requirements:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_uuid-tax_requirements" method="get" path="/v1/companies/{company_uuid}/tax_requirements" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -188,7 +247,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.tax_requirements.get_all(company_uuid="<id>")
+    res = gusto.tax_requirements.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

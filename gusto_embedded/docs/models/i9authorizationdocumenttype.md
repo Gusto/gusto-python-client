@@ -1,6 +1,12 @@
 # I9AuthorizationDocumentType
 
-The document's document type
+## Example Usage
+
+```python
+from gusto_embedded.models import I9AuthorizationDocumentType
+
+value = I9AuthorizationDocumentType.USCIS_ALIEN_REGISTRATION_NUMBER
+```
 
 
 ## Values

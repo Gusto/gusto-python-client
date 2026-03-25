@@ -1,0 +1,11 @@
+# MigrationBlockerErrors
+
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `error_key`                                                                        | *Optional[str]*                                                                    | :heavy_minus_sign:                                                                 | Error key                                                                          |
+| `category`                                                                         | *Optional[str]*                                                                    | :heavy_minus_sign:                                                                 | Error category                                                                     |
+| `message`                                                                          | *Optional[str]*                                                                    | :heavy_minus_sign:                                                                 | Blocker message                                                                    |
+| `metadata`                                                                         | [Optional[models.MigrationBlockerMetadata]](../models/migrationblockermetadata.md) | :heavy_minus_sign:                                                                 | N/A                                                                                |

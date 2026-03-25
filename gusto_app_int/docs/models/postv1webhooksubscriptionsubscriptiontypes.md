@@ -1,5 +1,13 @@
 # PostV1WebhookSubscriptionSubscriptionTypes
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PostV1WebhookSubscriptionSubscriptionTypes
+
+value = PostV1WebhookSubscriptionSubscriptionTypes.BANK_ACCOUNT
+```
+
 
 ## Values
 

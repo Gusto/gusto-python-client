@@ -2,6 +2,14 @@
 
 Status of the recovery case
 
+## Example Usage
+
+```python
+from gusto_embedded.models import RecoveryCaseStatus
+
+value = RecoveryCaseStatus.OPEN
+```
+
 
 ## Values
 

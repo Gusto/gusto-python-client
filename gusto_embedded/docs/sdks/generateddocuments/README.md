@@ -1,5 +1,4 @@
 # GeneratedDocuments
-(*generated_documents*)
 
 ## Overview
 
@@ -15,6 +14,7 @@ scope: `generated_documents:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-generated_documents-document_type-request_uuid" method="get" path="/v1/generated_documents/{document_type}/{request_uuid}" example="Example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -25,7 +25,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.generated_documents.get(document_type=gusto_embedded.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>")
+    res = gusto.generated_documents.get(document_type=gusto_embedded.DocumentType.PRINTABLE_PAYROLL_CHECKS, request_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

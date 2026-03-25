@@ -2,6 +2,14 @@
 
 What type of tax entity the company is
 
+## Example Usage
+
+```python
+from gusto_embedded.models import TaxPayerType
+
+value = TaxPayerType.C_CORPORATION
+```
+
 
 ## Values
 

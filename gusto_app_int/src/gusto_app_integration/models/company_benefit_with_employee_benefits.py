@@ -22,17 +22,28 @@ class CompanyBenefitWithEmployeeBenefitsSource(str, Enum):
     PARTNERED = "partnered"
 
 
+class CompanyBenefitWithEmployeeBenefitsCatchUpType(str, Enum):
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
+    ELECTIVE = "elective"
+    DEEMED = "deemed"
+
+
 class CompanyBenefitWithEmployeeBenefitsValueTiersTypedDict(TypedDict):
     r"""A single tier of a tiered matching scheme."""
 
     rate: NotRequired[str]
     r"""The percentage of employee deduction within this tier the company contribution will match."""
     threshold: NotRequired[str]
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and `rate` of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
     threshold_delta: NotRequired[str]
     r"""The step up difference between this tier's threshold and the previous tier's threshold. In the first tier, this is equivalent to threshold."""
@@ -45,15 +56,35 @@ class CompanyBenefitWithEmployeeBenefitsValueTiers(BaseModel):
     r"""The percentage of employee deduction within this tier the company contribution will match."""
 
     threshold: Optional[str] = None
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and `rate` of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
 
     threshold_delta: Optional[str] = None
     r"""The step up difference between this tier's threshold and the previous tier's threshold. In the first tier, this is equivalent to threshold."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["rate", "threshold", "threshold_delta"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class CompanyBenefitWithEmployeeBenefitsValue2TypedDict(TypedDict):
@@ -62,6 +93,22 @@ class CompanyBenefitWithEmployeeBenefitsValue2TypedDict(TypedDict):
 
 class CompanyBenefitWithEmployeeBenefitsValue2(BaseModel):
     tiers: Optional[List[CompanyBenefitWithEmployeeBenefitsValueTiers]] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["tiers"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 CompanyBenefitWithEmployeeBenefitsValueTypedDict = TypeAliasType(
@@ -122,6 +169,22 @@ class CompanyBenefitWithEmployeeBenefitsContribution(BaseModel):
     For the `tiered` contribution type, an array of tiers.
     """
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["type", "value"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class EmployeeBenefitsModelTypedDict(TypedDict):
     employee_uuid: NotRequired[str]
@@ -136,7 +199,10 @@ class EmployeeBenefitsModelTypedDict(TypedDict):
     r"""The amount to be deducted, per pay period, from the employee's pay."""
     company_contribution: NotRequired[str]
     r"""The value of the company contribution"""
-    uuid: NotRequired[str]
+    effective_date: NotRequired[str]
+    r"""The date when the employee benefit becomes effective. If not provided, the benefit will be effective from 1970-01-01 (unix epoch)."""
+    expiration_date: NotRequired[str]
+    r"""The date when the employee benefit expires. If not provided, the benefit will have no expiration date."""
     contribution: NotRequired[CompanyBenefitWithEmployeeBenefitsContributionTypedDict]
     r"""An object representing the type and value of the company contribution."""
 
@@ -160,10 +226,42 @@ class EmployeeBenefitsModel(BaseModel):
     company_contribution: Optional[str] = None
     r"""The value of the company contribution"""
 
-    uuid: Optional[str] = None
+    effective_date: Optional[str] = None
+    r"""The date when the employee benefit becomes effective. If not provided, the benefit will be effective from 1970-01-01 (unix epoch)."""
+
+    expiration_date: Optional[str] = None
+    r"""The date when the employee benefit expires. If not provided, the benefit will have no expiration date."""
 
     contribution: Optional[CompanyBenefitWithEmployeeBenefitsContribution] = None
     r"""An object representing the type and value of the company contribution."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "employee_uuid",
+                "company_benefit_uuid",
+                "active",
+                "deduct_as_percentage",
+                "employee_deduction",
+                "company_contribution",
+                "effective_date",
+                "expiration_date",
+                "contribution",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class CompanyBenefitWithEmployeeBenefitsTypedDict(TypedDict):
@@ -193,6 +291,8 @@ class CompanyBenefitWithEmployeeBenefitsTypedDict(TypedDict):
     r"""Whether the employer is subject to pay employer taxes when an employee is on leave. Only applicable to third party sick pay benefits."""
     responsible_for_employee_w2: NotRequired[bool]
     r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to third party sick pay benefits."""
+    catch_up_type: NotRequired[Nullable[CompanyBenefitWithEmployeeBenefitsCatchUpType]]
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
     employee_benefits: NotRequired[List[EmployeeBenefitsModelTypedDict]]
 
 
@@ -235,47 +335,50 @@ class CompanyBenefitWithEmployeeBenefits(BaseModel):
     responsible_for_employee_w2: Optional[bool] = None
     r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to third party sick pay benefits."""
 
+    catch_up_type: OptionalNullable[CompanyBenefitWithEmployeeBenefitsCatchUpType] = (
+        UNSET
+    )
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
     employee_benefits: Optional[List[EmployeeBenefitsModel]] = None
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "version",
-            "company_uuid",
-            "benefit_type",
-            "active",
-            "description",
-            "source",
-            "partner_name",
-            "deletable",
-            "supports_percentage_amounts",
-            "responsible_for_employer_taxes",
-            "responsible_for_employee_w2",
-            "employee_benefits",
-        ]
-        nullable_fields = ["partner_name"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "version",
+                "company_uuid",
+                "benefit_type",
+                "active",
+                "description",
+                "source",
+                "partner_name",
+                "deletable",
+                "supports_percentage_amounts",
+                "responsible_for_employer_taxes",
+                "responsible_for_employee_w2",
+                "catch_up_type",
+                "employee_benefits",
+            ]
+        )
+        nullable_fields = set(["partner_name", "catch_up_type"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

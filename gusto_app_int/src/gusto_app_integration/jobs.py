@@ -4,6 +4,7 @@ from .basesdk import BaseSDK
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
+from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -16,7 +17,7 @@ class Jobs(BaseSDK):
         hire_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -85,6 +86,7 @@ class Jobs(BaseSDK):
                 "json",
                 models.PostV1JobsJobIDRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -98,9 +100,10 @@ class Jobs(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -110,31 +113,20 @@ class Jobs(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
+            return unmarshal_json_response(models.Job, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -144,7 +136,7 @@ class Jobs(BaseSDK):
         hire_date: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
         state_wc_class_code: OptionalNullable[str] = UNSET,
@@ -213,6 +205,7 @@ class Jobs(BaseSDK):
                 "json",
                 models.PostV1JobsJobIDRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -226,9 +219,10 @@ class Jobs(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -238,48 +232,38 @@ class Jobs(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
+            return unmarshal_json_response(models.Job, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def create_compensation(
         self,
         *,
         job_id: str,
-        payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
+        rate: str,
+        payment_unit: models.CompensationsRequestBodyPaymentUnit,
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        rate: Optional[str] = None,
+            models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PostV1CompensationsCompensationIDMinimumWages],
-                List[models.PostV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsRequestBodyMinimumWages],
+                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -291,15 +275,23 @@ class Jobs(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Prerequisites
+        Before calling this endpoint:
+        1. A [job](ref:post-v1-jobs-job_id) must exist for the employee
+
+        ### Webhooks
+        - `employee_job_compensation.created`: Fires when a compensation is successfully created
+
+        scope: `compensations:write`
 
         :param job_id: The UUID of the job
+        :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param rate: The dollar amount paid per payment unit.
-        :param effective_date: The date when the compensation takes effect.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -317,19 +309,18 @@ class Jobs(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompensationsCompensationIDRequestBody(
+            job_id=job_id,
+            compensations_request_body=models.CompensationsRequestBody(
                 rate=rate,
                 payment_unit=payment_unit,
-                effective_date=effective_date,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[
-                        List[models.PostV1CompensationsCompensationIDMinimumWages]
-                    ],
+                    Optional[List[models.CompensationsRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -348,12 +339,13 @@ class Jobs(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompensationsCompensationIDRequestBody,
+                models.CompensationsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -367,9 +359,10 @@ class Jobs(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -379,48 +372,43 @@ class Jobs(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_compensation_async(
         self,
         *,
         job_id: str,
-        payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
+        rate: str,
+        payment_unit: models.CompensationsRequestBodyPaymentUnit,
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        rate: Optional[str] = None,
+            models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PostV1CompensationsCompensationIDMinimumWages],
-                List[models.PostV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsRequestBodyMinimumWages],
+                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -432,15 +420,23 @@ class Jobs(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Prerequisites
+        Before calling this endpoint:
+        1. A [job](ref:post-v1-jobs-job_id) must exist for the employee
+
+        ### Webhooks
+        - `employee_job_compensation.created`: Fires when a compensation is successfully created
+
+        scope: `compensations:write`
 
         :param job_id: The UUID of the job
+        :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param rate: The dollar amount paid per payment unit.
-        :param effective_date: The date when the compensation takes effect.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -458,19 +454,18 @@ class Jobs(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompensationsCompensationIDRequestBody(
+            job_id=job_id,
+            compensations_request_body=models.CompensationsRequestBody(
                 rate=rate,
                 payment_unit=payment_unit,
-                effective_date=effective_date,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[
-                        List[models.PostV1CompensationsCompensationIDMinimumWages]
-                    ],
+                    Optional[List[models.CompensationsRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -489,12 +484,13 @@ class Jobs(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompensationsCompensationIDRequestBody,
+                models.CompensationsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -508,9 +504,10 @@ class Jobs(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
@@ -520,28 +517,22 @@ class Jobs(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

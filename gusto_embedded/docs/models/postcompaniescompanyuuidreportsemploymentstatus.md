@@ -2,6 +2,14 @@
 
 Employee employment status to filter by
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PostCompaniesCompanyUUIDReportsEmploymentStatus
+
+value = PostCompaniesCompanyUUIDReportsEmploymentStatus.ACTIVE_FULL_TIME
+```
+
 
 ## Values
 

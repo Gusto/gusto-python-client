@@ -6,6 +6,14 @@ The verification status of the bank account.
 'ready_for_verification' means the micro-deposits are completed and the verification process can begin by using the verify endpoint.
 'verified' means the bank account is verified.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import VerificationStatus
+
+value = VerificationStatus.AWAITING_DEPOSITS
+```
+
 
 ## Values
 

@@ -21,10 +21,10 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class HeaderXGustoAPIVersion(str, Enum):
+class PutV1LocationsLocationIDHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
-    TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01 = "2024-04-01"
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class PutV1LocationsLocationIDRequestBodyTypedDict(TypedDict):
@@ -69,41 +69,38 @@ class PutV1LocationsLocationIDRequestBody(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "phone_number",
-            "street_1",
-            "street_2",
-            "city",
-            "state",
-            "zip_code",
-            "country",
-            "mailing_address",
-            "filing_address",
-        ]
-        nullable_fields = ["street_2"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "phone_number",
+                "street_1",
+                "street_2",
+                "city",
+                "state",
+                "zip_code",
+                "country",
+                "mailing_address",
+                "filing_address",
+            ]
+        )
+        nullable_fields = set(["street_2"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -112,7 +109,7 @@ class PutV1LocationsLocationIDRequestTypedDict(TypedDict):
     location_id: str
     r"""The UUID of the location"""
     request_body: PutV1LocationsLocationIDRequestBodyTypedDict
-    x_gusto_api_version: NotRequired[HeaderXGustoAPIVersion]
+    x_gusto_api_version: NotRequired[PutV1LocationsLocationIDHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -128,8 +125,30 @@ class PutV1LocationsLocationIDRequest(BaseModel):
     ]
 
     x_gusto_api_version: Annotated[
-        Optional[HeaderXGustoAPIVersion],
+        Optional[PutV1LocationsLocationIDHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = PutV1LocationsLocationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+try:
+    PutV1LocationsLocationIDRequestBody.model_rebuild()
+except NameError:
+    pass

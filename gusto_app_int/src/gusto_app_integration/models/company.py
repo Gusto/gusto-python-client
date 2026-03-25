@@ -54,8 +54,6 @@ class CompanyStatus(str, Enum):
 
 
 class PayScheduleType(str, Enum):
-    r"""The pay schedule assignment type."""
-
     SINGLE = "single"
     HOURLY_SALARIED = "hourly_salaried"
     BY_EMPLOYEE = "by_employee"
@@ -85,6 +83,22 @@ class Hourly(BaseModel):
     multiple: Optional[float] = None
     r"""The amount multiplied by the base rate of a job to calculate compensation."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["name", "multiple"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class FixedTypedDict(TypedDict):
     name: NotRequired[str]
@@ -95,6 +109,22 @@ class Fixed(BaseModel):
     name: Optional[str] = None
     r"""The name of the fixed compensation."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["name"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class CompanyPaidTimeOffTypedDict(TypedDict):
     name: NotRequired[str]
@@ -104,6 +134,22 @@ class CompanyPaidTimeOffTypedDict(TypedDict):
 class CompanyPaidTimeOff(BaseModel):
     name: Optional[str] = None
     r"""The name of the paid time off type."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["name"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class CompensationsTypedDict(TypedDict):
@@ -128,6 +174,22 @@ class Compensations(BaseModel):
 
     paid_time_off: Optional[List[CompanyPaidTimeOff]] = None
     r"""The available types of paid time off for the company."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["hourly", "fixed", "paid_time_off"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class HomeAddressTypedDict(TypedDict):
@@ -158,31 +220,28 @@ class HomeAddress(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["street_1", "street_2", "city", "state", "zip", "country"]
-        nullable_fields = ["street_2"]
-        null_default_fields = []
-
+        optional_fields = set(
+            ["street_1", "street_2", "city", "state", "zip", "country"]
+        )
+        nullable_fields = set(["street_2"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -232,39 +291,36 @@ class PrimarySignatory(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "uuid",
-            "first_name",
-            "middle_initial",
-            "last_name",
-            "phone",
-            "email",
-            "home_address",
-        ]
-        nullable_fields = ["middle_initial"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "uuid",
+                "first_name",
+                "middle_initial",
+                "last_name",
+                "phone",
+                "email",
+                "home_address",
+            ]
+        )
+        nullable_fields = set(["middle_initial"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -299,31 +355,26 @@ class PrimaryPayrollAdmin(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["first_name", "last_name", "phone", "email"]
-        nullable_fields = ["phone"]
-        null_default_fields = []
-
+        optional_fields = set(["first_name", "last_name", "phone", "email"])
+        nullable_fields = set(["phone"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -345,6 +396,10 @@ class CompanyTypedDict(TypedDict):
     r"""Whether or not the company is suspended in Gusto. Suspended companies may not run payroll."""
     company_status: NotRequired[CompanyStatus]
     r"""The status of the company in Gusto. \"Approved\" companies are approved to run payroll from a risk and compliance perspective. However, an approved company may still need to resolve other [payroll blockers](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers) to be able to run payroll. \"Not Approved\" companies may not yet run payroll with Gusto and may need to complete onboarding or contact support. \"Suspended\" companies may not run payroll with Gusto. In order to unsuspend their account, the company must contact support."""
+    is_high_risk_business: NotRequired[bool]
+    r"""Whether or not Gusto has identified the company as representing a high fraud risk."""
+    is_marijuana_business: NotRequired[bool]
+    r"""Whether or not the company is a marijuana-related business."""
     name: NotRequired[str]
     r"""The name of the company."""
     slug: NotRequired[str]
@@ -393,6 +448,12 @@ class Company(BaseModel):
     company_status: Optional[CompanyStatus] = None
     r"""The status of the company in Gusto. \"Approved\" companies are approved to run payroll from a risk and compliance perspective. However, an approved company may still need to resolve other [payroll blockers](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers) to be able to run payroll. \"Not Approved\" companies may not yet run payroll with Gusto and may need to complete onboarding or contact support. \"Suspended\" companies may not run payroll with Gusto. In order to unsuspend their account, the company must contact support."""
 
+    is_high_risk_business: Optional[bool] = None
+    r"""Whether or not Gusto has identified the company as representing a high fraud risk."""
+
+    is_marijuana_business: Optional[bool] = None
+    r"""Whether or not the company is a marijuana-related business."""
+
     name: Optional[str] = None
     r"""The name of the company."""
 
@@ -428,56 +489,57 @@ class Company(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "ein",
-            "entity_type",
-            "contractor_only",
-            "tier",
-            "is_suspended",
-            "company_status",
-            "name",
-            "slug",
-            "trade_name",
-            "is_partner_managed",
-            "pay_schedule_type",
-            "join_date",
-            "funding_type",
-            "locations",
-            "compensations",
-            "primary_signatory",
-            "primary_payroll_admin",
-        ]
-        nullable_fields = [
-            "entity_type",
-            "tier",
-            "trade_name",
-            "pay_schedule_type",
-            "join_date",
-            "funding_type",
-            "primary_signatory",
-        ]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "ein",
+                "entity_type",
+                "contractor_only",
+                "tier",
+                "is_suspended",
+                "company_status",
+                "is_high_risk_business",
+                "is_marijuana_business",
+                "name",
+                "slug",
+                "trade_name",
+                "is_partner_managed",
+                "pay_schedule_type",
+                "join_date",
+                "funding_type",
+                "locations",
+                "compensations",
+                "primary_signatory",
+                "primary_payroll_admin",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "entity_type",
+                "tier",
+                "trade_name",
+                "pay_schedule_type",
+                "join_date",
+                "funding_type",
+                "primary_signatory",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

@@ -1,5 +1,13 @@
 # TimeSheetSortBy
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import TimeSheetSortBy
+
+value = TimeSheetSortBy.CREATED_AT
+```
+
 
 ## Values
 

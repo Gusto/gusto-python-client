@@ -1,6 +1,14 @@
 # Frequency
 
-The frequency that employees on this pay schedule are paid with Gusto.
+The frequency that employees on this pay schedule are paid.
+
+## Example Usage
+
+```python
+from gusto_embedded.models import Frequency
+
+value = Frequency.EVERY_WEEK
+```
 
 
 ## Values

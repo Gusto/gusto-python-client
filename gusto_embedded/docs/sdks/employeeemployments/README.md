@@ -1,5 +1,4 @@
 # EmployeeEmployments
-(*employee_employments*)
 
 ## Overview
 
@@ -23,9 +22,11 @@ Note that some states require employees to receive their final wages within 24 h
 
 scope: `employments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-terminations" method="post" path="/v1/employees/{employee_id}/terminations" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -34,7 +35,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.create_termination(employee_id="<id>", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gusto.employee_employments.create_termination(employee_id="<id>", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-terminations" method="post" path="/v1/employees/{employee_id}/terminations" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_termination(employee_id="<id>", effective_date="2020-06-30", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, run_termination_payroll=True)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-terminations" method="post" path="/v1/employees/{employee_id}/terminations" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_termination(employee_id="<id>", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-terminations" method="post" path="/v1/employees/{employee_id}/terminations" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_termination(employee_id="<id>", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -57,10 +115,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_terminations
 
@@ -72,7 +130,9 @@ scope: `employments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-terminations" method="get" path="/v1/employees/{employee_id}/terminations" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -81,7 +141,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.get_terminations(employee_id="<id>")
+    res = gusto.employee_employments.get_terminations(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -114,7 +174,9 @@ scope: `employments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employees-employee_id-terminations" method="delete" path="/v1/employees/{employee_id}/terminations" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -123,7 +185,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_employments.delete_termination(employee_id="<id>")
+    gusto.employee_employments.delete_termination(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -139,10 +201,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## update_termination
 
@@ -152,9 +214,11 @@ Note that some states require employees to receive their final wages within 24 h
 
 scope: `employments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-terminations-employee_id" method="put" path="/v1/terminations/{employee_id}" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -163,7 +227,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.update_termination(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", run_termination_payroll=True)
+    res = gusto.employee_employments.update_termination(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-terminations-employee_id" method="put" path="/v1/terminations/{employee_id}" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.update_termination(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2020-06-30", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, run_termination_payroll=True)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-terminations-employee_id" method="put" path="/v1/terminations/{employee_id}" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.update_termination(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-terminations-employee_id" method="put" path="/v1/terminations/{employee_id}" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.update_termination(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -172,14 +293,14 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            |
-| `effective_date`                                                                                                                                                                                                             | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The employee's last day of work.                                                                                                                                                                                             |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `run_termination_payroll`                                                                                                                                                                                                    | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | If true, the employee should receive their final wages via an off-cycle payroll. If false, they should receive their final wages on their current pay schedule.                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                             |
+| `effective_date`                                                                                                                                                                                                             | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The employee's last day of work.                                                                                                                                                                                             |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `run_termination_payroll`                                                                                                                                                                                                    | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | If true, the employee should receive their final wages via an off-cycle payroll. If false, they should receive their final wages on their current pay schedule.                                                              |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
 
@@ -187,10 +308,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404, 422                                   | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## create_rehire
 
@@ -198,9 +319,11 @@ Rehire is created whenever an employee is scheduled to return to the company.
 
 scope: `employments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-rehire" method="post" path="/v1/employees/{employee_id}/rehire" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -209,7 +332,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.create_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gusto.employee_employments.create_rehire(employee_id="<id>", effective_date="<value>", file_new_hire_report=False, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-rehire" method="post" path="/v1/employees/{employee_id}/rehire" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_rehire(employee_id="<id>", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-rehire" method="post" path="/v1/employees/{employee_id}/rehire" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_rehire(employee_id="<id>", effective_date="<value>", file_new_hire_report=False, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-rehire" method="post" path="/v1/employees/{employee_id}/rehire" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.create_rehire(employee_id="<id>", effective_date="<value>", file_new_hire_report=False, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -235,10 +415,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## rehire
 
@@ -246,9 +426,11 @@ Update an employee's rehire.
 
 scope: `employments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-rehire" method="put" path="/v1/employees/{employee_id}/rehire" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -257,7 +439,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30")
+    res = gusto.employee_employments.rehire(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", file_new_hire_report=True, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-rehire" method="put" path="/v1/employees/{employee_id}/rehire" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.rehire(employee_id="<id>", version="1928d0c378e519e9c03fb959bc959a6b", effective_date="2023-06-30", file_new_hire_report=True, work_location_uuid="b6ae9d93-d4b8-4119-8c96-dba595dd8c30", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-rehire" method="put" path="/v1/employees/{employee_id}/rehire" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.rehire(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", file_new_hire_report=True, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-rehire" method="put" path="/v1/employees/{employee_id}/rehire" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_employments.rehire(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", effective_date="<value>", file_new_hire_report=True, work_location_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -266,17 +505,17 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            |
-| `effective_date`                                                                                                                                                                                                             | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The day when the employee returns to work.                                                                                                                                                                                   |
-| `file_new_hire_report`                                                                                                                                                                                                       | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | The boolean flag indicating whether Gusto will file a new hire report for the employee.                                                                                                                                      |
-| `work_location_uuid`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The uuid of the employee's work location.                                                                                                                                                                                    |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `employment_status`                                                                                                                                                                                                          | [Optional[models.PutV1EmployeesEmployeeIDRehireEmploymentStatus]](../../models/putv1employeesemployeeidrehireemploymentstatus.md)                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*.                                                                                                                   |
-| `two_percent_shareholder`                                                                                                                                                                                                    | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.                                                                                           |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                             |
+| `effective_date`                                                                                                                                                                                                             | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The day when the employee returns to work.                                                                                                                                                                                   |                                                                                                                                                                                                                              |
+| `file_new_hire_report`                                                                                                                                                                                                       | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | The boolean flag indicating whether Gusto will file a new hire report for the employee.                                                                                                                                      |                                                                                                                                                                                                                              |
+| `work_location_uuid`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The uuid of the employee's work location.                                                                                                                                                                                    |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `employment_status`                                                                                                                                                                                                          | [Optional[models.PutV1EmployeesEmployeeIDRehireEmploymentStatus]](../../models/putv1employeesemployeeidrehireemploymentstatus.md)                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*.                                                                                                                   |                                                                                                                                                                                                                              |
+| `two_percent_shareholder`                                                                                                                                                                                                    | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.                                                                                           |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
 
@@ -284,10 +523,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404, 422                                   | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_rehire
 
@@ -297,7 +536,9 @@ scope: `employments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-rehire" method="get" path="/v1/employees/{employee_id}/rehire" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -306,7 +547,9 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.get_rehire(employee_id="<id>")
+    res = gusto.employee_employments.get_rehire(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    assert res is not None
 
     # Handle response
     print(res)
@@ -327,10 +570,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete_rehire
 
@@ -340,7 +583,9 @@ scope: `employments:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employees-employee_id-rehire" method="delete" path="/v1/employees/{employee_id}/rehire" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -349,7 +594,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employee_employments.delete_rehire(employee_id="<id>")
+    gusto.employee_employments.delete_rehire(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -365,10 +610,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 404, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_history
 
@@ -376,10 +621,11 @@ Retrieve the employment history for a given employee, which includes termination
 
 scope: `employments:read`
 
-
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-employment_history" method="get" path="/v1/employees/{employee_id}/employment_history" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -388,7 +634,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employee_employments.get_history(employee_id="<id>")
+    res = gusto.employee_employments.get_history(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -409,7 +655,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |

@@ -1,5 +1,4 @@
 # Employees
-(*employees*)
 
 ## Overview
 
@@ -7,12 +6,13 @@
 
 * [list](#list) - Get employees of a company
 * [create](#create) - Create an employee
+* [get_v1_companies_company_id_employees_payment_details](#get_v1_companies_company_id_employees_payment_details) - Get employee payment details for a company
 * [create_historical](#create_historical) - Create a historical employee
 * [get](#get) - Get an employee
 * [update](#update) - Update an employee.
 * [delete](#delete) - Delete an onboarding employee
 * [get_custom_fields](#get_custom_fields) - Get an employee's custom fields
-* [update_onboarding_documents_config](#update_onboarding_documents_config) - Update an employee's onboarding documents config
+* [update_onboarding_documents_config](#update_onboarding_documents_config) - Update employee onboarding documents config
 * [get_onboarding_status](#get_onboarding_status) - Get the employee's onboarding status
 * [update_onboarding_status](#update_onboarding_status) - Update the employee's onboarding status
 * [get_time_off_activities](#get_time_off_activities) - Get employee time off activities
@@ -21,12 +21,15 @@
 
 Get all of the employees, onboarding, active and terminated, for a given company.
 
-scope: `employees:read`
+Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
 
+scope: `employees:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-employees" method="get" path="/v1/companies/{company_id}/employees" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -35,7 +38,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.list(company_id="<id>")
+    res = gusto.employees.list(company_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -44,38 +47,46 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                                                                                      | Type                                                                                                                                                                                                                                                                                           | Required                                                                                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                             | The UUID of the company                                                                                                                                                                                                                                                                        |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                                          | [Optional[models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidemployeesheaderxgustoapiversion.md)                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                   |
-| `search_term`                                                                                                                                                                                                                                                                                  | *Optional[str]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | A string to search for in the object's names                                                                                                                                                                                                                                                   |
-| `include`                                                                                                                                                                                                                                                                                      | List[[models.Include](../../models/include.md)]                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>- custom_fields: Include employees' custom fields<br/> |
-| `terminated`                                                                                                                                                                                                                                                                                   | *Optional[bool]*                                                                                                                                                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Filters employees by the provided boolean                                                                                                                                                                                                                                                      |
-| `page`                                                                                                                                                                                                                                                                                         | *Optional[int]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                                                                                         |
-| `per`                                                                                                                                                                                                                                                                                          | *Optional[int]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                                                                                       |
-| `retries`                                                                                                                                                                                                                                                                                      | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                            |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidemployeesheaderxgustoapiversion.md)                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `location_uuid`                                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Filter employees by a specific primary work location                                                                                                                                                                         |
+| `payroll_uuid`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Filter employees by a specific payroll                                                                                                                                                                                       |
+| `search_term`                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A string to search for in the object's names                                                                                                                                                                                 |
+| `sort_by`                                                                                                                                                                                                                    | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Sort employees by field. Cannot be used with search_term. Options: created_at, name, onboarding_status                                                                                                                       |
+| `include`                                                                                                                                                                                                                    | List[[models.Include](../../models/include.md)]                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Include the requested attribute(s) in each employee response. Multiple options are comma separated.                                                                                                                          |
+| `onboarded`                                                                                                                                                                                                                  | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters employees by those who have completed onboarding                                                                                                                                                                     |
+| `onboarded_active`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters employees who are ready to work (onboarded AND active today)                                                                                                                                                         |
+| `terminated`                                                                                                                                                                                                                 | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters employees by those who have been or are scheduled to be terminated                                                                                                                                                   |
+| `terminated_today`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)                                                                                |
+| `uuids`                                                                                                                                                                                                                      | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Optional subset of employees to fetch.                                                                                                                                                                                       |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
 
-**[List[models.Employee]](../../models/.md)**
+**[List[models.ShowEmployees]](../../models/.md)**
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## create
 
-        Create an employee.
+Create an employee.
 
-        scope: `employees:manage`
-
+scope: `employees:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees" method="post" path="/v1/companies/{company_id}/employees" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -84,7 +95,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.create(company_id="<id>", first_name="Karl", last_name="The Fog")
+    res = gusto.employees.create(company_id="<id>", first_name="Linda", last_name="Kautzer", x_gusto_api_version=gusto_embedded.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -100,7 +111,8 @@ with Gusto(
 | `last_name`                                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1EmployeesHeaderXGustoAPIVersion]](../../models/postv1employeesheaderxgustoapiversion.md)                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `middle_initial`                                                                                                                                                                                                             | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `email`                                                                                                                                                                                                                      | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The employee's personal email address.                                                                                                                                                                                       |
+| `email`                                                                                                                                                                                                                      | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The employee's personal email address. Required if self_onboarding is true.                                                                                                                                                  |
+| `work_email`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The employee's work email address.                                                                                                                                                                                           |
 | `date_of_birth`                                                                                                                                                                                                              | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
 | `ssn`                                                                                                                                                                                                                        | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
 | `preferred_first_name`                                                                                                                                                                                                       | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
@@ -113,10 +125,66 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404, 422                                   | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_companies_company_id_employees_payment_details
+
+Fetches payment details for employees in a given company. Results are paginated.
+
+Use the `employee_uuid` query parameter to filter for a single employee.
+Use the `payroll_uuid` query parameter to filter for employees on a specific payroll.
+Providing both `employee_uuid` and `payroll_uuid` will result in a 400 error.
+An empty array is returned if the company has no employees or if no employees match the filter criteria.
+
+The `encrypted_account_number` in the `splits` array is only visible if the `employee_payment_methods:read:account_number` scope is present.
+
+Base scope: `employee_payment_methods:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-employees-payment_details" method="get" path="/v1/companies/{company_id}/employees/payment_details" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employees.get_v1_companies_company_id_employees_payment_details(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `employee_uuid`                                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The UUID of a specific employee to fetch payment details for.                                                                                                                                                                |
+| `payroll_uuid`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The UUID of a specific payroll to fetch payment details for employees on that payroll.                                                                                                                                       |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.EmployeePaymentDetail]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
 
 ## create_historical
 
@@ -124,10 +192,60 @@ Create a historical employee, an employee that was previously dismissed from the
 
 scope: `employees:manage`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-historical_employees" method="post" path="/v1/companies/{company_uuid}/historical_employees" example="Basic" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employees.create_historical(company_uuid="<id>", first_name="Maida", last_name="Schroeder", date_of_birth="1959-03-15", ssn="<value>", work_address={}, home_address={
+        "street_1": "<value>",
+        "city": "Beerstead",
+        "state": "Arizona",
+        "zip": "05000-6136",
+    }, termination={}, job={}, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Create Historical Employee Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-historical_employees" method="post" path="/v1/companies/{company_uuid}/historical_employees" example="Create Historical Employee Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employees.create_historical(company_uuid="<id>", first_name="Maida", last_name="Schroeder", date_of_birth="1959-03-15", ssn="<value>", work_address={}, home_address={
+        "street_1": "<value>",
+        "city": "Beerstead",
+        "state": "Arizona",
+        "zip": "05000-6136",
+    }, termination={}, job={}, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-historical_employees" method="post" path="/v1/companies/{company_uuid}/historical_employees" example="Example" -->
 ```python
 from datetime import date
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -148,10 +266,58 @@ with Gusto(
         "effective_date": date.fromisoformat("2022-09-15T00:00:00Z"),
     }, job={
         "hire_date": date.fromisoformat("2018-05-09T00:00:00Z"),
-    }, middle_initial="A", preferred_first_name="Angel", employee_state_taxes={
+    }, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, middle_initial="A", preferred_first_name="Angel", employee_state_taxes={
         "wc_covered": True,
         "wc_class_code": "20992",
     })
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-historical_employees" method="post" path="/v1/companies/{company_uuid}/historical_employees" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employees.create_historical(company_uuid="<id>", first_name="Maida", last_name="Schroeder", date_of_birth="1959-03-15", ssn="<value>", work_address={}, home_address={
+        "street_1": "<value>",
+        "city": "Beerstead",
+        "state": "Arizona",
+        "zip": "05000-6136",
+    }, termination={}, job={}, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-historical_employees" method="post" path="/v1/companies/{company_uuid}/historical_employees" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employees.create_historical(company_uuid="<id>", first_name="Maida", last_name="Schroeder", date_of_birth="1959-03-15", ssn="<value>", work_address={}, home_address={
+        "street_1": "<value>",
+        "city": "Beerstead",
+        "state": "Arizona",
+        "zip": "05000-6136",
+    }, termination={}, job={}, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -184,21 +350,24 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get
 
 Get an employee.
 
-scope: `employees:read`
+Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
 
+scope: `employees:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees" method="get" path="/v1/employees/{employee_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -207,7 +376,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get(employee_id="<id>")
+    res = gusto.employees.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -216,12 +385,12 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                                                                                      | Type                                                                                                                                                                                                                                                                                           | Required                                                                                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                                                                                             | The UUID of the employee                                                                                                                                                                                                                                                                       |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                                          | [Optional[models.GetV1EmployeesHeaderXGustoAPIVersion]](../../models/getv1employeesheaderxgustoapiversion.md)                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                   |
-| `include`                                                                                                                                                                                                                                                                                      | List[[models.QueryParamInclude](../../models/queryparaminclude.md)]                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>- custom_fields: Include employees' custom fields<br/> |
-| `retries`                                                                                                                                                                                                                                                                                      | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                             | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                            |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesHeaderXGustoAPIVersion]](../../models/getv1employeesheaderxgustoapiversion.md)                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `include`                                                                                                                                                                                                                    | List[[models.QueryParamInclude](../../models/queryparaminclude.md)]                                                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Include the requested attribute(s) in each employee response. Multiple options are comma separated.                                                                                                                          |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
 
@@ -229,9 +398,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## update
 
@@ -239,10 +409,11 @@ Update an employee.
 
 scope: `employees:write`
 
-
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees" method="put" path="/v1/employees/{employee_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -251,7 +422,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update(employee_id="<id>", version="f0c06d303aab1fd909b40d4a1ad409ac", first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233")
+    res = gusto.employees.update(employee_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, first_name="Weezy", middle_initial="F", last_name="Baby", email="tunechi@cashmoneyrecords.com", date_of_birth="1991-01-31", ssn="824920233", work_email="new.partner.work@example.com")
 
     # Handle response
     print(res)
@@ -260,20 +431,21 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                         | Type                                                                                                                                                              | Required                                                                                                                                                          | Description                                                                                                                                                       |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                     | *str*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                | The UUID of the employee                                                                                                                                          |
-| `version`                                                                                                                                                         | *str*                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field. |
-| `x_gusto_api_version`                                                                                                                                             | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `first_name`                                                                                                                                                      | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `middle_initial`                                                                                                                                                  | *OptionalNullable[str]*                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `last_name`                                                                                                                                                       | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `email`                                                                                                                                                           | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `date_of_birth`                                                                                                                                                   | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `ssn`                                                                                                                                                             | *Optional[str]*                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `preferred_first_name`                                                                                                                                            | *OptionalNullable[str]*                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                | N/A                                                                                                                                                               |
-| `two_percent_shareholder`                                                                                                                                         | *Optional[bool]*                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                | Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.                                |
-| `retries`                                                                                                                                                         | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                  | :heavy_minus_sign:                                                                                                                                                | Configuration to override the default retry behavior of the client.                                                                                               |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1EmployeesHeaderXGustoAPIVersion]](../../models/putv1employeesheaderxgustoapiversion.md)                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `first_name`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | Weezy                                                                                                                                                                                                                        |
+| `middle_initial`                                                                                                                                                                                                             | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | F                                                                                                                                                                                                                            |
+| `last_name`                                                                                                                                                                                                                  | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | Baby                                                                                                                                                                                                                         |
+| `email`                                                                                                                                                                                                                      | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | tunechi@cashmoneyrecords.com                                                                                                                                                                                                 |
+| `date_of_birth`                                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | 1991-01-31                                                                                                                                                                                                                   |
+| `ssn`                                                                                                                                                                                                                        | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | 824920233                                                                                                                                                                                                                    |
+| `preferred_first_name`                                                                                                                                                                                                       | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `two_percent_shareholder`                                                                                                                                                                                                    | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type.                                                                                           |                                                                                                                                                                                                                              |
+| `work_email`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          | new.partner.work@example.com                                                                                                                                                                                                 |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
 
@@ -281,10 +453,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404, 409, 422                              | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 409, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete
 
@@ -294,10 +467,11 @@ if you need to terminate an onboarded employee.
 
 scope: `employees:manage`
 
-
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employee" method="delete" path="/v1/employees/{employee_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -306,7 +480,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.employees.delete(employee_id="<id>")
+    gusto.employees.delete(employee_id="<id>", x_gusto_api_version=gusto_embedded.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -322,9 +496,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_custom_fields
 
@@ -334,7 +510,9 @@ scope: `employees:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-custom_fields" method="get" path="/v1/employees/{employee_id}/custom_fields" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -343,7 +521,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_custom_fields(employee_id="<id>")
+    res = gusto.employees.get_custom_fields(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -373,12 +551,18 @@ with Gusto(
 ## update_onboarding_documents_config
 
 Indicate whether to include the Form I-9 for an employee during the onboarding process.
+If included, the employee will be prompted to complete Form I-9 as part of their onboarding.
+
+## Related guides
+- [Employee onboarding](doc:employee-onboarding)
 
 scope: `employees:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-onboarding_documents_config" method="put" path="/v1/employees/{employee_id}/onboarding_documents_config" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -387,7 +571,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update_onboarding_documents_config(employee_id="<id>", i9_document=True)
+    res = gusto.employees.update_onboarding_documents_config(employee_id="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, i9_document=False)
 
     # Handle response
     print(res)
@@ -396,12 +580,12 @@ with Gusto(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `i9_document`                                                                                                                                                                                                                | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether to include Form I-9 for an employee during onboarding                                                                                                                                                                |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     | 7b1d0df1-6403-4a06-8768-c1dd7d24d27a                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion]](../../models/putv1employeesemployeeidonboardingdocumentsconfigheaderxgustoapiversion.md)                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `i9_document`                                                                                                                                                                                                                | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether to include Form I-9 for this employee during onboarding.<br/>When true, the employee will be prompted to complete Form I-9 as part of their onboarding.<br/>                                                         |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
 
@@ -409,16 +593,16 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## get_onboarding_status
 
 # Description
 Retrieves an employee's onboarding status. The data returned helps inform the required onboarding steps and respective completion status.
 
-scope: `employees:read`
 
 ## onboarding_status
 
@@ -455,10 +639,13 @@ scope: `employees:read`
 | `file_new_hire_report` | File a new hire report for this employee. |
 | `admin_review` | Admin reviews & confirms employee details (only required for Employee self-onboarding) |
 
+scope: `employees:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-onboarding_status" method="get" path="/v1/employees/{employee_id}/onboarding_status" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -467,7 +654,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_onboarding_status(employee_id="<id>")
+    res = gusto.employees.get_onboarding_status(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -488,15 +675,14 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## update_onboarding_status
 
-        scope: `employees:manage`
-
-        Updates an employee's onboarding status.
+Updates an employee's onboarding status.
         Below is a list of valid onboarding status changes depending on the intended action to be performed on behalf of the employee.
 
         | Action | current onboarding_status | new onboarding_status |
@@ -507,9 +693,11 @@ with Gusto(
         | Review an employee's self-onboarded info | `self_onboarding_completed_by_employee` | `self_onboarding_awaiting_admin_review` |
         | Finish an employee's onboarding | `admin_onboarding_incomplete` or `self_onboarding_awaiting_admin_review` | `onboarding_completed` |
 
+scope: `employees:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-employees-employee_id-onboarding_status" method="put" path="/v1/employees/{employee_id}/onboarding_status" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -520,7 +708,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.update_onboarding_status(employee_id="<id>", onboarding_status=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus.ADMIN_ONBOARDING_INCOMPLETE)
+    res = gusto.employees.update_onboarding_status(employee_id="<id>", onboarding_status=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus.ADMIN_ONBOARDING_INCOMPLETE, x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -542,10 +730,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 404, 422                                   | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_time_off_activities
 
@@ -555,7 +744,9 @@ scope: `employee_time_off_activities:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-version-employees-time_off_activities" method="get" path="/v1/employees/{employee_uuid}/time_off_activities" example="example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -564,7 +755,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>")
+    res = gusto.employees.get_time_off_activities(employee_uuid="<id>", time_off_type="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

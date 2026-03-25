@@ -46,7 +46,7 @@ class PutV1GarnishmentsGarnishmentIDRequestBodyTypedDict(TypedDict):
     r"""The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\"."""
     deduct_as_percentage: NotRequired[bool]
     r"""Whether the amount should be treated as a percentage to be deducted per pay period."""
-    total_amount: NotRequired[str]
+    total_amount: NotRequired[Nullable[str]]
     r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
     child_support: NotRequired[Nullable[GarnishmentChildSupportTypedDict]]
     r"""Additional child support order details"""
@@ -83,7 +83,7 @@ class PutV1GarnishmentsGarnishmentIDRequestBody(BaseModel):
     deduct_as_percentage: Optional[bool] = False
     r"""Whether the amount should be treated as a percentage to be deducted per pay period."""
 
-    total_amount: Optional[str] = None
+    total_amount: OptionalNullable[str] = UNSET
     r"""A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum."""
 
     child_support: OptionalNullable[GarnishmentChildSupport] = UNSET
@@ -91,48 +91,52 @@ class PutV1GarnishmentsGarnishmentIDRequestBody(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "active",
-            "amount",
-            "description",
-            "court_ordered",
-            "times",
-            "recurring",
-            "annual_maximum",
-            "pay_period_maximum",
-            "deduct_as_percentage",
-            "total_amount",
-            "child_support",
-        ]
-        nullable_fields = [
-            "times",
-            "annual_maximum",
-            "pay_period_maximum",
-            "child_support",
-        ]
-        null_default_fields = ["times", "annual_maximum", "pay_period_maximum"]
-
+        optional_fields = set(
+            [
+                "active",
+                "amount",
+                "description",
+                "court_ordered",
+                "times",
+                "recurring",
+                "annual_maximum",
+                "pay_period_maximum",
+                "deduct_as_percentage",
+                "total_amount",
+                "child_support",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "times",
+                "annual_maximum",
+                "pay_period_maximum",
+                "total_amount",
+                "child_support",
+            ]
+        )
+        null_default_fields = set(["times", "annual_maximum", "pay_period_maximum"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (
+                    self.__pydantic_fields_set__.intersection({n})
+                    or k in null_default_fields
+                )  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -160,5 +164,21 @@ class PutV1GarnishmentsGarnishmentIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

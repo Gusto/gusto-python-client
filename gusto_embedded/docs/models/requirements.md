@@ -1,5 +1,13 @@
 # Requirements
 
+## Example Usage
+
+```python
+from gusto_embedded.models import Requirements
+
+value = Requirements.ADD_ADDRESSES
+```
+
 
 ## Values
 

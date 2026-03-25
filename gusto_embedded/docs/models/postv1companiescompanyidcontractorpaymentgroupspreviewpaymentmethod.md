@@ -1,5 +1,13 @@
 # PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewPaymentMethod
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewPaymentMethod
+
+value = PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewPaymentMethod.DIRECT_DEPOSIT
+```
+
 
 ## Values
 

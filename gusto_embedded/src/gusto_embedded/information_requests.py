@@ -5,7 +5,8 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
-from typing import List, Mapping, Optional
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
+from typing import Any, List, Mapping, Optional, Union
 
 
 class InformationRequests(BaseSDK):
@@ -15,7 +16,7 @@ class InformationRequests(BaseSDK):
         company_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -62,6 +63,7 @@ class InformationRequests(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -75,9 +77,10 @@ class InformationRequests(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-information-requests",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -88,26 +91,15 @@ class InformationRequests(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.InformationRequest])
+            return unmarshal_json_response(List[models.InformationRequest], http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_information_requests_async(
         self,
@@ -115,7 +107,7 @@ class InformationRequests(BaseSDK):
         company_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -162,6 +154,7 @@ class InformationRequests(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -175,9 +168,10 @@ class InformationRequests(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-information-requests",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -188,23 +182,240 @@ class InformationRequests(BaseSDK):
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.InformationRequest])
+            return unmarshal_json_response(List[models.InformationRequest], http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
+        raise models.APIError("Unexpected response received", http_res)
+
+    def submit(
+        self,
+        *,
+        information_request_uuid: str,
+        required_questions: Optional[
+            Union[
+                List[models.SubmitInformationRequestRequiredQuestions],
+                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+            ]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.InformationRequest:
+        r"""Submit information request responses
+
+        Submit responses to an information request.
+        Supports both text responses and file uploads (multipart/form-data).
+        Maximum file size: 120MB.
+
+        scope: `information_requests:write`
+
+        :param information_request_uuid: The UUID of the information request
+        :param required_questions:
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.SubmitInformationRequestRequest(
+            information_request_uuid=information_request_uuid,
+            request_body=models.SubmitInformationRequestRequestBody(
+                required_questions=utils.get_pydantic_model(
+                    required_questions,
+                    Optional[List[models.SubmitInformationRequestRequiredQuestions]],
+                ),
+            ),
         )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/information_requests/{information_request_uuid}/submit",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.SubmitInformationRequestRequestBody,
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="submit-information-request",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.InformationRequest, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def submit_async(
+        self,
+        *,
+        information_request_uuid: str,
+        required_questions: Optional[
+            Union[
+                List[models.SubmitInformationRequestRequiredQuestions],
+                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+            ]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.InformationRequest:
+        r"""Submit information request responses
+
+        Submit responses to an information request.
+        Supports both text responses and file uploads (multipart/form-data).
+        Maximum file size: 120MB.
+
+        scope: `information_requests:write`
+
+        :param information_request_uuid: The UUID of the information request
+        :param required_questions:
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.SubmitInformationRequestRequest(
+            information_request_uuid=information_request_uuid,
+            request_body=models.SubmitInformationRequestRequestBody(
+                required_questions=utils.get_pydantic_model(
+                    required_questions,
+                    Optional[List[models.SubmitInformationRequestRequiredQuestions]],
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/information_requests/{information_request_uuid}/submit",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body,
+                False,
+                False,
+                "json",
+                models.SubmitInformationRequestRequestBody,
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="submit-information-request",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            error_status_codes=["404", "422", "4XX", "5XX"],
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.InformationRequest, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)

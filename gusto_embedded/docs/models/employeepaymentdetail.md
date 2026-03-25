@@ -1,0 +1,13 @@
+# EmployeePaymentDetail
+
+Represents an employee's payment method details.
+
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `employee_uuid`                                                                                        | *Optional[str]*                                                                                        | :heavy_minus_sign:                                                                                     | The UUID of the employee.                                                                              |
+| `payment_method`                                                                                       | [Optional[models.EmployeePaymentDetailPaymentMethod]](../models/employeepaymentdetailpaymentmethod.md) | :heavy_minus_sign:                                                                                     | The type of payment method.                                                                            |
+| `split_by`                                                                                             | [OptionalNullable[models.SplitBy]](../models/splitby.md)                                               | :heavy_minus_sign:                                                                                     | How the payment is split. This field is applicable when `payment_method` is "Direct Deposit".          |
+| `splits`                                                                                               | List[[models.DetailedPaymentAccountSplit](../models/detailedpaymentaccountsplit.md)]                   | :heavy_minus_sign:                                                                                     | An array of payment splits. This field is applicable when `payment_method` is "Direct Deposit".        |

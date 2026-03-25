@@ -1,5 +1,4 @@
 # CompanyAttachments
-(*company_attachments*)
 
 ## Overview
 
@@ -17,7 +16,9 @@ scope: `company_attachments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-attachment" method="get" path="/v1/companies/{company_id}/attachments/{company_attachment_uuid}" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -26,7 +27,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_attachments.get_details(company_id="<id>", company_attachment_uuid="<id>")
+    res = gusto.company_attachments.get_details(company_id="<id>", company_attachment_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -60,7 +61,9 @@ scope: `company_attachments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-attachments" method="get" path="/v1/companies/{company_id}/attachments" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +72,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_attachments.get_list(company_id="<id>")
+    res = gusto.company_attachments.get_list(company_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -102,8 +105,9 @@ allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
 
 scope: `company_attachments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-attachment" method="post" path="/v1/companies/{company_id}/attachments" example="Basic" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -117,7 +121,73 @@ with Gusto(
     res = gusto.company_attachments.create(company_id="<id>", document={
         "file_name": "example.file",
         "content": open("example.file", "rb"),
-    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE)
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-companies-attachment" method="post" path="/v1/companies/{company_id}/attachments" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.company_attachments.create(company_id="<id>", document={
+        "file_name": "example.file",
+        "content": open("example.file", "rb"),
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-companies-attachment" method="post" path="/v1/companies/{company_id}/attachments" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.company_attachments.create(company_id="<id>", document={
+        "file_name": "example.file",
+        "content": open("example.file", "rb"),
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-companies-attachment" method="post" path="/v1/companies/{company_id}/attachments" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.company_attachments.create(company_id="<id>", document={
+        "file_name": "example.file",
+        "content": open("example.file", "rb"),
+    }, category=gusto_embedded.PostV1CompaniesAttachmentCategory.GEP_NOTICE, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -140,7 +210,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

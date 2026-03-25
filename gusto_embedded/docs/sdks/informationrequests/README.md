@@ -1,11 +1,11 @@
 # InformationRequests
-(*information_requests*)
 
 ## Overview
 
 ### Available Operations
 
 * [get_information_requests](#get_information_requests) - Get all information requests for a company
+* [submit](#submit) - Submit information request responses
 
 ## get_information_requests
 
@@ -15,7 +15,9 @@ scope: `information_requests:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-information-requests" method="get" path="/v1/companies/{company_uuid}/information_requests" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -24,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.information_requests.get_information_requests(company_uuid="<id>")
+    res = gusto.information_requests.get_information_requests(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -48,3 +50,85 @@ with Gusto(
 | Error Type      | Status Code     | Content Type    |
 | --------------- | --------------- | --------------- |
 | models.APIError | 4XX, 5XX        | \*/\*           |
+
+## submit
+
+Submit responses to an information request.
+Supports both text responses and file uploads (multipart/form-data).
+Maximum file size: 120MB.
+
+scope: `information_requests:write`
+
+### Example Usage: Basic
+
+<!-- UsageSnippet language="python" operationID="submit-information-request" method="put" path="/v1/information_requests/{information_request_uuid}/submit" example="Basic" -->
+```python
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.information_requests.submit(information_request_uuid="<id>")
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="submit-information-request" method="put" path="/v1/information_requests/{information_request_uuid}/submit" example="Nested" -->
+```python
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.information_requests.submit(information_request_uuid="<id>")
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="submit-information-request" method="put" path="/v1/information_requests/{information_request_uuid}/submit" example="Resource" -->
+```python
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.information_requests.submit(information_request_uuid="<id>")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                           | Type                                                                                                                | Required                                                                                                            | Description                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `information_request_uuid`                                                                                          | *str*                                                                                                               | :heavy_check_mark:                                                                                                  | The UUID of the information request                                                                                 |
+| `required_questions`                                                                                                | List[[models.SubmitInformationRequestRequiredQuestions](../../models/submitinformationrequestrequiredquestions.md)] | :heavy_minus_sign:                                                                                                  | N/A                                                                                                                 |
+| `retries`                                                                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                    | :heavy_minus_sign:                                                                                                  | Configuration to override the default retry behavior of the client.                                                 |
+
+### Response
+
+**[models.InformationRequest](../../models/informationrequest.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

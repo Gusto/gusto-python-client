@@ -14,7 +14,7 @@ from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class WageType(str, Enum):
+class ContractorWageType(str, Enum):
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     FIXED = "Fixed"
@@ -56,31 +56,28 @@ class Address(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["street_1", "street_2", "city", "state", "zip", "country"]
-        nullable_fields = ["street_2"]
-        null_default_fields = []
-
+        optional_fields = set(
+            ["street_1", "street_2", "city", "state", "zip", "country"]
+        )
+        nullable_fields = set(["street_2"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -98,10 +95,52 @@ class ContractorOnboardingStatus(str, Enum):
 
 
 class ContractorPaymentMethod(str, Enum):
-    r"""The contractor's payment method."""
-
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
+
+
+class UpcomingEmploymentTypedDict(TypedDict):
+    r"""The contractor's upcoming employment details, if a rehire is scheduled."""
+
+    start_date: NotRequired[str]
+    r"""The start date of the upcoming employment."""
+    setup_status: NotRequired[Nullable[str]]
+    r"""The setup status of the upcoming employment."""
+
+
+class UpcomingEmployment(BaseModel):
+    r"""The contractor's upcoming employment details, if a rehire is scheduled."""
+
+    start_date: Optional[str] = None
+    r"""The start date of the upcoming employment."""
+
+    setup_status: OptionalNullable[str] = UNSET
+    r"""The setup status of the upcoming employment."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["start_date", "setup_status"])
+        nullable_fields = set(["setup_status"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class ContractorTypedDict(TypedDict):
@@ -111,7 +150,7 @@ class ContractorTypedDict(TypedDict):
     r"""The UUID of the contractor in Gusto."""
     company_uuid: NotRequired[str]
     r"""The UUID of the company the contractor is employed by."""
-    wage_type: NotRequired[WageType]
+    wage_type: NotRequired[ContractorWageType]
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
     is_active: NotRequired[bool]
     r"""The status of the contractor with the company."""
@@ -139,7 +178,7 @@ class ContractorTypedDict(TypedDict):
     r"""The contractor’s home address."""
     hourly_rate: NotRequired[str]
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
-    file_new_hire_report: NotRequired[bool]
+    file_new_hire_report: NotRequired[Nullable[bool]]
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
     work_state: NotRequired[Nullable[str]]
     r"""State where the contractor will be conducting the majority of their work for the company.
@@ -155,6 +194,18 @@ class ContractorTypedDict(TypedDict):
     r"""Indicates whether the contractor has an SSN in Gusto."""
     department_uuid: NotRequired[Nullable[str]]
     r"""The UUID of the department the contractor is under"""
+    department: NotRequired[Nullable[str]]
+    r"""The contractor's department in the company."""
+    department_title: NotRequired[Nullable[str]]
+    r"""The title of the contractor's department."""
+    dismissal_date: NotRequired[Nullable[str]]
+    r"""The contractor's dismissal date."""
+    upcoming_employment: NotRequired[Nullable[UpcomingEmploymentTypedDict]]
+    r"""The contractor's upcoming employment details, if a rehire is scheduled."""
+    dismissal_cancellation_eligible: NotRequired[bool]
+    r"""Whether the contractor's pending dismissal can be cancelled."""
+    rehire_cancellation_eligible: NotRequired[bool]
+    r"""Whether the contractor's pending rehire can be cancelled."""
 
 
 class Contractor(BaseModel):
@@ -166,7 +217,7 @@ class Contractor(BaseModel):
     company_uuid: Optional[str] = None
     r"""The UUID of the company the contractor is employed by."""
 
-    wage_type: Optional[WageType] = None
+    wage_type: Optional[ContractorWageType] = None
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     is_active: Optional[bool] = True
@@ -208,7 +259,7 @@ class Contractor(BaseModel):
     hourly_rate: Optional[str] = None
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
 
-    file_new_hire_report: Optional[bool] = False
+    file_new_hire_report: OptionalNullable[bool] = UNSET
     r"""The boolean flag indicating whether Gusto will file a new hire report for the contractor"""
 
     work_state: OptionalNullable[str] = UNSET
@@ -231,67 +282,95 @@ class Contractor(BaseModel):
     department_uuid: OptionalNullable[str] = UNSET
     r"""The UUID of the department the contractor is under"""
 
+    department: OptionalNullable[str] = UNSET
+    r"""The contractor's department in the company."""
+
+    department_title: OptionalNullable[str] = UNSET
+    r"""The title of the contractor's department."""
+
+    dismissal_date: OptionalNullable[str] = UNSET
+    r"""The contractor's dismissal date."""
+
+    upcoming_employment: OptionalNullable[UpcomingEmployment] = UNSET
+    r"""The contractor's upcoming employment details, if a rehire is scheduled."""
+
+    dismissal_cancellation_eligible: Optional[bool] = None
+    r"""Whether the contractor's pending dismissal can be cancelled."""
+
+    rehire_cancellation_eligible: Optional[bool] = None
+    r"""Whether the contractor's pending rehire can be cancelled."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "company_uuid",
-            "wage_type",
-            "is_active",
-            "version",
-            "type",
-            "first_name",
-            "last_name",
-            "middle_initial",
-            "business_name",
-            "ein",
-            "has_ein",
-            "email",
-            "start_date",
-            "address",
-            "hourly_rate",
-            "file_new_hire_report",
-            "work_state",
-            "onboarded",
-            "onboarding_status",
-            "payment_method",
-            "has_ssn",
-            "department_uuid",
-        ]
-        nullable_fields = [
-            "first_name",
-            "last_name",
-            "middle_initial",
-            "business_name",
-            "ein",
-            "has_ein",
-            "email",
-            "address",
-            "work_state",
-            "payment_method",
-            "department_uuid",
-        ]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "company_uuid",
+                "wage_type",
+                "is_active",
+                "version",
+                "type",
+                "first_name",
+                "last_name",
+                "middle_initial",
+                "business_name",
+                "ein",
+                "has_ein",
+                "email",
+                "start_date",
+                "address",
+                "hourly_rate",
+                "file_new_hire_report",
+                "work_state",
+                "onboarded",
+                "onboarding_status",
+                "payment_method",
+                "has_ssn",
+                "department_uuid",
+                "department",
+                "department_title",
+                "dismissal_date",
+                "upcoming_employment",
+                "dismissal_cancellation_eligible",
+                "rehire_cancellation_eligible",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "first_name",
+                "last_name",
+                "middle_initial",
+                "business_name",
+                "ein",
+                "has_ein",
+                "email",
+                "address",
+                "file_new_hire_report",
+                "work_state",
+                "payment_method",
+                "department_uuid",
+                "department",
+                "department_title",
+                "dismissal_date",
+                "upcoming_employment",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

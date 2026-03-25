@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -10,6 +10,7 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -27,6 +28,22 @@ class PutV1ContractorDocumentSignFields(BaseModel):
 
     value: Optional[str] = None
     r"""Value for the field"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["key", "value"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class PutV1ContractorDocumentSignRequestBodyTypedDict(TypedDict):
@@ -48,10 +65,26 @@ class PutV1ContractorDocumentSignRequestBody(BaseModel):
     signed_by_ip_address: Optional[str] = None
     r"""The IP address of the signatory who signed the form. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["signed_by_ip_address"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class PutV1ContractorDocumentSignRequestTypedDict(TypedDict):
     document_uuid: str
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
     request_body: PutV1ContractorDocumentSignRequestBodyTypedDict
     x_gusto_client_ip: NotRequired[str]
     r"""Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter."""
@@ -63,7 +96,7 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
     document_uuid: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""The ID or UUID of the document"""
+    r"""The UUID of the document"""
 
     request_body: Annotated[
         PutV1ContractorDocumentSignRequestBody,
@@ -81,5 +114,21 @@ class PutV1ContractorDocumentSignRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["x-gusto-client-ip", "X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

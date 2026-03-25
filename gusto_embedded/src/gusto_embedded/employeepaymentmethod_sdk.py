@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -19,7 +20,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         account_type: models.PostV1EmployeesEmployeeIDBankAccountsAccountType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -85,6 +86,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PostV1EmployeesEmployeeIDBankAccountsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -98,9 +100,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -112,31 +115,20 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeBankAccount)
+            return unmarshal_json_response(models.EmployeeBankAccount, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -148,7 +140,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         account_type: models.PostV1EmployeesEmployeeIDBankAccountsAccountType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -214,6 +206,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PostV1EmployeesEmployeeIDBankAccountsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -227,9 +220,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -241,31 +235,20 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeBankAccount)
+            return unmarshal_json_response(models.EmployeeBankAccount, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete_bank_account(
         self,
@@ -274,7 +257,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         bank_account_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -321,9 +304,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -337,39 +321,35 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-bank_accounts-bank_account_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_bank_account_async(
         self,
@@ -378,7 +358,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         bank_account_uuid: str,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -425,9 +405,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -441,39 +422,35 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-bank_accounts-bank_account_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            error_status_codes=["404", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update_bank_account(
         self,
@@ -486,7 +463,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         account_type: models.PutV1EmployeesEmployeeIDBankAccountsAccountType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -552,6 +529,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDBankAccountsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -565,9 +543,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -579,31 +558,20 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeBankAccount)
+            return unmarshal_json_response(models.EmployeeBankAccount, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_bank_account_async(
         self,
@@ -616,7 +584,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
         account_type: models.PutV1EmployeesEmployeeIDBankAccountsAccountType,
         x_gusto_api_version: Optional[
             models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -682,6 +650,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDBankAccountsRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -695,9 +664,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -709,49 +679,36 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeBankAccount)
+            return unmarshal_json_response(models.EmployeeBankAccount, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, ["404", "4XX"], "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeePaymentMethod:
-        r"""Get an employee's payment method
+        r"""Get payment method for an employee
 
-        Fetches an employee's payment method. An employee payment method
-        describes how the payment should be split across the employee's associated
-        bank accounts.
+        Returns the payment method for an employee (e.g. Check or Direct Deposit with split configuration).
 
         scope: `employee_payment_methods:read`
 
@@ -773,8 +730,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDPaymentMethodRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -790,6 +747,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -803,9 +761,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-payment_method",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -815,45 +774,38 @@ class EmployeePaymentMethodSDK(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeePaymentMethod)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.EmployeePaymentMethod, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeePaymentMethod:
-        r"""Get an employee's payment method
+        r"""Get payment method for an employee
 
-        Fetches an employee's payment method. An employee payment method
-        describes how the payment should be split across the employee's associated
-        bank accounts.
+        Returns the payment method for an employee (e.g. Check or Direct Deposit with split configuration).
 
         scope: `employee_payment_methods:read`
 
@@ -875,8 +827,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDPaymentMethodRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -892,6 +844,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -905,9 +858,10 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-payment_method",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
@@ -917,27 +871,22 @@ class EmployeePaymentMethodSDK(BaseSDK):
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeePaymentMethod)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.EmployeePaymentMethod, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
@@ -946,30 +895,34 @@ class EmployeePaymentMethodSDK(BaseSDK):
         version: str,
         type_: models.PutV1EmployeesEmployeeIDPaymentMethodType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        split_by: Optional[models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy] = None,
-        splits: Optional[
-            Union[List[models.Splits], List[models.SplitsTypedDict]]
-        ] = None,
+            models.PutV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        split_by: OptionalNullable[
+            models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy
+        ] = UNSET,
+        splits: OptionalNullable[
+            Union[
+                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
+                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
+            ]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeePaymentMethod:
-        r"""Update an employee's payment method
+        r"""Update payment method for an employee
 
-        Updates an employee's payment method. Note that creating an employee
-        bank account will also update the employee's payment method.
+        Updates the payment method for an employee. Can set to Check or Direct Deposit with split configuration.
 
         scope: `employee_payment_methods:write`
 
         :param employee_id: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
-        :param type: The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required.
+        :param type: The payment method type. If type is Check, split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param split_by: Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder.
-        :param splits:
+        :param split_by: How the payment will be split. If Percentage, split amounts must add up to exactly 100. If Amount, values are in cents and the last split amount must be null to capture the remainder.
+        :param splits: Array of payment splits. Required when type is Direct Deposit.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -986,13 +939,18 @@ class EmployeePaymentMethodSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDPaymentMethodRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             request_body=models.PutV1EmployeesEmployeeIDPaymentMethodRequestBody(
                 version=version,
                 type=type_,
                 split_by=split_by,
-                splits=utils.get_pydantic_model(splits, Optional[List[models.Splits]]),
+                splits=utils.get_pydantic_model(
+                    splits,
+                    OptionalNullable[
+                        List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits]
+                    ],
+                ),
             ),
         )
 
@@ -1016,6 +974,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDPaymentMethodRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -1029,45 +988,40 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-payment_method",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "409", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeePaymentMethod)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            return unmarshal_json_response(models.EmployeePaymentMethod, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
@@ -1076,30 +1030,34 @@ class EmployeePaymentMethodSDK(BaseSDK):
         version: str,
         type_: models.PutV1EmployeesEmployeeIDPaymentMethodType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        split_by: Optional[models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy] = None,
-        splits: Optional[
-            Union[List[models.Splits], List[models.SplitsTypedDict]]
-        ] = None,
+            models.PutV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDPaymentMethodHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        split_by: OptionalNullable[
+            models.PutV1EmployeesEmployeeIDPaymentMethodSplitBy
+        ] = UNSET,
+        splits: OptionalNullable[
+            Union[
+                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
+                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
+            ]
+        ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeePaymentMethod:
-        r"""Update an employee's payment method
+        r"""Update payment method for an employee
 
-        Updates an employee's payment method. Note that creating an employee
-        bank account will also update the employee's payment method.
+        Updates the payment method for an employee. Can set to Check or Direct Deposit with split configuration.
 
         scope: `employee_payment_methods:write`
 
         :param employee_id: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
-        :param type: The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required.
+        :param type: The payment method type. If type is Check, split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param split_by: Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder.
-        :param splits:
+        :param split_by: How the payment will be split. If Percentage, split amounts must add up to exactly 100. If Amount, values are in cents and the last split amount must be null to capture the remainder.
+        :param splits: Array of payment splits. Required when type is Direct Deposit.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1116,13 +1074,18 @@ class EmployeePaymentMethodSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDPaymentMethodRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             request_body=models.PutV1EmployeesEmployeeIDPaymentMethodRequestBody(
                 version=version,
                 type=type_,
                 split_by=split_by,
-                splits=utils.get_pydantic_model(splits, Optional[List[models.Splits]]),
+                splits=utils.get_pydantic_model(
+                    splits,
+                    OptionalNullable[
+                        List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits]
+                    ],
+                ),
             ),
         )
 
@@ -1146,6 +1109,7 @@ class EmployeePaymentMethodSDK(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDPaymentMethodRequestBody,
             ),
+            allow_empty_value=None,
             timeout_ms=timeout_ms,
         )
 
@@ -1159,42 +1123,37 @@ class EmployeePaymentMethodSDK(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-payment_method",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            error_status_codes=["404", "409", "422", "4XX", "5XX"],
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeePaymentMethod)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            return unmarshal_json_response(models.EmployeePaymentMethod, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

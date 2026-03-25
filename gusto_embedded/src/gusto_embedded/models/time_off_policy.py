@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -16,10 +23,31 @@ class PolicyType(str, Enum):
 
 class TimeOffPolicyEmployeesTypedDict(TypedDict):
     uuid: NotRequired[str]
+    balance: NotRequired[str]
+    r"""The time off balance for the employee"""
 
 
 class TimeOffPolicyEmployees(BaseModel):
     uuid: Optional[str] = None
+
+    balance: Optional[str] = None
+    r"""The time off balance for the employee"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["uuid", "balance"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class TimeOffPolicyTypedDict(TypedDict):
@@ -39,24 +67,26 @@ class TimeOffPolicyTypedDict(TypedDict):
     r"""boolean representing if a policy is active or not"""
     employees: List[TimeOffPolicyEmployeesTypedDict]
     r"""List of employee UUIDs under a time off policy"""
-    accrual_rate: NotRequired[str]
+    accrual_rate: NotRequired[Nullable[str]]
     r"""The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\"."""
-    accrual_rate_unit: NotRequired[str]
+    accrual_rate_unit: NotRequired[Nullable[str]]
     r"""The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\"."""
     paid_out_on_termination: NotRequired[bool]
     r"""Boolean representing if an employee's accrued time off hours will be paid out on termination"""
-    accrual_waiting_period_days: NotRequired[int]
+    accrual_waiting_period_days: NotRequired[Nullable[int]]
     r"""Number of days before an employee on the policy will begin accruing time off hours"""
-    carryover_limit_hours: NotRequired[str]
+    carryover_limit_hours: NotRequired[Nullable[str]]
     r"""The max number of hours an employee can carryover from one year to the next"""
-    max_accrual_hours_per_year: NotRequired[str]
+    max_accrual_hours_per_year: NotRequired[Nullable[str]]
     r"""The max number of hours an employee can accrue in a year"""
-    max_hours: NotRequired[str]
+    max_hours: NotRequired[Nullable[str]]
     r"""The max number of hours an employee can accrue"""
+    policy_reset_date: NotRequired[Nullable[str]]
+    r"""The date the policy resets. Format MM-DD"""
     complete: NotRequired[bool]
     r"""boolean representing if a policy has completed configuration"""
-    version: NotRequired[str]
-    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
+    version: NotRequired[Nullable[str]]
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field. The version will be null if the policy is no longer active."""
 
 
 class TimeOffPolicy(BaseModel):
@@ -83,29 +113,81 @@ class TimeOffPolicy(BaseModel):
     employees: List[TimeOffPolicyEmployees]
     r"""List of employee UUIDs under a time off policy"""
 
-    accrual_rate: Optional[str] = None
+    accrual_rate: OptionalNullable[str] = UNSET
     r"""The rate at which the time off hours will accrue for an employee on the policy. Represented as a float, e.g. \"40.0\"."""
 
-    accrual_rate_unit: Optional[str] = None
+    accrual_rate_unit: OptionalNullable[str] = UNSET
     r"""The number of hours an employee has to work or be paid for to accrue the number of hours set in the accrual rate. Only used for hourly policies (per_hour_paid, per_hour_paid_no_overtime, per_hour_work, per_hour_worked_no_overtime). Represented as a float, e.g. \"40.0\"."""
 
     paid_out_on_termination: Optional[bool] = None
     r"""Boolean representing if an employee's accrued time off hours will be paid out on termination"""
 
-    accrual_waiting_period_days: Optional[int] = None
+    accrual_waiting_period_days: OptionalNullable[int] = UNSET
     r"""Number of days before an employee on the policy will begin accruing time off hours"""
 
-    carryover_limit_hours: Optional[str] = None
+    carryover_limit_hours: OptionalNullable[str] = UNSET
     r"""The max number of hours an employee can carryover from one year to the next"""
 
-    max_accrual_hours_per_year: Optional[str] = None
+    max_accrual_hours_per_year: OptionalNullable[str] = UNSET
     r"""The max number of hours an employee can accrue in a year"""
 
-    max_hours: Optional[str] = None
+    max_hours: OptionalNullable[str] = UNSET
     r"""The max number of hours an employee can accrue"""
+
+    policy_reset_date: OptionalNullable[str] = UNSET
+    r"""The date the policy resets. Format MM-DD"""
 
     complete: Optional[bool] = None
     r"""boolean representing if a policy has completed configuration"""
 
-    version: Optional[str] = None
-    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
+    version: OptionalNullable[str] = UNSET
+    r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field. The version will be null if the policy is no longer active."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "accrual_rate",
+                "accrual_rate_unit",
+                "paid_out_on_termination",
+                "accrual_waiting_period_days",
+                "carryover_limit_hours",
+                "max_accrual_hours_per_year",
+                "max_hours",
+                "policy_reset_date",
+                "complete",
+                "version",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "accrual_rate",
+                "accrual_rate_unit",
+                "accrual_waiting_period_days",
+                "carryover_limit_hours",
+                "max_accrual_hours_per_year",
+                "max_hours",
+                "policy_reset_date",
+                "version",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

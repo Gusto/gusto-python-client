@@ -7,6 +7,14 @@ their limit.
 
 `Joint Filing or Single` or `Married and Filing Separately`: Applicable to Dependent Care FSA benefit.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PutV1EmployeeBenefitsEmployeeBenefitIDLimitOption
+
+value = PutV1EmployeeBenefitsEmployeeBenefitIDLimitOption.FAMILY
+```
+
 
 ## Values
 

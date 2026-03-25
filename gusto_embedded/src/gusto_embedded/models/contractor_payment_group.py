@@ -5,6 +5,14 @@ from .contractor_payment_for_group import (
     ContractorPaymentForGroup,
     ContractorPaymentForGroupTypedDict,
 )
+from .payroll_credit_blocker_type import (
+    PayrollCreditBlockerType,
+    PayrollCreditBlockerTypeTypedDict,
+)
+from .payroll_submission_blocker_type import (
+    PayrollSubmissionBlockerType,
+    PayrollSubmissionBlockerTypeTypedDict,
+)
 from enum import Enum
 from gusto_embedded.types import (
     BaseModel,
@@ -34,6 +42,8 @@ class ContractorPaymentGroupTotalsTypedDict(TypedDict):
     r"""The total wage amount for the group of contractor payments."""
     reimbursement_amount: NotRequired[str]
     r"""The total reimbursement amount for the group of contractor payments."""
+    check_amount: NotRequired[str]
+    r"""The total check amount for the group of contractor payments."""
 
 
 class ContractorPaymentGroupTotals(BaseModel):
@@ -48,6 +58,33 @@ class ContractorPaymentGroupTotals(BaseModel):
 
     reimbursement_amount: Optional[str] = None
     r"""The total reimbursement amount for the group of contractor payments."""
+
+    check_amount: Optional[str] = None
+    r"""The total check amount for the group of contractor payments."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "amount",
+                "debit_amount",
+                "wage_amount",
+                "reimbursement_amount",
+                "check_amount",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ContractorPaymentGroupTypedDict(TypedDict):
@@ -65,6 +102,12 @@ class ContractorPaymentGroupTypedDict(TypedDict):
     r"""The status of the contractor payment group.  Will be `Funded` if all payments that should be funded (i.e. have `Direct Deposit` for payment method) are funded.  A group can have status `Funded` while having associated payments that have status `Unfunded`, i.e. payment with `Check` payment method."""
     creation_token: NotRequired[Nullable[str]]
     r"""Token used to make contractor payment group creation idempotent.  Will error if attempting to create a group with a duplicate token."""
+    partner_owned_disbursement: NotRequired[Nullable[bool]]
+    r"""Whether the disbursement is partner owned."""
+    submission_blockers: NotRequired[List[PayrollSubmissionBlockerTypeTypedDict]]
+    r"""List of submission blockers for the contractor payment group."""
+    credit_blockers: NotRequired[List[PayrollCreditBlockerTypeTypedDict]]
+    r"""List of credit blockers for the contractor payment group."""
     totals: NotRequired[ContractorPaymentGroupTotalsTypedDict]
     contractor_payments: NotRequired[List[ContractorPaymentForGroupTypedDict]]
 
@@ -90,45 +133,54 @@ class ContractorPaymentGroup(BaseModel):
     creation_token: OptionalNullable[str] = UNSET
     r"""Token used to make contractor payment group creation idempotent.  Will error if attempting to create a group with a duplicate token."""
 
+    partner_owned_disbursement: OptionalNullable[bool] = UNSET
+    r"""Whether the disbursement is partner owned."""
+
+    submission_blockers: Optional[List[PayrollSubmissionBlockerType]] = None
+    r"""List of submission blockers for the contractor payment group."""
+
+    credit_blockers: Optional[List[PayrollCreditBlockerType]] = None
+    r"""List of credit blockers for the contractor payment group."""
+
     totals: Optional[ContractorPaymentGroupTotals] = None
 
     contractor_payments: Optional[List[ContractorPaymentForGroup]] = None
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "uuid",
-            "company_uuid",
-            "check_date",
-            "debit_date",
-            "status",
-            "creation_token",
-            "totals",
-            "contractor_payments",
-        ]
-        nullable_fields = ["creation_token"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "uuid",
+                "company_uuid",
+                "check_date",
+                "debit_date",
+                "status",
+                "creation_token",
+                "partner_owned_disbursement",
+                "submission_blockers",
+                "credit_blockers",
+                "totals",
+                "contractor_payments",
+            ]
+        )
+        nullable_fields = set(["creation_token", "partner_owned_disbursement"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

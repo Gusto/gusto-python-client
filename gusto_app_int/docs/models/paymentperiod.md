@@ -2,6 +2,14 @@
 
 How often the agency collects the withholding amount. e.g. $500 monthly -> `Monthly`.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PaymentPeriod
+
+value = PaymentPeriod.EVERY_WEEK
+```
+
 
 ## Values
 

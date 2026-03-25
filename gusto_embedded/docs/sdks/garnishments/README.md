@@ -1,5 +1,4 @@
 # Garnishments
-(*garnishments*)
 
 ## Overview
 
@@ -17,9 +16,11 @@ Garnishments, or employee deductions, are fixed amounts or percentages deducted 
 
 scope: `garnishments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -28,7 +29,88 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, description="Back taxes")
+    res = gusto.garnishments.create(employee_id="<id>", amount="<value>", court_ordered=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Child-Support-Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" example="Child-Support-Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.create(employee_id="<id>", amount="40", court_ordered=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, garnishment_type=gusto_embedded.PostV1EmployeesEmployeeIDGarnishmentsGarnishmentType.CHILD_SUPPORT, times=None, recurring=True, annual_maximum=None, pay_period_maximum="500.00", deduct_as_percentage=True, child_support={
+        "state": "FL",
+        "payment_period": gusto_embedded.PaymentPeriod.MONTHLY,
+        "fips_code": "12011",
+        "case_number": "CS1234",
+    })
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.create(employee_id="<id>", amount="150.00", court_ordered=True, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, description="Back taxes", times=None, recurring=True, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.create(employee_id="<id>", amount="<value>", court_ordered=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-garnishments" method="post" path="/v1/employees/{employee_id}/garnishments" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.create(employee_id="<id>", amount="<value>", court_ordered=False, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -51,7 +133,7 @@ with Gusto(
 | `annual_maximum`                                                                                                                                                                                                             | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".                                                                                                                   |
 | `pay_period_maximum`                                                                                                                                                                                                         | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".                                                                                                               |
 | `deduct_as_percentage`                                                                                                                                                                                                       | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the amount should be treated as a percentage to be deducted per pay period.                                                                                                                                          |
-| `total_amount`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
+| `total_amount`                                                                                                                                                                                                               | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
 | `child_support`                                                                                                                                                                                                              | [OptionalNullable[models.GarnishmentChildSupport]](../../models/garnishmentchildsupport.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Additional child support order details                                                                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -61,10 +143,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -74,7 +156,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-garnishments" method="get" path="/v1/employees/{employee_id}/garnishments" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -83,7 +167,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.list(employee_id="<id>")
+    res = gusto.garnishments.list(employee_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -116,9 +200,11 @@ Garnishments, or employee deductions, are fixed amounts or percentages deducted 
 
 scope: `garnishments:read`
 
-### Example Usage
+### Example Usage: Child-Support-Example
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-garnishment_id" method="get" path="/v1/garnishments/{garnishment_id}" example="Child-Support-Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -127,7 +213,26 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get(garnishment_id="<id>")
+    res = gusto.garnishments.get(garnishment_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-garnishment_id" method="get" path="/v1/garnishments/{garnishment_id}" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.get(garnishment_id="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -158,9 +263,11 @@ Garnishments, or employee deductions, are fixed amounts or percentages deducted 
 
 scope: `garnishments:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -169,7 +276,83 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476")
+    res = gusto.garnishments.update(garnishment_id="<id>", version="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Child-Support-Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" example="Child-Support-Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.update(garnishment_id="<id>", version="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.update(garnishment_id="<id>", version="52b7c567242cb7452e89ba2bc02cb476", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=False, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.update(garnishment_id="<id>", version="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-garnishments-garnishment_id" method="put" path="/v1/garnishments/{garnishment_id}" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.garnishments.update(garnishment_id="<id>", version="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
 
     # Handle response
     print(res)
@@ -192,7 +375,7 @@ with Gusto(
 | `annual_maximum`                                                                                                                                                                                                             | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. "200.00".                                                                                                                   |
 | `pay_period_maximum`                                                                                                                                                                                                         | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. "16.00".                                                                                                               |
 | `deduct_as_percentage`                                                                                                                                                                                                       | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether the amount should be treated as a percentage to be deducted per pay period.                                                                                                                                          |
-| `total_amount`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
+| `total_amount`                                                                                                                                                                                                               | *OptionalNullable[str]*                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | A maximum total deduction for the lifetime of this garnishment. A null value indicates no maximum.                                                                                                                           |
 | `child_support`                                                                                                                                                                                                              | [OptionalNullable[models.GarnishmentChildSupport]](../../models/garnishmentchildsupport.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Additional child support order details                                                                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -202,10 +385,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_child_support_data
 
@@ -215,7 +398,9 @@ scope: `garnishments:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-child_support" method="get" path="/v1/garnishments/child_support" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -224,7 +409,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.garnishments.get_child_support_data()
+    res = gusto.garnishments.get_child_support_data(x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

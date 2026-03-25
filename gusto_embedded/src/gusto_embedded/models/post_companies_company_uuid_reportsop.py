@@ -4,7 +4,13 @@ from __future__ import annotations
 from .versionheader import VersionHeader
 from datetime import date
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -12,6 +18,7 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -113,6 +120,7 @@ class FileType(str, Enum):
 
     CSV = "csv"
     JSON = "json"
+    PDF = "pdf"
 
 
 class PostCompaniesCompanyUUIDReportsPaymentMethod(str, Enum):
@@ -169,7 +177,7 @@ class PostCompaniesCompanyUUIDReportsRequestBodyTypedDict(TypedDict):
     r"""Employee employment type to filter by"""
     employment_status: NotRequired[PostCompaniesCompanyUUIDReportsEmploymentStatus]
     r"""Employee employment status to filter by"""
-    employee_uuids: NotRequired[List[str]]
+    employee_uuids: NotRequired[Nullable[List[str]]]
     r"""Employees to filter by"""
     department_uuids: NotRequired[List[str]]
     r"""Departments to filter by"""
@@ -214,7 +222,7 @@ class PostCompaniesCompanyUUIDReportsRequestBody(BaseModel):
     employment_status: Optional[PostCompaniesCompanyUUIDReportsEmploymentStatus] = None
     r"""Employee employment status to filter by"""
 
-    employee_uuids: Optional[List[str]] = None
+    employee_uuids: OptionalNullable[List[str]] = UNSET
     r"""Employees to filter by"""
 
     department_uuids: Optional[List[str]] = None
@@ -222,6 +230,46 @@ class PostCompaniesCompanyUUIDReportsRequestBody(BaseModel):
 
     work_address_uuids: Optional[List[str]] = None
     r"""Work addresses to filter by"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "custom_name",
+                "with_totals",
+                "start_date",
+                "end_date",
+                "dismissed_start_date",
+                "dismissed_end_date",
+                "payment_method",
+                "employment_type",
+                "employment_status",
+                "employee_uuids",
+                "department_uuids",
+                "work_address_uuids",
+            ]
+        )
+        nullable_fields = set(["employee_uuids"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class PostCompaniesCompanyUUIDReportsRequestTypedDict(TypedDict):
@@ -247,5 +295,21 @@ class PostCompaniesCompanyUUIDReportsRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

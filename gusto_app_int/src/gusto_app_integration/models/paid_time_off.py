@@ -25,21 +25,21 @@ class Name(str, Enum):
 class PaidTimeOffTypedDict(TypedDict):
     r"""The representation of paid time off in Gusto."""
 
-    name: NotRequired[Name]
+    name: NotRequired[Nullable[Name]]
     r"""The name of the paid time off type."""
-    policy_name: NotRequired[str]
+    policy_name: NotRequired[Nullable[str]]
     r"""The name of the time off policy."""
-    policy_uuid: NotRequired[str]
+    policy_uuid: NotRequired[Nullable[str]]
     r"""The UUID of the time off policy."""
-    accrual_unit: NotRequired[str]
+    accrual_unit: NotRequired[Nullable[str]]
     r"""The unit the PTO type is accrued in."""
-    accrual_rate: NotRequired[str]
+    accrual_rate: NotRequired[Nullable[str]]
     r"""The number of accrual units accrued per accrual period."""
-    accrual_method: NotRequired[str]
+    accrual_method: NotRequired[Nullable[str]]
     r"""The accrual method of the time off policy"""
-    accrual_period: NotRequired[str]
+    accrual_period: NotRequired[Nullable[str]]
     r"""The frequency at which the PTO type is accrued."""
-    accrual_balance: NotRequired[str]
+    accrual_balance: NotRequired[Nullable[str]]
     r"""The number of accrual units accrued."""
     maximum_accrual_balance: NotRequired[Nullable[str]]
     r"""The maximum number of accrual units allowed. A null value signifies no maximum."""
@@ -50,28 +50,28 @@ class PaidTimeOffTypedDict(TypedDict):
 class PaidTimeOff(BaseModel):
     r"""The representation of paid time off in Gusto."""
 
-    name: Optional[Name] = None
+    name: OptionalNullable[Name] = UNSET
     r"""The name of the paid time off type."""
 
-    policy_name: Optional[str] = None
+    policy_name: OptionalNullable[str] = UNSET
     r"""The name of the time off policy."""
 
-    policy_uuid: Optional[str] = None
+    policy_uuid: OptionalNullable[str] = UNSET
     r"""The UUID of the time off policy."""
 
-    accrual_unit: Optional[str] = None
+    accrual_unit: OptionalNullable[str] = UNSET
     r"""The unit the PTO type is accrued in."""
 
-    accrual_rate: Optional[str] = None
+    accrual_rate: OptionalNullable[str] = UNSET
     r"""The number of accrual units accrued per accrual period."""
 
-    accrual_method: Optional[str] = None
+    accrual_method: OptionalNullable[str] = UNSET
     r"""The accrual method of the time off policy"""
 
-    accrual_period: Optional[str] = None
+    accrual_period: OptionalNullable[str] = UNSET
     r"""The frequency at which the PTO type is accrued."""
 
-    accrual_balance: Optional[str] = None
+    accrual_balance: OptionalNullable[str] = UNSET
     r"""The number of accrual units accrued."""
 
     maximum_accrual_balance: OptionalNullable[str] = UNSET
@@ -82,41 +82,50 @@ class PaidTimeOff(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "name",
-            "policy_name",
-            "policy_uuid",
-            "accrual_unit",
-            "accrual_rate",
-            "accrual_method",
-            "accrual_period",
-            "accrual_balance",
-            "maximum_accrual_balance",
-            "paid_at_termination",
-        ]
-        nullable_fields = ["maximum_accrual_balance"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "name",
+                "policy_name",
+                "policy_uuid",
+                "accrual_unit",
+                "accrual_rate",
+                "accrual_method",
+                "accrual_period",
+                "accrual_balance",
+                "maximum_accrual_balance",
+                "paid_at_termination",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "name",
+                "policy_name",
+                "policy_uuid",
+                "accrual_unit",
+                "accrual_rate",
+                "accrual_method",
+                "accrual_period",
+                "accrual_balance",
+                "maximum_accrual_balance",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

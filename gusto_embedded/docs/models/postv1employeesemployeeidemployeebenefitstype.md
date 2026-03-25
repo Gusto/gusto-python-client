@@ -8,6 +8,14 @@ The company contribution scheme.
 
 `tiered`: The size of the company contribution corresponds to the size of the employee deduction relative to a tiered matching scheme.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PostV1EmployeesEmployeeIDEmployeeBenefitsType
+
+value = PostV1EmployeesEmployeeIDEmployeeBenefitsType.TIERED
+```
+
 
 ## Values
 

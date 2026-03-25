@@ -1,0 +1,18 @@
+# CompanyLocationRequest
+
+Request body for creating a company location (company address).
+
+
+## Fields
+
+| Field                                                        | Type                                                         | Required                                                     | Description                                                  | Example                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `street_1`                                                   | *str*                                                        | :heavy_check_mark:                                           | Street address line 1.                                       | 300 3rd Street                                               |
+| `street_2`                                                   | *OptionalNullable[str]*                                      | :heavy_minus_sign:                                           | Street address line 2.                                       | Apartment 318                                                |
+| `city`                                                       | *str*                                                        | :heavy_check_mark:                                           | City.                                                        | San Francisco                                                |
+| `state`                                                      | *str*                                                        | :heavy_check_mark:                                           | State code (e.g. CA). Must be a valid two-letter state code. | CA                                                           |
+| `zip`                                                        | *str*                                                        | :heavy_check_mark:                                           | ZIP code. Must be a valid US zip (e.g. 12345 or 12345-6789). | 94107                                                        |
+| `country`                                                    | *Optional[str]*                                              | :heavy_minus_sign:                                           | Country code. Defaults to USA.                               | USA                                                          |
+| `phone_number`                                               | *str*                                                        | :heavy_check_mark:                                           | Phone number. Must be 10 digits.                             | 8009360383                                                   |
+| `mailing_address`                                            | *Optional[bool]*                                             | :heavy_minus_sign:                                           | Specify if this location is the company's mailing address.   |                                                              |
+| `filing_address`                                             | *Optional[bool]*                                             | :heavy_minus_sign:                                           | Specify if this location is the company's filing address.    |                                                              |

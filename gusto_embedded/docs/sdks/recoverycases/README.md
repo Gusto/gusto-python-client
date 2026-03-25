@@ -1,5 +1,4 @@
 # RecoveryCases
-(*recovery_cases*)
 
 ## Overview
 
@@ -16,7 +15,9 @@ scope: `recovery_cases:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-recovery-cases" method="get" path="/v1/companies/{company_uuid}/recovery_cases" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -25,7 +26,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.recovery_cases.get(company_uuid="<id>")
+    res = gusto.recovery_cases.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -62,7 +63,9 @@ scope: `recovery_cases:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="redebit-recovery-case" method="put" path="/v1/recovery_cases/{recovery_case_uuid}/redebit" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -71,7 +74,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.recovery_cases.redebit(recovery_case_uuid="<id>")
+    gusto.recovery_cases.redebit(recovery_case_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -87,7 +90,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

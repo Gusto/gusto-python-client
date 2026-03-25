@@ -1,5 +1,4 @@
 # Invoices
-(*invoices*)
 
 ## Overview
 
@@ -19,6 +18,7 @@ scope: `invoices:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-invoices-invoice-period" method="get" path="/v1/invoices/{invoice_period}" example="example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -29,7 +29,7 @@ with Gusto() as gusto:
 
     res = gusto.invoices.get(security=gusto_embedded.GetInvoicesInvoicePeriodSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), invoice_period="2020-01")
+    ), invoice_period="2020-01", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -54,7 +54,7 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

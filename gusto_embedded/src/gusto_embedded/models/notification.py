@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, Nullable, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -15,9 +16,23 @@ class NotificationStatus(str, Enum):
     EXPIRED = "expired"
 
 
+class NotificationEntityType(str, Enum):
+    r"""The type of entity being described."""
+
+    BANK_ACCOUNT = "BankAccount"
+    CONTRACTOR = "Contractor"
+    CONTRACTOR_PAYMENT = "ContractorPayment"
+    EMPLOYEE = "Employee"
+    PAYROLL = "Payroll"
+    PAY_SCHEDULE = "PaySchedule"
+    RECOVERY_CASE = "RecoveryCase"
+    SIGNATORY = "Signatory"
+    WIRE_IN_REQUEST = "Wire In Request"
+
+
 class ResourcesTypedDict(TypedDict):
-    entity_type: str
-    r"""The type of entity being described, could be “Contractor”, “Employee”, “BankAccount”, “Payroll”, “ContractorPayment”, “RecoveryCase”, or “Signatory”"""
+    entity_type: NotificationEntityType
+    r"""The type of entity being described."""
     entity_uuid: str
     r"""Unique identifier of the entity"""
     reference_type: NotRequired[str]
@@ -27,8 +42,8 @@ class ResourcesTypedDict(TypedDict):
 
 
 class Resources(BaseModel):
-    entity_type: str
-    r"""The type of entity being described, could be “Contractor”, “Employee”, “BankAccount”, “Payroll”, “ContractorPayment”, “RecoveryCase”, or “Signatory”"""
+    entity_type: NotificationEntityType
+    r"""The type of entity being described."""
 
     entity_uuid: str
     r"""Unique identifier of the entity"""
@@ -39,71 +54,112 @@ class Resources(BaseModel):
     reference_uuid: Optional[str] = None
     r"""Optional. Unique identifier of the reference."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["reference_type", "reference_uuid"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class NotificationTypedDict(TypedDict):
-    r"""Representation of a notification"""
+    r"""Example response"""
 
     uuid: str
     r"""Unique identifier of a notification."""
-    company_uuid: NotRequired[str]
+    company_uuid: str
     r"""Unique identifier of the company to which the notification belongs."""
-    title: NotRequired[str]
+    title: str
     r"""The title of the notification. This highlights the actionable component of the notification."""
-    message: NotRequired[str]
+    message: str
     r"""The message of the notification. This provides additional context for the user and recommends a specific action to resolve the notification."""
-    status: NotRequired[NotificationStatus]
+    status: NotificationStatus
     r"""Represents the notification's status as managed by our system. It is updated based on observable system events and internal business logic, and does not reflect resolution steps taken outside our system. This field is read-only and cannot be modified via the API."""
-    category: NotRequired[str]
+    category: str
     r"""The notification's category."""
-    actionable: NotRequired[bool]
+    actionable: bool
     r"""Indicates whether a notification requires action or not. If false, the notification provides critical information only."""
-    can_block_payroll: NotRequired[bool]
+    can_block_payroll: bool
     r"""Indicates whether a notification may block ability to run payroll. If true, we suggest that these notifications are prioritized to your end users."""
-    published_at: NotRequired[str]
+    published_at: str
     r"""Timestamp of when the notification was published."""
-    due_at: NotRequired[str]
+    due_at: Nullable[str]
     r"""Timestamp of when the notification is due. If the notification has no due date, this field will be null."""
+    resources: List[ResourcesTypedDict]
+    r"""An array of entities relevant to the notification"""
     template_variables: NotRequired[Dict[str, str]]
     r"""An object containing template variables used to render the notification. The structure of this object depends on the notification category. Each category defines a fixed set of variable names (keys), which are always present. The values of these variables can vary depending on the specific notification instance."""
-    resources: NotRequired[List[ResourcesTypedDict]]
-    r"""An array of entities relevant to the notification"""
 
 
 class Notification(BaseModel):
-    r"""Representation of a notification"""
+    r"""Example response"""
 
     uuid: str
     r"""Unique identifier of a notification."""
 
-    company_uuid: Optional[str] = None
+    company_uuid: str
     r"""Unique identifier of the company to which the notification belongs."""
 
-    title: Optional[str] = None
+    title: str
     r"""The title of the notification. This highlights the actionable component of the notification."""
 
-    message: Optional[str] = None
+    message: str
     r"""The message of the notification. This provides additional context for the user and recommends a specific action to resolve the notification."""
 
-    status: Optional[NotificationStatus] = None
+    status: NotificationStatus
     r"""Represents the notification's status as managed by our system. It is updated based on observable system events and internal business logic, and does not reflect resolution steps taken outside our system. This field is read-only and cannot be modified via the API."""
 
-    category: Optional[str] = None
+    category: str
     r"""The notification's category."""
 
-    actionable: Optional[bool] = None
+    actionable: bool
     r"""Indicates whether a notification requires action or not. If false, the notification provides critical information only."""
 
-    can_block_payroll: Optional[bool] = None
+    can_block_payroll: bool
     r"""Indicates whether a notification may block ability to run payroll. If true, we suggest that these notifications are prioritized to your end users."""
 
-    published_at: Optional[str] = None
+    published_at: str
     r"""Timestamp of when the notification was published."""
 
-    due_at: Optional[str] = None
+    due_at: Nullable[str]
     r"""Timestamp of when the notification is due. If the notification has no due date, this field will be null."""
+
+    resources: List[Resources]
+    r"""An array of entities relevant to the notification"""
 
     template_variables: Optional[Dict[str, str]] = None
     r"""An object containing template variables used to render the notification. The structure of this object depends on the notification category. Each category defines a fixed set of variable names (keys), which are always present. The values of these variables can vary depending on the specific notification instance."""
 
-    resources: Optional[List[Resources]] = None
-    r"""An array of entities relevant to the notification"""
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["template_variables"])
+        nullable_fields = set(["due_at"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

@@ -1,5 +1,4 @@
 # EmployeeBenefits
-(*employee_benefits*)
 
 ## Overview
 
@@ -12,16 +11,24 @@
 * [delete](#delete) - Delete an employee benefit
 * [get_ytd_benefit_amounts_from_different_company](#get_ytd_benefit_amounts_from_different_company) - Get year-to-date benefit amounts from a different company
 * [create_ytd_benefit_amounts_from_different_company](#create_ytd_benefit_amounts_from_different_company) - Create year-to-date benefit amounts from a different company
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses](#get_v1_employees_employee_uuid_section603_high_earner_statuses) - Get all Section 603 high earner statuses for an employee
+* [post_v1_employees_employee_uuid_section603_high_earner_statuses](#post_v1_employees_employee_uuid_section603_high_earner_statuses) - Create a Section 603 high earner status
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](#get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Get a Section 603 high earner status for a specific year
+* [patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](#patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Update a Section 603 high earner status
 
 ## create
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only create employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" example="Basic" -->
 ```python
+from datetime import date
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
@@ -30,10 +37,86 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", contribution={
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="0.00", deduct_as_percentage=False, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" example="Example" -->
+```python
+from datetime import date
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="f68abb42-431e-4392-bc3f-2795627e00f3", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="100.00", deduct_as_percentage=False, contribution={
         "type": gusto_app_integration.PostV1EmployeesEmployeeIDEmployeeBenefitsType.AMOUNT,
         "value": "100.00",
-    })
+    }, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" example="Nested" -->
+```python
+from datetime import date
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="0.00", deduct_as_percentage=False, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" example="Resource" -->
+```python
+from datetime import date
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="0.00", deduct_as_percentage=False, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Tiered example
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-employee_benefits" method="post" path="/v1/employees/{employee_id}/employee_benefits" example="Tiered example" -->
+```python
+from datetime import date
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.create(employee_id="<id>", company_benefit_uuid="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, employee_deduction="0.00", deduct_as_percentage=False, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
 
     # Handle response
     print(res)
@@ -61,6 +144,8 @@ with GustoAppIntegration(
 | `deduction_reduces_taxable_income`                                                                                                                                                                                                   | [OptionalNullable[models.PostV1EmployeesEmployeeIDEmployeeBenefitsDeductionReducesTaxableIncome]](../../models/postv1employeesemployeeidemployeebenefitsdeductionreducestaxableincome.md)                                            | :heavy_minus_sign:                                                                                                                                                                                                                   | Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not "unset", coverage amount and coverage salary multiplier are ignored.                              |
 | `company_contribution`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>The amount to be paid, per pay period, by the company.                                              |
 | `contribute_as_percentage`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>Whether the company contribution amount should be treated as a percentage to be deducted from each payroll. |
+| `effective_date`                                                                                                                                                                                                                     | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will start. If not provided, the benefit will be effective from 1970-01-01 (unix epoch).                                                                                                               |
+| `expiration_date`                                                                                                                                                                                                                    | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will expire. A null value indicates the benefit will not expire.                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                            | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | Configuration to override the default retry behavior of the client.                                                                                                                                                                  |
 
 ### Response
@@ -86,7 +171,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-employee_benefits" method="get" path="/v1/employees/{employee_id}/employee_benefits" example="Example" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -94,7 +181,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get_all(employee_id="<id>")
+    res = gai_client.employee_benefits.get_all(employee_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -108,6 +195,7 @@ with GustoAppIntegration(
 | `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
+| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1EmployeesEmployeeIDEmployeeBenefitsQueryParamInclude]](../../models/getv1employeesemployeeidemployeebenefitsqueryparaminclude.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.                                                                                          |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
@@ -129,9 +217,11 @@ Benefits containing PHI are only visible to applications with the `employee_bene
 
 scope: `employee_benefits:read`
 
-### Example Usage
+### Example Usage: Example
 
+<!-- UsageSnippet language="python" operationID="get-v1-employee_benefits-employee_benefit_id" method="get" path="/v1/employee_benefits/{employee_benefit_id}" example="Example" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -139,7 +229,25 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get(employee_benefit_id="<id>")
+    res = gai_client.employee_benefits.get(employee_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Tiered example
+
+<!-- UsageSnippet language="python" operationID="get-v1-employee_benefits-employee_benefit_id" method="get" path="/v1/employee_benefits/{employee_benefit_id}" example="Tiered example" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.get(employee_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -166,13 +274,17 @@ with GustoAppIntegration(
 
 ## update
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only update employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" example="Basic" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -180,7 +292,79 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq")
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="0.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" example="Example" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="09j3d29jqdpj92109j9j2d90dq", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="250.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" example="Nested" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="0.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" example="Resource" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="0.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Tiered example
+
+<!-- UsageSnippet language="python" operationID="put-v1-employee_benefits-employee_benefit_id" method="put" path="/v1/employee_benefits/{employee_benefit_id}" example="Tiered example" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.update(employee_benefit_id="<id>", version="<value>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, employee_deduction="0.00", elective=False, catch_up=False, deduction_reduces_taxable_income=gusto_app_integration.PutV1EmployeeBenefitsEmployeeBenefitIDDeductionReducesTaxableIncome.UNSET, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
 
     # Handle response
     print(res)
@@ -198,6 +382,8 @@ with GustoAppIntegration(
 | `employee_deduction`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | The amount to be deducted, per pay period, from the employee's pay.                                                                                                                                                                  |
 | `deduct_as_percentage`                                                                                                                                                                                                               | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll.                                                                                                                            |
 | `employee_deduction_annual_maximum`                                                                                                                                                                                                  | *OptionalNullable[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                   | The maximum employee deduction amount per year. A null value signifies no limit.                                                                                                                                                     |
+| `effective_date`                                                                                                                                                                                                                     | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will start.                                                                                                                                                                                            |
+| `expiration_date`                                                                                                                                                                                                                    | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will expire. A null value indicates the benefit will not expire.                                                                                                                                       |
 | `contribution`                                                                                                                                                                                                                       | [Optional[models.PutV1EmployeeBenefitsEmployeeBenefitIDContribution]](../../models/putv1employeebenefitsemployeebenefitidcontribution.md)                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                   | An object representing the type and value of the company contribution.                                                                                                                                                               |
 | `elective`                                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | Whether the company contribution is elective (aka "matching"). For `tiered`, `elective_amount`, and `elective_percentage` contribution types this is ignored and assumed to be `true`.                                               |
 | `company_contribution_annual_maximum`                                                                                                                                                                                                | *OptionalNullable[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                   | The maximum company contribution amount per year. A null value signifies no limit.                                                                                                                                                   |
@@ -223,13 +409,17 @@ with GustoAppIntegration(
 
 ## delete
 
-Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee’s enrollment.
+Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
+
+When the application has the `employee_benefits:write:benefit_type_limited` data scope, the application can only delete employee benefits for benefit types that are permitted for the application.
 
 scope: `employee_benefits:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-employee_benefits-employee_benefit_id" method="delete" path="/v1/employee_benefits/{employee_benefit_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -237,7 +427,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_benefits.delete(employee_benefit_id="<id>")
+    gai_client.employee_benefits.delete(employee_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -253,9 +443,10 @@ with GustoAppIntegration(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_ytd_benefit_amounts_from_different_company
 
@@ -268,7 +459,9 @@ scope: `employee_benefits:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-employee-ytd-benefit-amounts-from-different-company" method="get" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" example="Example" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -276,7 +469,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024)
+    res = gai_client.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=2024, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -310,9 +503,11 @@ This endpoint only supports passing outside contributions for 401(k) benefits.
 
 scope: `employee_benefits:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-employee-ytd-benefit-amounts-from-different-company" method="post" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" example="Basic" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -320,7 +515,41 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=5621.31)
+    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
+
+    # Use the SDK ...
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-employee-ytd-benefit-amounts-from-different-company" method="post" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" example="Nested" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
+
+    # Use the SDK ...
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-employee-ytd-benefit-amounts-from-different-company" method="post" path="/v1/employees/{employee_id}/ytd_benefit_amounts_from_different_company" example="Resource" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    gai_client.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", tax_year=1828.56, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
 
     # Use the SDK ...
 
@@ -342,5 +571,201 @@ with GustoAppIntegration(
 
 | Error Type                            | Status Code                           | Content Type                          |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_employees_employee_uuid_section603_high_earner_statuses
+
+Get all Section 603 high earner statuses for an employee across all years.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_uuid-section603_high_earner_statuses" method="get" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", x_gusto_api_version=gusto_app_integration.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeuuidsection603highearnerstatusesheaderxgustoapiversion.md)                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.EmployeeSection603HighEarnerStatus]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## post_v1_employees_employee_uuid_section603_high_earner_statuses
+
+Create a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_uuid-section603_high_earner_statuses" method="post" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.post_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", effective_year=2026, is_high_earner=True, x_gusto_api_version=gusto_app_integration.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The year for which this high earner status applies                                                                                                                                                                           | 2026                                                                                                                                                                                                                         |
+| `is_high_earner`                                                                                                                                                                                                             | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | Whether the employee is classified as a high earner for Section 603 purposes                                                                                                                                                 | true                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion]](../../models/postv1employeesemployeeuuidsection603highearnerstatusesheaderxgustoapiversion.md)                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 409, 422                              | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year
+
+Get a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_uuid-section603_high_earner_statuses-effective_year" method="get" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses/{effective_year}" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=857230, x_gusto_api_version=gusto_app_integration.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The effective year for the Section 603 status                                                                                                                                                                                |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearheaderxgustoapiversion.md)      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year
+
+Update a Section 603 high earner status for an employee for a specific year.
+
+Section 603 of the SECURE 2.0 Act applies to employees aged 50 or older whose prior-year FICA wages exceed the IRS threshold.
+These employees are classified as high earners, and their catch-up contributions to pre-tax retirement benefits must be designated as post-tax contributions.
+
+scope: `employee_benefits:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="patch-v1-employees-employee_uuid-section603_high_earner_statuses-effective_year" method="patch" path="/v1/employees/{employee_uuid}/section603_high_earner_statuses/{effective_year}" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.employee_benefits.patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=152322, is_high_earner=True, x_gusto_api_version=gusto_app_integration.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `effective_year`                                                                                                                                                                                                             | *int*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The effective year for the Section 603 status                                                                                                                                                                                |                                                                                                                                                                                                                              |
+| `is_high_earner`                                                                                                                                                                                                             | *bool*                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                           | Whether the employee is classified as a high earner for Section 603 purposes                                                                                                                                                 | true                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion]](../../models/patchv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearheaderxgustoapiversion.md)  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.EmployeeSection603HighEarnerStatus](../../models/employeesection603highearnerstatus.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

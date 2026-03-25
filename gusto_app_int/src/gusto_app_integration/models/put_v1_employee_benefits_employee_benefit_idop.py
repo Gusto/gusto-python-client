@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
+from datetime import date
 from enum import Enum
 from gusto_app_integration.types import (
     BaseModel,
@@ -43,11 +44,15 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDValue2TypedDict(TypedDict):
     rate: NotRequired[str]
     r"""The percentage of employee deduction within this tier the company contribution will match."""
     threshold: NotRequired[str]
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and rate of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
 
 
@@ -58,12 +63,32 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDValue2(BaseModel):
     r"""The percentage of employee deduction within this tier the company contribution will match."""
 
     threshold: Optional[str] = None
-    r"""The percentage threshold at which this tier ends (inclusive).
+    r"""Specifies the upper limit (inclusive) percentage of the employee contribution that this tier applies to.
 
-    For example, a value of \"5\" means the company contribution will match employee deductions from the previous tier's threshold up to and including 5% of payroll.
+    Use threshold to define each tier's end point, with tiers applied cumulatively from 0% upwards.
 
-    If this is the first tier, a value of \"5\" means the company contribution will match employee deductions from 0% up to and including 5% of payroll.
+    For example:
+
+    If the first tier has a threshold of \"3\", and rate of \"100\", the company will match 100% of employee contributions from 0% up to and including 3% of payroll.
+
+    If the next tier has a threshold of \"5\" and a rate of \"50\", the company will match 50% of contributions from above 3% up to and including 5% of payroll.
     """
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["rate", "threshold"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 PutV1EmployeeBenefitsEmployeeBenefitIDValueTypedDict = TypeAliasType(
@@ -124,6 +149,22 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDContribution(BaseModel):
     For the `tiered` contribution type, an array of tiers.
     """
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["type", "value"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class PutV1EmployeeBenefitsEmployeeBenefitIDLimitOption(str, Enum):
     r"""Some benefits require additional information to determine
@@ -159,6 +200,10 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDRequestBodyTypedDict(TypedDict):
     r"""Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll."""
     employee_deduction_annual_maximum: NotRequired[Nullable[str]]
     r"""The maximum employee deduction amount per year. A null value signifies no limit."""
+    effective_date: NotRequired[date]
+    r"""The date the employee benefit will start."""
+    expiration_date: NotRequired[Nullable[date]]
+    r"""The date the employee benefit will expire. A null value indicates the benefit will not expire."""
     contribution: NotRequired[
         PutV1EmployeeBenefitsEmployeeBenefitIDContributionTypedDict
     ]
@@ -208,6 +253,12 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody(BaseModel):
 
     employee_deduction_annual_maximum: OptionalNullable[str] = UNSET
     r"""The maximum employee deduction amount per year. A null value signifies no limit."""
+
+    effective_date: Optional[date] = None
+    r"""The date the employee benefit will start."""
+
+    expiration_date: OptionalNullable[date] = UNSET
+    r"""The date the employee benefit will expire. A null value indicates the benefit will not expire."""
 
     contribution: Optional[PutV1EmployeeBenefitsEmployeeBenefitIDContribution] = None
     r"""An object representing the type and value of the company contribution."""
@@ -261,52 +312,54 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDRequestBody(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "active",
-            "employee_deduction",
-            "deduct_as_percentage",
-            "employee_deduction_annual_maximum",
-            "contribution",
-            "elective",
-            "company_contribution_annual_maximum",
-            "limit_option",
-            "catch_up",
-            "coverage_amount",
-            "deduction_reduces_taxable_income",
-            "coverage_salary_multiplier",
-            "company_contribution",
-            "contribute_as_percentage",
-        ]
-        nullable_fields = [
-            "employee_deduction_annual_maximum",
-            "company_contribution_annual_maximum",
-            "limit_option",
-            "coverage_amount",
-            "deduction_reduces_taxable_income",
-        ]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "active",
+                "employee_deduction",
+                "deduct_as_percentage",
+                "employee_deduction_annual_maximum",
+                "effective_date",
+                "expiration_date",
+                "contribution",
+                "elective",
+                "company_contribution_annual_maximum",
+                "limit_option",
+                "catch_up",
+                "coverage_amount",
+                "deduction_reduces_taxable_income",
+                "coverage_salary_multiplier",
+                "company_contribution",
+                "contribute_as_percentage",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "employee_deduction_annual_maximum",
+                "expiration_date",
+                "company_contribution_annual_maximum",
+                "limit_option",
+                "coverage_amount",
+                "deduction_reduces_taxable_income",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -334,5 +387,21 @@ class PutV1EmployeeBenefitsEmployeeBenefitIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

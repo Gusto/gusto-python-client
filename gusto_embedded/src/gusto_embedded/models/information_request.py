@@ -2,8 +2,15 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
-from typing import Optional
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
+from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -24,6 +31,51 @@ class InformationRequestStatus(str, Enum):
     APPROVED = "approved"
 
 
+class ResponseType(str, Enum):
+    r"""The type of response to the question"""
+
+    TEXT = "text"
+    DOCUMENT = "document"
+    PERSONA = "persona"
+    RADIO_BUTTON = "radio_button"
+
+
+class RequiredQuestionsTypedDict(TypedDict):
+    question_uuid: NotRequired[str]
+    r"""The UUID of the question"""
+    question_text: NotRequired[str]
+    r"""The text of the question"""
+    response_type: NotRequired[ResponseType]
+    r"""The type of response to the question"""
+
+
+class RequiredQuestions(BaseModel):
+    question_uuid: Optional[str] = None
+    r"""The UUID of the question"""
+
+    question_text: Optional[str] = None
+    r"""The text of the question"""
+
+    response_type: Optional[ResponseType] = None
+    r"""The type of response to the question"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["question_uuid", "question_text", "response_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
 class InformationRequestTypedDict(TypedDict):
     r"""Representation of an information request"""
 
@@ -31,12 +83,14 @@ class InformationRequestTypedDict(TypedDict):
     r"""Unique identifier of an information request"""
     company_uuid: NotRequired[str]
     r"""Unique identifier of the company to which the information requests belongs"""
-    type: NotRequired[InformationRequestType]
+    type: NotRequired[Nullable[InformationRequestType]]
     r"""The type of information request"""
     status: NotRequired[InformationRequestStatus]
     r"""The status of the information request"""
     blocking_payroll: NotRequired[bool]
     r"""If true, this information request is blocking payroll, and may require response or requires review from our Risk Ops team."""
+    required_questions: NotRequired[List[RequiredQuestionsTypedDict]]
+    r"""The list of required questions for the information request"""
 
 
 class InformationRequest(BaseModel):
@@ -48,7 +102,7 @@ class InformationRequest(BaseModel):
     company_uuid: Optional[str] = None
     r"""Unique identifier of the company to which the information requests belongs"""
 
-    type: Optional[InformationRequestType] = None
+    type: OptionalNullable[InformationRequestType] = UNSET
     r"""The type of information request"""
 
     status: Optional[InformationRequestStatus] = None
@@ -56,3 +110,40 @@ class InformationRequest(BaseModel):
 
     blocking_payroll: Optional[bool] = None
     r"""If true, this information request is blocking payroll, and may require response or requires review from our Risk Ops team."""
+
+    required_questions: Optional[List[RequiredQuestions]] = None
+    r"""The list of required questions for the information request"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "uuid",
+                "company_uuid",
+                "type",
+                "status",
+                "blocking_payroll",
+                "required_questions",
+            ]
+        )
+        nullable_fields = set(["type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

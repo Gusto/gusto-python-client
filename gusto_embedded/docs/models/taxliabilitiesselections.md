@@ -1,6 +1,6 @@
 # TaxLiabilitiesSelections
 
-Example response
+The representation of tax liabilities selections.
 
 
 ## Fields

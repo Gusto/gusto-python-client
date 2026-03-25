@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 from .compensation import Compensation, CompensationTypedDict
+from .location import Location, LocationTypedDict
 from gusto_app_integration.types import (
     BaseModel,
     Nullable,
@@ -42,6 +43,10 @@ class JobTypedDict(TypedDict):
     state_wc_class_code: NotRequired[Nullable[str]]
     r"""The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more."""
     compensations: NotRequired[List[CompensationTypedDict]]
+    location_uuid: NotRequired[str]
+    r"""The uuid of the employee's work location."""
+    location: NotRequired[LocationTypedDict]
+    r"""The representation of an address in Gusto."""
 
 
 class Job(BaseModel):
@@ -85,50 +90,56 @@ class Job(BaseModel):
 
     compensations: Optional[List[Compensation]] = None
 
+    location_uuid: Optional[str] = None
+    r"""The uuid of the employee's work location."""
+
+    location: Optional[Location] = None
+    r"""The representation of an address in Gusto."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "version",
-            "employee_uuid",
-            "hire_date",
-            "title",
-            "primary",
-            "rate",
-            "payment_unit",
-            "current_compensation_uuid",
-            "two_percent_shareholder",
-            "state_wc_covered",
-            "state_wc_class_code",
-            "compensations",
-        ]
-        nullable_fields = [
-            "title",
-            "payment_unit",
-            "state_wc_covered",
-            "state_wc_class_code",
-        ]
-        null_default_fields = ["title"]
-
+        optional_fields = set(
+            [
+                "version",
+                "employee_uuid",
+                "hire_date",
+                "title",
+                "primary",
+                "rate",
+                "payment_unit",
+                "current_compensation_uuid",
+                "two_percent_shareholder",
+                "state_wc_covered",
+                "state_wc_class_code",
+                "compensations",
+                "location_uuid",
+                "location",
+            ]
+        )
+        nullable_fields = set(
+            ["title", "payment_unit", "state_wc_covered", "state_wc_class_code"]
+        )
+        null_default_fields = set(["title"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (
+                    self.__pydantic_fields_set__.intersection({n})
+                    or k in null_default_fields
+                )  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

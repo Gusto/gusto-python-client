@@ -1,5 +1,4 @@
 # ContractorPaymentMethods
-(*contractor_payment_methods*)
 
 ## Overview
 
@@ -15,8 +14,9 @@ Note: We currently only support one bank account per contractor. Using this endp
 
 scope: `contractor_payment_methods:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-contractors-contractor_uuid-bank_accounts" method="post" path="/v1/contractors/{contractor_uuid}/bank_accounts" example="Basic" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -27,7 +27,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING)
+    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="<value>", routing_number="<value>", account_number="<value>", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.SAVINGS, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-contractors-contractor_uuid-bank_accounts" method="post" path="/v1/contractors/{contractor_uuid}/bank_accounts" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="BoA Checking Account", routing_number="266905059", account_number="5809431207", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.CHECKING, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-contractors-contractor_uuid-bank_accounts" method="post" path="/v1/contractors/{contractor_uuid}/bank_accounts" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="<value>", routing_number="<value>", account_number="<value>", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.SAVINGS, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-contractors-contractor_uuid-bank_accounts" method="post" path="/v1/contractors/{contractor_uuid}/bank_accounts" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="<value>", routing_number="<value>", account_number="<value>", account_type=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsAccountType.SAVINGS, x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -52,7 +109,7 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

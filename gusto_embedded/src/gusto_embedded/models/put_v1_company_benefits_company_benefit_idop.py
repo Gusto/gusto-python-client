@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from enum import Enum
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -10,8 +17,16 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
+
+
+class PutV1CompanyBenefitsCompanyBenefitIDCatchUpType(str, Enum):
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
+    ELECTIVE = "elective"
+    DEEMED = "deemed"
 
 
 class PutV1CompanyBenefitsCompanyBenefitIDRequestBodyTypedDict(TypedDict):
@@ -21,6 +36,14 @@ class PutV1CompanyBenefitsCompanyBenefitIDRequestBodyTypedDict(TypedDict):
     r"""Whether this benefit is active for employee participation. Company benefits may only be deactivated if no employees are actively participating."""
     description: NotRequired[str]
     r"""The description of the company benefit. For example, a company may offer multiple benefits with an ID of 1 (for Medical Insurance). The description would show something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."""
+    responsible_for_employer_taxes: NotRequired[bool]
+    r"""Whether the employer is subject to pay employer taxes when an employee is on leave. Only applicable to short-term and long-term disability benefits (different from voluntary disability)."""
+    responsible_for_employee_w2: NotRequired[bool]
+    r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to short-term and long-term disability benefits (different from voluntary disability)."""
+    catch_up_type: NotRequired[
+        Nullable[PutV1CompanyBenefitsCompanyBenefitIDCatchUpType]
+    ]
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
 
 
 class PutV1CompanyBenefitsCompanyBenefitIDRequestBody(BaseModel):
@@ -32,6 +55,50 @@ class PutV1CompanyBenefitsCompanyBenefitIDRequestBody(BaseModel):
 
     description: Optional[str] = None
     r"""The description of the company benefit. For example, a company may offer multiple benefits with an ID of 1 (for Medical Insurance). The description would show something more specific like “Kaiser Permanente” or “Blue Cross/ Blue Shield”."""
+
+    responsible_for_employer_taxes: Optional[bool] = None
+    r"""Whether the employer is subject to pay employer taxes when an employee is on leave. Only applicable to short-term and long-term disability benefits (different from voluntary disability)."""
+
+    responsible_for_employee_w2: Optional[bool] = None
+    r"""Whether the employer is subject to file W-2 forms for an employee on leave. Only applicable to short-term and long-term disability benefits (different from voluntary disability)."""
+
+    catch_up_type: OptionalNullable[PutV1CompanyBenefitsCompanyBenefitIDCatchUpType] = (
+        UNSET
+    )
+    r"""The type of catch-up contribution for this benefit, as required by Section 603 of the SECURE 2.0 Act. Only applicable to pre-tax 401(k) and 403(b) benefits."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "active",
+                "description",
+                "responsible_for_employer_taxes",
+                "responsible_for_employee_w2",
+                "catch_up_type",
+            ]
+        )
+        nullable_fields = set(["catch_up_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class PutV1CompanyBenefitsCompanyBenefitIDRequestTypedDict(TypedDict):
@@ -57,5 +124,21 @@ class PutV1CompanyBenefitsCompanyBenefitIDRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -30,19 +37,53 @@ class Earnings(BaseModel):
 
     earning_id: Optional[int] = None
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["amount", "hours", "earning_type", "earning_id"])
+        serialized = handler(self)
+        m = {}
 
-class ExternalPayrollBenefitsTypedDict(TypedDict):
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class BenefitsTypedDict(TypedDict):
     benefit_id: NotRequired[int]
     company_contribution_amount: NotRequired[str]
     employee_deduction_amount: NotRequired[str]
 
 
-class ExternalPayrollBenefits(BaseModel):
+class Benefits(BaseModel):
     benefit_id: Optional[int] = None
 
     company_contribution_amount: Optional[str] = None
 
     employee_deduction_amount: Optional[str] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["benefit_id", "company_contribution_amount", "employee_deduction_amount"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ExternalPayrollTaxesTypedDict(TypedDict):
@@ -55,11 +96,27 @@ class ExternalPayrollTaxes(BaseModel):
 
     amount: Optional[str] = None
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["tax_id", "amount"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class ExternalPayrollItemsTypedDict(TypedDict):
     employee_uuid: NotRequired[str]
     earnings: NotRequired[List[EarningsTypedDict]]
-    benefits: NotRequired[List[ExternalPayrollBenefitsTypedDict]]
+    benefits: NotRequired[List[BenefitsTypedDict]]
     taxes: NotRequired[List[ExternalPayrollTaxesTypedDict]]
 
 
@@ -68,9 +125,25 @@ class ExternalPayrollItems(BaseModel):
 
     earnings: Optional[List[Earnings]] = None
 
-    benefits: Optional[List[ExternalPayrollBenefits]] = None
+    benefits: Optional[List[Benefits]] = None
 
     taxes: Optional[List[ExternalPayrollTaxes]] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["employee_uuid", "earnings", "benefits", "taxes"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ApplicableEarningsTypedDict(TypedDict):
@@ -92,6 +165,24 @@ class ApplicableEarnings(BaseModel):
 
     category: Optional[str] = None
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["earning_type", "earning_id", "name", "input_type", "category"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class ApplicableBenefitsTypedDict(TypedDict):
     id: NotRequired[int]
@@ -105,6 +196,22 @@ class ApplicableBenefits(BaseModel):
     description: Optional[str] = None
 
     active: Optional[bool] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["id", "description", "active"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ApplicableTaxesTypedDict(TypedDict):
@@ -127,6 +234,22 @@ class ApplicableTaxes(BaseModel):
     resident_tax: Optional[bool] = None
     r"""Some taxes may have different rates or reporting requirements depending on if the employee is a resident or non-resident of the tax jurisdiction."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["id", "name", "employer_tax", "resident_tax"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class ExternalPayrollMetadataTypedDict(TypedDict):
     r"""Stores metadata of the external payroll."""
@@ -140,6 +263,22 @@ class ExternalPayrollMetadata(BaseModel):
 
     deletable: Optional[bool] = None
     r"""Determines if the external payroll can be deleted."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["deletable"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ExternalPayrollTypedDict(TypedDict):
@@ -161,7 +300,7 @@ class ExternalPayrollTypedDict(TypedDict):
     r"""External payroll items for employees"""
     applicable_earnings: NotRequired[List[ApplicableEarningsTypedDict]]
     r"""Applicable earnings based on company provisioning."""
-    applicable_benefits: NotRequired[List[ApplicableBenefitsTypedDict]]
+    applicable_benefits: NotRequired[Nullable[List[ApplicableBenefitsTypedDict]]]
     r"""Applicable benefits based on company provisioning."""
     applicable_taxes: NotRequired[List[ApplicableTaxesTypedDict]]
     r"""Applicable taxes based on company provisioning."""
@@ -196,7 +335,7 @@ class ExternalPayroll(BaseModel):
     applicable_earnings: Optional[List[ApplicableEarnings]] = None
     r"""Applicable earnings based on company provisioning."""
 
-    applicable_benefits: Optional[List[ApplicableBenefits]] = None
+    applicable_benefits: OptionalNullable[List[ApplicableBenefits]] = UNSET
     r"""Applicable benefits based on company provisioning."""
 
     applicable_taxes: Optional[List[ApplicableTaxes]] = None
@@ -204,3 +343,41 @@ class ExternalPayroll(BaseModel):
 
     metadata: Optional[ExternalPayrollMetadata] = None
     r"""Stores metadata of the external payroll."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "company_uuid",
+                "check_date",
+                "payment_period_start_date",
+                "payment_period_end_date",
+                "status",
+                "external_payroll_items",
+                "applicable_earnings",
+                "applicable_benefits",
+                "applicable_taxes",
+                "metadata",
+            ]
+        )
+        nullable_fields = set(["applicable_benefits"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

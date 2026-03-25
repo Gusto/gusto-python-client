@@ -1,15 +1,17 @@
 # Authentication
 
-Example response
 
+## Supported Types
 
-## Fields
+### `models.CreateTokenAuthentication`
 
-| Field                                                                                                                                | Type                                                                                                                                 | Required                                                                                                                             | Description                                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `access_token`                                                                                                                       | *Optional[str]*                                                                                                                      | :heavy_minus_sign:                                                                                                                   | A new access token that can be used for subsequent authenticated requests                                                            |
-| `token_type`                                                                                                                         | *Optional[str]*                                                                                                                      | :heavy_minus_sign:                                                                                                                   | The literal string 'bearer'                                                                                                          |
-| `expires_in`                                                                                                                         | *Optional[float]*                                                                                                                    | :heavy_minus_sign:                                                                                                                   | The TTL of this token. After this amount of time, you must hit the refresh token endpoint to continue making authenticated requests. |
-| `refresh_token`                                                                                                                      | *Optional[str]*                                                                                                                      | :heavy_minus_sign:                                                                                                                   | A token that must be passed to the refresh token endpoint to get a new authenticated token.                                          |
-| `created_at`                                                                                                                         | *Optional[str]*                                                                                                                      | :heavy_minus_sign:                                                                                                                   | Datetime for when the new access token is created.                                                                                   |
-| `scope`                                                                                                                              | *Optional[str]*                                                                                                                      | :heavy_minus_sign:                                                                                                                   | All of the scopes for which the access token provides access.                                                                        |
+```python
+value: models.CreateTokenAuthentication = /* values here */
+```
+
+### `models.RefreshTokenAuthentication`
+
+```python
+value: models.RefreshTokenAuthentication = /* values here */
+```
+

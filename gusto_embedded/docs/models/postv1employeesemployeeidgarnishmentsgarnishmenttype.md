@@ -2,6 +2,14 @@
 
 The specific type of garnishment for court ordered garnishments.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PostV1EmployeesEmployeeIDGarnishmentsGarnishmentType
+
+value = PostV1EmployeesEmployeeIDGarnishmentsGarnishmentType.CHILD_SUPPORT
+```
+
 
 ## Values
 

@@ -1,5 +1,4 @@
 # Companies
-(*companies*)
 
 ## Overview
 
@@ -27,8 +26,33 @@ In the response, you will receive an account claim URL. Redirect the user to thi
 
 scope: `accounts:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" example="Basic" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration() as gai_client:
+
+    res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
+        system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+    ), user={
+        "first_name": "Ellis",
+        "last_name": "Jast",
+        "email": "Hazel.Wyman@yahoo.com",
+    }, company={
+        "name": "<value>",
+    }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" example="Example" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -70,7 +94,55 @@ with GustoAppIntegration() as gai_client:
                 "phone": "2345678901",
             },
         ],
-    })
+    }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" example="Nested" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration() as gai_client:
+
+    res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
+        system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+    ), user={
+        "first_name": "Ellis",
+        "last_name": "Jast",
+        "email": "Hazel.Wyman@yahoo.com",
+    }, company={
+        "name": "<value>",
+    }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" example="Resource" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration() as gai_client:
+
+    res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
+        system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+    ), user={
+        "first_name": "Ellis",
+        "last_name": "Jast",
+        "email": "Hazel.Wyman@yahoo.com",
+    }, company={
+        "name": "<value>",
+    }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -100,16 +172,19 @@ with GustoAppIntegration() as gai_client:
 
 ## get
 
-Get a company.         
-The employees:read scope is required to return home_address and non-work locations.         
-The company_admin:read scope is required to return primary_payroll_admin.         
-The signatories:read scope is required to return primary_signatory.         
+Get a company.
+
+The employees:read scope is required to return home_address and non-work locations.
+The company_admin:read scope is required to return primary_payroll_admin.
+The signatories:read scope is required to return primary_signatory.
 
 scope: `companies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies" method="get" path="/v1/companies/{company_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -117,7 +192,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.companies.get(company_id="<id>")
+    res = gai_client.companies.get(company_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1CompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -129,7 +204,7 @@ with GustoAppIntegration(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesHeaderXGustoAPIVersion]](../../models/getv1companiesheaderxgustoapiversion.md)                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -138,9 +213,10 @@ with GustoAppIntegration(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## update
 
@@ -150,7 +226,9 @@ scope: `companies:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-companies" method="put" path="/v1/companies/{company_id}" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -158,7 +236,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.companies.update(company_id="<id>", contractor_only=False)
+    res = gai_client.companies.update(company_id="<id>", contractor_only=True, x_gusto_api_version=gusto_app_integration.PutV1CompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -171,7 +249,7 @@ with GustoAppIntegration(
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `company_id`                                                                                                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                                                                                                      |
 | `contractor_only`                                                                                                                                                                                                                                                                                            | *bool*                                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                                           | Whether the company only supports contractors. Must be updated in order for the company to start supporting W-2 employees. Can only be updated from true to false. Note that updating this value will require additional onboarding steps to be completed in order for the company to support W-2 employees. |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                                 |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesHeaderXGustoAPIVersion]](../../models/putv1companiesheaderxgustoapiversion.md)                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                                 |
 | `retries`                                                                                                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                          |
 
 ### Response
@@ -182,6 +260,7 @@ with GustoAppIntegration(
 
 | Error Type                            | Status Code                           | Content Type                          |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
@@ -193,7 +272,9 @@ scope: `company_admin:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-admins" method="get" path="/v1/companies/{company_id}/admins" example="Example" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -201,7 +282,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.companies.get_admins(company_id="<id>")
+    res = gai_client.companies.get_admins(company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -236,7 +317,9 @@ scope: `companies:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-custom_fields" method="get" path="/v1/companies/{company_id}/custom_fields" example="Example" -->
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -244,7 +327,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.companies.get_custom_fields(company_id="<id>")
+    res = gai_client.companies.get_custom_fields(company_id="<id>", x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

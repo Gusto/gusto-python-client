@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from enum import Enum
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -10,8 +11,17 @@ from gusto_embedded.utils import (
     QueryParamMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
+
+
+class GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude(str, Enum):
+    r"""Available options:
+    - all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.
+    """
+
+    ALL_BENEFITS = "all_benefits"
 
 
 class GetV1CompanyBenefitsCompanyBenefitIDRequestTypedDict(TypedDict):
@@ -19,6 +29,10 @@ class GetV1CompanyBenefitsCompanyBenefitIDRequestTypedDict(TypedDict):
     r"""The UUID of the company benefit"""
     with_employee_benefits: NotRequired[bool]
     r"""Whether to return employee benefits associated with the benefit"""
+    include: NotRequired[GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude]
+    r"""Available options:
+    - all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.
+    """
     x_gusto_api_version: NotRequired[VersionHeader]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
@@ -35,9 +49,35 @@ class GetV1CompanyBenefitsCompanyBenefitIDRequest(BaseModel):
     ] = None
     r"""Whether to return employee benefits associated with the benefit"""
 
+    include: Annotated[
+        Optional[GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Available options:
+    - all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.
+    """
+
     x_gusto_api_version: Annotated[
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["with_employee_benefits", "include", "X-Gusto-API-Version"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

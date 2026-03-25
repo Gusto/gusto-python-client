@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 from .versionheader import VersionHeader
-from gusto_embedded import utils
-from gusto_embedded.types import BaseModel
+from dataclasses import dataclass, field
+from gusto_embedded.models import GustoError
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
     PathParamMetadata,
     RequestMetadata,
 )
+import httpx
 import pydantic
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -44,6 +47,33 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments(BaseMod
     reimbursement: Optional[int] = None
 
     wage: Optional[int] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "bonus",
+                "contractor_uuid",
+                "date",
+                "hourly_rate",
+                "hours",
+                "payment_method",
+                "reimbursement",
+                "wage",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewRequestBodyTypedDict(TypedDict):
@@ -87,22 +117,54 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(BaseModel):
         Optional[VersionHeader],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
 
-class GetCompaniesCompanyUUIDContractorPaymentsPreviewBaseTypedDict(TypedDict):
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class BaseTypedDict(TypedDict):
     type: NotRequired[str]
     message: NotRequired[str]
     full_message: NotRequired[str]
 
 
-class GetCompaniesCompanyUUIDContractorPaymentsPreviewBase(BaseModel):
+class Base(BaseModel):
     type: Optional[str] = None
 
     message: Optional[str] = None
 
     full_message: Optional[str] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["type", "message", "full_message"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class CheckDateTypedDict(TypedDict):
@@ -118,18 +180,48 @@ class CheckDate(BaseModel):
 
     full_message: Optional[str] = None
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["type", "message", "full_message"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewErrorsTypedDict(TypedDict):
-    base: NotRequired[
-        List[GetCompaniesCompanyUUIDContractorPaymentsPreviewBaseTypedDict]
-    ]
+    base: NotRequired[List[BaseTypedDict]]
     check_date: NotRequired[List[CheckDateTypedDict]]
 
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewErrors(BaseModel):
-    base: Optional[List[GetCompaniesCompanyUUIDContractorPaymentsPreviewBase]] = None
+    base: Optional[List[Base]] = None
 
     check_date: Optional[List[CheckDate]] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["base", "check_date"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData(
@@ -138,24 +230,25 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponse
     errors: Optional[GetCompaniesCompanyUUIDContractorPaymentsPreviewErrors] = None
 
 
+@dataclass(unsafe_hash=True)
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody(
-    Exception
+    GustoError
 ):
     r"""Unprocessable Entity (WebDAV)"""
 
-    data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData
+    data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData = field(
+        hash=False
+    )
 
     def __init__(
         self,
         data: GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
+        raw_response: httpx.Response,
+        body: Optional[str] = None,
     ):
-        self.data = data
-
-    def __str__(self) -> str:
-        return utils.marshal_json(
-            self.data,
-            GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
-        )
+        message = body or raw_response.text
+        super().__init__(message, raw_response, body)
+        object.__setattr__(self, "data", data)
 
 
 class GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBodyTypedDict(TypedDict):
@@ -170,3 +263,25 @@ class GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBody(BaseModel):
 
     expected_debit_date: Optional[str] = None
     r"""The calculated debit date. If the payment method is Direct Deposit, the debit date will account for the company's ACH speed. If the payment method is Check, the debit date will be the same as the check date."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["expected_debit_date"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+try:
+    GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments.model_rebuild()
+except NameError:
+    pass

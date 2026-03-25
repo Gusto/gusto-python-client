@@ -2,6 +2,14 @@
 
 The Gusto product tier of the company (not applicable to Embedded partner managed companies).
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import Tier
+
+value = Tier.SIMPLE
+```
+
 
 ## Values
 

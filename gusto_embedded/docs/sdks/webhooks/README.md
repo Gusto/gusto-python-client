@@ -1,5 +1,4 @@
 # Webhooks
-(*webhooks*)
 
 ## Overview
 
@@ -12,6 +11,7 @@
 * [delete_subscription](#delete_subscription) - Delete a webhook subscription
 * [verify](#verify) - Verify the webhook subscription
 * [request_verification_token](#request_verification_token) - Request the webhook subscription verification_token
+* [get_v1_webhooks_health_check](#get_v1_webhooks_health_check) - Get the webhooks health status
 
 ## create_subscription
 
@@ -23,8 +23,30 @@ Create a webhook subscription to receive events of the specified subscription_ty
 
 scope: `webhook_subscriptions:write`
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="post-v1-webhook-subscription" method="post" path="/v1/webhook_subscriptions" example="Basic" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.create_subscription(security=gusto_embedded.PostV1WebhookSubscriptionSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), url="https://slow-median.com", subscription_types=[
+        gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.LOCATION,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="post-v1-webhook-subscription" method="post" path="/v1/webhook_subscriptions" example="Example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -38,7 +60,49 @@ with Gusto() as gusto:
     ), url="https://partner-app.com/subscriber", subscription_types=[
         gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.COMPANY,
         gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="post-v1-webhook-subscription" method="post" path="/v1/webhook_subscriptions" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.create_subscription(security=gusto_embedded.PostV1WebhookSubscriptionSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), url="https://slow-median.com", subscription_types=[
+        gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.LOCATION,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="post-v1-webhook-subscription" method="post" path="/v1/webhook_subscriptions" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.create_subscription(security=gusto_embedded.PostV1WebhookSubscriptionSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), url="https://slow-median.com", subscription_types=[
+        gusto_embedded.PostV1WebhookSubscriptionSubscriptionTypes.LOCATION,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -61,10 +125,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list_subscriptions
 
@@ -78,6 +142,7 @@ scope: `webhook_subscriptions:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscriptions" method="get" path="/v1/webhook_subscriptions" example="Example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -88,7 +153,7 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.list_subscriptions(security=gusto_embedded.GetV1WebhookSubscriptionsSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ))
+    ), x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -124,8 +189,30 @@ Updates the Webhook Subscription associated with the provided UUID.
 scope: `webhook_subscriptions:write`
 
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" example="Basic" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.update_subscription(security=gusto_embedded.PutV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", subscription_types=[
+        gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.PAYROLL,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" example="Example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -139,7 +226,49 @@ with Gusto() as gusto:
     ), webhook_subscription_uuid="<id>", subscription_types=[
         gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.COMPANY,
         gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.EMPLOYEE,
-    ])
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.update_subscription(security=gusto_embedded.PutV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", subscription_types=[
+        gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.PAYROLL,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.update_subscription(security=gusto_embedded.PutV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", subscription_types=[
+        gusto_embedded.PutV1WebhookSubscriptionUUIDSubscriptionTypes.PAYROLL,
+    ], x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -162,10 +291,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_subscription
 
@@ -180,6 +309,7 @@ scope: `webhook_subscriptions:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscription-uuid" method="get" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" example="Example" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -190,7 +320,7 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.get_subscription(security=gusto_embedded.GetV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -229,6 +359,7 @@ scope: `webhook_subscriptions:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-webhook-subscription-uuid" method="delete" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -239,7 +370,7 @@ with Gusto() as gusto:
 
     gusto.webhooks.delete_subscription(security=gusto_embedded.DeleteV1WebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -273,8 +404,9 @@ Use the /v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verificati
 scope: `webhook_subscriptions:write`
 
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-verify-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/verify" example="Basic" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -285,7 +417,64 @@ with Gusto() as gusto:
 
     res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd")
+    ), webhook_subscription_uuid="<id>", verification_token="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-verify-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/verify" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", verification_token="asefasedfe23e234easd", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-verify-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/verify" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", verification_token="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-verify-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/verify" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.verify(security=gusto_embedded.PutV1VerifyWebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", verification_token="<value>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -308,10 +497,10 @@ with Gusto() as gusto:
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## request_verification_token
 
@@ -326,6 +515,7 @@ scope: `webhook_subscriptions:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscription-verification-token-uuid" method="get" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -336,7 +526,7 @@ with Gusto() as gusto:
 
     gusto.webhooks.request_verification_token(security=gusto_embedded.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), webhook_subscription_uuid="<id>")
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -350,6 +540,54 @@ with Gusto() as gusto:
 | `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_v1_webhooks_health_check
+
+Returns the health status (`healthy`, `unhealthy`, or `unknown`) of the webhooks system based on the last ten minutes of activity.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-webhooks-health_check" method="get" path="/v1/webhooks/health_check" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.get_v1_webhooks_health_check(security=gusto_embedded.GetV1WebhooksHealthCheckSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), x_gusto_api_version=gusto_embedded.GetV1WebhooksHealthCheckHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.GetV1WebhooksHealthCheckSecurity](../../models/getv1webhookshealthchecksecurity.md)                                                                                                                                  | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1WebhooksHealthCheckHeaderXGustoAPIVersion]](../../models/getv1webhookshealthcheckheaderxgustoapiversion.md)                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhooksHealthCheckStatus](../../models/webhookshealthcheckstatus.md)**
 
 ### Errors
 

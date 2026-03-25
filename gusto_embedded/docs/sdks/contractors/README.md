@@ -1,5 +1,4 @@
 # Contractors
-(*contractors*)
 
 ## Overview
 
@@ -13,7 +12,8 @@
 * [get_onboarding_status](#get_onboarding_status) - Get the contractor's onboarding status
 * [update_onboarding_status](#update_onboarding_status) - Change the contractor's onboarding status
 * [get_address](#get_address) - Get a contractor address
-* [update_address](#update_address) - Update a contractor's address
+* [update_address](#update_address) - Create or update a contractor's address
+* [get_v1_companies_company_id_contractors_payment_details](#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 
 ## create
 
@@ -23,6 +23,7 @@ scope: `contractors:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="post-v1-companies-company_uuid-contractors" method="post" path="/v1/companies/{company_uuid}/contractors" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -33,7 +34,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.create(company_uuid="<id>", wage_type=gusto_embedded.PostV1CompaniesCompanyUUIDContractorsWageType.FIXED, start_date="2020-04-01", hourly_rate="40.0", email="johnson@johnson.com", first_name="Johnson", last_name="Johnson", work_state="CA")
+    res = gusto.contractors.create(company_uuid="<id>", wage_type=gusto_embedded.WageType.HOURLY, start_date="2020-01-11", x_gusto_api_version=gusto_embedded.PostV1CompaniesCompanyUUIDContractorsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, type_=gusto_embedded.ContractorCreateRequestBodyType.INDIVIDUAL, hourly_rate="40.0", self_onboarding=False, file_new_hire_report=False)
 
     # Handle response
     print(res)
@@ -45,10 +46,10 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                                                                                   | Type                                                                                                                                                                                                                                                                                        | Required                                                                                                                                                                                                                                                                                    | Description                                                                                                                                                                                                                                                                                 | Example                                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_uuid`                                                                                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The UUID of the company                                                                                                                                                                                                                                                                     |                                                                                                                                                                                                                                                                                             |
-| `wage_type`                                                                                                                                                                                                                                                                                 | [models.PostV1CompaniesCompanyUUIDContractorsWageType](../../models/postv1companiescompanyuuidcontractorswagetype.md)                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The contractor’s wage type.<br/>                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                             |
+| `wage_type`                                                                                                                                                                                                                                                                                 | [models.WageType](../../models/wagetype.md)                                                                                                                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The contractor’s wage type.<br/>                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                             |
 | `start_date`                                                                                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The day when the contractor will start working for the company.<br/>                                                                                                                                                                                                                        | 2020-01-11                                                                                                                                                                                                                                                                                  |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                                       | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                |                                                                                                                                                                                                                                                                                             |
-| `type`                                                                                                                                                                                                                                                                                      | [Optional[models.PostV1CompaniesCompanyUUIDContractorsType]](../../models/postv1companiescompanyuuidcontractorstype.md)                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor type.                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                       | [Optional[models.PostV1CompaniesCompanyUUIDContractorsHeaderXGustoAPIVersion]](../../models/postv1companiescompanyuuidcontractorsheaderxgustoapiversion.md)                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                |                                                                                                                                                                                                                                                                                             |
+| `type`                                                                                                                                                                                                                                                                                      | [Optional[models.ContractorCreateRequestBodyType]](../../models/contractorcreaterequestbodytype.md)                                                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor type.                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                             |
 | `hourly_rate`                                                                                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.                                                                                                                                                                                                      | 40.0                                                                                                                                                                                                                                                                                        |
 | `self_onboarding`                                                                                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Whether the contractor or the payroll admin will complete onboarding in Gusto.<br/>Self-onboarding is recommended so that contractors receive Gusto accounts.<br/>If self_onboarding is true, then email is required.                                                                       |                                                                                                                                                                                                                                                                                             |
 | `email`                                                                                                                                                                                                                                                                                     | *Optional[str]*                                                                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s email address.                                                                                                                                                                                                                                                             |                                                                                                                                                                                                                                                                                             |
@@ -69,10 +70,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## list
 
@@ -82,7 +84,9 @@ scope: `contractors:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_uuid-contractors" method="get" path="/v1/companies/{company_uuid}/contractors" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -91,7 +95,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.list(company_uuid="<id>")
+    res = gusto.contractors.list(company_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1CompaniesCompanyUUIDContractorsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -103,10 +107,15 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyUUIDContractorsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyuuidcontractorsheaderxgustoapiversion.md)                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `search_term`                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A string to search for in the object's names                                                                                                                                                                                 |
+| `sort_by`                                                                                                                                                                                                                    | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Sort contractors. Options: type, onboarding_status, name, created_at                                                                                                                                                         |
+| `onboarded`                                                                                                                                                                                                                  | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters contractors by those who have completed onboarding                                                                                                                                                                   |
+| `onboarded_active`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters contractors who are ready to work (onboarded AND active today)                                                                                                                                                       |
+| `terminated`                                                                                                                                                                                                                 | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters contractors by those who have been or are scheduled to be dismissed                                                                                                                                                  |
+| `terminated_today`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Filters contractors by those who have been dismissed and whose dismissal is in effect today (excludes active and scheduled to be dismissed)                                                                                  |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
-| `search_term`                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | A string to search for in the object's names                                                                                                                                                                                 |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -115,9 +124,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## get
 
@@ -127,7 +137,9 @@ scope: `contractors:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractors-contractor_uuid" method="get" path="/v1/contractors/{contractor_uuid}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -136,7 +148,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get(contractor_uuid="<id>")
+    res = gusto.contractors.get(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -148,7 +160,7 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion]](../../models/getv1contractorscontractoruuidheaderxgustoapiversion.md)                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -157,22 +169,24 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## update
 
 Update a contractor.
 
-scope: `contractors:write`
-
 > 🚧 Warning
 >
-> Watch out when changing a contractor's type (when the contractor is finished onboarding). Specifically, changing contractor type can be dangerous since Gusto won’t recognize and file two separate 1099s if they simply change from business to individual
+> Watch out when changing a contractor's type (when the contractor is finished onboarding). Specifically, changing contractor type can be dangerous since Gusto won't recognize and file two separate 1099s if they simply change from business to individual
+
+scope: `contractors:write`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid" method="put" path="/v1/contractors/{contractor_uuid}" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -183,7 +197,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.update(contractor_uuid="<id>", version="b48c46abfed1487b873b442334b3c4ff", wage_type=gusto_embedded.PutV1ContractorsContractorUUIDWageType.HOURLY, start_date="2021-01-01", hourly_rate="20.00", first_name="Chanel", last_name="Boyle", middle_initial="X", is_active=True)
+    res = gusto.contractors.update(contractor_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, type_=gusto_embedded.ContractorUpdateRequestBodyType.INDIVIDUAL, start_date="2020-01-11", hourly_rate="40.0", self_onboarding=False, file_new_hire_report=False)
 
     # Handle response
     print(res)
@@ -195,10 +209,10 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                                                                                   | Type                                                                                                                                                                                                                                                                                        | Required                                                                                                                                                                                                                                                                                    | Description                                                                                                                                                                                                                                                                                 | Example                                                                                                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `contractor_uuid`                                                                                                                                                                                                                                                                           | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The UUID of the contractor                                                                                                                                                                                                                                                                  |                                                                                                                                                                                                                                                                                             |
-| `version`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                                                           |                                                                                                                                                                                                                                                                                             |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                                       | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                |                                                                                                                                                                                                                                                                                             |
-| `type`                                                                                                                                                                                                                                                                                      | [Optional[models.PutV1ContractorsContractorUUIDType]](../../models/putv1contractorscontractoruuidtype.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor type.                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                             |
-| `wage_type`                                                                                                                                                                                                                                                                                 | [Optional[models.PutV1ContractorsContractorUUIDWageType]](../../models/putv1contractorscontractoruuidwagetype.md)                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s wage type.<br/>                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                             |
+| `version`                                                                                                                                                                                                                                                                                   | *str*                                                                                                                                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                                                                                                                                          | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                                                           | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                                                                                            |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                       | [Optional[models.PutV1ContractorsContractorUUIDHeaderXGustoAPIVersion]](../../models/putv1contractorscontractoruuidheaderxgustoapiversion.md)                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                |                                                                                                                                                                                                                                                                                             |
+| `type`                                                                                                                                                                                                                                                                                      | [Optional[models.ContractorUpdateRequestBodyType]](../../models/contractorupdaterequestbodytype.md)                                                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor type.                                                                                                                                                                                                                                                                        |                                                                                                                                                                                                                                                                                             |
+| `wage_type`                                                                                                                                                                                                                                                                                 | [Optional[models.ContractorUpdateRequestBodyWageType]](../../models/contractorupdaterequestbodywagetype.md)                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s wage type.<br/>                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                             |
 | `start_date`                                                                                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The day when the contractor will start working for the company.<br/>                                                                                                                                                                                                                        | 2020-01-11                                                                                                                                                                                                                                                                                  |
 | `hourly_rate`                                                                                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | The contractor’s hourly rate. This attribute is required if the wage_type is `Hourly`.                                                                                                                                                                                                      | 40.0                                                                                                                                                                                                                                                                                        |
 | `self_onboarding`                                                                                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                                                          | Whether the contractor or the payroll admin will complete onboarding in Gusto.<br/>Self-onboarding is recommended so that contractors receive Gusto accounts.<br/>If self_onboarding is true, then email is required.                                                                       |                                                                                                                                                                                                                                                                                             |
@@ -220,10 +234,11 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## delete
 
@@ -233,7 +248,9 @@ scope: `contractors:manage`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="delete-v1-contractors-contractor_uuid" method="delete" path="/v1/contractors/{contractor_uuid}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -242,7 +259,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    gusto.contractors.delete(contractor_uuid="<id>")
+    gusto.contractors.delete(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.DeleteV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -253,14 +270,16 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1ContractorsContractorUUIDHeaderXGustoAPIVersion]](../../models/deletev1contractorscontractoruuidheaderxgustoapiversion.md)                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_onboarding_status
 
@@ -295,13 +314,15 @@ scope: `contractors:read`
 | `basic_details` | Add individual contractor's first name, last name, social security number or Business name and EIN depending on the contractor type |
 | `add_address` | Add contractor address. |
 | `compensation_details` | Add contractor compensation. |
-| `payment_details` | Set up contractor's direct deposit or set to check. |
+| `payment_details` | (optional) Set up contractor's direct deposit or set to check. |
 | `sign_documents` | Contractor forms (e.g., W9) are generated & signed. |
 | `file_new_hire_report` | Contractor new hire report is generated. |
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractors-contractor_uuid-onboarding_status" method="get" path="/v1/contractors/{contractor_uuid}/onboarding_status" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -310,7 +331,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.get_onboarding_status(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -351,9 +372,11 @@ Below is a list of valid onboarding status changes depending on the intended act
 | Review a contractor's self-onboarded info | `self_onboarding_started` | `self_onboarding_review` |
 | Finish a contractor's onboarding | `admin_onboarding_review` or `self_onboarding_review` | `onboarding_completed` |
 
-### Example Usage
+### Example Usage: Basic
 
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-onboarding_status" method="put" path="/v1/contractors/{contractor_uuid}/onboarding_status" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -362,7 +385,64 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>")
+    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, onboarding_status=gusto_embedded.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-onboarding_status" method="put" path="/v1/contractors/{contractor_uuid}/onboarding_status" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, onboarding_status=gusto_embedded.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-onboarding_status" method="put" path="/v1/contractors/{contractor_uuid}/onboarding_status" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, onboarding_status=gusto_embedded.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-onboarding_status" method="put" path="/v1/contractors/{contractor_uuid}/onboarding_status" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_onboarding_status(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, onboarding_status=gusto_embedded.PutV1ContractorsContractorUUIDOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED)
 
     # Handle response
     print(res)
@@ -384,10 +464,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
 ## get_address
 
@@ -397,7 +477,9 @@ scope: `contractors:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-contractors-contractor_uuid-address" method="get" path="/v1/contractors/{contractor_uuid}/address" example="Example" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -406,7 +488,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.get_address(contractor_uuid="<id>")
+    res = gusto.contractors.get_address(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -437,9 +519,15 @@ The address of a contractor is used to determine certain tax information about t
 
 scope: `contractors:write`
 
-### Example Usage
+> 🚧 Contractors can only have one address.
+> 
+> When a contractor is created, an address is created for them by default. Updating the address will replace the existing address.
 
+### Example Usage: Basic
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-address" method="put" path="/v1/contractors/{contractor_uuid}/address" example="Basic" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -448,7 +536,139 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.contractors.update_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
+    res = gusto.contractors.update_address(contractor_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Example
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-address" method="put" path="/v1/contractors/{contractor_uuid}/address" example="Example" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_address(contractor_uuid="<id>", version="fe75bd065ff48b91c35fe8ff842f986c", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, street_1="300 3rd Street", street_2="<value>", city="San Francisco", state="CA", zip_code="94107")
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Nested
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-address" method="put" path="/v1/contractors/{contractor_uuid}/address" example="Nested" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_address(contractor_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+### Example Usage: Resource
+
+<!-- UsageSnippet language="python" operationID="put-v1-contractors-contractor_uuid-address" method="put" path="/v1/contractors/{contractor_uuid}/address" example="Resource" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.update_address(contractor_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |                                                                                                                                                                                                                              |
+| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `street_1`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `street_2`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `city`                                                                                                                                                                                                                       | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `state`                                                                                                                                                                                                                      | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `zip_code`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.ContractorAddress](../../models/contractoraddress.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_v1_companies_company_id_contractors_payment_details
+
+Get payment details for contractors in a company. This endpoint returns a list of all contractors
+associated with the specified company, including their payment methods and bank account details
+if they are paid via direct deposit.
+
+For contractors paid by direct deposit, the response includes their bank account information
+with sensitive data masked for security. The payment details also include information about
+how their payments are split if they have multiple bank accounts configured.
+
+For contractors paid by check, only the basic payment method information is returned.
+
+### Response Details
+- For direct deposit contractors:
+  - Bank account details (masked)
+  - Payment splits configuration
+  - Routing numbers
+  - Account types
+- For check payments:
+  - Basic payment method designation
+
+### Common Use Cases
+- Fetching contractor payment information for payroll processing
+- Verifying contractor payment methods
+- Reviewing payment split configurations
+
+`encrypted_account_number` is available only with the additional scope `contractor_payment_methods:read:account_numbers`.
+
+scope: `contractor_payment_methods:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-contractors-payment_details" method="get" path="/v1/companies/{company_id}/contractors/payment_details" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractors.get_v1_companies_company_id_contractors_payment_details(company_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -459,23 +679,19 @@ with Gusto(
 
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |
-| `version`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                            |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `street_1`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `street_2`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `city`                                                                                                                                                                                                                       | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `state`                                                                                                                                                                                                                      | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `zip_code`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.                                                                                                                  |
+| `contractor_uuid`                                                                                                                                                                                                            | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.                                                                         |
+| `contractor_payment_group_uuid`                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorspaymentdetailsheaderxgustoapiversion.md)                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
 
-**[models.ContractorAddress](../../models/contractoraddress.md)**
+**[List[models.ContractorPaymentDetailsList]](../../models/.md)**
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |

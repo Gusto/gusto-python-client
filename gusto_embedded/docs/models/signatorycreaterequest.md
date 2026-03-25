@@ -1,0 +1,17 @@
+# SignatoryCreateRequest
+
+Request body for creating a signatory with complete information. All listed required fields must be provided.
+
+
+## Fields
+
+| Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
+| ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `first_name`                                                                 | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's first name.                                                  |
+| `last_name`                                                                  | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's last name.                                                   |
+| `title`                                                                      | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's title (e.g. CEO, President).                                 |
+| `phone`                                                                      | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's phone number.                                                |
+| `birthday`                                                                   | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects) | :heavy_check_mark:                                                           | The signatory's date of birth.                                               |
+| `email`                                                                      | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's email address.                                               |
+| `ssn`                                                                        | *str*                                                                        | :heavy_check_mark:                                                           | The signatory's SSN.                                                         |
+| `home_address`                                                               | [models.HomeAddress](../models/homeaddress.md)                               | :heavy_check_mark:                                                           | The signatory's home address.                                                |
