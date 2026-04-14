@@ -1,0 +1,10 @@
+# GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody
+
+Unprocessable Entity (WebDAV)
+
+
+## Fields
+
+| Field                                                                                                                                          | Type                                                                                                                                           | Required                                                                                                                                       | Description                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `errors`                                                                                                                                       | [Optional[models.GetCompaniesCompanyUUIDContractorPaymentsPreviewErrors]](../models/getcompaniescompanyuuidcontractorpaymentspreviewerrors.md) | :heavy_minus_sign:                                                                                                                             | N/A                                                                                                                                            |

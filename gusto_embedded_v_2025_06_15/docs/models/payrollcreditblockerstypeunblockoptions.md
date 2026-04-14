@@ -1,0 +1,10 @@
+# PayrollCreditBlockersTypeUnblockOptions
+
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `unblock_type`                                                                                       | *Optional[str]*                                                                                      | :heavy_minus_sign:                                                                                   | The type of unblock option for the credit blocker.                                                   |
+| `check_date`                                                                                         | *Optional[str]*                                                                                      | :heavy_minus_sign:                                                                                   | The payment check date associated with the unblock option.                                           |
+| `metadata`                                                                                           | [Optional[models.PayrollCreditBlockersTypeMetadata]](../models/payrollcreditblockerstypemetadata.md) | :heavy_minus_sign:                                                                                   | Additional data associated with the unblock option.                                                  |
