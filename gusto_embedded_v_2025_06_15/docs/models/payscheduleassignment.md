@@ -1,0 +1,15 @@
+# PayScheduleAssignment
+
+The representation of a pay schedule assignment.
+
+
+## Fields
+
+| Field                                                                                        | Type                                                                                         | Required                                                                                     | Description                                                                                  |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `type`                                                                                       | [OptionalNullable[models.Type]](../models/type.md)                                           | :heavy_minus_sign:                                                                           | The pay schedule assignment type.                                                            |
+| `hourly_pay_schedule_uuid`                                                                   | *OptionalNullable[str]*                                                                      | :heavy_minus_sign:                                                                           | Pay schedule for hourly employees.                                                           |
+| `salaried_pay_schedule_uuid`                                                                 | *OptionalNullable[str]*                                                                      | :heavy_minus_sign:                                                                           | Pay schedule for salaried employees.                                                         |
+| `default_pay_schedule_uuid`                                                                  | *OptionalNullable[str]*                                                                      | :heavy_minus_sign:                                                                           | Default pay schedule for employees.                                                          |
+| `employees`                                                                                  | List[[models.PayScheduleAssignmentEmployee](../models/payscheduleassignmentemployee.md)]     | :heavy_minus_sign:                                                                           | List of employees and their pay schedules.                                                   |
+| `departments`                                                                                | List[[models.PayScheduleAssignmentDepartment](../models/payscheduleassignmentdepartment.md)] | :heavy_minus_sign:                                                                           | List of departments and their pay schedules.                                                 |

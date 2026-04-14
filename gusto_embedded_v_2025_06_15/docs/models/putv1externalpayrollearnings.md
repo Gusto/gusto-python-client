@@ -1,0 +1,13 @@
+# PutV1ExternalPayrollEarnings
+
+An array of earnings for the employee. Depends on your company selections, earnings includes wages, hours, bonuses, tips, commission and more.
+
+
+## Fields
+
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `hours`                                                                                          | *Optional[str]*                                                                                  | :heavy_minus_sign:                                                                               | The hour of the compensation for the pay period.                                                 |
+| `amount`                                                                                         | *Optional[str]*                                                                                  | :heavy_minus_sign:                                                                               | The amount of the earning.                                                                       |
+| `earning_id`                                                                                     | *Optional[int]*                                                                                  | :heavy_minus_sign:                                                                               | The ID of the earning.                                                                           |
+| `earning_type`                                                                                   | [Optional[models.PutV1ExternalPayrollEarningType]](../models/putv1externalpayrollearningtype.md) | :heavy_minus_sign:                                                                               | The earning type for the compensation.                                                           |

@@ -1,0 +1,10 @@
+# PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesRequestBody
+
+A list of employee objects containing the employee uuid
+
+
+## Fields
+
+| Field                                                                                                                                                    | Type                                                                                                                                                     | Required                                                                                                                                                 | Description                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employees`                                                                                                                                              | List[[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesEmployees](../models/putv1timeoffpoliciestimeoffpolicyuuidremoveemployeesemployees.md)] | :heavy_minus_sign:                                                                                                                                       | N/A                                                                                                                                                      |
