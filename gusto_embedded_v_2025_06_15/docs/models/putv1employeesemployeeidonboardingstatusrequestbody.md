@@ -1,0 +1,8 @@
+# PutV1EmployeesEmployeeIDOnboardingStatusRequestBody
+
+
+## Fields
+
+| Field                                                                                                                                    | Type                                                                                                                                     | Required                                                                                                                                 | Description                                                                                                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `onboarding_status`                                                                                                                      | [models.PutV1EmployeesEmployeeIDOnboardingStatusOnboardingStatus](../models/putv1employeesemployeeidonboardingstatusonboardingstatus.md) | :heavy_check_mark:                                                                                                                       | Onboarding status value                                                                                                                  |

@@ -1,0 +1,13 @@
+# BenefitTypeRequirementsContribution
+
+An object representing the type and value of the company contribution.
+
+
+## Fields
+
+| Field                                                                                                    | Type                                                                                                     | Required                                                                                                 | Description                                                                                              |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `required`                                                                                               | *Optional[bool]*                                                                                         | :heavy_minus_sign:                                                                                       | N/A                                                                                                      |
+| `editable`                                                                                               | *Optional[bool]*                                                                                         | :heavy_minus_sign:                                                                                       | N/A                                                                                                      |
+| `default_value`                                                                                          | [Optional[models.BenefitTypeRequirementsDefaultValue]](../models/benefittyperequirementsdefaultvalue.md) | :heavy_minus_sign:                                                                                       | N/A                                                                                                      |
+| `choices`                                                                                                | List[*str*]                                                                                              | :heavy_minus_sign:                                                                                       | N/A                                                                                                      |
