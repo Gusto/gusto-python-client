@@ -18,6 +18,10 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
+  license:
+    disabled: false
+    licenseType: MIT
+    companyName: Gusto
 python:
   version: 0.3.0
   additionalDependencies:
