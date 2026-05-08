@@ -15,10 +15,6 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
-  license:
-    disabled: false
-    licenseType: MIT
-    companyName: Gusto
 python:
   version: 0.3.0
   additionalDependencies:
@@ -45,6 +41,7 @@ python:
       shared: ""
       webhooks: ""
   inputModelSuffix: input
+  license: MIT
   maxMethodParams: 999
   methodArguments: infer-optional-args
   outputModelSuffix: output
