@@ -41,6 +41,7 @@ python:
       shared: ""
       webhooks: ""
   inputModelSuffix: input
+  license: MIT
   maxMethodParams: 999
   methodArguments: infer-optional-args
   outputModelSuffix: output
