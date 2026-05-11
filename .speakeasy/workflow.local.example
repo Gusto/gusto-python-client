@@ -1,3 +1,10 @@
+# Template for local SDK generation. Copy this file to workflow.local.yaml before use.
+# Intended for Gusto engineers with access to the internal API specification repository.
+# External contributors: local generation requires access to internal Gusto repositories
+# and is not supported outside of Gusto's development environment.
+#
+# Setup: run bin/setup-local to create workflow.local.yaml automatically.
+# Usage: speakeasy run --target=local
 workflowVersion: 1.0.0
 speakeasyVersion: latest
 sources:
