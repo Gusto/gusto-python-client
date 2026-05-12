@@ -1,0 +1,31 @@
+# Template for local SDK generation. Copy this file to workflow.local.yaml before use.
+# Intended for Gusto engineers with access to the internal API specification repository.
+# External contributors: local generation requires access to internal Gusto repositories
+# and is not supported outside of Gusto's development environment.
+#
+# Setup: run bin/setup-local to create workflow.local.yaml automatically.
+# Usage: speakeasy run --target=local
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+  GustoEmbedded-local:
+    inputs:
+      - location: ../Gusto-Partner-API/generated/embedded/api.v2025-06-15.embedded.yaml
+    overlays:
+      - location: ../Gusto-Partner-API/.speakeasy/speakeasy-modifications-overlay.yaml
+      - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
+  GustoAppInt-local:
+    inputs:
+      - location: ../Gusto-Partner-API/generated/app-integrations/api.v2025-06-15.app-integrations.yaml
+    overlays:
+      - location: ../Gusto-Partner-API/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+      - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
+targets:
+  local:
+    target: python
+    source: GustoEmbedded-local
+    output: ./gusto_embedded
+  local-app-int:
+    target: python
+    source: GustoAppInt-local
+    output: ./gusto_app_int

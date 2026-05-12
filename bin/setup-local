@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+DEST=".speakeasy/workflow.local.yaml"
+EXAMPLE=".speakeasy/workflow.local.example"
+
+if [ -f "$DEST" ]; then
+  echo "$DEST already exists — skipping"
+  exit 0
+fi
+
+cp "$EXAMPLE" "$DEST"
+echo "Created $DEST"
+echo ""
+echo "Note: local generation requires access to internal Gusto repositories."
+echo "Run: speakeasy run --target=local"
