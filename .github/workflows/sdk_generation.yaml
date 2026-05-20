@@ -24,6 +24,13 @@ jobs:
       force: ${{ github.event.inputs.force }}
       mode: pr
       set_version: ${{ github.event.inputs.set_version }}
+      # Bump Node heap so pyright doesn't OOM on the larger SDKs (the
+      # default Node max-old-space-size on the runner is ~2 GB, and
+      # pyright peaks at ~3.8 GB on the v2025-11-15 embedded SDK).
+      # Verified locally: NODE_OPTIONS=--max-old-space-size=2048 reproduces
+      # the CI OOM; 4096 makes pyright pass cleanly.
+      environment: |
+        NODE_OPTIONS=--max-old-space-size=4096
       runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
