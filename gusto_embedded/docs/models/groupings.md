@@ -1,5 +1,13 @@
 # Groupings
 
+## Example Usage
+
+```python
+from gusto_embedded.models import Groupings
+
+value = Groupings.PAYROLL
+```
+
 
 ## Values
 

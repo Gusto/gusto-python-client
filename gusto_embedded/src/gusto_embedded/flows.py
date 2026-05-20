@@ -5,7 +5,8 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
-from typing import Any, Mapping, Optional
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
+from typing import Any, Dict, Mapping, Optional
 
 
 class Flows(BaseSDK):
@@ -15,10 +16,11 @@ class Flows(BaseSDK):
         company_uuid: str,
         flow_type: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompanyFlowsHeaderXGustoAPIVersion
+        ] = models.PostV1CompanyFlowsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         entity_uuid: Optional[str] = None,
-        entity_type: Optional[models.PostV1CompanyFlowsEntityType] = None,
+        entity_type: Optional[models.CreateFlowRequestEntityType] = None,
+        options: Optional[Dict[str, Any]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -28,13 +30,32 @@ class Flows(BaseSDK):
 
         Generate a link to access a pre-built workflow in Gusto white-label UI. For security, all generated flows will expire within 1 hour of inactivity or 24 hours from creation time, whichever comes first.
 
+        You can see a list of all possible flow types in our [Flow Types](https://docs.gusto.com/embedded-payroll/docs/flow-types) guide.
+
+        You can also mix and match flow_types in the same category to create custom flows suitable for your needs.
+
+        For instance, to create a custom onboarding flow that only includes `add_addresses`, `add_employees`, and `sign_all_forms` steps, simply stitch those flow_types together into a comma delimited string:
+
+        ```json
+        {
+        \"flow_type\": \"add_addresses,add_employees,sign_all_forms\"
+        }
+        ```
+
+        Please be mindful of data dependencies in each step to achieve the best user experience.
+
+        For more information and in-depth guides review the [Getting Started](https://docs.gusto.com/embedded-payroll/docs/flows-getting-started) guide for flows.
+
         scope: `flows:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param flow_type: flow type
+        :param flow_type: The type of flow to generate. Multiple flow types can be combined by separating them with commas (e.g., \"add_addresses,add_employees,sign_all_forms\").
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param entity_uuid: UUID of the target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.
-        :param entity_type: the type of target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.
+        :param entity_uuid: UUID of the target entity applicable to the flow. This field is optional for company flows.
+        :param entity_type: The type of target entity applicable to the flow. This field is optional for company flows.
+        :param options: Optional configuration object that varies based on the flow_type. This can contain arbitrary key-value pairs specific to the flow being generated.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -51,12 +72,13 @@ class Flows(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanyFlowsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompanyFlowsRequestBody(
+            company_uuid=company_uuid,
+            create_flow_request=models.CreateFlowRequest(
                 flow_type=flow_type,
                 entity_uuid=entity_uuid,
                 entity_type=entity_type,
+                options=options,
             ),
         )
 
@@ -74,12 +96,14 @@ class Flows(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.create_flow_request,
                 False,
                 False,
                 "json",
-                models.PostV1CompanyFlowsRequestBody,
+                models.CreateFlowRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -93,45 +117,40 @@ class Flows(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-company-flows",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Flow)
+            return unmarshal_json_response(models.Flow, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectErrorData, http_res
+            )
+            raise models.NotFoundErrorObjectError(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -139,10 +158,11 @@ class Flows(BaseSDK):
         company_uuid: str,
         flow_type: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompanyFlowsHeaderXGustoAPIVersion
+        ] = models.PostV1CompanyFlowsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         entity_uuid: Optional[str] = None,
-        entity_type: Optional[models.PostV1CompanyFlowsEntityType] = None,
+        entity_type: Optional[models.CreateFlowRequestEntityType] = None,
+        options: Optional[Dict[str, Any]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -152,13 +172,32 @@ class Flows(BaseSDK):
 
         Generate a link to access a pre-built workflow in Gusto white-label UI. For security, all generated flows will expire within 1 hour of inactivity or 24 hours from creation time, whichever comes first.
 
+        You can see a list of all possible flow types in our [Flow Types](https://docs.gusto.com/embedded-payroll/docs/flow-types) guide.
+
+        You can also mix and match flow_types in the same category to create custom flows suitable for your needs.
+
+        For instance, to create a custom onboarding flow that only includes `add_addresses`, `add_employees`, and `sign_all_forms` steps, simply stitch those flow_types together into a comma delimited string:
+
+        ```json
+        {
+        \"flow_type\": \"add_addresses,add_employees,sign_all_forms\"
+        }
+        ```
+
+        Please be mindful of data dependencies in each step to achieve the best user experience.
+
+        For more information and in-depth guides review the [Getting Started](https://docs.gusto.com/embedded-payroll/docs/flows-getting-started) guide for flows.
+
         scope: `flows:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param flow_type: flow type
+        :param flow_type: The type of flow to generate. Multiple flow types can be combined by separating them with commas (e.g., \"add_addresses,add_employees,sign_all_forms\").
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param entity_uuid: UUID of the target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.
-        :param entity_type: the type of target entity applicable to the flow. This field is optional for company flows, please refer to the flow_types table above for more details.
+        :param entity_uuid: UUID of the target entity applicable to the flow. This field is optional for company flows.
+        :param entity_type: The type of target entity applicable to the flow. This field is optional for company flows.
+        :param options: Optional configuration object that varies based on the flow_type. This can contain arbitrary key-value pairs specific to the flow being generated.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -175,12 +214,13 @@ class Flows(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanyFlowsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompanyFlowsRequestBody(
+            company_uuid=company_uuid,
+            create_flow_request=models.CreateFlowRequest(
                 flow_type=flow_type,
                 entity_uuid=entity_uuid,
                 entity_type=entity_type,
+                options=options,
             ),
         )
 
@@ -198,12 +238,14 @@ class Flows(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.create_flow_request,
                 False,
                 False,
                 "json",
-                models.PostV1CompanyFlowsRequestBody,
+                models.CreateFlowRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -217,42 +259,37 @@ class Flows(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-company-flows",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Flow)
+            return unmarshal_json_response(models.Flow, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectErrorData, http_res
+            )
+            raise models.NotFoundErrorObjectError(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

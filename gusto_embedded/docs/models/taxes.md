@@ -3,8 +3,7 @@
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `name`             | *str*              | :heavy_check_mark: | N/A                |
-| `employer`         | *bool*             | :heavy_check_mark: | N/A                |
-| `amount`           | *float*            | :heavy_check_mark: | N/A                |
+| Field                                                             | Type                                                              | Required                                                          | Description                                                       |
+| ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `name`                                                            | *Optional[str]*                                                   | :heavy_minus_sign:                                                | The amount paid for this tax.                                     |
+| `amount`                                                          | *Optional[str]*                                                   | :heavy_minus_sign:                                                | The total amount paid by both employer and employee for this tax. |

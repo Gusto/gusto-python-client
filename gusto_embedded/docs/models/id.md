@@ -2,6 +2,14 @@
 
 The string identifier for each onboarding step
 
+## Example Usage
+
+```python
+from gusto_embedded.models import ID
+
+value = ID.ADD_ADDRESSES
+```
+
 
 ## Values
 

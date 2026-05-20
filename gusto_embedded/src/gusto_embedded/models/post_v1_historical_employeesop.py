@@ -5,8 +5,8 @@ from .historical_employee_body import (
     HistoricalEmployeeBody,
     HistoricalEmployeeBodyTypedDict,
 )
-from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from enum import Enum
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -14,16 +14,22 @@ from gusto_embedded.utils import (
     RequestMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
+class PostV1HistoricalEmployeesHeaderXGustoAPIVersion(str, Enum):
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
+
+
 class PostV1HistoricalEmployeesRequestTypedDict(TypedDict):
     company_uuid: str
-    r"""The UUID of the company"""
+    r"""The UUID of the company that will employ this historical record."""
     historical_employee_body: HistoricalEmployeeBodyTypedDict
-    r"""Create a historical employee."""
-    x_gusto_api_version: NotRequired[VersionHeader]
+    x_gusto_api_version: NotRequired[PostV1HistoricalEmployeesHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -31,17 +37,32 @@ class PostV1HistoricalEmployeesRequest(BaseModel):
     company_uuid: Annotated[
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
-    r"""The UUID of the company"""
+    r"""The UUID of the company that will employ this historical record."""
 
     historical_employee_body: Annotated[
         HistoricalEmployeeBody,
         FieldMetadata(request=RequestMetadata(media_type="application/json")),
     ]
-    r"""Create a historical employee."""
 
     x_gusto_api_version: Annotated[
-        Optional[VersionHeader],
+        Optional[PostV1HistoricalEmployeesHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = PostV1HistoricalEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

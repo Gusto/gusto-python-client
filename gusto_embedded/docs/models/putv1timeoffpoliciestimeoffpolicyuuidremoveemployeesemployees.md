@@ -3,6 +3,6 @@
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `uuid`             | *Optional[str]*    | :heavy_minus_sign: | N/A                |
+| Field                    | Type                     | Required                 | Description              |
+| ------------------------ | ------------------------ | ------------------------ | ------------------------ |
+| `uuid`                   | *str*                    | :heavy_check_mark:       | The UUID of the employee |

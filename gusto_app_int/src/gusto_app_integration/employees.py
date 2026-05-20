@@ -5,6 +5,7 @@ from datetime import date
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
+from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional
 
 
@@ -15,29 +16,46 @@ class Employees(BaseSDK):
         company_id: str,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        location_uuid: Optional[str] = None,
+        payroll_uuid: Optional[str] = None,
         search_term: Optional[str] = None,
+        sort_by: Optional[str] = None,
         include: Optional[List[models.Include]] = None,
+        onboarded: Optional[bool] = None,
+        onboarded_active: Optional[bool] = None,
         terminated: Optional[bool] = None,
+        terminated_today: Optional[bool] = None,
+        uuids: Optional[List[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Employee]:
+    ) -> List[models.ShowEmployees]:
         r"""Get employees of a company
 
         Get all of the employees, onboarding, active and terminated, for a given company.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
         scope: `employees:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param location_uuid: Filter employees by a specific primary work location
+        :param payroll_uuid: Filter employees by a specific payroll
         :param search_term: A string to search for in the object's names
-        :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
-        :param terminated: Filters employees by the provided boolean
+        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
+        :param onboarded: Filters employees by those who have completed onboarding
+        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
+        :param terminated: Filters employees by those who have been or are scheduled to be terminated
+        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
+        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -58,9 +76,16 @@ class Employees(BaseSDK):
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
+            location_uuid=location_uuid,
+            payroll_uuid=payroll_uuid,
             search_term=search_term,
+            sort_by=sort_by,
             include=include,
+            onboarded=onboarded,
+            onboarded_active=onboarded_active,
             terminated=terminated,
+            terminated_today=terminated_today,
+            uuids=uuids,
             page=page,
             per=per,
         )
@@ -78,6 +103,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -91,43 +118,33 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Employee])
+            return unmarshal_json_response(List[models.ShowEmployees], http_res)
         if utils.match_response(http_res, "404", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
@@ -135,29 +152,46 @@ class Employees(BaseSDK):
         company_id: str,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        location_uuid: Optional[str] = None,
+        payroll_uuid: Optional[str] = None,
         search_term: Optional[str] = None,
+        sort_by: Optional[str] = None,
         include: Optional[List[models.Include]] = None,
+        onboarded: Optional[bool] = None,
+        onboarded_active: Optional[bool] = None,
         terminated: Optional[bool] = None,
+        terminated_today: Optional[bool] = None,
+        uuids: Optional[List[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Employee]:
+    ) -> List[models.ShowEmployees]:
         r"""Get employees of a company
 
         Get all of the employees, onboarding, active and terminated, for a given company.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
         scope: `employees:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param location_uuid: Filter employees by a specific primary work location
+        :param payroll_uuid: Filter employees by a specific payroll
         :param search_term: A string to search for in the object's names
-        :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
-        :param terminated: Filters employees by the provided boolean
+        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
+        :param onboarded: Filters employees by those who have completed onboarding
+        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
+        :param terminated: Filters employees by those who have been or are scheduled to be terminated
+        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
+        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -178,9 +212,16 @@ class Employees(BaseSDK):
         request = models.GetV1CompaniesCompanyIDEmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
+            location_uuid=location_uuid,
+            payroll_uuid=payroll_uuid,
             search_term=search_term,
+            sort_by=sort_by,
             include=include,
+            onboarded=onboarded,
+            onboarded_active=onboarded_active,
             terminated=terminated,
+            terminated_today=terminated_today,
+            uuids=uuids,
             page=page,
             per=per,
         )
@@ -198,6 +239,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -211,43 +254,33 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Employee])
+            return unmarshal_json_response(List[models.ShowEmployees], http_res)
         if utils.match_response(http_res, "404", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def create(
         self,
@@ -257,9 +290,10 @@ class Employees(BaseSDK):
         last_name: str,
         x_gusto_api_version: Optional[
             models.PostV1EmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         middle_initial: Optional[str] = None,
-        email: Optional[str] = None,
+        email: OptionalNullable[str] = UNSET,
+        work_email: Optional[str] = None,
         date_of_birth: Optional[date] = None,
         ssn: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
@@ -275,13 +309,15 @@ class Employees(BaseSDK):
 
         scope: `employees:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: Company ID
         :param first_name:
         :param last_name:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param middle_initial:
-        :param email: The employee's personal email address.
+        :param email: The employee's personal email address. Required if self_onboarding is true.
+        :param work_email: The employee's work email address.
         :param date_of_birth:
         :param ssn:
         :param preferred_first_name:
@@ -309,6 +345,7 @@ class Employees(BaseSDK):
                 middle_initial=middle_initial,
                 last_name=last_name,
                 email=email,
+                work_email=work_email,
                 date_of_birth=date_of_birth,
                 ssn=ssn,
                 preferred_first_name=preferred_first_name,
@@ -330,12 +367,14 @@ class Employees(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.request_body if request is not None else None,
                 False,
                 True,
                 "json",
                 Optional[models.PostV1EmployeesRequestBody],
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -349,43 +388,38 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "422"], "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -395,9 +429,10 @@ class Employees(BaseSDK):
         last_name: str,
         x_gusto_api_version: Optional[
             models.PostV1EmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         middle_initial: Optional[str] = None,
-        email: Optional[str] = None,
+        email: OptionalNullable[str] = UNSET,
+        work_email: Optional[str] = None,
         date_of_birth: Optional[date] = None,
         ssn: Optional[str] = None,
         preferred_first_name: Optional[str] = None,
@@ -413,13 +448,15 @@ class Employees(BaseSDK):
 
         scope: `employees:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: Company ID
         :param first_name:
         :param last_name:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param middle_initial:
-        :param email: The employee's personal email address.
+        :param email: The employee's personal email address. Required if self_onboarding is true.
+        :param work_email: The employee's work email address.
         :param date_of_birth:
         :param ssn:
         :param preferred_first_name:
@@ -447,6 +484,7 @@ class Employees(BaseSDK):
                 middle_initial=middle_initial,
                 last_name=last_name,
                 email=email,
+                work_email=work_email,
                 date_of_birth=date_of_birth,
                 ssn=ssn,
                 preferred_first_name=preferred_first_name,
@@ -468,12 +506,14 @@ class Employees(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.request_body if request is not None else None,
                 False,
                 True,
                 "json",
                 Optional[models.PostV1EmployeesRequestBody],
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -487,43 +527,38 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "422"], "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_by_id(
         self,
@@ -531,7 +566,7 @@ class Employees(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         include: Optional[List[models.QueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -542,12 +577,15 @@ class Employees(BaseSDK):
 
         Get an employee.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
         scope: `employees:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -582,6 +620,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -595,37 +635,33 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_by_id_async(
         self,
@@ -633,7 +669,7 @@ class Employees(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         include: Optional[List[models.QueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -644,12 +680,15 @@ class Employees(BaseSDK):
 
         Get an employee.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
         scope: `employees:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param include: Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation - custom_fields: Include employees' custom fields
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -684,6 +723,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -697,48 +738,47 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
         *,
         employee_id: str,
         version: str,
-        x_gusto_api_version: Optional[str] = None,
+        x_gusto_api_version: Optional[
+            models.PutV1EmployeesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         first_name: Optional[str] = None,
         middle_initial: OptionalNullable[str] = UNSET,
         last_name: Optional[str] = None,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         date_of_birth: Optional[str] = None,
         ssn: Optional[str] = None,
         preferred_first_name: OptionalNullable[str] = UNSET,
@@ -754,14 +794,16 @@ class Employees(BaseSDK):
 
         scope: `employees:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
-        :param x_gusto_api_version:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param first_name:
         :param middle_initial:
         :param last_name:
         :param email:
+        :param work_email:
         :param date_of_birth:
         :param ssn:
         :param preferred_first_name:
@@ -790,6 +832,7 @@ class Employees(BaseSDK):
                 middle_initial=middle_initial,
                 last_name=last_name,
                 email=email,
+                work_email=work_email,
                 date_of_birth=date_of_birth,
                 ssn=ssn,
                 preferred_first_name=preferred_first_name,
@@ -817,6 +860,8 @@ class Employees(BaseSDK):
                 "json",
                 models.PutV1EmployeesRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -830,54 +875,52 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "409", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "409", "422"], "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
         *,
         employee_id: str,
         version: str,
-        x_gusto_api_version: Optional[str] = None,
+        x_gusto_api_version: Optional[
+            models.PutV1EmployeesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         first_name: Optional[str] = None,
         middle_initial: OptionalNullable[str] = UNSET,
         last_name: Optional[str] = None,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         date_of_birth: Optional[str] = None,
         ssn: Optional[str] = None,
         preferred_first_name: OptionalNullable[str] = UNSET,
@@ -893,14 +936,16 @@ class Employees(BaseSDK):
 
         scope: `employees:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
-        :param x_gusto_api_version:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param first_name:
         :param middle_initial:
         :param last_name:
         :param email:
+        :param work_email:
         :param date_of_birth:
         :param ssn:
         :param preferred_first_name:
@@ -929,6 +974,7 @@ class Employees(BaseSDK):
                 middle_initial=middle_initial,
                 last_name=last_name,
                 email=email,
+                work_email=work_email,
                 date_of_birth=date_of_birth,
                 ssn=ssn,
                 preferred_first_name=preferred_first_name,
@@ -956,6 +1002,8 @@ class Employees(BaseSDK):
                 "json",
                 models.PutV1EmployeesRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -969,43 +1017,38 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "409", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Employee)
-        if utils.match_response(http_res, ["404", "409", "422"], "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete(
         self,
@@ -1013,7 +1056,7 @@ class Employees(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.DeleteV1EmployeeHeaderXGustoAPIVersion
-        ] = models.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1027,6 +1070,7 @@ class Employees(BaseSDK):
 
         scope: `employees:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1060,9 +1104,11 @@ class Employees(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1076,37 +1122,38 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employee",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "422", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_async(
         self,
@@ -1114,7 +1161,7 @@ class Employees(BaseSDK):
         employee_id: str,
         x_gusto_api_version: Optional[
             models.DeleteV1EmployeeHeaderXGustoAPIVersion
-        ] = models.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+        ] = models.DeleteV1EmployeeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1128,6 +1175,7 @@ class Employees(BaseSDK):
 
         scope: `employees:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1161,9 +1209,11 @@ class Employees(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1177,37 +1227,38 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employee",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "422", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_custom_fields(
         self,
@@ -1216,18 +1267,20 @@ class Employees(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetV1EmployeesEmployeeIDCustomFieldsResponseBody:
+    ) -> models.EmployeeCustomFieldList:
         r"""Get an employee's custom fields
 
         Returns a list of the employee's custom fields.
 
         scope: `employees:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
@@ -1268,6 +1321,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1281,39 +1336,33 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-custom_fields",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, models.GetV1EmployeesEmployeeIDCustomFieldsResponseBody
+            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_custom_fields_async(
         self,
@@ -1322,18 +1371,20 @@ class Employees(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetV1EmployeesEmployeeIDCustomFieldsResponseBody:
+    ) -> models.EmployeeCustomFieldList:
         r"""Get an employee's custom fields
 
         Returns a list of the employee's custom fields.
 
         scope: `employees:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
@@ -1374,6 +1425,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1387,39 +1440,33 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-custom_fields",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, models.GetV1EmployeesEmployeeIDCustomFieldsResponseBody
+            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_time_off_activities(
         self,
@@ -1427,18 +1474,20 @@ class Employees(BaseSDK):
         employee_uuid: str,
         time_off_type: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
+        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffActivity:
+    ) -> List[models.TimeOffActivity]:
         r"""Get employee time off activities
 
         Get employee time off activities.
 
         scope: `employee_time_off_activities:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
@@ -1459,9 +1508,9 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetVersionEmployeesTimeOffActivitiesRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             time_off_type=time_off_type,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1477,6 +1526,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1490,37 +1541,38 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-version-employees-time_off_activities",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffActivity)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_time_off_activities_async(
         self,
@@ -1528,18 +1580,20 @@ class Employees(BaseSDK):
         employee_uuid: str,
         time_off_type: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
+        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.TimeOffActivity:
+    ) -> List[models.TimeOffActivity]:
         r"""Get employee time off activities
 
         Get employee time off activities.
 
         scope: `employee_time_off_activities:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
@@ -1560,9 +1614,9 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetVersionEmployeesTimeOffActivitiesRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             time_off_type=time_off_type,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1578,6 +1632,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1591,45 +1647,46 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-version-employees-time_off_activities",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TimeOffActivity)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_terminations(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDTerminationsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDTerminationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1642,6 +1699,8 @@ class Employees(BaseSDK):
         Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
 
         scope: `employments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1661,8 +1720,8 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -1678,6 +1737,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1691,45 +1752,41 @@ class Employees(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-terminations",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Termination])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Termination], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_terminations_async(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDTerminationsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDTerminationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1742,6 +1799,8 @@ class Employees(BaseSDK):
         Note that some states require employees to receive their final wages within 24 hours (unless they consent otherwise,) in which case running a one-off payroll may be the only option.
 
         scope: `employments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1761,8 +1820,8 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDTerminationsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -1778,6 +1837,8 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1791,34 +1852,30 @@ class Employees(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-terminations",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Termination])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Termination], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

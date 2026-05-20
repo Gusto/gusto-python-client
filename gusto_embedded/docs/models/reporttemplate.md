@@ -1,7 +1,5 @@
 # ReportTemplate
 
-Example response
-
 
 ## Fields
 

@@ -9,7 +9,7 @@ from gusto_app_integration.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
-from typing import Optional
+from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -29,31 +29,26 @@ class BenefitSummaryPayPeriod(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["start_date", "end_date"]
-        nullable_fields = ["start_date", "end_date"]
-        null_default_fields = []
-
+        optional_fields = set(["start_date", "end_date"])
+        nullable_fields = set(["start_date", "end_date"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
@@ -98,6 +93,33 @@ class PayrollBenefits(BaseModel):
 
     pay_period: Optional[BenefitSummaryPayPeriod] = None
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "payroll_uuid",
+                "payroll_type",
+                "check_date",
+                "gross_pay",
+                "imputed_pay",
+                "company_benefit_deduction",
+                "company_benefit_contribution",
+                "pay_period",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class BenefitSummaryEmployeesTypedDict(TypedDict):
     uuid: NotRequired[str]
@@ -114,7 +136,7 @@ class BenefitSummaryEmployeesTypedDict(TypedDict):
     r"""Gross pay for this employee given the period of time."""
     imputed_pay: NotRequired[str]
     r"""Total imputed pay for this employee given the period of time (not scoped to a benefit type)."""
-    payroll_benefits: NotRequired[PayrollBenefitsTypedDict]
+    payroll_benefits: NotRequired[List[PayrollBenefitsTypedDict]]
 
 
 class BenefitSummaryEmployees(BaseModel):
@@ -139,12 +161,37 @@ class BenefitSummaryEmployees(BaseModel):
     imputed_pay: Optional[str] = None
     r"""Total imputed pay for this employee given the period of time (not scoped to a benefit type)."""
 
-    payroll_benefits: Optional[PayrollBenefits] = None
+    payroll_benefits: Optional[List[PayrollBenefits]] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "uuid",
+                "company_benefit_deduction",
+                "company_benefit_contribution",
+                "benefit_deduction",
+                "benefit_contribution",
+                "gross_pay",
+                "imputed_pay",
+                "payroll_benefits",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class BenefitSummaryTypedDict(TypedDict):
-    r"""Benefit summary response"""
-
     start_date: NotRequired[str]
     r"""The start date of benefit summary."""
     end_date: NotRequired[str]
@@ -155,12 +202,10 @@ class BenefitSummaryTypedDict(TypedDict):
     r"""The aggregate of employee deduction for all employees given the period of time and the specific company benefit."""
     company_benefit_contribution: NotRequired[str]
     r"""The aggregate of company contribution for all employees given the period of time and the specific company benefit."""
-    employees: NotRequired[BenefitSummaryEmployeesTypedDict]
+    employees: NotRequired[List[BenefitSummaryEmployeesTypedDict]]
 
 
 class BenefitSummary(BaseModel):
-    r"""Benefit summary response"""
-
     start_date: Optional[str] = None
     r"""The start date of benefit summary."""
 
@@ -176,4 +221,29 @@ class BenefitSummary(BaseModel):
     company_benefit_contribution: Optional[str] = None
     r"""The aggregate of company contribution for all employees given the period of time and the specific company benefit."""
 
-    employees: Optional[BenefitSummaryEmployees] = None
+    employees: Optional[List[BenefitSummaryEmployees]] = None
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "start_date",
+                "end_date",
+                "description",
+                "company_benefit_deduction",
+                "company_benefit_contribution",
+                "employees",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

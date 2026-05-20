@@ -1,7 +1,5 @@
 # FormPdf
 
-Example response
-
 
 ## Fields
 

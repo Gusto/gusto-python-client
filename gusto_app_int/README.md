@@ -49,7 +49,15 @@ Gusto API: Welcome to Gusto's Embedded Payroll API documentation!
 >
 > Once a Python version reaches its [official end of life date](https://devguide.python.org/versions/), a 3-month grace period is provided for users to upgrade. Following this grace period, the minimum python version supported in the SDK will be updated.
 
-The SDK can be installed with either *pip* or *poetry* package managers.
+The SDK can be installed with *uv*, *pip*, or *poetry* package managers.
+
+### uv
+
+*uv* is a fast Python package installer and resolver, designed as a drop-in replacement for pip and pip-tools. It's recommended for its speed and modern Python tooling capabilities.
+
+```bash
+uv add gusto_app_integration
+```
 
 ### PIP
 
@@ -80,7 +88,7 @@ It's also possible to write a standalone Python script without needing to set up
 ```python
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.10"
 # dependencies = [
 #     "gusto_app_integration",
 # ]
@@ -116,6 +124,7 @@ Generally, the SDK will work well with most IDEs out of the box. However, when u
 
 ```python
 # Synchronous Example
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -123,7 +132,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -131,10 +140,12 @@ with GustoAppIntegration(
 
 </br>
 
-The same SDK client can also be used to make asychronous requests by importing asyncio.
+The same SDK client can also be used to make asynchronous requests by importing asyncio.
+
 ```python
 # Asynchronous Example
 import asyncio
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 async def main():
@@ -143,7 +154,7 @@ async def main():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
 
-        res = await gai_client.introspection.get_token_info_async()
+        res = await gai_client.introspection.get_token_info_async(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
         # Handle response
         print(res)
@@ -165,6 +176,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `company_access_auth` parameter must be set when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -172,7 +184,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -191,7 +203,7 @@ with GustoAppIntegration() as gai_client:
 
     gai_client.introspection.disconnect_app_integration(security=gusto_app_integration.PostV1DisconnectAppIntegrationSecurity(
         system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), company_id="<id>")
+    ), company_id="<id>", x_gusto_api_version=gusto_app_integration.PostV1DisconnectAppIntegrationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Use the SDK ...
 
@@ -204,7 +216,7 @@ with GustoAppIntegration() as gai_client:
 <details open>
 <summary>Available methods</summary>
 
-### [companies](docs/sdks/companies/README.md)
+### [Companies](docs/sdks/companies/README.md)
 
 * [provision](docs/sdks/companies/README.md#provision) - Create a company
 * [get](docs/sdks/companies/README.md#get) - Get a company
@@ -212,60 +224,57 @@ with GustoAppIntegration() as gai_client:
 * [get_admins](docs/sdks/companies/README.md#get_admins) - Get all the admins at a company
 * [get_custom_fields](docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 
-### [company_benefits](docs/sdks/companybenefits/README.md)
+### [CompanyBenefits](docs/sdks/companybenefits/README.md)
 
-* [create](docs/sdks/companybenefits/README.md#create) - Create a company benefit
 * [list](docs/sdks/companybenefits/README.md#list) - Get benefits for a company
+* [create](docs/sdks/companybenefits/README.md#create) - Create a company benefit
 * [get_by_id](docs/sdks/companybenefits/README.md#get_by_id) - Get a company benefit
 * [update](docs/sdks/companybenefits/README.md#update) - Update a company benefit
 * [delete](docs/sdks/companybenefits/README.md#delete) - Delete a company benefit
-* [list_supported](docs/sdks/companybenefits/README.md#list_supported) - Get all benefits supported by Gusto
-* [get](docs/sdks/companybenefits/README.md#get) - Get a supported benefit by ID
+* [list_supported](docs/sdks/companybenefits/README.md#list_supported) - Get all supported benefits
+* [get](docs/sdks/companybenefits/README.md#get) - Get a supported benefit
 * [get_summary](docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
 * [get_employee_benefits](docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
 * [bulk_update_employee_benefits](docs/sdks/companybenefits/README.md#bulk_update_employee_benefits) - Bulk update employee benefits for a company benefit
-* [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by ID
+* [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by benefit type
+* [get_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
+* [put_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
-### [company_locations](docs/sdks/companylocations/README.md)
+### [CompanyLocations](docs/sdks/companylocations/README.md)
 
-* [list](docs/sdks/companylocations/README.md#list) - Get company locations
+* [list](docs/sdks/companylocations/README.md#list) - Get all company locations
 
-### [contractor_payment_groups](docs/sdks/contractorpaymentgroups/README.md)
-
-* [get](docs/sdks/contractorpaymentgroups/README.md#get) - Get contractor payment groups for a company
-* [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
-* [fetch](docs/sdks/contractorpaymentgroups/README.md#fetch) - Fetch a contractor payment group
-
-### [contractor_payments](docs/sdks/contractorpayments/README.md)
+### [ContractorPayments](docs/sdks/contractorpayments/README.md)
 
 * [get](docs/sdks/contractorpayments/README.md#get) - Get contractor payments for a company
 * [get_by_id](docs/sdks/contractorpayments/README.md#get_by_id) - Get a single contractor payment
 
-### [contractors](docs/sdks/contractors/README.md)
+### [Contractors](docs/sdks/contractors/README.md)
 
-* [create](docs/sdks/contractors/README.md#create) - Create a contractor
 * [get](docs/sdks/contractors/README.md#get) - Get contractors of a company
+* [create](docs/sdks/contractors/README.md#create) - Create a contractor
 * [get_by_id](docs/sdks/contractors/README.md#get_by_id) - Get a contractor
 * [update](docs/sdks/contractors/README.md#update) - Update a contractor
+* [get_v1_companies_company_id_contractors_payment_details](docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 
-### [departments](docs/sdks/departments/README.md)
+### [Departments](docs/sdks/departments/README.md)
 
-* [create](docs/sdks/departments/README.md#create) - Create a department
 * [get_all](docs/sdks/departments/README.md#get_all) - Get all departments of a company
+* [create](docs/sdks/departments/README.md#create) - Create a department
 * [get](docs/sdks/departments/README.md#get) - Get a department
 * [update](docs/sdks/departments/README.md#update) - Update a department
 * [delete](docs/sdks/departments/README.md#delete) - Delete a department
 * [add_people](docs/sdks/departments/README.md#add_people) - Add people to a department
 * [remove_people](docs/sdks/departments/README.md#remove_people) - Remove people from a department
 
-### [earning_types](docs/sdks/earningtypes/README.md)
+### [EarningTypes](docs/sdks/earningtypes/README.md)
 
-* [create](docs/sdks/earningtypes/README.md#create) - Create a custom earning type
 * [get](docs/sdks/earningtypes/README.md#get) - Get all earning types for a company
+* [create](docs/sdks/earningtypes/README.md#create) - Create a custom earning type
 * [update](docs/sdks/earningtypes/README.md#update) - Update an earning type
 * [deactivate](docs/sdks/earningtypes/README.md#deactivate) - Deactivate an earning type
 
-### [employee_addresses](docs/sdks/employeeaddresses/README.md)
+### [EmployeeAddresses](docs/sdks/employeeaddresses/README.md)
 
 * [list_home_addresses](docs/sdks/employeeaddresses/README.md#list_home_addresses) - Get an employee's home addresses
 * [create](docs/sdks/employeeaddresses/README.md#create) - Create an employee's home address
@@ -278,28 +287,33 @@ with GustoAppIntegration() as gai_client:
 * [update_work_address](docs/sdks/employeeaddresses/README.md#update_work_address) - Update an employee work address
 * [delete_work_address](docs/sdks/employeeaddresses/README.md#delete_work_address) - Delete an employee's work address
 
-### [employee_benefits](docs/sdks/employeebenefits/README.md)
+### [EmployeeBenefits](docs/sdks/employeebenefits/README.md)
 
-* [create](docs/sdks/employeebenefits/README.md#create) - Create an employee benefit
 * [get_all](docs/sdks/employeebenefits/README.md#get_all) - Get all benefits for an employee
+* [create](docs/sdks/employeebenefits/README.md#create) - Create an employee benefit
 * [get](docs/sdks/employeebenefits/README.md#get) - Get an employee benefit
 * [update](docs/sdks/employeebenefits/README.md#update) - Update an employee benefit
 * [delete](docs/sdks/employeebenefits/README.md#delete) - Delete an employee benefit
 * [get_ytd_benefit_amounts_from_different_company](docs/sdks/employeebenefits/README.md#get_ytd_benefit_amounts_from_different_company) - Get year-to-date benefit amounts from a different company
 * [create_ytd_benefit_amounts_from_different_company](docs/sdks/employeebenefits/README.md#create_ytd_benefit_amounts_from_different_company) - Create year-to-date benefit amounts from a different company
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses](docs/sdks/employeebenefits/README.md#get_v1_employees_employee_uuid_section603_high_earner_statuses) - Get all Section 603 high earner statuses for an employee
+* [post_v1_employees_employee_uuid_section603_high_earner_statuses](docs/sdks/employeebenefits/README.md#post_v1_employees_employee_uuid_section603_high_earner_statuses) - Create a Section 603 high earner status
+* [get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](docs/sdks/employeebenefits/README.md#get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Get a Section 603 high earner status for a specific year
+* [patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year](docs/sdks/employeebenefits/README.md#patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year) - Update a Section 603 high earner status
 
-### [employee_employments](docs/sdks/employeeemployments/README.md)
+### [EmployeeEmployments](docs/sdks/employeeemployments/README.md)
 
 * [create_termination](docs/sdks/employeeemployments/README.md#create_termination) - Create an employee termination
 * [delete_termination](docs/sdks/employeeemployments/README.md#delete_termination) - Delete an employee termination
 * [update_termination](docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
+* [get_rehire](docs/sdks/employeeemployments/README.md#get_rehire) - Get an employee rehire
 * [create_rehire](docs/sdks/employeeemployments/README.md#create_rehire) - Create an employee rehire
 * [update_rehire](docs/sdks/employeeemployments/README.md#update_rehire) - Update an employee rehire
-* [get_rehire](docs/sdks/employeeemployments/README.md#get_rehire) - Get an employee rehire
 * [delete_rehire](docs/sdks/employeeemployments/README.md#delete_rehire) - Delete an employee rehire
 * [get_history](docs/sdks/employeeemployments/README.md#get_history) - Get employment history for an employee
+* [get_v1_terminations_employee_id](docs/sdks/employeeemployments/README.md#get_v1_terminations_employee_id) - Get an employee termination
 
-### [employees](docs/sdks/employees/README.md)
+### [Employees](docs/sdks/employees/README.md)
 
 * [get](docs/sdks/employees/README.md#get) - Get employees of a company
 * [create](docs/sdks/employees/README.md#create) - Create an employee
@@ -310,50 +324,55 @@ with GustoAppIntegration() as gai_client:
 * [get_time_off_activities](docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
 * [get_terminations](docs/sdks/employees/README.md#get_terminations) - Get terminations for an employee
 
-### [events](docs/sdks/events/README.md)
+### [Events](docs/sdks/events/README.md)
 
 * [get_all](docs/sdks/events/README.md#get_all) - Get all events
 
-### [garnishments](docs/sdks/garnishments/README.md)
+### [Garnishments](docs/sdks/garnishments/README.md)
 
-* [create](docs/sdks/garnishments/README.md#create) - Create a garnishment
 * [get](docs/sdks/garnishments/README.md#get) - Get garnishments for an employee
+* [create](docs/sdks/garnishments/README.md#create) - Create a garnishment
 * [get_by_id](docs/sdks/garnishments/README.md#get_by_id) - Get a garnishment
 * [update](docs/sdks/garnishments/README.md#update) - Update a garnishment
 * [get_child_support](docs/sdks/garnishments/README.md#get_child_support) - Get child support garnishment data
 
-
-### [introspection](docs/sdks/introspection/README.md)
+### [Introspection](docs/sdks/introspection/README.md)
 
 * [get_token_info](docs/sdks/introspection/README.md#get_token_info) - Get info about the current access token
 * [revoke](docs/sdks/introspection/README.md#revoke) - Revoke access token
-* [refresh_access_token](docs/sdks/introspection/README.md#refresh_access_token) - Refresh access token
+* [oauth_access_token](docs/sdks/introspection/README.md#oauth_access_token) - Create a System Access Token or Refresh an Access Token
 * [disconnect_app_integration](docs/sdks/introspection/README.md#disconnect_app_integration) - Disconnect an app integration
 
-### [jobs](docs/sdks/jobs/README.md)
+### [Jobs](docs/sdks/jobs/README.md)
 
-* [create](docs/sdks/jobs/README.md#create) - Create a job
 * [create_compensation](docs/sdks/jobs/README.md#create_compensation) - Create a compensation
 
-### [jobs_and_compensations](docs/sdks/jobsandcompensations/README.md)
+### [JobsAndCompensations](docs/sdks/jobsandcompensations/README.md)
 
-* [get_jobs](docs/sdks/jobsandcompensations/README.md#get_jobs) - Get jobs for an employee
-* [get](docs/sdks/jobsandcompensations/README.md#get) - Get a job
-* [update_job](docs/sdks/jobsandcompensations/README.md#update_job) - Update a job
-* [delete](docs/sdks/jobsandcompensations/README.md#delete) - Delete an individual job
 * [get_compensations_for_job](docs/sdks/jobsandcompensations/README.md#get_compensations_for_job) - Get compensations for a job
 * [get_compensation](docs/sdks/jobsandcompensations/README.md#get_compensation) - Get a compensation
 * [update_compensation](docs/sdks/jobsandcompensations/README.md#update_compensation) - Update a compensation
 * [delete_compensation](docs/sdks/jobsandcompensations/README.md#delete_compensation) - Delete a compensation
 
-### [locations](docs/sdks/locations/README.md)
+### [Locations](docs/sdks/locations/README.md)
 
 * [create](docs/sdks/locations/README.md#create) - Create a company location
 * [get](docs/sdks/locations/README.md#get) - Get a location
 * [update](docs/sdks/locations/README.md#update) - Update a location
 * [get_minimum_wages](docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
 
-### [pay_schedules](docs/sdks/payschedules/README.md)
+### [Notifications](docs/sdks/notifications/README.md)
+
+* [get_company_notifications](docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
+
+### [Payrolls](docs/sdks/payrolls/README.md)
+
+* [get_for_company](docs/sdks/payrolls/README.md#get_for_company) - Get all payrolls for a company
+* [get](docs/sdks/payrolls/README.md#get) - Get a single payroll
+* [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
+* [prepare](docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+
+### [PaySchedules](docs/sdks/payschedules/README.md)
 
 * [list](docs/sdks/payschedules/README.md#list) - Get the pay schedules for a company
 * [get](docs/sdks/payschedules/README.md#get) - Get a pay schedule
@@ -361,34 +380,59 @@ with GustoAppIntegration() as gai_client:
 * [get_unprocessed_termination_pay_periods](docs/sdks/payschedules/README.md#get_unprocessed_termination_pay_periods) - Get termination pay periods for a company
 * [get_assignments](docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
 
-### [payrolls](docs/sdks/payrolls/README.md)
+### [Reimbursements](docs/sdks/reimbursements/README.md)
 
-* [get_for_company](docs/sdks/payrolls/README.md#get_for_company) - Get all payrolls for a company
-* [get](docs/sdks/payrolls/README.md#get) - Get a single payroll
-* [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
-* [prepare](docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+* [get_v1_employees_employee_id_recurring_reimbursements](docs/sdks/reimbursements/README.md#get_v1_employees_employee_id_recurring_reimbursements) - Get recurring reimbursements for an employee
+* [post_v1_employees_employee_id_recurring_reimbursements](docs/sdks/reimbursements/README.md#post_v1_employees_employee_id_recurring_reimbursements) - Create a recurring reimbursement
+* [get_v1_recurring_reimbursements](docs/sdks/reimbursements/README.md#get_v1_recurring_reimbursements) - Get a recurring reimbursement
+* [put_v1_recurring_reimbursements](docs/sdks/reimbursements/README.md#put_v1_recurring_reimbursements) - Update a recurring reimbursement
+* [delete_v1_recurring_reimbursements](docs/sdks/reimbursements/README.md#delete_v1_recurring_reimbursements) - Delete a recurring reimbursement
 
-### [time_off_policies](docs/sdks/timeoffpolicies/README.md)
+### [Reports](docs/sdks/reports/README.md)
 
-* [calculate_accruing_time_off_hours](docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
+* [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
+* [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
+* [post_v1_companies_company_id_reports_employees_annual_fica_wage](docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 
-### [time_tracking](docs/sdks/timetracking/README.md)
+### [SalaryEstimates](docs/sdks/salaryestimates/README.md)
+
+* [post_v1_employees_employee_id_salary_estimates](docs/sdks/salaryestimates/README.md#post_v1_employees_employee_id_salary_estimates) - Create a salary estimate for an employee
+* [get_v1_salary_estimates_id](docs/sdks/salaryestimates/README.md#get_v1_salary_estimates_id) - Get a salary estimate
+* [put_v1_salary_estimates_id](docs/sdks/salaryestimates/README.md#put_v1_salary_estimates_id) - Update a salary estimate
+* [post_v1_salary_estimates_uuid_accept](docs/sdks/salaryestimates/README.md#post_v1_salary_estimates_uuid_accept) - Accept a salary estimate
+* [get_v1_salary_estimates_occupations](docs/sdks/salaryestimates/README.md#get_v1_salary_estimates_occupations) - Search for BLS occupations
+
+### [TimeOffRequests](docs/sdks/timeoffrequests/README.md)
+
+* [get_v1_companies_company_id_time_off_requests](docs/sdks/timeoffrequests/README.md#get_v1_companies_company_id_time_off_requests) - Get time off requests for a company
+
+### [TimeTracking](docs/sdks/timetracking/README.md)
 
 * [get_companies_company_uuid_time_tracking_time_sheets](docs/sdks/timetracking/README.md#get_companies_company_uuid_time_tracking_time_sheets) - Get all time sheets for a company
 * [post_companies_company_uuid_time_tracking_time_sheets](docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_time_sheets) - Create a time sheet
 * [get_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#get_time_tracking_time_sheets_time_sheet_uuid) - Get a time sheet
 * [put_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#put_time_tracking_time_sheets_time_sheet_uuid) - Update a time sheet
 * [delete_time_tracking_time_sheets_time_sheet_uuid](docs/sdks/timetracking/README.md#delete_time_tracking_time_sheets_time_sheet_uuid) - Delete a time sheet
+* [post_companies_company_uuid_time_tracking_payroll_syncs](docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_payroll_syncs) - Create a payroll sync
+* [get_time_tracking_payroll_syncs_payroll_sync_uuid](docs/sdks/timetracking/README.md#get_time_tracking_payroll_syncs_payroll_sync_uuid) - Get a payroll sync
 
-### [webhooks](docs/sdks/webhooks/README.md)
+### [TimeOffPolicies](docs/sdks/timeoffpolicies/README.md)
 
-* [create](docs/sdks/webhooks/README.md#create) - Create a webhook subscription
+* [calculate_accruing_time_off_hours](docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
+* [get_v1_time_off_policies_time_off_policy_uuid](docs/sdks/timeoffpolicies/README.md#get_v1_time_off_policies_time_off_policy_uuid) - Get a time off policy
+* [get_v1_companies_company_uuid_time_off_policies](docs/sdks/timeoffpolicies/README.md#get_v1_companies_company_uuid_time_off_policies) - Get all time off policies for a company
+* [put_v1_time_off_policies_time_off_policy_uuid_add_employees](docs/sdks/timeoffpolicies/README.md#put_v1_time_off_policies_time_off_policy_uuid_add_employees) - Add employees to a time off policy
+
+### [Webhooks](docs/sdks/webhooks/README.md)
+
 * [list_subscriptions](docs/sdks/webhooks/README.md#list_subscriptions) - List webhook subscriptions
-* [update_subscription](docs/sdks/webhooks/README.md#update_subscription) - Update a webhook subscription
+* [create](docs/sdks/webhooks/README.md#create) - Create a webhook subscription
 * [get_subscription](docs/sdks/webhooks/README.md#get_subscription) - Get a webhook subscription
+* [update_subscription](docs/sdks/webhooks/README.md#update_subscription) - Update a webhook subscription
 * [delete_subscription](docs/sdks/webhooks/README.md#delete_subscription) - Delete a webhook subscription
-* [verify](docs/sdks/webhooks/README.md#verify) - Verify the webhook subscription
-* [request_verification_token](docs/sdks/webhooks/README.md#request_verification_token) - Request the webhook subscription verification_token
+* [verify](docs/sdks/webhooks/README.md#verify) - Verify a webhook subscription
+* [request_verification_token](docs/sdks/webhooks/README.md#request_verification_token) - Request a verification token for a webhook subscription
+* [get_v1_webhooks_health_check](docs/sdks/webhooks/README.md#get_v1_webhooks_health_check) - Get the webhooks health status
 
 </details>
 <!-- End Available Resources and Operations [operations] -->
@@ -400,6 +444,7 @@ Some of the endpoints in this SDK support retries. If you use the SDK without an
 
 To change the default retry strategy for a single API call, simply provide a `RetryConfig` object to the call:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -408,7 +453,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info(,
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -418,6 +463,7 @@ with GustoAppIntegration(
 
 If you'd like to override the default retry strategy for all operations that support retries, you can use the `retry_config` optional parameter when initializing the SDK:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 from gusto_app_integration.utils import BackoffStrategy, RetryConfig
 
@@ -427,7 +473,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -438,81 +484,70 @@ with GustoAppIntegration(
 <!-- Start Error Handling [errors] -->
 ## Error Handling
 
-Handling errors in this SDK should largely match your expectations. All operations return a response object or raise an exception.
+[`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py) is the base class for all HTTP error responses. It has the following properties:
 
-By default, an API error will raise a models.APIError exception, which has the following properties:
-
-| Property        | Type             | Description           |
-|-----------------|------------------|-----------------------|
-| `.status_code`  | *int*            | The HTTP status code  |
-| `.message`      | *str*            | The error message     |
-| `.raw_response` | *httpx.Response* | The raw HTTP response |
-| `.body`         | *str*            | The response content  |
-
-When custom error responses are specified for an operation, the SDK may also raise their associated exceptions. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `provision_async` method may raise the following exceptions:
-
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| models.UnprocessableEntityErrorObject | 422         | application/json |
-| models.APIError                       | 4XX, 5XX    | \*/\*            |
+| Property           | Type             | Description                                                                             |
+| ------------------ | ---------------- | --------------------------------------------------------------------------------------- |
+| `err.message`      | `str`            | Error message                                                                           |
+| `err.status_code`  | `int`            | HTTP response status code eg `404`                                                      |
+| `err.headers`      | `httpx.Headers`  | HTTP response headers                                                                   |
+| `err.body`         | `str`            | HTTP body. Can be empty string if no body is returned.                                  |
+| `err.raw_response` | `httpx.Response` | Raw HTTP response                                                                       |
+| `err.data`         |                  | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
-
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration, models
 
 
 with GustoAppIntegration() as gai_client:
-    res = None
+
     try:
 
-        res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
+        gai_client.introspection.disconnect_app_integration(security=gusto_app_integration.PostV1DisconnectAppIntegrationSecurity(
             system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-        ), user={
-            "first_name": "Frank",
-            "last_name": "Ocean",
-            "email": "frank@example.com",
-            "phone": "2345558899",
-        }, company={
-            "name": "Frank's Ocean, LLC",
-            "trade_name": "Frank’s Ocean",
-            "ein": "123456789",
-            "states": [
-                "CO",
-                "CA",
-            ],
-            "number_employees": 8,
-            "addresses": [
-                {
-                    "street_1": "1201 16th Street Mall",
-                    "street_2": "Suite 350",
-                    "city": "Denver",
-                    "zip_code": "80202",
-                    "state": "CO",
-                    "phone": "2345678900",
-                    "is_primary": "true",
-                },
-                {
-                    "street_1": "525 20th Street",
-                    "city": "San Francisco",
-                    "zip_code": "94107",
-                    "state": "CA",
-                    "phone": "2345678901",
-                },
-            ],
-        })
+        ), company_id="<id>", x_gusto_api_version=gusto_app_integration.PostV1DisconnectAppIntegrationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
-        # Handle response
-        print(res)
+        # Use the SDK ...
 
-    except models.UnprocessableEntityErrorObject as e:
-        # handle e.data: models.UnprocessableEntityErrorObjectData
-        raise(e)
-    except models.APIError as e:
-        # handle exception
-        raise(e)
+
+    except models.GustoAppIntegrationError as e:
+        # The base class for HTTP error responses
+        print(e.message)
+        print(e.status_code)
+        print(e.body)
+        print(e.headers)
+        print(e.raw_response)
+
+        # Depending on the method different errors may be thrown
+        if isinstance(e, models.NotFoundErrorObject):
+            print(e.data.errors)  # List[gusto_app_integration.Errors]
 ```
+
+### Error Classes
+**Primary errors:**
+* [`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py): The base class for HTTP error responses.
+  * [`NotFoundErrorObject`](./src/gusto_app_integration/models/notfounderrorobject.py): Not Found     The requested resource does not exist. Make sure the provided ID/UUID is valid. *
+
+<details><summary>Less common errors (7)</summary>
+
+<br />
+
+**Network errors:**
+* [`httpx.RequestError`](https://www.python-httpx.org/exceptions/#httpx.RequestError): Base class for request errors.
+    * [`httpx.ConnectError`](https://www.python-httpx.org/exceptions/#httpx.ConnectError): HTTP client was unable to make a request to a server.
+    * [`httpx.TimeoutException`](https://www.python-httpx.org/exceptions/#httpx.TimeoutException): HTTP request timed out.
+
+
+**Inherit from [`GustoAppIntegrationError`](./src/gusto_app_integration/models/gustoappintegrationerror.py)**:
+* [`UnprocessableEntityErrorObject`](./src/gusto_app_integration/models/unprocessableentityerrorobject.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 63 of 137 methods.*
+* [`ConflictErrorObject`](./src/gusto_app_integration/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 1 of 137 methods.*
+* [`ResponseValidationError`](./src/gusto_app_integration/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
+
+</details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -530,15 +565,16 @@ You can override the default server globally by passing a server name to the `se
 #### Example
 
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
 with GustoAppIntegration(
-    server="prod",
+    server="demo",
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -549,6 +585,7 @@ with GustoAppIntegration(
 
 The default server can also be overridden globally by passing a URL to the `server_url: str` optional parameter when initializing the SDK client instance. For example:
 ```python
+import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
@@ -557,7 +594,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info()
+    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

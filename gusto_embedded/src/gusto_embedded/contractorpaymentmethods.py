@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, Mapping, Optional
 
 
@@ -16,10 +17,10 @@ class ContractorPaymentMethods(BaseSDK):
         name: str,
         routing_number: str,
         account_number: str,
-        account_type: models.PostV1ContractorsContractorUUIDBankAccountsAccountType,
+        account_type: models.ContractorBankAccountCreateRequestBodyAccountType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1ContractorsContractorUUIDBankAccountsHeaderXGustoAPIVersion
+        ] = models.PostV1ContractorsContractorUUIDBankAccountsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -33,11 +34,13 @@ class ContractorPaymentMethods(BaseSDK):
 
         scope: `contractor_payment_methods:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param contractor_uuid: The UUID of the contractor
-        :param name:
-        :param routing_number:
-        :param account_number:
-        :param account_type:
+        :param name: Name for the bank account
+        :param routing_number: The bank account's routing number
+        :param account_number: The bank account's account number
+        :param account_type: Bank account type
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -55,9 +58,9 @@ class ContractorPaymentMethods(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDBankAccountsRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1ContractorsContractorUUIDBankAccountsRequestBody(
+            contractor_uuid=contractor_uuid,
+            contractor_bank_account_create_request_body=models.ContractorBankAccountCreateRequestBody(
                 name=name,
                 routing_number=routing_number,
                 account_number=account_number,
@@ -79,12 +82,14 @@ class ContractorPaymentMethods(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_bank_account_create_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1ContractorsContractorUUIDBankAccountsRequestBody,
+                models.ContractorBankAccountCreateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -98,45 +103,40 @@ class ContractorPaymentMethods(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-contractors-contractor_uuid-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorBankAccount)
+            return unmarshal_json_response(models.ContractorBankAccount, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectErrorData, http_res
+            )
+            raise models.NotFoundErrorObjectError(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_bank_account_async(
         self,
@@ -145,10 +145,10 @@ class ContractorPaymentMethods(BaseSDK):
         name: str,
         routing_number: str,
         account_number: str,
-        account_type: models.PostV1ContractorsContractorUUIDBankAccountsAccountType,
+        account_type: models.ContractorBankAccountCreateRequestBodyAccountType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1ContractorsContractorUUIDBankAccountsHeaderXGustoAPIVersion
+        ] = models.PostV1ContractorsContractorUUIDBankAccountsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -162,11 +162,13 @@ class ContractorPaymentMethods(BaseSDK):
 
         scope: `contractor_payment_methods:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param contractor_uuid: The UUID of the contractor
-        :param name:
-        :param routing_number:
-        :param account_number:
-        :param account_type:
+        :param name: Name for the bank account
+        :param routing_number: The bank account's routing number
+        :param account_number: The bank account's account number
+        :param account_type: Bank account type
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -184,9 +186,9 @@ class ContractorPaymentMethods(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDBankAccountsRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1ContractorsContractorUUIDBankAccountsRequestBody(
+            contractor_uuid=contractor_uuid,
+            contractor_bank_account_create_request_body=models.ContractorBankAccountCreateRequestBody(
                 name=name,
                 routing_number=routing_number,
                 account_number=account_number,
@@ -208,12 +210,14 @@ class ContractorPaymentMethods(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_bank_account_create_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1ContractorsContractorUUIDBankAccountsRequestBody,
+                models.ContractorBankAccountCreateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -227,42 +231,37 @@ class ContractorPaymentMethods(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-contractors-contractor_uuid-bank_accounts",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorBankAccount)
+            return unmarshal_json_response(models.ContractorBankAccount, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectErrorData, http_res
+            )
+            raise models.NotFoundErrorObjectError(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

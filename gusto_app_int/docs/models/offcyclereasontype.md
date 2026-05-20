@@ -1,12 +1,19 @@
 # OffCycleReasonType
 
-The off-cycle reason. Only included for off-cycle payrolls.
+## Example Usage
+
+```python
+from gusto_app_integration.models import OffCycleReasonType
+
+value = OffCycleReasonType.ADHOC
+```
 
 
 ## Values
 
 | Name                                | Value                               |
 | ----------------------------------- | ----------------------------------- |
+| `ADHOC`                             | Adhoc                               |
 | `BENEFIT_REVERSAL`                  | Benefit reversal                    |
 | `BONUS`                             | Bonus                               |
 | `CORRECTION`                        | Correction                          |

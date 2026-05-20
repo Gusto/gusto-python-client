@@ -1,6 +1,12 @@
 # Type
 
-The pay schedule assignment type.
+## Example Usage
+
+```python
+from gusto_app_integration.models import Type
+
+value = Type.SINGLE
+```
 
 
 ## Values

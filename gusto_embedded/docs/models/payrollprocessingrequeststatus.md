@@ -2,6 +2,14 @@
 
 The status of the payroll processing request
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PayrollProcessingRequestStatus
+
+value = PayrollProcessingRequestStatus.CALCULATING
+```
+
 
 ## Values
 

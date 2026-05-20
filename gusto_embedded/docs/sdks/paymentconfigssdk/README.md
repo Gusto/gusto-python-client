@@ -1,5 +1,4 @@
-# PaymentConfigsSDK
-(*payment_configs*)
+# PaymentConfigs
 
 ## Overview
 
@@ -10,54 +9,16 @@
 
 ## get
 
-Get payment speed for the company and fast payment limit (1-day is only applicable to partners that opt in).
+Get payment speed configurations for the company: payment speed (1-day, 2-day, or 4-day ACH), fast payment limit, partner-owned disbursement setting, and earned fast ACH blockers when applicable. 1-day is only available to partners that opt in.
+
+### Related guides
+- [Payroll Processing Speeds](doc:2-day-vs-4-day)
 
 scope: `company_payment_configs:read`
 
 ### Example Usage
 
-```python
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payment_configs.get(company_uuid="<id>")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.PaymentConfigs](../../models/paymentconfigs.md)**
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
-
-## update
-
-Update payment speed and fast payment limit for a company. At least one of `payment_speed` or `fast_payment_limit` parameters is required. 1-day option is only applicable to partners that opt in.
-
-scope: `company_payment_configs:write`
-
-### Example Usage
-
+<!-- UsageSnippet language="python" operationID="get-v1-company-payment-configs" method="get" path="/v1/companies/{company_uuid}/payment_configs" -->
 ```python
 import gusto_embedded
 from gusto_embedded import Gusto
@@ -68,10 +29,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.payment_configs.update(company_uuid="<id>", request_body={
-        "fast_payment_limit": "5000",
-        "payment_speed": gusto_embedded.PaymentSpeedParam.TWO_MINUS_DAY,
-    })
+    res = gusto.payment_configs.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1CompanyPaymentConfigsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -83,8 +41,7 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `request_body`                                                                                                                                                                                                               | [models.PutV1CompanyPaymentConfigsRequestBody](../../models/putv1companypaymentconfigsrequestbody.md)                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyPaymentConfigsHeaderXGustoAPIVersion]](../../models/getv1companypaymentconfigsheaderxgustoapiversion.md)                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -93,7 +50,60 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
+
+## update
+
+Update payment speed, fast payment limit, and/or partner-owned disbursement for a company.
+
+At least one of `payment_speed`, `fast_payment_limit`, or `partner_owned_disbursement` is required.
+1-day payment speed is only applicable to partners that opt in. 1-day is not allowed when AutoPilot is enabled.
+
+### Related guides
+- [Payroll Processing Speeds](doc:2-day-vs-4-day)
+
+scope: `company_payment_configs:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-company-payment-configs" method="put" path="/v1/companies/{company_uuid}/payment_configs" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.payment_configs.update(company_uuid="<id>", x_gusto_api_version=gusto_embedded.PutV1CompanyPaymentConfigsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompanyPaymentConfigsHeaderXGustoAPIVersion]](../../models/putv1companypaymentconfigsheaderxgustoapiversion.md)                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `payment_configs`                                                                                                                                                                                                            | [Optional[models.PaymentConfigsUpdateRequestPaymentConfigs]](../../models/paymentconfigsupdaterequestpaymentconfigs.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.PaymentConfigs](../../models/paymentconfigs.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObjectError  | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |

@@ -1,7 +1,5 @@
 # EmployeeBankAccount
 
-Example response
-
 
 ## Fields
 

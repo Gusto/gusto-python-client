@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 from .employee_custom_field import EmployeeCustomField, EmployeeCustomFieldTypedDict
+from .flsa_status_type import FlsaStatusType
 from .garnishment import Garnishment, GarnishmentTypedDict
 from .job import Job, JobTypedDict
 from .paid_time_off import PaidTimeOff, PaidTimeOffTypedDict
 from .termination import Termination, TerminationTypedDict
+from datetime import date, datetime
 from enum import Enum
 from gusto_app_integration.types import (
     BaseModel,
@@ -19,9 +21,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class OnboardingStatus(str, Enum):
-    r"""The current onboarding status of the employee"""
-
+class EmployeeOnboardingStatus(str, Enum):
     ONBOARDING_COMPLETED = "onboarding_completed"
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
     SELF_ONBOARDING_PENDING_INVITE = "self_onboarding_pending_invite"
@@ -32,7 +32,7 @@ class OnboardingStatus(str, Enum):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class OnboardingDocumentsConfigTypedDict(TypedDict):
+class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -41,7 +41,7 @@ class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class OnboardingDocumentsConfig(BaseModel):
+class EmployeeOnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -52,50 +52,116 @@ class OnboardingDocumentsConfig(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["uuid", "i9_document"]
-        nullable_fields = ["uuid"]
-        null_default_fields = []
-
+        optional_fields = set(["uuid", "i9_document"])
+        nullable_fields = set(["uuid"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
 
-class PaymentMethod(str, Enum):
+class EmployeePaymentMethod(str, Enum):
     r"""The employee's payment method"""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
-class CurrentEmploymentStatus(str, Enum):
-    r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
-
+class EmployeeCurrentEmploymentStatus(str, Enum):
     FULL_TIME = "full_time"
     PART_TIME_UNDER_TWENTY_HOURS = "part_time_under_twenty_hours"
     PART_TIME_TWENTY_PLUS_HOURS = "part_time_twenty_plus_hours"
     VARIABLE = "variable"
     SEASONAL = "seasonal"
+
+
+class EmployeeStatus(str, Enum):
+    r"""The current status of the member portal invitation."""
+
+    PENDING = "pending"
+    SENT = "sent"
+    VERIFIED = "verified"
+    COMPLETE = "complete"
+    CANCELLED = "cancelled"
+
+
+class EmployeeMemberPortalInvitationStatusTypedDict(TypedDict):
+    r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
+
+    status: NotRequired[EmployeeStatus]
+    r"""The current status of the member portal invitation."""
+    token_expired: NotRequired[Nullable[bool]]
+    r"""Whether the invitation token has expired."""
+    welcome_email_sent_at: NotRequired[Nullable[datetime]]
+    r"""The date and time when the welcome email was sent."""
+    last_password_resent_at: NotRequired[Nullable[datetime]]
+    r"""The date and time when the password reset was last resent."""
+
+
+class EmployeeMemberPortalInvitationStatus(BaseModel):
+    r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
+
+    status: Optional[EmployeeStatus] = None
+    r"""The current status of the member portal invitation."""
+
+    token_expired: OptionalNullable[bool] = UNSET
+    r"""Whether the invitation token has expired."""
+
+    welcome_email_sent_at: OptionalNullable[datetime] = UNSET
+    r"""The date and time when the welcome email was sent."""
+
+    last_password_resent_at: OptionalNullable[datetime] = UNSET
+    r"""The date and time when the password reset was last resent."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "status",
+                "token_expired",
+                "welcome_email_sent_at",
+                "last_password_resent_at",
+            ]
+        )
+        nullable_fields = set(
+            ["token_expired", "welcome_email_sent_at", "last_password_resent_at"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class EmployeeTypedDict(TypedDict):
@@ -120,11 +186,13 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee is terminated."""
     two_percent_shareholder: NotRequired[Nullable[bool]]
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     onboarded: NotRequired[bool]
     r"""Whether the employee has completed onboarding."""
-    onboarding_status: NotRequired[Nullable[OnboardingStatus]]
+    onboarding_status: NotRequired[Nullable[EmployeeOnboardingStatus]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[EmployeeOnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -139,12 +207,28 @@ class EmployeeTypedDict(TypedDict):
     r"""Deprecated. This field always returns an empty string."""
     phone: NotRequired[Nullable[str]]
     preferred_first_name: NotRequired[Nullable[str]]
-    payment_method: NotRequired[PaymentMethod]
+    payment_method: NotRequired[EmployeePaymentMethod]
     r"""The employee's payment method"""
-    work_email: NotRequired[Nullable[str]]
-    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
-    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
+    current_employment_status: NotRequired[Nullable[EmployeeCurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
+    historical: NotRequired[bool]
+    employee_code: NotRequired[str]
+    r"""The short format code of the employee"""
+    department_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the department the employee is under"""
+    title: NotRequired[str]
+    hired_at: NotRequired[date]
+    r"""The date when the employee was hired to the company"""
+    hidden_ssn: NotRequired[str]
+    flsa_status: NotRequired[FlsaStatusType]
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+    applicable_tax_ids: NotRequired[List[float]]
+    member_portal_invitation_status: NotRequired[
+        Nullable[EmployeeMemberPortalInvitationStatusTypedDict]
+    ]
+    r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
+    partner_portal_invitation_sent: NotRequired[Nullable[bool]]
+    r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
 
 
 class Employee(BaseModel):
@@ -180,13 +264,16 @@ class Employee(BaseModel):
     two_percent_shareholder: OptionalNullable[bool] = UNSET
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
 
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     onboarded: Optional[bool] = None
     r"""Whether the employee has completed onboarding."""
 
-    onboarding_status: OptionalNullable[OnboardingStatus] = UNSET
+    onboarding_status: OptionalNullable[EmployeeOnboardingStatus] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[EmployeeOnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -212,78 +299,115 @@ class Employee(BaseModel):
 
     preferred_first_name: OptionalNullable[str] = UNSET
 
-    payment_method: Optional[PaymentMethod] = PaymentMethod.CHECK
+    payment_method: Optional[EmployeePaymentMethod] = EmployeePaymentMethod.CHECK
     r"""The employee's payment method"""
 
-    work_email: OptionalNullable[str] = UNSET
-    r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
-
-    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[EmployeeCurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
+
+    historical: Optional[bool] = None
+
+    employee_code: Optional[str] = None
+    r"""The short format code of the employee"""
+
+    department_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the department the employee is under"""
+
+    title: Optional[str] = None
+
+    hired_at: Optional[date] = None
+    r"""The date when the employee was hired to the company"""
+
+    hidden_ssn: Optional[str] = None
+
+    flsa_status: Optional[FlsaStatusType] = None
+    r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+
+    applicable_tax_ids: Optional[List[float]] = None
+
+    member_portal_invitation_status: OptionalNullable[
+        EmployeeMemberPortalInvitationStatus
+    ] = UNSET
+    r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
+
+    partner_portal_invitation_sent: OptionalNullable[bool] = UNSET
+    r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "middle_initial",
-            "email",
-            "company_uuid",
-            "manager_uuid",
-            "version",
-            "department",
-            "terminated",
-            "two_percent_shareholder",
-            "onboarded",
-            "onboarding_status",
-            "onboarding_documents_config",
-            "jobs",
-            "eligible_paid_time_off",
-            "terminations",
-            "garnishments",
-            "custom_fields",
-            "date_of_birth",
-            "has_ssn",
-            "ssn",
-            "phone",
-            "preferred_first_name",
-            "payment_method",
-            "work_email",
-            "current_employment_status",
-        ]
-        nullable_fields = [
-            "middle_initial",
-            "email",
-            "manager_uuid",
-            "department",
-            "two_percent_shareholder",
-            "onboarding_status",
-            "date_of_birth",
-            "phone",
-            "preferred_first_name",
-            "work_email",
-            "current_employment_status",
-        ]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "middle_initial",
+                "email",
+                "company_uuid",
+                "manager_uuid",
+                "version",
+                "department",
+                "terminated",
+                "two_percent_shareholder",
+                "work_email",
+                "onboarded",
+                "onboarding_status",
+                "onboarding_documents_config",
+                "jobs",
+                "eligible_paid_time_off",
+                "terminations",
+                "garnishments",
+                "custom_fields",
+                "date_of_birth",
+                "has_ssn",
+                "ssn",
+                "phone",
+                "preferred_first_name",
+                "payment_method",
+                "current_employment_status",
+                "historical",
+                "employee_code",
+                "department_uuid",
+                "title",
+                "hired_at",
+                "hidden_ssn",
+                "flsa_status",
+                "applicable_tax_ids",
+                "member_portal_invitation_status",
+                "partner_portal_invitation_sent",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "middle_initial",
+                "email",
+                "manager_uuid",
+                "department",
+                "two_percent_shareholder",
+                "work_email",
+                "onboarding_status",
+                "date_of_birth",
+                "phone",
+                "preferred_first_name",
+                "current_employment_status",
+                "department_uuid",
+                "member_portal_invitation_status",
+                "partner_portal_invitation_sent",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

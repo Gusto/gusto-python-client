@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -10,6 +10,7 @@ from gusto_embedded.utils import (
     QueryParamMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -17,13 +18,16 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
-    TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01 = "2024-04-01"
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class Include(str, Enum):
-    CUSTOM_FIELDS = "custom_fields"
     ALL_COMPENSATIONS = "all_compensations"
+    ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
+    CURRENT_HOME_ADDRESS = "current_home_address"
+    CUSTOM_FIELDS = "custom_fields"
+    PORTAL_INVITATIONS = "portal_invitations"
 
 
 class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
@@ -33,16 +37,26 @@ class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
         GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
     ]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    location_uuid: NotRequired[str]
+    r"""Filter employees by a specific primary work location"""
+    payroll_uuid: NotRequired[str]
+    r"""Filter employees by a specific payroll"""
     search_term: NotRequired[str]
     r"""A string to search for in the object's names"""
+    sort_by: NotRequired[str]
+    r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
     include: NotRequired[List[Include]]
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
-
-    """
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
+    onboarded: NotRequired[bool]
+    r"""Filters employees by those who have completed onboarding"""
+    onboarded_active: NotRequired[bool]
+    r"""Filters employees who are ready to work (onboarded AND active today)"""
     terminated: NotRequired[bool]
-    r"""Filters employees by the provided boolean"""
+    r"""Filters employees by those who have been or are scheduled to be terminated"""
+    terminated_today: NotRequired[bool]
+    r"""Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)"""
+    uuids: NotRequired[List[str]]
+    r"""Optional subset of employees to fetch."""
     page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
@@ -59,8 +73,20 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
         Optional[GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    location_uuid: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filter employees by a specific primary work location"""
+
+    payroll_uuid: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filter employees by a specific payroll"""
 
     search_term: Annotated[
         Optional[str],
@@ -68,21 +94,47 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
     ] = None
     r"""A string to search for in the object's names"""
 
+    sort_by: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
+
     include: Annotated[
         Optional[List[Include]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
-    r"""Include the requested attribute(s) in each employee response, multiple options are comma separated. Available options:
-    - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-    - custom_fields: Include employees' custom fields
+    r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
-    """
+    onboarded: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filters employees by those who have completed onboarding"""
+
+    onboarded_active: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filters employees who are ready to work (onboarded AND active today)"""
 
     terminated: Annotated[
         Optional[bool],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
-    r"""Filters employees by the provided boolean"""
+    r"""Filters employees by those who have been or are scheduled to be terminated"""
+
+    terminated_today: Annotated[
+        Optional[bool],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)"""
+
+    uuids: Annotated[
+        Optional[List[str]],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
+    ] = None
+    r"""Optional subset of employees to fetch."""
 
     page: Annotated[
         Optional[int],
@@ -95,3 +147,35 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "X-Gusto-API-Version",
+                "location_uuid",
+                "payroll_uuid",
+                "search_term",
+                "sort_by",
+                "include",
+                "onboarded",
+                "onboarded_active",
+                "terminated",
+                "terminated_today",
+                "uuids",
+                "page",
+                "per",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

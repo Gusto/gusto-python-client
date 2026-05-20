@@ -1,7 +1,5 @@
 # GeneratedDocument
 
-Example response
-
 
 ## Fields
 

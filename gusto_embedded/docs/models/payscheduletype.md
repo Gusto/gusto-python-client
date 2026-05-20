@@ -1,6 +1,12 @@
 # PayScheduleType
 
-The pay schedule assignment type.
+## Example Usage
+
+```python
+from gusto_embedded.models import PayScheduleType
+
+value = PayScheduleType.SINGLE
+```
 
 
 ## Values

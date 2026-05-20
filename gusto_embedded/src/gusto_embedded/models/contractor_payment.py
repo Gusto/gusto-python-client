@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -103,3 +104,40 @@ class ContractorPayment(BaseModel):
 
     wage_total: Optional[str] = None
     r"""(hours * hourly_rate) + wage + bonus"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "contractor_uuid",
+                "bonus",
+                "date",
+                "hours",
+                "payment_method",
+                "reimbursement",
+                "status",
+                "hourly_rate",
+                "may_cancel",
+                "wage",
+                "wage_type",
+                "wage_total",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+try:
+    ContractorPayment.model_rebuild()
+except NameError:
+    pass

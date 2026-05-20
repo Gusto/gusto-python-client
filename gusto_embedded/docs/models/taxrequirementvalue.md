@@ -1,9 +1,15 @@
 # TaxRequirementValue
 
-The "answer"
+The required value of the requirement identified by `key`
 
 
 ## Supported Types
+
+### `bool`
+
+```python
+value: bool = /* values here */
+```
 
 ### `str`
 
@@ -11,9 +17,9 @@ The "answer"
 value: str = /* values here */
 ```
 
-### `bool`
+### `float`
 
 ```python
-value: bool = /* values here */
+value: float = /* values here */
 ```
 

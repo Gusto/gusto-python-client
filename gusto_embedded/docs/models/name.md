@@ -2,6 +2,14 @@
 
 The name of the paid time off type.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import Name
+
+value = Name.VACATION_HOURS
+```
+
 
 ## Values
 

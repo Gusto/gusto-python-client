@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>SDK Changelog - python</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --code-bg: #f4f4f4;
+            --border-color: #e0e0e0;
+            --added-color: #22863a;
+            --removed-color: #cb2431;
+            --changed-color: #6f42c1;
+            --breaking-color: #d73a49;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --text-color: #e6e6e6;
+                --text-secondary: #a0a0a0;
+                --code-bg: #2d2d2d;
+                --border-color: #404040;
+                --added-color: #85e89d;
+                --removed-color: #f97583;
+                --changed-color: #b392f0;
+                --breaking-color: #f97583;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.7;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        code {
+            background: var(--code-bg);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        h2 {
+            color: var(--text-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 32px;
+        }
+        ul {
+            padding-left: 24px;
+            list-style-type: disc;
+            list-style-position: outside;
+        }
+        ul ul {
+            padding-left: 28px;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            list-style-type: circle;
+        }
+        li {
+            margin: 10px 0;
+            display: list-item;
+        }
+        li li {
+            margin: 4px 0;
+            color: var(--text-secondary);
+            display: list-item;
+        }
+        li li code {
+            font-size: 0.85em;
+        }
+        /* Ensure nested list items always show bullets */
+        ul > li {
+            list-style: disc;
+        }
+        ul ul > li {
+            list-style: circle;
+        }
+        strong {
+            font-weight: 600;
+        }
+        /* Semantic coloring for change types */
+        strong:contains('Added'), li:has(strong:contains('Added')) strong:first-of-type {
+            color: var(--added-color);
+        }
+        /* Warning emoji styling */
+        li {
+            list-style-position: outside;
+        }
+    </style>
+</head>
+<body><h2 id="python-sdk-changes">Python SDK Changes:</h2>
+
+<ul>
+<li><code>gusto_app_integration.webhooks.verify()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.subscription_types[].enum(payroll_sync)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.payrolls.get_for_company()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>date_filter_by</code> <strong>Added</strong></li>
+<li><code>include[].enum(taxes)</code> <strong>Added</strong></li>
+<li><code>include_off_cycle</code> <strong>Added</strong></li>
+<li><code>processed</code> <strong>Added</strong></li>
+<li><code>processing_statuses</code> <strong>Changed</strong></li>
+<li><code>sort_order</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>calculated_at</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>company_taxes</code> <strong>Added</strong></li>
+<li><code>company_uuid</code> <strong>Changed</strong></li>
+<li><code>credit_blockers[].unblock_options[]</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>fixed_withholding_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>off_cycle_reason.enum(adhoc)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>partner_owned_disbursement</code> <strong>Added</strong></li>
+<li><code>payroll_taxes</code> <strong>Added</strong></li>
+<li><code>payroll_uuid</code> <strong>Changed</strong></li>
+<li><code>processed_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>processed</code> <strong>Changed</strong></li>
+<li><code>processing_request</code> <strong>Added</strong></li>
+<li><code>reversal_payroll_uuids</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>skip_regular_deductions</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>submission_blockers[].unblock_options[].metadata</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>uuid</code> <strong>Changed</strong></li>
+<li><code>withholding_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_tracking.delete_time_tracking_time_sheets_time_sheet_uuid()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_tracking.put_time_tracking_time_sheets_time_sheet_uuid()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.synced_to_payroll_at</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_tracking.get_time_tracking_time_sheets_time_sheet_uuid()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.synced_to_payroll_at</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_tracking.post_companies_company_uuid_time_tracking_time_sheets()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.synced_to_payroll_at</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_tracking.get_companies_company_uuid_time_tracking_time_sheets()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>entity_type</code> <strong>Changed</strong></li>
+<li><code>sort_by</code> <strong>Changed</strong></li>
+<li><code>sort_order</code> <strong>Changed</strong></li>
+<li><code>status</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].synced_to_payroll_at</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.events.get_all()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>sort_order</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[422]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.garnishments.get_child_support()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.garnishments.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>garnishment_type</code> <strong>Added</strong></li>
+<li><code>total_amount</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.garnishments.get_by_id()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.garnishments.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.garnishments.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>total_amount</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.create_ytd_benefit_amounts_from_different_company()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>benefit_type</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.get_ytd_benefit_amounts_from_different_company()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.delete()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[422]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.get_all()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_benefits.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.get_requirements()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>catch_up.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>catch_up.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>company_contribution_annual_maximum.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>company_contribution_annual_maximum.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>contribution.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>contribution.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_amount.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_amount.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>deduct_as_percentage.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>deduct_as_percentage.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_deduction.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_deduction.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>limit_option.choices</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>limit_option.default_value</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.bulk_update_employee_benefits()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>employee_benefits[].action</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].additional_properties</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].catch_up</code> <strong>Changed</strong></li>
+<li><code>employee_benefits[].coverage_salary_multiplier</code> <strong>Changed</strong></li>
+<li><code>employee_benefits[].effective_date</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].expiration_date</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].retirement_loan_identifier</code> <strong>Changed</strong></li>
+<li><code>employee_benefits[].uuid</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.get_employee_benefits()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>catch_up</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>coverage_salary_multiplier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>expiration_date</code> <strong>Added</strong></li>
+<li><code>retirement_loan_identifier</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.get_summary()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.employees</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.writable_by_application</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.list_supported()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].writable_by_application</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.delete()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[422]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>catch_up_type</code> <strong>Added</strong></li>
+<li><code>responsible_for_employee_w2</code> <strong>Added</strong></li>
+<li><code>responsible_for_employer_taxes</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.catch_up_type</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.get_by_id()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>catch_up_type</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].effective_date</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].expiration_date</code> <strong>Added</strong></li>
+<li><code>employee_benefits[].uuid</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.list()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>benefit_type</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].catch_up_type</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.company_benefits.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>catch_up_type</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.catch_up_type</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractor_payments.get_by_id()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractor_payments.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.time_off_policies.calculate_accruing_time_off_hours()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>double_overtime_hours_worked</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>overtime_hours_worked</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>pto_hours_used</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>regular_hours_worked</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>sick_hours_used</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.payrolls.prepare()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>employee_uuids</code> <strong>Added</strong></li>
+<li><code>page</code> <strong>Added</strong></li>
+<li><code>per</code> <strong>Added</strong></li>
+<li><code>sort_by</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>calculated_at</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].benefits</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].deductions[].amount_type</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].updatable_via_payroll</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].uuid</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].last_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].paid_time_off[].final_payout_unused_hours_input</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].payment_method.enum(historical)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].preferred_first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].reimbursements</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].taxes</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>fixed_withholding_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>off_cycle_reason.enum(adhoc)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>partner_owned_disbursement</code> <strong>Added</strong></li>
+<li><code>processed_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>skip_regular_deductions</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>withholding_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.payrolls.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>employee_compensations[].deductions</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].paid_time_off[].final_payout_unused_hours_input</code> <strong>Changed</strong></li>
+<li><code>employee_compensations[].reimbursements</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>calculated_at</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].benefits</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].deductions[].amount_type</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].updatable_via_payroll</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].uuid</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].last_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].paid_time_off[].final_payout_unused_hours_input</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].payment_method.enum(historical)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].preferred_first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].reimbursements</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].taxes</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>fixed_withholding_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>off_cycle_reason.enum(adhoc)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>partner_owned_disbursement</code> <strong>Added</strong></li>
+<li><code>processed_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>skip_regular_deductions</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>withholding_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.payrolls.get()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include[].enum(payroll_taxes)</code> <strong>Added</strong></li>
+<li><code>include[].enum(reversals)</code> <strong>Added</strong></li>
+<li><code>include[].enum(risk_blockers)</code> <strong>Added</strong></li>
+<li><code>include[].enum(totals)</code> <strong>Added</strong></li>
+<li><code>page</code> <strong>Added</strong></li>
+<li><code>per</code> <strong>Added</strong></li>
+<li><code>sort_by</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>calculated_at</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>credit_blockers[].unblock_options[]</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].additional_properties</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].amount_type</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].updatable_via_payroll</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].deductions[].uuid</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].last_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].paid_time_off[].final_payout_unused_hours_input</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].payment_method.enum(historical)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>employee_compensations[].preferred_first_name</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].reimbursements</code> <strong>Added</strong></li>
+<li><code>employee_compensations[].version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>fixed_withholding_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>off_cycle_reason.enum(adhoc)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>partner_owned_disbursement</code> <strong>Added</strong></li>
+<li><code>payroll_taxes</code> <strong>Added</strong></li>
+<li><code>processed_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>skip_regular_deductions</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>submission_blockers[].unblock_options[].metadata</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>withholding_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.request_verification_token()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.status[200]</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.delete_subscription()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.introspection.get_token_info()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong>
+
+<ul>
+<li><code>resource.type</code> <strong>Changed</strong></li>
+<li><code>resource.uuid</code> <strong>Changed</strong></li>
+<li><code>resource_owner.type</code> <strong>Changed</strong></li>
+<li><code>resource_owner.uuid</code> <strong>Changed</strong></li>
+<li><code>scope</code> <strong>Changed</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.introspection.revoke()</code>: <code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.introspection.disconnect_app_integration()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.companies.provision()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[401]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.companies.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>compensations.fixed[].uuid</code> <strong>Added</strong></li>
+<li><code>compensations.hourly[].uuid</code> <strong>Added</strong></li>
+<li><code>compensations.paid_time_off[].uuid</code> <strong>Added</strong></li>
+<li><code>is_high_risk_business</code> <strong>Added</strong></li>
+<li><code>is_marijuana_business</code> <strong>Added</strong></li>
+<li><code>locations[].inactive</code> <strong>Added</strong></li>
+<li><code>locations[].zip_code</code> <strong>Added</strong></li>
+<li><code>locations[].zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>primary_signatory.home_address.zip_code</code> <strong>Added</strong></li>
+<li><code>primary_signatory.home_address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.companies.update()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>compensations.fixed[].uuid</code> <strong>Added</strong></li>
+<li><code>compensations.hourly[].uuid</code> <strong>Added</strong></li>
+<li><code>compensations.paid_time_off[].uuid</code> <strong>Added</strong></li>
+<li><code>is_high_risk_business</code> <strong>Added</strong></li>
+<li><code>is_marijuana_business</code> <strong>Added</strong></li>
+<li><code>locations[].inactive</code> <strong>Added</strong></li>
+<li><code>locations[].zip_code</code> <strong>Added</strong></li>
+<li><code>locations[].zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>primary_signatory.home_address.zip_code</code> <strong>Added</strong></li>
+<li><code>primary_signatory.home_address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.companies.get_admins()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].phone</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.companies.get_custom_fields()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.locations.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>country</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>inactive</code> <strong>Added</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.locations.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>inactive</code> <strong>Added</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.update_termination()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>run_termination_payroll</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.locations.get_minimum_wages()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.company_locations.list()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>inactive</code> <strong>Added</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.pay_schedules.list()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>anchor_end_of_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>anchor_pay_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>auto_payroll_enablement_blockers</code> <strong>Added</strong></li>
+<li><code>auto_payroll</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.pay_schedules.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>anchor_end_of_pay_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>anchor_pay_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>auto_payroll_enablement_blockers</code> <strong>Added</strong></li>
+<li><code>auto_payroll</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.pay_schedules.get_pay_periods()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>end_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>payroll_types</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>start_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.pay_schedules.get_unprocessed_termination_pay_periods()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.pay_schedules.get_assignments()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.employees[].pay_schedule_uuid</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.get()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include[].enum(all_home_addresses)</code> <strong>Added</strong></li>
+<li><code>include[].enum(current_home_address)</code> <strong>Added</strong></li>
+<li><code>include[].enum(portal_invitations)</code> <strong>Added</strong></li>
+<li><code>location_uuid</code> <strong>Added</strong></li>
+<li><code>onboarded_active</code> <strong>Added</strong></li>
+<li><code>onboarded</code> <strong>Added</strong></li>
+<li><code>payroll_uuid</code> <strong>Added</strong></li>
+<li><code>sort_by</code> <strong>Added</strong></li>
+<li><code>terminated_today</code> <strong>Added</strong></li>
+<li><code>uuids</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>additional_properties</code> <strong>Added</strong></li>
+<li><code>all_home_addresses</code> <strong>Added</strong></li>
+<li><code>applicable_tax_ids</code> <strong>Added</strong></li>
+<li><code>current_home_address</code> <strong>Added</strong></li>
+<li><code>custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>department_uuid</code> <strong>Added</strong></li>
+<li><code>eligible_paid_time_off[].accrual_balance</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_method</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_unit</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_uuid</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_code</code> <strong>Added</strong></li>
+<li><code>flsa_status</code> <strong>Added</strong></li>
+<li><code>hidden_ssn</code> <strong>Added</strong></li>
+<li><code>hired_at</code> <strong>Added</strong></li>
+<li><code>historical</code> <strong>Added</strong></li>
+<li><code>jobs[].compensations[].title</code> <strong>Added</strong></li>
+<li><code>jobs[].location_uuid</code> <strong>Added</strong></li>
+<li><code>jobs[].location</code> <strong>Added</strong></li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>title</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>email</code> <strong>Changed</strong></li>
+<li><code>work_email</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>applicable_tax_ids</code> <strong>Added</strong></li>
+<li><code>custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>department_uuid</code> <strong>Added</strong></li>
+<li><code>eligible_paid_time_off[].accrual_balance</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_method</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_unit</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_uuid</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_code</code> <strong>Added</strong></li>
+<li><code>flsa_status</code> <strong>Added</strong></li>
+<li><code>hidden_ssn</code> <strong>Added</strong></li>
+<li><code>hired_at</code> <strong>Added</strong></li>
+<li><code>historical</code> <strong>Added</strong></li>
+<li><code>jobs[].compensations[].title</code> <strong>Added</strong></li>
+<li><code>jobs[].location_uuid</code> <strong>Added</strong></li>
+<li><code>jobs[].location</code> <strong>Added</strong></li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>title</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.get_by_id()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include[].enum(all_home_addresses)</code> <strong>Added</strong></li>
+<li><code>include[].enum(current_home_address)</code> <strong>Added</strong></li>
+<li><code>include[].enum(portal_invitations)</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>applicable_tax_ids</code> <strong>Added</strong></li>
+<li><code>custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>department_uuid</code> <strong>Added</strong></li>
+<li><code>eligible_paid_time_off[].accrual_balance</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_method</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_unit</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_uuid</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_code</code> <strong>Added</strong></li>
+<li><code>flsa_status</code> <strong>Added</strong></li>
+<li><code>hidden_ssn</code> <strong>Added</strong></li>
+<li><code>hired_at</code> <strong>Added</strong></li>
+<li><code>historical</code> <strong>Added</strong></li>
+<li><code>jobs[].compensations[].title</code> <strong>Added</strong></li>
+<li><code>jobs[].location_uuid</code> <strong>Added</strong></li>
+<li><code>jobs[].location</code> <strong>Added</strong></li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>title</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>work_email</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>applicable_tax_ids</code> <strong>Added</strong></li>
+<li><code>custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>department_uuid</code> <strong>Added</strong></li>
+<li><code>eligible_paid_time_off[].accrual_balance</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_method</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_period</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].accrual_unit</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_name</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>eligible_paid_time_off[].policy_uuid</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>employee_code</code> <strong>Added</strong></li>
+<li><code>flsa_status</code> <strong>Added</strong></li>
+<li><code>hidden_ssn</code> <strong>Added</strong></li>
+<li><code>hired_at</code> <strong>Added</strong></li>
+<li><code>historical</code> <strong>Added</strong></li>
+<li><code>jobs[].compensations[].title</code> <strong>Added</strong></li>
+<li><code>jobs[].location_uuid</code> <strong>Added</strong></li>
+<li><code>jobs[].location</code> <strong>Added</strong></li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>title</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.delete()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.get_custom_fields()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.custom_fields[].description</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.get_time_off_activities()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.create_termination()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>run_termination_payroll</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>title</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.get_all()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>title</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[409]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.delete()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.add_people()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.departments.remove_people()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>version</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employees.get_terminations()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.delete_termination()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors[].errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>errors[].metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.locations.update()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>inactive</code> <strong>Added</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.create_rehire()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.update_rehire()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.get_rehire()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.status[204]</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.delete_rehire()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors[].errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>errors[].metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_employments.get_history()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].termination_date</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>errors[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>errors</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>metadata</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.list_home_addresses()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>uuid</code> <strong>Changed</strong></li>
+<li><code>version</code> <strong>Changed</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>effective_date</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>uuid</code> <strong>Changed</strong></li>
+<li><code>version</code> <strong>Changed</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>uuid</code> <strong>Changed</strong></li>
+<li><code>version</code> <strong>Changed</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.update()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>effective_date</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>uuid</code> <strong>Changed</strong></li>
+<li><code>version</code> <strong>Changed</strong></li>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.delete_home_address()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.get_work_addresses()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.create_work_address()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.get_work_address()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.update_work_address()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>zip_code</code> <strong>Added</strong></li>
+<li><code>zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.employee_addresses.delete_work_address()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.jobs.create_compensation()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>rate</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>title</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.title</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.jobs_and_compensations.get_compensations_for_job()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].title</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.jobs_and_compensations.get_compensation()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.title</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.jobs_and_compensations.update_compensation()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>effective_date</code> <strong>Added</strong></li>
+<li><code>title</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.title</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.jobs_and_compensations.delete_compensation()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[422]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.earning_types.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>name</code> <strong>Changed</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.active</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.earning_types.get()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.default[].active</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.earning_types.update()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.active</code> <strong>Added</strong></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.earning_types.deactivate()</code>: <code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractors.create()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>address.zip_code</code> <strong>Added</strong></li>
+<li><code>address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>department_title</code> <strong>Added</strong></li>
+<li><code>department</code> <strong>Added</strong></li>
+<li><code>dismissal_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>dismissal_date</code> <strong>Added</strong></li>
+<li><code>file_new_hire_report</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>rehire_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>upcoming_employment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractors.get()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include</code> <strong>Added</strong></li>
+<li><code>onboarded_active</code> <strong>Added</strong></li>
+<li><code>onboarded</code> <strong>Added</strong></li>
+<li><code>sort_by</code> <strong>Added</strong></li>
+<li><code>terminated_today</code> <strong>Added</strong></li>
+<li><code>terminated</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[]</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>address.zip_code</code> <strong>Added</strong></li>
+<li><code>address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>department_title</code> <strong>Added</strong></li>
+<li><code>department</code> <strong>Added</strong></li>
+<li><code>dismissal_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>dismissal_date</code> <strong>Added</strong></li>
+<li><code>file_new_hire_report</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>rehire_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>upcoming_employment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractors.get_by_id()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>include</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>address.zip_code</code> <strong>Added</strong></li>
+<li><code>address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>department_title</code> <strong>Added</strong></li>
+<li><code>department</code> <strong>Added</strong></li>
+<li><code>dismissal_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>dismissal_date</code> <strong>Added</strong></li>
+<li><code>file_new_hire_report</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>rehire_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>upcoming_employment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.contractors.update()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>address.zip_code</code> <strong>Added</strong></li>
+<li><code>address.zip</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>department_title</code> <strong>Added</strong></li>
+<li><code>department</code> <strong>Added</strong></li>
+<li><code>dismissal_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>dismissal_date</code> <strong>Added</strong></li>
+<li><code>file_new_hire_report</code> <strong>Changed</strong> (Breaking ⚠️)</li>
+<li><code>member_portal_invitation_status</code> <strong>Added</strong></li>
+<li><code>partner_portal_invitation_sent</code> <strong>Added</strong></li>
+<li><code>rehire_cancellation_eligible</code> <strong>Added</strong></li>
+<li><code>upcoming_employment</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>error</code> <strong>Changed</strong>
+
+<ul>
+<li>&rdquo; <strong>Added</strong></li>
+<li><code>status[409]</code> <strong>Added</strong></li>
+</ul></li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.create()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>subscription_types[].enum(payroll_sync)</code> <strong>Added</strong></li>
+<li><code>subscription_types[].enum(people_batch)</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.subscription_types[].enum(payroll_sync)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.list_subscriptions()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.[].subscription_types[].enum(payroll_sync)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.update_subscription()</code>:
+
+<ul>
+<li><code>request</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>subscription_types[].enum(payroll_sync)</code> <strong>Added</strong></li>
+<li><code>subscription_types[].enum(people_batch)</code> <strong>Added</strong></li>
+<li><code>x_gusto_api_version.enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>x_gusto_api_version.enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.subscription_types[].enum(payroll_sync)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.webhooks.get_subscription()</code>:
+
+<ul>
+<li><code>request.x_gusto_api_version</code> <strong>Changed</strong> (Breaking ⚠️)
+
+<ul>
+<li><code>enum(2024_04_01)</code> <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>enum(2025_06_15)</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>response.subscription_types[].enum(payroll_sync)</code> <strong>Added</strong> (Breaking ⚠️)</li>
+<li><code>error.status[404]</code> <strong>Added</strong></li>
+</ul></li>
+<li><code>gusto_app_integration.reimbursements.get_v1_recurring_reimbursements()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.salary_estimates.get_v1_salary_estimates_occupations()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.contractor_payment_groups.preview()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.employee_employments.get_v1_terminations_employee_id()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.contractor_payment_groups.get()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.jobs_and_compensations.delete()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.jobs_and_compensations.update_job()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.jobs_and_compensations.get()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.jobs_and_compensations.get_jobs()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.jobs.create()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.introspection.refresh_access_token()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.reimbursements.delete_v1_recurring_reimbursements()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reimbursements.put_v1_recurring_reimbursements()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.salary_estimates.put_v1_salary_estimates_id()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reimbursements.post_v1_employees_employee_id_recurring_reimbursements()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reimbursements.get_v1_employees_employee_id_recurring_reimbursements()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_tracking.post_companies_company_uuid_time_tracking_payroll_syncs()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.contractor_payment_groups.fetch()</code>: <strong>Removed</strong> (Breaking ⚠️)</li>
+<li><code>gusto_app_integration.introspection.oauth_access_token()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.salary_estimates.post_v1_salary_estimates_uuid_accept()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_tracking.get_time_tracking_payroll_syncs_payroll_sync_uuid()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_off_requests.get_v1_companies_company_id_time_off_requests()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.notifications.get_company_notifications()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.salary_estimates.post_v1_employees_employee_id_salary_estimates()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.salary_estimates.get_v1_salary_estimates_id()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.employee_benefits.patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.employee_benefits.post_v1_employees_employee_uuid_section603_high_earner_statuses()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.company_benefits.put_v1_company_benefits_company_benefit_id_contribution_exclusions()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.company_benefits.get_v1_company_benefits_company_benefit_id_contribution_exclusions()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reports.post_v1_companies_company_id_reports_employees_annual_fica_wage()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reports.get_reports_request_uuid()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.reports.post_payrolls_payroll_uuid_reports_general_ledger()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_off_policies.put_v1_time_off_policies_time_off_policy_uuid_add_employees()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_off_policies.get_v1_companies_company_uuid_time_off_policies()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.time_off_policies.get_v1_time_off_policies_time_off_policy_uuid()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.webhooks.get_v1_webhooks_health_check()</code>: <strong>Added</strong></li>
+<li><code>gusto_app_integration.contractors.get_v1_companies_company_id_contractors_payment_details()</code>: <strong>Added</strong></li>
+</ul>
+</body>
+</html>

@@ -2,6 +2,14 @@
 
 One of the "onboarding_status" enum values.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import ContractorOnboardingStatus1
+
+value = ContractorOnboardingStatus1.ADMIN_ONBOARDING_INCOMPLETE
+```
+
 
 ## Values
 
