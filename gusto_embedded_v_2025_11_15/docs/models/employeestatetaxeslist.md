@@ -1,0 +1,12 @@
+# EmployeeStateTaxesList
+
+
+## Fields
+
+| Field                                                                          | Type                                                                           | Required                                                                       | Description                                                                    |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
+| `employee_uuid`                                                                | *Optional[str]*                                                                | :heavy_minus_sign:                                                             | The employee's uuid                                                            |
+| `state`                                                                        | *Optional[str]*                                                                | :heavy_minus_sign:                                                             | Two letter US state abbreviation                                               |
+| `file_new_hire_report`                                                         | *OptionalNullable[bool]*                                                       | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `is_work_state`                                                                | *Optional[bool]*                                                               | :heavy_minus_sign:                                                             | N/A                                                                            |
+| `questions`                                                                    | List[[models.EmployeeStateTaxQuestion](../models/employeestatetaxquestion.md)] | :heavy_minus_sign:                                                             | N/A                                                                            |

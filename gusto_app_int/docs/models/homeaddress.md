@@ -11,5 +11,5 @@ The company's primary signatory's home address.
 | `street_2`              | *OptionalNullable[str]* | :heavy_minus_sign:      | N/A                     |
 | `city`                  | *Optional[str]*         | :heavy_minus_sign:      | N/A                     |
 | `state`                 | *Optional[str]*         | :heavy_minus_sign:      | N/A                     |
-| `zip`                   | *Optional[str]*         | :heavy_minus_sign:      | N/A                     |
+| `zip_code`              | *Optional[str]*         | :heavy_minus_sign:      | N/A                     |
 | `country`               | *Optional[str]*         | :heavy_minus_sign:      | N/A                     |

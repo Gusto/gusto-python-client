@@ -2,6 +2,14 @@
 
 The wage type for the payment.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import ContractorPaymentWageType
+
+value = ContractorPaymentWageType.HOURLY
+```
+
 
 ## Values
 

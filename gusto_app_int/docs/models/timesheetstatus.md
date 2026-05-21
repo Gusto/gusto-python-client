@@ -2,6 +2,14 @@
 
 Status of the time sheet.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import TimeSheetStatus
+
+value = TimeSheetStatus.PENDING
+```
+
 
 ## Values
 

@@ -1,0 +1,19 @@
+# EmployeePaymentMethodSplitBy
+
+## Example Usage
+
+```python
+from gusto_embedded_v_2025_11_15.models import EmployeePaymentMethodSplitBy
+
+value = EmployeePaymentMethodSplitBy.AMOUNT
+
+# Open enum: unrecognized values are captured as UnrecognizedStr
+```
+
+
+## Values
+
+| Name         | Value        |
+| ------------ | ------------ |
+| `AMOUNT`     | Amount       |
+| `PERCENTAGE` | Percentage   |

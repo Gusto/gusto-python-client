@@ -2,6 +2,14 @@
 
 The payment method.
 
+## Example Usage
+
+```python
+from gusto_embedded.models import ContractorPaymentForGroupPaymentMethod
+
+value = ContractorPaymentForGroupPaymentMethod.DIRECT_DEPOSIT
+```
+
 
 ## Values
 

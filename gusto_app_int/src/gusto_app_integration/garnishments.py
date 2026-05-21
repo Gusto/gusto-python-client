@@ -4,10 +4,219 @@ from .basesdk import BaseSDK
 from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
+from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
 class Garnishments(BaseSDK):
+    def get(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.Garnishment]:
+        r"""Get garnishments for an employee
+
+        Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
+
+        scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employees/{employee_id}/garnishments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-employees-employee_id-garnishments",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.Garnishment], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_async(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.Garnishment]:
+        r"""Get garnishments for an employee
+
+        Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
+
+        scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employees/{employee_id}/garnishments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-employees-employee_id-garnishments",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.Garnishment], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
     def create(
         self,
         *,
@@ -15,19 +224,19 @@ class Garnishments(BaseSDK):
         amount: str,
         court_ordered: bool,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         active: Optional[bool] = True,
         description: Optional[str] = None,
         garnishment_type: OptionalNullable[
-            models.PostV1EmployeesEmployeeIDGarnishmentsGarnishmentType
+            models.GarnishmentRequestGarnishmentType
         ] = UNSET,
         times: OptionalNullable[int] = None,
         recurring: Optional[bool] = False,
         annual_maximum: OptionalNullable[str] = None,
         pay_period_maximum: OptionalNullable[str] = None,
         deduct_as_percentage: Optional[bool] = False,
-        total_amount: Optional[str] = None,
+        total_amount: OptionalNullable[str] = UNSET,
         child_support: OptionalNullable[
             Union[
                 models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
@@ -43,6 +252,8 @@ class Garnishments(BaseSDK):
         Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
         scope: `garnishments:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
@@ -74,9 +285,9 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDGarnishmentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1EmployeesEmployeeIDGarnishmentsRequestBody(
+            employee_id=employee_id,
+            garnishment_request=models.GarnishmentRequest(
                 active=active,
                 amount=amount,
                 description=description,
@@ -108,12 +319,14 @@ class Garnishments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.garnishment_request,
                 False,
                 False,
                 "json",
-                models.PostV1EmployeesEmployeeIDGarnishmentsRequestBody,
+                models.GarnishmentRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -127,43 +340,38 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-garnishments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -172,19 +380,19 @@ class Garnishments(BaseSDK):
         amount: str,
         court_ordered: bool,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         active: Optional[bool] = True,
         description: Optional[str] = None,
         garnishment_type: OptionalNullable[
-            models.PostV1EmployeesEmployeeIDGarnishmentsGarnishmentType
+            models.GarnishmentRequestGarnishmentType
         ] = UNSET,
         times: OptionalNullable[int] = None,
         recurring: Optional[bool] = False,
         annual_maximum: OptionalNullable[str] = None,
         pay_period_maximum: OptionalNullable[str] = None,
         deduct_as_percentage: Optional[bool] = False,
-        total_amount: Optional[str] = None,
+        total_amount: OptionalNullable[str] = UNSET,
         child_support: OptionalNullable[
             Union[
                 models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
@@ -200,6 +408,8 @@ class Garnishments(BaseSDK):
         Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
         scope: `garnishments:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
@@ -231,9 +441,9 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDGarnishmentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1EmployeesEmployeeIDGarnishmentsRequestBody(
+            employee_id=employee_id,
+            garnishment_request=models.GarnishmentRequest(
                 active=active,
                 amount=amount,
                 description=description,
@@ -265,12 +475,14 @@ class Garnishments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.garnishment_request,
                 False,
                 False,
                 "json",
-                models.PostV1EmployeesEmployeeIDGarnishmentsRequestBody,
+                models.GarnishmentRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -284,259 +496,46 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-employees-employee_id-garnishments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def get(
-        self,
-        *,
-        employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Garnishment]:
-        r"""Get garnishments for an employee
-
-        Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
-
-        scope: `garnishments:read`
-
-        :param employee_id: The UUID of the employee
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
-            employee_id=employee_id,
-            page=page,
-            per=per,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_id}/garnishments",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="get-v1-employees-employee_id-garnishments",
-                oauth2_scopes=[],
-                security_source=self.sdk_configuration.security,
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Garnishment])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def get_async(
-        self,
-        *,
-        employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.Garnishment]:
-        r"""Get garnishments for an employee
-
-        Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
-
-        scope: `garnishments:read`
-
-        :param employee_id: The UUID of the employee
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1EmployeesEmployeeIDGarnishmentsRequest(
-            employee_id=employee_id,
-            page=page,
-            per=per,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_id}/garnishments",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="get-v1-employees-employee_id-garnishments",
-                oauth2_scopes=[],
-                security_source=self.sdk_configuration.security,
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Garnishment])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_by_id(
         self,
         *,
         garnishment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -547,6 +546,8 @@ class Garnishments(BaseSDK):
         Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
         scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param garnishment_id: The UUID of the garnishment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -566,8 +567,8 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsGarnishmentIDRequest(
-            garnishment_id=garnishment_id,
             x_gusto_api_version=x_gusto_api_version,
+            garnishment_id=garnishment_id,
         )
 
         req = self._build_request(
@@ -583,6 +584,8 @@ class Garnishments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -596,45 +599,41 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-garnishment_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_by_id_async(
         self,
         *,
         garnishment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -645,6 +644,8 @@ class Garnishments(BaseSDK):
         Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
 
         scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param garnishment_id: The UUID of the garnishment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -664,8 +665,8 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GarnishmentsGarnishmentIDRequest(
-            garnishment_id=garnishment_id,
             x_gusto_api_version=x_gusto_api_version,
+            garnishment_id=garnishment_id,
         )
 
         req = self._build_request_async(
@@ -681,6 +682,8 @@ class Garnishments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -694,37 +697,33 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-garnishment_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
@@ -732,18 +731,21 @@ class Garnishments(BaseSDK):
         garnishment_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion
+        ] = models.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         active: Optional[bool] = True,
         amount: Optional[str] = None,
         description: Optional[str] = None,
         court_ordered: Optional[bool] = None,
+        garnishment_type: OptionalNullable[
+            models.UpdateGarnishmentRequestGarnishmentType
+        ] = UNSET,
         times: OptionalNullable[int] = None,
         recurring: Optional[bool] = False,
         annual_maximum: OptionalNullable[str] = None,
         pay_period_maximum: OptionalNullable[str] = None,
         deduct_as_percentage: Optional[bool] = False,
-        total_amount: Optional[str] = None,
+        total_amount: OptionalNullable[str] = UNSET,
         child_support: OptionalNullable[
             Union[
                 models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
@@ -760,13 +762,16 @@ class Garnishments(BaseSDK):
 
         scope: `garnishments:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param garnishment_id: The UUID of the garnishment
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
         :param description: The description of the garnishment.
         :param court_ordered: Whether the garnishment is court ordered.
+        :param garnishment_type: The specific type of garnishment for court ordered garnishments.
         :param times: The number of times to apply the garnishment. Ignored if recurring is true.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
@@ -790,13 +795,14 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1GarnishmentsGarnishmentIDRequest(
-            garnishment_id=garnishment_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1GarnishmentsGarnishmentIDRequestBody(
+            garnishment_id=garnishment_id,
+            update_garnishment_request=models.UpdateGarnishmentRequest(
                 active=active,
                 amount=amount,
                 description=description,
                 court_ordered=court_ordered,
+                garnishment_type=garnishment_type,
                 times=times,
                 recurring=recurring,
                 annual_maximum=annual_maximum,
@@ -824,12 +830,14 @@ class Garnishments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.update_garnishment_request,
                 False,
                 False,
                 "json",
-                models.PutV1GarnishmentsGarnishmentIDRequestBody,
+                models.UpdateGarnishmentRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -843,43 +851,38 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-garnishments-garnishment_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
@@ -887,18 +890,21 @@ class Garnishments(BaseSDK):
         garnishment_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion
+        ] = models.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         active: Optional[bool] = True,
         amount: Optional[str] = None,
         description: Optional[str] = None,
         court_ordered: Optional[bool] = None,
+        garnishment_type: OptionalNullable[
+            models.UpdateGarnishmentRequestGarnishmentType
+        ] = UNSET,
         times: OptionalNullable[int] = None,
         recurring: Optional[bool] = False,
         annual_maximum: OptionalNullable[str] = None,
         pay_period_maximum: OptionalNullable[str] = None,
         deduct_as_percentage: Optional[bool] = False,
-        total_amount: Optional[str] = None,
+        total_amount: OptionalNullable[str] = UNSET,
         child_support: OptionalNullable[
             Union[
                 models.GarnishmentChildSupport, models.GarnishmentChildSupportTypedDict
@@ -915,13 +921,16 @@ class Garnishments(BaseSDK):
 
         scope: `garnishments:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param garnishment_id: The UUID of the garnishment
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
         :param description: The description of the garnishment.
         :param court_ordered: Whether the garnishment is court ordered.
+        :param garnishment_type: The specific type of garnishment for court ordered garnishments.
         :param times: The number of times to apply the garnishment. Ignored if recurring is true.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
@@ -945,13 +954,14 @@ class Garnishments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1GarnishmentsGarnishmentIDRequest(
-            garnishment_id=garnishment_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1GarnishmentsGarnishmentIDRequestBody(
+            garnishment_id=garnishment_id,
+            update_garnishment_request=models.UpdateGarnishmentRequest(
                 active=active,
                 amount=amount,
                 description=description,
                 court_ordered=court_ordered,
+                garnishment_type=garnishment_type,
                 times=times,
                 recurring=recurring,
                 annual_maximum=annual_maximum,
@@ -979,12 +989,14 @@ class Garnishments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.update_garnishment_request,
                 False,
                 False,
                 "json",
-                models.PutV1GarnishmentsGarnishmentIDRequestBody,
+                models.UpdateGarnishmentRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -998,50 +1010,45 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-garnishments-garnishment_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Garnishment)
+            return unmarshal_json_response(models.Garnishment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObject(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_child_support(
         self,
         *,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1052,6 +1059,8 @@ class Garnishments(BaseSDK):
         Agency data and requirements to be used for creating child support garnishments
 
         scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
@@ -1086,6 +1095,8 @@ class Garnishments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1099,44 +1110,34 @@ class Garnishments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-child_support",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ChildSupportData)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return unmarshal_json_response(models.ChildSupportData, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_child_support_async(
         self,
         *,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1147,6 +1148,8 @@ class Garnishments(BaseSDK):
         Agency data and requirements to be used for creating child support garnishments
 
         scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
@@ -1181,6 +1184,8 @@ class Garnishments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1194,34 +1199,24 @@ class Garnishments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-garnishments-child_support",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ChildSupportData)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            return unmarshal_json_response(models.ChildSupportData, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

@@ -2,6 +2,14 @@
 
 Company's default funding type
 
+## Example Usage
+
+```python
+from gusto_embedded.models import FundingType
+
+value = FundingType.ACH
+```
+
 
 ## Values
 

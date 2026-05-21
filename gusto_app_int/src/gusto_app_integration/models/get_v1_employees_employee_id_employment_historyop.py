@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
 from gusto_app_integration.utils import FieldMetadata, HeaderMetadata, PathParamMetadata
 import pydantic
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
@@ -12,7 +13,7 @@ from typing_extensions import Annotated, NotRequired, TypedDict
 class GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
-    TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01 = "2024-04-01"
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class GetV1EmployeesEmployeeIDEmploymentHistoryRequestTypedDict(TypedDict):
@@ -34,5 +35,21 @@ class GetV1EmployeesEmployeeIDEmploymentHistoryRequest(BaseModel):
         Optional[GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
+    ] = GetV1EmployeesEmployeeIDEmploymentHistoryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["X-Gusto-API-Version"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

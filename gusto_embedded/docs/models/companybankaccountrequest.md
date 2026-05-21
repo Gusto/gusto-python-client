@@ -1,0 +1,10 @@
+# CompanyBankAccountRequest
+
+
+## Fields
+
+| Field                                                                                            | Type                                                                                             | Required                                                                                         | Description                                                                                      |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| `routing_number`                                                                                 | *str*                                                                                            | :heavy_check_mark:                                                                               | The bank routing number                                                                          |
+| `account_number`                                                                                 | *str*                                                                                            | :heavy_check_mark:                                                                               | The bank account number                                                                          |
+| `account_type`                                                                                   | [models.CompanyBankAccountRequestAccountType](../models/companybankaccountrequestaccounttype.md) | :heavy_check_mark:                                                                               | The bank account type                                                                            |

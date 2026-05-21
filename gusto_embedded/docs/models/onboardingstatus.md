@@ -1,6 +1,12 @@
 # OnboardingStatus
 
-The current onboarding status of the employee
+## Example Usage
+
+```python
+from gusto_embedded.models import OnboardingStatus
+
+value = OnboardingStatus.ONBOARDING_COMPLETED
+```
 
 
 ## Values

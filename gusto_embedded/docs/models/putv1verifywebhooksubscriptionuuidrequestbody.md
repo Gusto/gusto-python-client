@@ -3,6 +3,6 @@
 
 ## Fields
 
-| Field                                     | Type                                      | Required                                  | Description                               |
-| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-| `verification_token`                      | *str*                                     | :heavy_check_mark:                        | The token POSTed to the Subscription URL. |
+| Field                                                            | Type                                                             | Required                                                         | Description                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `verification_token`                                             | *str*                                                            | :heavy_check_mark:                                               | The verification token received at the webhook subscription URL. |

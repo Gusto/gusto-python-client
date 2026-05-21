@@ -1,6 +1,12 @@
 # PayScheduleAssignmentBodyType
 
-The pay schedule assignment type.
+## Example Usage
+
+```python
+from gusto_embedded.models import PayScheduleAssignmentBodyType
+
+value = PayScheduleAssignmentBodyType.SINGLE
+```
 
 
 ## Values

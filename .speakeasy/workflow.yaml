@@ -1,105 +1,104 @@
----
 workflowVersion: 1.0.0
 speakeasyVersion: latest
 sources:
-  Gusto-App-Int-OAS:
-    inputs:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-06-15.app-integrations.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    overlays:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
-    registry:
-      location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
-  Gusto-OAS:
-    inputs:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-06-15.embedded.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    overlays:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
-    registry:
-      location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas
-  Gusto-App-Int-OAS-v2025-11-15:
-    inputs:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-11-15.app-integrations.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    overlays:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    - location: gusto_app_int_v_2025_11_15/.speakeasy/speakeasy-modifications-overlay.yaml
-    registry:
-      location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-v2025-11-15
-  Gusto-OAS-v2025-11-15:
-    inputs:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-11-15.embedded.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    overlays:
-    - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
-      authHeader: Authorization
-      authSecret: "$openapi_doc_auth_token"
-    - location: gusto_embedded_v_2025_11_15/.speakeasy/speakeasy-modifications-overlay.yaml
-    registry:
-      location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-v2025-11-15
+    Gusto-App-Int-OAS:
+        inputs:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-06-15.app-integrations.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+            - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
+    Gusto-App-Int-OAS-v2025-11-15:
+        inputs:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-11-15.app-integrations.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+            - location: gusto_app_int_v_2025_11_15/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-v2025-11-15
+    Gusto-OAS:
+        inputs:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-06-15.embedded.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+            - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas
+    Gusto-OAS-v2025-11-15:
+        inputs:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-11-15.embedded.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+        overlays:
+            - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
+              authHeader: Authorization
+              authSecret: $openapi_doc_auth_token
+            - location: gusto_embedded_v_2025_11_15/.speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-v2025-11-15
 targets:
-  gusto:
-    target: python
-    source: Gusto-OAS
-    output: "./gusto_embedded"
-    publish:
-      pypi:
-        token: "$pypi_token"
-    codeSamples:
-      registry:
-        location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples
-      labelOverride:
-        fixedValue: Python (SDK)
-      blocking: false
-  gusto-app-int:
-    target: python
-    source: Gusto-App-Int-OAS
-    output: gusto_app_int
-    publish:
-      pypi:
-        token: "$pypi_token"
-    codeSamples:
-      registry:
-        location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples
-      labelOverride:
-        fixedValue: Python (SDK)
-      blocking: false
-  gusto-v2025-11-15:
-    target: python
-    source: Gusto-OAS-v2025-11-15
-    output: "./gusto_embedded_v_2025_11_15"
-    publish:
-      pypi:
-        token: "$pypi_token"
-    codeSamples:
-      registry:
-        location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples-v2025-11-15
-      labelOverride:
-        fixedValue: Python (SDK)
-      blocking: false
-  gusto-app-int-v2025-11-15:
-    target: python
-    source: Gusto-App-Int-OAS-v2025-11-15
-    output: gusto_app_int_v_2025_11_15
-    publish:
-      pypi:
-        token: "$pypi_token"
-    codeSamples:
-      registry:
-        location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples-v2025-11-15
-      labelOverride:
-        fixedValue: Python (SDK)
-      blocking: false
+    gusto:
+        target: python
+        source: Gusto-OAS
+        output: ./gusto_embedded
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
+    gusto-app-int:
+        target: python
+        source: Gusto-App-Int-OAS
+        output: gusto_app_int
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
+    gusto-app-int-v2025-11-15:
+        target: python
+        source: Gusto-App-Int-OAS-v2025-11-15
+        output: gusto_app_int_v_2025_11_15
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples-v2025-11-15-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false
+    gusto-v2025-11-15:
+        target: python
+        source: Gusto-OAS-v2025-11-15
+        output: ./gusto_embedded_v_2025_11_15
+        publish:
+            pypi:
+                token: $pypi_token
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples-v2025-11-15-code-samples
+            labelOverride:
+                fixedValue: Python (SDK)
+            blocking: false

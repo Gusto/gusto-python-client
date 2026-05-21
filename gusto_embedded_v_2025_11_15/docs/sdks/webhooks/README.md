@@ -1,0 +1,416 @@
+# Webhooks
+
+## Overview
+
+### Available Operations
+
+* [list_subscriptions](#list_subscriptions) - List webhook subscriptions
+* [create_subscription](#create_subscription) - Create a webhook subscription
+* [get_subscription](#get_subscription) - Get a webhook subscription
+* [update_subscription](#update_subscription) - Update a webhook subscription
+* [delete_subscription](#delete_subscription) - Delete a webhook subscription
+* [verify](#verify) - Verify a webhook subscription
+* [request_verification_token](#request_verification_token) - Request a verification token for a webhook subscription
+* [get_v1_webhooks_health_check](#get_v1_webhooks_health_check) - Get the webhooks health status
+
+## list_subscriptions
+
+Returns all webhook subscriptions associated with the provided Partner API token.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscriptions" method="get" path="/v1/webhook_subscriptions" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.list_subscriptions(security=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionsSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), x_gusto_api_version=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.GetV1WebhookSubscriptionsSecurity](../../models/getv1webhooksubscriptionssecurity.md)                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1WebhookSubscriptionsHeaderXGustoAPIVersion]](../../models/getv1webhooksubscriptionsheaderxgustoapiversion.md)                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.WebhookSubscription]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## create_subscription
+
+Create a webhook subscription to receive events of the specified subscription_types whenever there is a state change.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-webhook-subscription" method="post" path="/v1/webhook_subscriptions" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.create_subscription(security=gusto_embedded_v_2025_11_15.PostV1WebhookSubscriptionSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), url="https://slow-median.com", subscription_types=[
+        gusto_embedded_v_2025_11_15.PostV1WebhookSubscriptionSubscriptionTypes.NOTIFICATION,
+    ], x_gusto_api_version=gusto_embedded_v_2025_11_15.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.PostV1WebhookSubscriptionSecurity](../../models/postv1webhooksubscriptionsecurity.md)                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `url`                                                                                                                                                                                                                        | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The URL where webhook events will be POSTed.                                                                                                                                                                                 |
+| `subscription_types`                                                                                                                                                                                                         | List[[models.PostV1WebhookSubscriptionSubscriptionTypes](../../models/postv1webhooksubscriptionsubscriptiontypes.md)]                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The types of events to subscribe to.                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion]](../../models/postv1webhooksubscriptionheaderxgustoapiversion.md)                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhookSubscription](../../models/webhooksubscription.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## get_subscription
+
+Returns the Webhook Subscription associated with the provided UUID.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscription-uuid" method="get" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.get_subscription(security=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.GetV1WebhookSubscriptionUUIDSecurity](../../models/getv1webhooksubscriptionuuidsecurity.md)                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion]](../../models/getv1webhooksubscriptionuuidheaderxgustoapiversion.md)                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhookSubscription](../../models/webhooksubscription.md)**
+
+### Errors
+
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
+
+## update_subscription
+
+Updates the Webhook Subscription associated with the provided UUID.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.update_subscription(security=gusto_embedded_v_2025_11_15.PutV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", subscription_types=[
+        gusto_embedded_v_2025_11_15.PutV1WebhookSubscriptionUUIDSubscriptionTypes.PAY_SCHEDULE,
+    ], x_gusto_api_version=gusto_embedded_v_2025_11_15.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.PutV1WebhookSubscriptionUUIDSecurity](../../models/putv1webhooksubscriptionuuidsecurity.md)                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
+| `subscription_types`                                                                                                                                                                                                         | List[[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes](../../models/putv1webhooksubscriptionuuidsubscriptiontypes.md)]                                                                                                  | :heavy_check_mark:                                                                                                                                                                                                           | The types of events to subscribe to.                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion]](../../models/putv1webhooksubscriptionuuidheaderxgustoapiversion.md)                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhookSubscription](../../models/webhooksubscription.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObjectError  | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## delete_subscription
+
+Deletes the Webhook Subscription associated with the provided UUID.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="delete-v1-webhook-subscription-uuid" method="delete" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    gusto.webhooks.delete_subscription(security=gusto_embedded_v_2025_11_15.DeleteV1WebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2025_11_15.DeleteV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.DeleteV1WebhookSubscriptionUUIDSecurity](../../models/deletev1webhooksubscriptionuuidsecurity.md)                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion]](../../models/deletev1webhooksubscriptionuuidheaderxgustoapiversion.md)                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
+
+## verify
+
+When a webhook subscription is created, a `verification_token` is POSTed to the registered webhook subscription URL. This `verify` endpoint needs to be called with `verification_token` before webhook events can be sent to the registered webhook URL.
+
+Use the /v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token API to resend the `verification_token` to the Subscriber.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-verify-webhook-subscription-uuid" method="put" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/verify" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.verify(security=gusto_embedded_v_2025_11_15.PutV1VerifyWebhookSubscriptionUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", verification_token="<value>", x_gusto_api_version=gusto_embedded_v_2025_11_15.PutV1VerifyWebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.PutV1VerifyWebhookSubscriptionUUIDSecurity](../../models/putv1verifywebhooksubscriptionuuidsecurity.md)                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
+| `verification_token`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The verification token received at the webhook subscription URL.                                                                                                                                                             |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1VerifyWebhookSubscriptionUUIDHeaderXGustoAPIVersion]](../../models/putv1verifywebhooksubscriptionuuidheaderxgustoapiversion.md)                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhookSubscription](../../models/webhooksubscription.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObjectError  | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## request_verification_token
+
+Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-webhook-subscription-verification-token-uuid" method="get" path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.request_verification_token(security=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), webhook_subscription_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2025_11_15.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity](../../models/getv1webhooksubscriptionverificationtokenuuidsecurity.md)                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `webhook_subscription_uuid`                                                                                                                                                                                                  | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The webhook subscription UUID.                                                                                                                                                                                               |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion]](../../models/getv1webhooksubscriptionverificationtokenuuidheaderxgustoapiversion.md)                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhookVerificationTokenResponse](../../models/webhookverificationtokenresponse.md)**
+
+### Errors
+
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
+
+## get_v1_webhooks_health_check
+
+Returns the health status (`healthy`, `unhealthy`, or `unknown`) of the webhooks system based on the last ten minutes of activity.
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `webhook_subscriptions:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-webhooks-health_check" method="get" path="/v1/webhooks/health_check" -->
+```python
+import gusto_embedded_v_2025_11_15
+from gusto_embedded_v_2025_11_15 import Gusto
+import os
+
+
+with Gusto() as gusto:
+
+    res = gusto.webhooks.get_v1_webhooks_health_check(security=gusto_embedded_v_2025_11_15.GetV1WebhooksHealthCheckSecurity(
+        system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
+    ), x_gusto_api_version=gusto_embedded_v_2025_11_15.GetV1WebhooksHealthCheckHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_11_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.GetV1WebhooksHealthCheckSecurity](../../models/getv1webhookshealthchecksecurity.md)                                                                                                                                  | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1WebhooksHealthCheckHeaderXGustoAPIVersion]](../../models/getv1webhookshealthcheckheaderxgustoapiversion.md)                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.WebhooksHealthCheckStatus](../../models/webhookshealthcheckstatus.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |

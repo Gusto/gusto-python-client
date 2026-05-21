@@ -1,6 +1,12 @@
 # PlaidStatus
 
-The Plaid connection status of the bank account. Only applies when verification type is Plaid.
+## Example Usage
+
+```python
+from gusto_embedded.models import PlaidStatus
+
+value = PlaidStatus.CONNECTED
+```
 
 
 ## Values

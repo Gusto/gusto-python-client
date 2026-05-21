@@ -9,21 +9,13 @@ from gusto_embedded.types import (
     UNSET,
     UNSET_SENTINEL,
 )
+import pydantic
 from pydantic import model_serializer
 from typing import Optional
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import Annotated, NotRequired, TypedDict
 
 
 class IdentityVerificationStatus(str, Enum):
-    r"""|   |   |
-    |---|---|
-    |__Status__| __Description__ |
-    | Pass | Signatory can sign all forms |
-    | Fail | Signatory cannot sign forms |
-    | Skipped | Signatory cannot sign Form 8655 until the form is manually uploaded as wet-signed |
-    | null | Identity verification process has not been completed |
-    """
-
     PASS = "Pass"
     FAIL = "Fail"
     SKIPPED = "Skipped"
@@ -34,7 +26,7 @@ class HomeAddressTypedDict(TypedDict):
     street_2: NotRequired[str]
     city: NotRequired[str]
     state: NotRequired[str]
-    zip: NotRequired[str]
+    zip_code: NotRequired[str]
     country: NotRequired[str]
 
 
@@ -47,9 +39,27 @@ class HomeAddress(BaseModel):
 
     state: Optional[str] = None
 
-    zip: Optional[str] = None
+    zip_code: Annotated[Optional[str], pydantic.Field(alias="zip")] = None
 
     country: Optional[str] = "USA"
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["street_1", "street_2", "city", "state", "zip_code", "country"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class SignatoryTypedDict(TypedDict):
@@ -120,50 +130,55 @@ class Signatory(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "first_name",
-            "last_name",
-            "title",
-            "phone",
-            "email",
-            "birthday",
-            "is_admin",
-            "has_ssn",
-            "version",
-            "identity_verification_status",
-            "home_address",
-        ]
-        nullable_fields = [
-            "first_name",
-            "last_name",
-            "title",
-            "phone",
-            "birthday",
-            "identity_verification_status",
-            "home_address",
-        ]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "first_name",
+                "last_name",
+                "title",
+                "phone",
+                "email",
+                "birthday",
+                "is_admin",
+                "has_ssn",
+                "version",
+                "identity_verification_status",
+                "home_address",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "first_name",
+                "last_name",
+                "title",
+                "phone",
+                "birthday",
+                "identity_verification_status",
+                "home_address",
+            ]
+        )
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
+
+
+try:
+    HomeAddress.model_rebuild()
+except NameError:
+    pass

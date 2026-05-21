@@ -1,5 +1,4 @@
 # CompanyForms
-(*company_forms*)
 
 ## Overview
 
@@ -14,11 +13,16 @@
 
 Get a list of all company's forms
 
+### Related guides
+- [Company Forms](doc:company-form)
+
 scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-forms" method="get" path="/v1/companies/{company_id}/forms" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -27,7 +31,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get_all(company_id="<id>")
+    res = gusto.company_forms.get_all(company_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompanyFormsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -39,7 +43,10 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyFormsHeaderXGustoAPIVersion]](../../models/getv1companyformsheaderxgustoapiversion.md)                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `sort_by`                                                                                                                                                                                                                    | [Optional[models.GetV1CompanyFormsQueryParamSortBy]](../../models/getv1companyformsqueryparamsortby.md)                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Sort company forms by a given field. Append `:asc` or `:desc` to specify direction (e.g., `name:asc`). Defaults to ascending.                                                                                                |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -48,9 +55,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
 
 ## get
 
@@ -60,7 +68,9 @@ scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-form" method="get" path="/v1/forms/{form_id}" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -69,7 +79,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get(form_id="<id>")
+    res = gusto.company_forms.get(form_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompanyFormHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -81,7 +91,7 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `form_id`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the form                                                                                                                                                                                                         |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyFormHeaderXGustoAPIVersion]](../../models/getv1companyformheaderxgustoapiversion.md)                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -90,9 +100,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
 
 ## get_pdf
 
@@ -102,7 +113,9 @@ scope: `company_forms:read`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="get-v1-company-form-pdf" method="get" path="/v1/forms/{form_id}/pdf" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -111,7 +124,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.get_pdf(form_id="<id>")
+    res = gusto.company_forms.get_pdf(form_id="<id>", x_gusto_api_version=gusto_embedded.GetV1CompanyFormPdfHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -123,7 +136,7 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `form_id`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the form                                                                                                                                                                                                         |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyFormPdfHeaderXGustoAPIVersion]](../../models/getv1companyformpdfheaderxgustoapiversion.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -132,9 +145,10 @@ with Gusto(
 
 ### Errors
 
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
+| Error Type                      | Status Code                     | Content Type                    |
+| ------------------------------- | ------------------------------- | ------------------------------- |
+| models.NotFoundErrorObjectError | 404                             | application/json                |
+| models.APIError                 | 4XX, 5XX                        | \*/\*                           |
 
 ## sign
 
@@ -144,7 +158,9 @@ scope: `company_forms:sign`
 
 ### Example Usage
 
+<!-- UsageSnippet language="python" operationID="put-v1-company-form-sign" method="put" path="/v1/forms/{form_id}/sign" -->
 ```python
+import gusto_embedded
 from gusto_embedded import Gusto
 import os
 
@@ -153,7 +169,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.company_forms.sign(form_id="<id>", signature_text="Jane Smith", agree=True, signed_by_ip_address="192.168.0.1")
+    res = gusto.company_forms.sign(form_id="<id>", signature_text="<value>", agree=True, x_gusto_api_version=gusto_embedded.PutV1CompanyFormSignHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -167,8 +183,8 @@ with Gusto(
 | `form_id`                                                                                                                                                                                                                                                                        | *str*                                                                                                                                                                                                                                                                            | :heavy_check_mark:                                                                                                                                                                                                                                                               | The UUID of the form                                                                                                                                                                                                                                                             |
 | `signature_text`                                                                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                                                                            | :heavy_check_mark:                                                                                                                                                                                                                                                               | The signature                                                                                                                                                                                                                                                                    |
 | `agree`                                                                                                                                                                                                                                                                          | *bool*                                                                                                                                                                                                                                                                           | :heavy_check_mark:                                                                                                                                                                                                                                                               | Whether you agree to sign electronically                                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                            | [Optional[models.PutV1CompanyFormSignHeaderXGustoAPIVersion]](../../models/putv1companyformsignheaderxgustoapiversion.md)                                                                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                     |
 | `x_gusto_client_ip`                                                                                                                                                                                                                                                              | *Optional[str]*                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.                                                                                                                       |
-| `x_gusto_api_version`                                                                                                                                                                                                                                                            | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                     |
 | `signed_by_ip_address`                                                                                                                                                                                                                                                           | *Optional[str]*                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                               | The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead. |
 | `retries`                                                                                                                                                                                                                                                                        | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                              |
 
@@ -178,7 +194,8 @@ with Gusto(
 
 ### Errors
 
-| Error Type                                 | Status Code                                | Content Type                               |
-| ------------------------------------------ | ------------------------------------------ | ------------------------------------------ |
-| models.UnprocessableEntityErrorObjectError | 422                                        | application/json                           |
-| models.APIError                            | 4XX, 5XX                                   | \*/\*                                      |
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObjectError  | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |

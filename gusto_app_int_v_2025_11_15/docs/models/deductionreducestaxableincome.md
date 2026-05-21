@@ -1,0 +1,22 @@
+# DeductionReducesTaxableIncome
+
+Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not "unset", coverage amount and coverage salary multiplier are ignored.
+
+## Example Usage
+
+```python
+from gusto_app_integration_v_2025_11_15.models import DeductionReducesTaxableIncome
+
+value = DeductionReducesTaxableIncome.UNSET
+
+# Open enum: unrecognized values are captured as UnrecognizedStr
+```
+
+
+## Values
+
+| Name                             | Value                            |
+| -------------------------------- | -------------------------------- |
+| `UNSET`                          | unset                            |
+| `REDUCES_TAXABLE_INCOME`         | reduces_taxable_income           |
+| `DOES_NOT_REDUCE_TAXABLE_INCOME` | does_not_reduce_taxable_income   |

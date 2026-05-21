@@ -34,46 +34,41 @@ class PossibleLiabilities(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "liability_amount",
-            "payroll_check_date",
-            "external_payroll_uuid",
-        ]
-        nullable_fields = ["payroll_check_date", "external_payroll_uuid"]
-        null_default_fields = []
-
+        optional_fields = set(
+            ["liability_amount", "payroll_check_date", "external_payroll_uuid"]
+        )
+        nullable_fields = set(["payroll_check_date", "external_payroll_uuid"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
 
 class TaxLiabilitiesSelectionsTypedDict(TypedDict):
-    r"""Example response"""
+    r"""The representation of tax liabilities selections."""
 
     tax_id: NotRequired[int]
     r"""The ID of the tax."""
     tax_name: NotRequired[str]
     r"""The name of the tax."""
+    description: NotRequired[Nullable[str]]
+    r"""A description of the tax, providing additional detail about the tax type."""
     last_unpaid_external_payroll_uuid: NotRequired[Nullable[str]]
     r"""The UUID of last unpaid external payroll."""
     possible_liabilities: NotRequired[List[PossibleLiabilitiesTypedDict]]
@@ -81,13 +76,16 @@ class TaxLiabilitiesSelectionsTypedDict(TypedDict):
 
 
 class TaxLiabilitiesSelections(BaseModel):
-    r"""Example response"""
+    r"""The representation of tax liabilities selections."""
 
     tax_id: Optional[int] = None
     r"""The ID of the tax."""
 
     tax_name: Optional[str] = None
     r"""The name of the tax."""
+
+    description: OptionalNullable[str] = UNSET
+    r"""A description of the tax, providing additional detail about the tax type."""
 
     last_unpaid_external_payroll_uuid: OptionalNullable[str] = UNSET
     r"""The UUID of last unpaid external payroll."""
@@ -97,35 +95,33 @@ class TaxLiabilitiesSelections(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "tax_id",
-            "tax_name",
-            "last_unpaid_external_payroll_uuid",
-            "possible_liabilities",
-        ]
-        nullable_fields = ["last_unpaid_external_payroll_uuid"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "tax_id",
+                "tax_name",
+                "description",
+                "last_unpaid_external_payroll_uuid",
+                "possible_liabilities",
+            ]
+        )
+        nullable_fields = set(["description", "last_unpaid_external_payroll_uuid"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

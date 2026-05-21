@@ -2,6 +2,14 @@
 
 The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PaymentUnit
+
+value = PaymentUnit.HOUR
+```
+
 
 ## Values
 

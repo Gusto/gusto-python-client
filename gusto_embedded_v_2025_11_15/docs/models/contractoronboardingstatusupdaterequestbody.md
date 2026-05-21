@@ -1,0 +1,10 @@
+# ContractorOnboardingStatusUpdateRequestBody
+
+Request body for updating a contractor's onboarding status.
+
+
+## Fields
+
+| Field                                                                                                                                          | Type                                                                                                                                           | Required                                                                                                                                       | Description                                                                                                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onboarding_status`                                                                                                                            | [models.ContractorOnboardingStatusUpdateRequestBodyOnboardingStatus](../models/contractoronboardingstatusupdaterequestbodyonboardingstatus.md) | :heavy_check_mark:                                                                                                                             | The updated onboarding status for the contractor.                                                                                              |
