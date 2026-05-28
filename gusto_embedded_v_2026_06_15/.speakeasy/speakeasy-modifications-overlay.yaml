@@ -1,0 +1,23 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Speakeasy Modifications
+  version: 0.0.2
+  x-speakeasy-metadata:
+    after: ""
+    before: ""
+    type: speakeasy-modifications
+actions:
+  # Rename the `zip` postal-code property to `zip_code` so the generated
+  # Python SDK doesn't shadow the `zip()` builtin (pylint W0622 fails the
+  # Compile SDK step). The original rule only matched inline schemas under
+  # `paths`; many address schemas live under `components.schemas` and are
+  # referenced via $ref, so we also need to rewrite the property there.
+  # Both rules together cover every `zip` postal-code property the spec
+  # exposes.
+  - target: $.paths..schema..zip
+    update:
+      x-speakeasy-name-override: zip_code
+  - target: $.components.schemas..properties.zip
+    update:
+      x-speakeasy-name-override: zip_code
