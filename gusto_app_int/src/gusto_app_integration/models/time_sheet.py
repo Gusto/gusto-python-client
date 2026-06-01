@@ -3,7 +3,14 @@
 from __future__ import annotations
 from datetime import datetime
 from enum import Enum
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -50,6 +57,22 @@ class Entries(BaseModel):
     pay_classification: Optional[PayClassification] = None
     r"""Pay classification for the entry."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["uuid", "hours_worked", "pay_classification"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class TimeSheetTypedDict(TypedDict):
     r"""Record representing an employee/contractor's time sheet"""
@@ -78,6 +101,8 @@ class TimeSheetTypedDict(TypedDict):
     r"""Datetime for when time sheet was created."""
     updated_at: NotRequired[datetime]
     r"""Datetime for when time sheet was updated."""
+    synced_to_payroll_at: NotRequired[Nullable[datetime]]
+    r"""Datetime for when time sheet was synced to payroll. Null if the time sheet has not yet been synced to payroll."""
     metadata: NotRequired[Dict[str, str]]
     r"""Metadata associated with the time sheet. Key-value pairs of arbitrary data. Both keys and values must be strings."""
     entries: NotRequired[List[EntriesTypedDict]]
@@ -123,8 +148,54 @@ class TimeSheet(BaseModel):
     updated_at: Optional[datetime] = None
     r"""Datetime for when time sheet was updated."""
 
+    synced_to_payroll_at: OptionalNullable[datetime] = UNSET
+    r"""Datetime for when time sheet was synced to payroll. Null if the time sheet has not yet been synced to payroll."""
+
     metadata: Optional[Dict[str, str]] = None
     r"""Metadata associated with the time sheet. Key-value pairs of arbitrary data. Both keys and values must be strings."""
 
     entries: Optional[List[Entries]] = None
     r"""Entries associated with the time sheet."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "uuid",
+                "status",
+                "company_uuid",
+                "time_zone",
+                "entity_type",
+                "entity_uuid",
+                "version",
+                "job_uuid",
+                "shift_started_at",
+                "shift_ended_at",
+                "created_at",
+                "updated_at",
+                "synced_to_payroll_at",
+                "metadata",
+                "entries",
+            ]
+        )
+        nullable_fields = set(["synced_to_payroll_at"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

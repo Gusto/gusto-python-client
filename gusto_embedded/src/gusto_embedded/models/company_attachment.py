@@ -3,12 +3,16 @@
 from __future__ import annotations
 from enum import Enum
 from gusto_embedded.types import BaseModel
-from typing import Optional
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import TypedDict
 
 
 class Category(str, Enum):
-    r"""The category of the company attachment"""
+    r"""The category of the company attachment.
+    - `gep_notice`: A tax notice attachment
+    - `compliance`: A compliance attachment
+    - `other`: Any other attachment type
+
+    """
 
     GEP_NOTICE = "gep_notice"
     COMPLIANCE = "compliance"
@@ -18,27 +22,37 @@ class Category(str, Enum):
 class CompanyAttachmentTypedDict(TypedDict):
     r"""The company attachment"""
 
-    uuid: NotRequired[str]
+    uuid: str
     r"""UUID of the company attachment"""
-    name: NotRequired[str]
+    name: str
     r"""name of the file uploaded"""
-    category: NotRequired[Category]
-    r"""The category of the company attachment"""
-    upload_time: NotRequired[str]
+    category: Category
+    r"""The category of the company attachment.
+    - `gep_notice`: A tax notice attachment
+    - `compliance`: A compliance attachment
+    - `other`: Any other attachment type
+
+    """
+    upload_time: str
     r"""The ISO 8601 timestamp of when an attachment was uploaded"""
 
 
 class CompanyAttachment(BaseModel):
     r"""The company attachment"""
 
-    uuid: Optional[str] = None
+    uuid: str
     r"""UUID of the company attachment"""
 
-    name: Optional[str] = None
+    name: str
     r"""name of the file uploaded"""
 
-    category: Optional[Category] = None
-    r"""The category of the company attachment"""
+    category: Category
+    r"""The category of the company attachment.
+    - `gep_notice`: A tax notice attachment
+    - `compliance`: A compliance attachment
+    - `other`: Any other attachment type
 
-    upload_time: Optional[str] = None
+    """
+
+    upload_time: str
     r"""The ISO 8601 timestamp of when an attachment was uploaded"""

@@ -1,0 +1,9 @@
+# TimeSheetCreateBodyEntries
+
+
+## Fields
+
+| Field                                                                                                      | Type                                                                                                       | Required                                                                                                   | Description                                                                                                |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `hours_worked`                                                                                             | *Optional[float]*                                                                                          | :heavy_minus_sign:                                                                                         | Hours worked for this pay classification. Should be passed as number with up to 3 decimal places.          |
+| `pay_classification`                                                                                       | [Optional[models.TimeSheetCreateBodyPayClassification]](../models/timesheetcreatebodypayclassification.md) | :heavy_minus_sign:                                                                                         | Pay classification for the entry.                                                                          |

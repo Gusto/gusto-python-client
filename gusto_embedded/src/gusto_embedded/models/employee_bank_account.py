@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -15,8 +16,6 @@ class EmployeeBankAccountAccountType(str, Enum):
 
 
 class EmployeeBankAccountTypedDict(TypedDict):
-    r"""Example response"""
-
     uuid: str
     r"""UUID of the bank account"""
     employee_uuid: NotRequired[str]
@@ -32,8 +31,6 @@ class EmployeeBankAccountTypedDict(TypedDict):
 
 
 class EmployeeBankAccount(BaseModel):
-    r"""Example response"""
-
     uuid: str
     r"""UUID of the bank account"""
 
@@ -51,3 +48,27 @@ class EmployeeBankAccount(BaseModel):
 
     hidden_account_number: Optional[str] = None
     r"""Masked bank account number"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "employee_uuid",
+                "account_type",
+                "name",
+                "routing_number",
+                "hidden_account_number",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

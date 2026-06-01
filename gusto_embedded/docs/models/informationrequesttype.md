@@ -1,6 +1,12 @@
 # InformationRequestType
 
-The type of information request
+## Example Usage
+
+```python
+from gusto_embedded.models import InformationRequestType
+
+value = InformationRequestType.COMPANY_ONBOARDING
+```
 
 
 ## Values

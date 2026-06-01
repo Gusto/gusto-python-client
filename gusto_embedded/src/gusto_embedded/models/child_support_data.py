@@ -30,36 +30,31 @@ class FipsCodes(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["code", "county"]
-        nullable_fields = ["county"]
-        null_default_fields = []
-
+        optional_fields = set(["code", "county"])
+        nullable_fields = set(["county"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
 
 
-class Key(str, Enum):
+class ChildSupportDataKey(str, Enum):
     r"""A required attribute when creating a garnishment for this state agency. The current values are listed as an enum; though unlikely, values could be added if state agency requirements change in the future."""
 
     CASE_NUMBER = "case_number"
@@ -68,18 +63,34 @@ class Key(str, Enum):
 
 
 class RequiredAttributesTypedDict(TypedDict):
-    key: NotRequired[Key]
+    key: NotRequired[ChildSupportDataKey]
     r"""A required attribute when creating a garnishment for this state agency. The current values are listed as an enum; though unlikely, values could be added if state agency requirements change in the future."""
     label: NotRequired[str]
     r"""A human readable name of the attribute, e.g. CSE Case Number"""
 
 
 class RequiredAttributes(BaseModel):
-    key: Optional[Key] = None
+    key: Optional[ChildSupportDataKey] = None
     r"""A required attribute when creating a garnishment for this state agency. The current values are listed as an enum; though unlikely, values could be added if state agency requirements change in the future."""
 
     label: Optional[str] = None
     r"""A human readable name of the attribute, e.g. CSE Case Number"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["key", "label"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class AgenciesTypedDict(TypedDict):
@@ -88,9 +99,7 @@ class AgenciesTypedDict(TypedDict):
     name: NotRequired[str]
     r"""Name of state child support agency"""
     manual_payment_required: NotRequired[bool]
-    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment.
-
-    """
+    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment."""
     fips_codes: NotRequired[List[FipsCodesTypedDict]]
     r"""FIPS codes for state or county child support orders"""
     required_attributes: NotRequired[List[RequiredAttributesTypedDict]]
@@ -105,15 +114,37 @@ class Agencies(BaseModel):
     r"""Name of state child support agency"""
 
     manual_payment_required: Optional[bool] = None
-    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment.
-
-    """
+    r"""Specifies if remitting payment to the agency is required outside of Gusto. If true, Gusto includes garnishment amounts for this agency in payroll calculation, but does not debit for or remit payment to the agency automatically. As of September 2024, only garnishments for South Carolina Integrated Child Support Services require manual payment."""
 
     fips_codes: Optional[List[FipsCodes]] = None
     r"""FIPS codes for state or county child support orders"""
 
     required_attributes: Optional[List[RequiredAttributes]] = None
     r"""Describes which child support case identifying attributes are required for this agency. While most agencies only require a single identifier, some (e.g. OH) require multiple identifiers."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "state",
+                "name",
+                "manual_payment_required",
+                "fips_codes",
+                "required_attributes",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 class ChildSupportDataTypedDict(TypedDict):
@@ -128,3 +159,19 @@ class ChildSupportData(BaseModel):
 
     agencies: Optional[List[Agencies]] = None
     r"""State child support agencies"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["agencies"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

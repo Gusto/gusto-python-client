@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -14,8 +15,8 @@ class I9Verification(BaseSDK):
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -23,11 +24,16 @@ class I9Verification(BaseSDK):
     ) -> models.I9Authorization:
         r"""Get an employee's I-9 authorization
 
-        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to filled out the Form I-9 for employment eligibility verification.
+        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to fill out the Form I-9 for employment eligibility verification.
 
         **NOTE:** The `form_uuid` in responses from this endpoint can be used to retrieve the PDF version of the I-9. See the \"get employee form PDF\" request for more details.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -47,8 +53,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -64,6 +70,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -77,47 +85,43 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_authorization_async(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -125,11 +129,16 @@ class I9Verification(BaseSDK):
     ) -> models.I9Authorization:
         r"""Get an employee's I-9 authorization
 
-        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to filled out the Form I-9 for employment eligibility verification.
+        An employee's I-9 authorization stores information about an employee's authorization status and I-9 signatures, information required to fill out the Form I-9 for employment eligibility verification.
 
         **NOTE:** The `form_uuid` in responses from this endpoint can be used to retrieve the PDF version of the I-9. See the \"get employee form PDF\" request for more details.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -149,8 +158,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -166,6 +175,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -179,55 +190,49 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
         *,
         employee_id: str,
-        authorization_status: models.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus,
+        authorization_status: models.I9AuthorizationRequestBodyAuthorizationStatus,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        document_type: Optional[
-            models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentType
-        ] = None,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        version: Optional[str] = None,
+        document_type: Optional[models.I9AuthorizationRequestBodyDocumentType] = None,
         document_number: Optional[str] = None,
         country: Optional[str] = None,
         expiration_date: Optional[str] = None,
-        version: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -240,7 +245,6 @@ class I9Verification(BaseSDK):
         If the version is supplied and the employee I-9 authorization exists, this endpoint acts as an update. Otherwise, it will create an employee I-9 authorization.
 
         Validations on this endpoint are conditional:
-
         * `document_type` may be required, depending on `authorization_status`.
         * Valid formats for `document_number` vary, depending on `document_type`.
         * `country` is only allowed with `document_type: 'foreign_passport'`.
@@ -254,17 +258,42 @@ class I9Verification(BaseSDK):
 
         Detailed instructions for completing Form I-9 can be found at https://www.uscis.gov/sites/default/files/document/forms/i-9instr.pdf
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param authorization_status: The employee's authorization status    * `citizen`: A citizen is someone who was born in the United States or is a naturalized citizen living in the United States.   * `noncitizen`: A noncitizen national is someone born in American Samoa, certain former citizens of the former Trust Territory of the Pacific Islands, and certain children of noncitizen nationals born abroad.   * `permanent_resident`: A lawful permanent resident is someone who is not a US citizen and who resides under legally recognized and lawfully recorded permanent residence as an immigrant.   * `alien`: Also referred to as a \"noncitizen authorized to work\". This includes anyone who is authorized to work in the United States but is not a US citizen, US national or lawful permanent resident.
+        :param authorization_status: The employee's authorization status.
+            - `citizen`: A citizen is someone who was born in the United States or is a naturalized citizen living in the United States.
+            - `noncitizen`: A noncitizen national is someone born in American Samoa, certain former citizens of the former Trust Territory of the Pacific Islands, and certain children of noncitizen nationals born abroad.
+            - `permanent_resident`: A lawful permanent resident is someone who is not a US citizen and who resides under legally recognized and lawfully recorded permanent residence as an immigrant.
+            - `alien`: Also referred to as a \"noncitizen authorized to work\". This includes anyone who is authorized to work in the United States but is not a US citizen, US national or lawful permanent resident.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param document_type: The type of document an employee holds, based on their authorization status.    * This is unused for authorization status `citizen` or `noncitizen`.   * If the authorization status is `permanent_resident`, this must be `uscis_alien_registration_number`.   * If the authorization status is `alien`, this is required and may be any of the valid values.
-        :param document_number: The document number. Formatting depends on the employee's document type.    * For `document_type:'uscis_alien_registration_number'`, this must be a USCIS Number/A-Number, which is 7 to 9 digits.   * For `document_type:'form_i94'`, this must be a Form I-94 Admission Number, which is 11 digits.   * For `document_type:'foreign_passport'`, this must be the passport number.  This is required when the document type is present.
-        :param country: The document's country of issuance.  This is required when the document type is `foreign_passport`.
-        :param expiration_date: The document's expiration date.  This may only be used when the authorization status is `alien`.
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field. If supplied, this endpoint will update the existing I-9 authorization if it exists.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field. If supplied, this endpoint will update the existing I-9 authorization if it exists.
+        :param document_type: The type of document an employee holds, based on their authorization status.
+            - This is unused for authorization status `citizen` or `noncitizen`.
+            - If the authorization status is `permanent_resident`, this must be `uscis_alien_registration_number`.
+            - If the authorization status is `alien`, this is required and may be any of the valid values.
+
+        :param document_number: The document number. Formatting depends on the employee's document type.
+            - For `document_type:'uscis_alien_registration_number'`, this must be a USCIS Number/A-Number, which is 7 to 9 digits.
+            - For `document_type:'form_i94'`, this must be a Form I-94 Admission Number, which is 11 digits.
+            - For `document_type:'foreign_passport'`, this must be the passport number.
+
+            This is required when the document type is present.
+
+        :param country: The document's country of issuance.
+
+            This is required when the document type is `foreign_passport`.
+
+        :param expiration_date: The document's expiration date.
+
+            This may only be used when the authorization status is `alien`.
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -281,15 +310,15 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationRequestBody(
+            employee_id=employee_id,
+            i9_authorization_request_body=models.I9AuthorizationRequestBody(
+                version=version,
                 authorization_status=authorization_status,
                 document_type=document_type,
                 document_number=document_number,
                 country=country,
                 expiration_date=expiration_date,
-                version=version,
             ),
         )
 
@@ -307,12 +336,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationRequestBody,
+                models.I9AuthorizationRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -326,61 +357,54 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
         *,
         employee_id: str,
-        authorization_status: models.PutV1EmployeesEmployeeIDI9AuthorizationAuthorizationStatus,
+        authorization_status: models.I9AuthorizationRequestBodyAuthorizationStatus,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        document_type: Optional[
-            models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentType
-        ] = None,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        version: Optional[str] = None,
+        document_type: Optional[models.I9AuthorizationRequestBodyDocumentType] = None,
         document_number: Optional[str] = None,
         country: Optional[str] = None,
         expiration_date: Optional[str] = None,
-        version: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -393,7 +417,6 @@ class I9Verification(BaseSDK):
         If the version is supplied and the employee I-9 authorization exists, this endpoint acts as an update. Otherwise, it will create an employee I-9 authorization.
 
         Validations on this endpoint are conditional:
-
         * `document_type` may be required, depending on `authorization_status`.
         * Valid formats for `document_number` vary, depending on `document_type`.
         * `country` is only allowed with `document_type: 'foreign_passport'`.
@@ -407,17 +430,42 @@ class I9Verification(BaseSDK):
 
         Detailed instructions for completing Form I-9 can be found at https://www.uscis.gov/sites/default/files/document/forms/i-9instr.pdf
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param authorization_status: The employee's authorization status    * `citizen`: A citizen is someone who was born in the United States or is a naturalized citizen living in the United States.   * `noncitizen`: A noncitizen national is someone born in American Samoa, certain former citizens of the former Trust Territory of the Pacific Islands, and certain children of noncitizen nationals born abroad.   * `permanent_resident`: A lawful permanent resident is someone who is not a US citizen and who resides under legally recognized and lawfully recorded permanent residence as an immigrant.   * `alien`: Also referred to as a \"noncitizen authorized to work\". This includes anyone who is authorized to work in the United States but is not a US citizen, US national or lawful permanent resident.
+        :param authorization_status: The employee's authorization status.
+            - `citizen`: A citizen is someone who was born in the United States or is a naturalized citizen living in the United States.
+            - `noncitizen`: A noncitizen national is someone born in American Samoa, certain former citizens of the former Trust Territory of the Pacific Islands, and certain children of noncitizen nationals born abroad.
+            - `permanent_resident`: A lawful permanent resident is someone who is not a US citizen and who resides under legally recognized and lawfully recorded permanent residence as an immigrant.
+            - `alien`: Also referred to as a \"noncitizen authorized to work\". This includes anyone who is authorized to work in the United States but is not a US citizen, US national or lawful permanent resident.
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param document_type: The type of document an employee holds, based on their authorization status.    * This is unused for authorization status `citizen` or `noncitizen`.   * If the authorization status is `permanent_resident`, this must be `uscis_alien_registration_number`.   * If the authorization status is `alien`, this is required and may be any of the valid values.
-        :param document_number: The document number. Formatting depends on the employee's document type.    * For `document_type:'uscis_alien_registration_number'`, this must be a USCIS Number/A-Number, which is 7 to 9 digits.   * For `document_type:'form_i94'`, this must be a Form I-94 Admission Number, which is 11 digits.   * For `document_type:'foreign_passport'`, this must be the passport number.  This is required when the document type is present.
-        :param country: The document's country of issuance.  This is required when the document type is `foreign_passport`.
-        :param expiration_date: The document's expiration date.  This may only be used when the authorization status is `alien`.
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field. If supplied, this endpoint will update the existing I-9 authorization if it exists.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field. If supplied, this endpoint will update the existing I-9 authorization if it exists.
+        :param document_type: The type of document an employee holds, based on their authorization status.
+            - This is unused for authorization status `citizen` or `noncitizen`.
+            - If the authorization status is `permanent_resident`, this must be `uscis_alien_registration_number`.
+            - If the authorization status is `alien`, this is required and may be any of the valid values.
+
+        :param document_number: The document number. Formatting depends on the employee's document type.
+            - For `document_type:'uscis_alien_registration_number'`, this must be a USCIS Number/A-Number, which is 7 to 9 digits.
+            - For `document_type:'form_i94'`, this must be a Form I-94 Admission Number, which is 11 digits.
+            - For `document_type:'foreign_passport'`, this must be the passport number.
+
+            This is required when the document type is present.
+
+        :param country: The document's country of issuance.
+
+            This is required when the document type is `foreign_passport`.
+
+        :param expiration_date: The document's expiration date.
+
+            This may only be used when the authorization status is `alien`.
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -434,15 +482,15 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationRequestBody(
+            employee_id=employee_id,
+            i9_authorization_request_body=models.I9AuthorizationRequestBody(
+                version=version,
                 authorization_status=authorization_status,
                 document_type=document_type,
                 document_number=document_number,
                 country=country,
                 expiration_date=expiration_date,
-                version=version,
             ),
         )
 
@@ -460,12 +508,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationRequestBody,
+                models.I9AuthorizationRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -479,53 +529,48 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_document_options(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -535,7 +580,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint returns the possible document options based on the employee's authorization status. These options can then be used to create the I-9 verification documents.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -555,8 +605,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -572,6 +622,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -585,49 +637,45 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization-document_options",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocumentOption]
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocumentOption], http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_document_options_async(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -637,7 +685,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint returns the possible document options based on the employee's authorization status. These options can then be used to create the I-9 verification documents.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -657,8 +710,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -674,6 +727,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -687,49 +742,45 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization-document_options",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocumentOption]
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocumentOption], http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_documents(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -739,7 +790,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -759,8 +815,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -776,6 +832,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -789,49 +847,45 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization-documents",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocument]
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocument], http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_documents_async(
         self,
         *,
         employee_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -841,7 +895,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -861,8 +920,8 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -878,6 +937,8 @@ class I9Verification(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -891,41 +952,37 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-i9_authorization-documents",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocument]
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocument], http_res
             )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def create_documents(
         self,
@@ -933,8 +990,8 @@ class I9Verification(BaseSDK):
         employee_id: str,
         documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -944,17 +1001,21 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
-        Use the document options endpoint to get the possible document types and titles, which can vary depending on the employee's authorization status.
+        Use the [document options endpoint](ref:get-v1-employees-employee_id-i9_authorization-document_options) to get the possible document types and titles, which can vary depending on the employee's authorization status.
 
         > 🚧 Every request must contain the complete list of documents for the Employee.
         >
         > Every request to this endpoint removes any previous verification document records for the employee.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param documents: An array of I-9 verification documents
+        :param documents: An array of I-9 verification documents. Every request must contain the complete list of documents for the employee, as previous records are replaced.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -972,9 +1033,9 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody(
+            employee_id=employee_id,
+            i9_authorization_documents_request_body=models.I9AuthorizationDocumentsRequestBody(
                 documents=utils.get_pydantic_model(documents, List[models.Documents]),
             ),
         )
@@ -993,12 +1054,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_documents_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody,
+                models.I9AuthorizationDocumentsRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1012,47 +1075,42 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization-documents",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocument]
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocument], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_documents_async(
         self,
@@ -1060,8 +1118,8 @@ class I9Verification(BaseSDK):
         employee_id: str,
         documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1071,17 +1129,21 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States.
 
-        Use the document options endpoint to get the possible document types and titles, which can vary depending on the employee's authorization status.
+        Use the [document options endpoint](ref:get-v1-employees-employee_id-i9_authorization-document_options) to get the possible document types and titles, which can vary depending on the employee's authorization status.
 
         > 🚧 Every request must contain the complete list of documents for the Employee.
         >
         > Every request to this endpoint removes any previous verification document records for the employee.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param documents: An array of I-9 verification documents
+        :param documents: An array of I-9 verification documents. Every request must contain the complete list of documents for the employee, as previous records are replaced.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1099,9 +1161,9 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody(
+            employee_id=employee_id,
+            i9_authorization_documents_request_body=models.I9AuthorizationDocumentsRequestBody(
                 documents=utils.get_pydantic_model(documents, List[models.Documents]),
             ),
         )
@@ -1120,12 +1182,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_documents_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsRequestBody,
+                models.I9AuthorizationDocumentsRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1139,47 +1203,42 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization-documents",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text, List[models.I9AuthorizationDocument]
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(
+                List[models.I9AuthorizationDocument], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete_document(
         self,
@@ -1187,8 +1246,8 @@ class I9Verification(BaseSDK):
         employee_id: str,
         document_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1198,7 +1257,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint deletes a specific verification document.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param document_id: The UUID of the document
@@ -1220,9 +1284,9 @@ class I9Verification(BaseSDK):
 
         request = (
             models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 employee_id=employee_id,
                 document_id=document_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1236,9 +1300,11 @@ class I9Verification(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1252,39 +1318,40 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-i9_authorization-documents-document_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_document_async(
         self,
@@ -1292,8 +1359,8 @@ class I9Verification(BaseSDK):
         employee_id: str,
         document_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1303,7 +1370,12 @@ class I9Verification(BaseSDK):
 
         An employee's I-9 verification documents are the documents an employee has provided the employer to verify their identity and authorization to work in the United States. This endpoint deletes a specific verification document.
 
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param document_id: The UUID of the document
@@ -1325,9 +1397,9 @@ class I9Verification(BaseSDK):
 
         request = (
             models.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 employee_id=employee_id,
                 document_id=document_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1341,9 +1413,11 @@ class I9Verification(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1357,39 +1431,40 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-employees-employee_id-i9_authorization-documents-document_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def employer_sign(
         self,
@@ -1398,10 +1473,10 @@ class I9Verification(BaseSDK):
         signature_text: str,
         signer_title: str,
         agree: bool,
-        x_gusto_client_ip: Optional[str] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        x_gusto_client_ip: Optional[str] = None,
         signed_by_ip_address: Optional[str] = None,
         additional_info: Optional[str] = None,
         alt_procedure: Optional[bool] = None,
@@ -1414,14 +1489,25 @@ class I9Verification(BaseSDK):
 
         Sign an employee's Form I-9 as an employer. Once the form is signed, the employee's I-9 authorization is considered complete and cannot be modified.
 
+        ### Prerequisites
+        Before calling this endpoint:
+        1. The employee must have a completed [I-9 authorization](ref:put-v1-employees-employee_id-i9_authorization)
+        2. The employee must have signed the Form I-9
+        3. [I-9 verification documents](ref:put-v1-employees-employee_id-i9_authorization-documents) must be submitted
+
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param signature_text: The signature
         :param signer_title: The signer's job title
         :param agree: Whether you agree to sign electronically
-        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead.
         :param additional_info: Any additional notes
         :param alt_procedure: Whether an alternative procedure authorized by DHS to examine documents was used
@@ -1441,10 +1527,10 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             x_gusto_client_ip=x_gusto_client_ip,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody(
+            i9_authorization_employer_sign_request_body=models.I9AuthorizationEmployerSignRequestBody(
                 signature_text=signature_text,
                 signer_title=signer_title,
                 signed_by_ip_address=signed_by_ip_address,
@@ -1468,12 +1554,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_employer_sign_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody,
+                models.I9AuthorizationEmployerSignRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1487,45 +1575,40 @@ class I9Verification(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization-employer_sign",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def employer_sign_async(
         self,
@@ -1534,10 +1617,10 @@ class I9Verification(BaseSDK):
         signature_text: str,
         signer_title: str,
         agree: bool,
-        x_gusto_client_ip: Optional[str] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        x_gusto_client_ip: Optional[str] = None,
         signed_by_ip_address: Optional[str] = None,
         additional_info: Optional[str] = None,
         alt_procedure: Optional[bool] = None,
@@ -1550,14 +1633,25 @@ class I9Verification(BaseSDK):
 
         Sign an employee's Form I-9 as an employer. Once the form is signed, the employee's I-9 authorization is considered complete and cannot be modified.
 
+        ### Prerequisites
+        Before calling this endpoint:
+        1. The employee must have a completed [I-9 authorization](ref:put-v1-employees-employee_id-i9_authorization)
+        2. The employee must have signed the Form I-9
+        3. [I-9 verification documents](ref:put-v1-employees-employee_id-i9_authorization-documents) must be submitted
+
+        ### Related guides
+        - [I-9 employment verification](doc:i-9-employment-verification)
+
         scope: `i9_authorizations:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param signature_text: The signature
         :param signer_title: The signer's job title
         :param agree: Whether you agree to sign electronically
-        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param x_gusto_client_ip: Optional header to supply the IP address. This can be used to supply the IP address for signature endpoints instead of the signed_by_ip_address parameter.
         :param signed_by_ip_address: The IP address of the signatory who signed the form. Both IPv4 AND IPv6 are supported. You must provide the IP address with either this parameter OR you can leave out this parameter and set the IP address in the request header using the `x-gusto-client-ip` header instead.
         :param additional_info: Any additional notes
         :param alt_procedure: Whether an alternative procedure authorized by DHS to examine documents was used
@@ -1577,10 +1671,10 @@ class I9Verification(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             x_gusto_client_ip=x_gusto_client_ip,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody(
+            i9_authorization_employer_sign_request_body=models.I9AuthorizationEmployerSignRequestBody(
                 signature_text=signature_text,
                 signer_title=signer_title,
                 signed_by_ip_address=signed_by_ip_address,
@@ -1604,12 +1698,14 @@ class I9Verification(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.i9_authorization_employer_sign_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignRequestBody,
+                models.I9AuthorizationEmployerSignRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1623,42 +1719,37 @@ class I9Verification(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-i9_authorization-employer_sign",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.I9Authorization)
+            return unmarshal_json_response(models.I9Authorization, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

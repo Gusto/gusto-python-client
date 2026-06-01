@@ -6,6 +6,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -15,8 +16,8 @@ class ContractorPayments(BaseSDK):
         *,
         contractor_payment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -34,6 +35,8 @@ class ContractorPayments(BaseSDK):
         * If no data has yet be inserted for a given field, it defaults to “0.00” (for fixed amounts).
 
         scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param contractor_payment_uuid: The UUID of the contractor payment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -53,8 +56,8 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptRequest(
-            contractor_payment_uuid=contractor_payment_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_uuid=contractor_payment_uuid,
         )
 
         req = self._build_request(
@@ -70,6 +73,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -83,47 +88,43 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-receipt",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPaymentReceipt)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.ContractorPaymentReceipt, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_receipt_async(
         self,
         *,
         contractor_payment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -141,6 +142,8 @@ class ContractorPayments(BaseSDK):
         * If no data has yet be inserted for a given field, it defaults to “0.00” (for fixed amounts).
 
         scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param contractor_payment_uuid: The UUID of the contractor payment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -160,8 +163,8 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDReceiptRequest(
-            contractor_payment_uuid=contractor_payment_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_uuid=contractor_payment_uuid,
         )
 
         req = self._build_request_async(
@@ -177,6 +180,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -190,47 +195,43 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-receipt",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPaymentReceipt)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.ContractorPaymentReceipt, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def fund(
         self,
         *,
         contractor_payment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1ContractorPaymentsContractorPaymentUUIDFundHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentUUIDFundHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -245,6 +246,8 @@ class ContractorPayments(BaseSDK):
         Simulate funding a contractor payment. Funding only occurs automatically in the production environment when bank transactions are generated. Use this action in the demo environment to transition a contractor payment's `status` from `Unfunded` to `Funded`. A `Funded` status is required for generating a contractor payment receipt.
 
         scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param contractor_payment_uuid: The UUID of the contractor payment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -264,8 +267,8 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDFundRequest(
-            contractor_payment_uuid=contractor_payment_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_uuid=contractor_payment_uuid,
         )
 
         req = self._build_request(
@@ -281,6 +284,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -294,53 +299,48 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-fund",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def fund_async(
         self,
         *,
         contractor_payment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1ContractorPaymentsContractorPaymentUUIDFundHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentUUIDFundHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -355,6 +355,8 @@ class ContractorPayments(BaseSDK):
         Simulate funding a contractor payment. Funding only occurs automatically in the production environment when bank transactions are generated. Use this action in the demo environment to transition a contractor payment's `status` from `Unfunded` to `Funded`. A `Funded` status is required for generating a contractor payment receipt.
 
         scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param contractor_payment_uuid: The UUID of the contractor payment
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -374,8 +376,8 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentsContractorPaymentUUIDFundRequest(
-            contractor_payment_uuid=contractor_payment_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_uuid=contractor_payment_uuid,
         )
 
         req = self._build_request_async(
@@ -391,6 +393,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -404,45 +408,284 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-contractor_payments-contractor_payment_uuid-fund",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
+        raise models.APIError("Unexpected response received", http_res)
+
+    def list(
+        self,
+        *,
+        company_id: str,
+        start_date: str,
+        end_date: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        group_by_date: Optional[bool] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody:
+        r"""Get contractor payments for a company
+
+        Returns an object containing individual contractor payments, within a given time period, including totals.
+
+        Results are returned in reverse chronological order (newest first).
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param start_date: The time period for which to retrieve contractor payments
+        :param end_date: The time period for which to retrieve contractor payments. If left empty, defaults to today's date.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param contractor_uuid: The UUID of the contractor. When specified, will load all payments for that contractor.
+        :param group_by_date: Display contractor payments results group by check date if set to true.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            start_date=start_date,
+            end_date=end_date,
+            contractor_uuid=contractor_uuid,
+            group_by_date=group_by_date,
+            page=page,
+            per=per,
         )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/contractor_payments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-contractor_payments",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody, http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def list_async(
+        self,
+        *,
+        company_id: str,
+        start_date: str,
+        end_date: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        group_by_date: Optional[bool] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody:
+        r"""Get contractor payments for a company
+
+        Returns an object containing individual contractor payments, within a given time period, including totals.
+
+        Results are returned in reverse chronological order (newest first).
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param start_date: The time period for which to retrieve contractor payments
+        :param end_date: The time period for which to retrieve contractor payments. If left empty, defaults to today's date.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param contractor_uuid: The UUID of the contractor. When specified, will load all payments for that contractor.
+        :param group_by_date: Display contractor payments results group by check date if set to true.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            start_date=start_date,
+            end_date=end_date,
+            contractor_uuid=contractor_uuid,
+            group_by_date=group_by_date,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/contractor_payments",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-contractor_payments",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody, http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
 
     def create(
         self,
@@ -451,15 +694,15 @@ class ContractorPayments(BaseSDK):
         contractor_uuid: str,
         date_: date,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion
+        ] = models.PostV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         payment_method: Optional[
-            models.PostV1CompaniesCompanyIDContractorPaymentsPaymentMethod
-        ] = models.PostV1CompaniesCompanyIDContractorPaymentsPaymentMethod.DIRECT_DEPOSIT,
-        wage: Optional[float] = None,
-        hours: Optional[float] = None,
-        bonus: Optional[float] = None,
-        reimbursement: Optional[float] = None,
+            models.ContractorPaymentBodyPaymentMethod
+        ] = models.ContractorPaymentBodyPaymentMethod.DIRECT_DEPOSIT,
+        wage: Optional[str] = None,
+        hours: Optional[str] = None,
+        bonus: Optional[str] = None,
+        reimbursement: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -471,15 +714,17 @@ class ContractorPayments(BaseSDK):
 
         scope: `payrolls:run`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_id: The UUID of the company
-        :param contractor_uuid: The contractor receiving the payment
-        :param date_: Date of contractor payment
+        :param contractor_uuid: The contractor receiving the payment.
+        :param date_: Date of contractor payment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param payment_method:
-        :param wage: If the contractor is on a fixed wage, this is the fixed wage payment for the contractor, regardless of hours worked
-        :param hours: If the contractor is on an hourly wage, this is the number of hours that the contractor worked for the payment
-        :param bonus: If the contractor is on an hourly wage, this is the bonus the contractor earned
-        :param reimbursement: Reimbursed wages for the contractor
+        :param wage: If the contractor is on a fixed wage, this is the fixed wage payment for the contractor, regardless of hours worked.
+        :param hours: If the contractor is on an hourly wage, this is the number of hours that the contractor worked for the payment.
+        :param bonus: If the contractor is on an hourly wage, this is the bonus the contractor earned.
+        :param reimbursement: Reimbursed wages for the contractor.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -496,9 +741,9 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyIDContractorPaymentsRequestBody(
+            company_id=company_id,
+            contractor_payment_body=models.ContractorPaymentBody(
                 contractor_uuid=contractor_uuid,
                 date_=date_,
                 payment_method=payment_method,
@@ -523,12 +768,14 @@ class ContractorPayments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_payment_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompaniesCompanyIDContractorPaymentsRequestBody,
+                models.ContractorPaymentBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -542,45 +789,40 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-contractor_payments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
@@ -589,15 +831,15 @@ class ContractorPayments(BaseSDK):
         contractor_uuid: str,
         date_: date,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion
+        ] = models.PostV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         payment_method: Optional[
-            models.PostV1CompaniesCompanyIDContractorPaymentsPaymentMethod
-        ] = models.PostV1CompaniesCompanyIDContractorPaymentsPaymentMethod.DIRECT_DEPOSIT,
-        wage: Optional[float] = None,
-        hours: Optional[float] = None,
-        bonus: Optional[float] = None,
-        reimbursement: Optional[float] = None,
+            models.ContractorPaymentBodyPaymentMethod
+        ] = models.ContractorPaymentBodyPaymentMethod.DIRECT_DEPOSIT,
+        wage: Optional[str] = None,
+        hours: Optional[str] = None,
+        bonus: Optional[str] = None,
+        reimbursement: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -609,15 +851,17 @@ class ContractorPayments(BaseSDK):
 
         scope: `payrolls:run`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_id: The UUID of the company
-        :param contractor_uuid: The contractor receiving the payment
-        :param date_: Date of contractor payment
+        :param contractor_uuid: The contractor receiving the payment.
+        :param date_: Date of contractor payment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param payment_method:
-        :param wage: If the contractor is on a fixed wage, this is the fixed wage payment for the contractor, regardless of hours worked
-        :param hours: If the contractor is on an hourly wage, this is the number of hours that the contractor worked for the payment
-        :param bonus: If the contractor is on an hourly wage, this is the bonus the contractor earned
-        :param reimbursement: Reimbursed wages for the contractor
+        :param wage: If the contractor is on a fixed wage, this is the fixed wage payment for the contractor, regardless of hours worked.
+        :param hours: If the contractor is on an hourly wage, this is the number of hours that the contractor worked for the payment.
+        :param bonus: If the contractor is on an hourly wage, this is the bonus the contractor earned.
+        :param reimbursement: Reimbursed wages for the contractor.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -634,9 +878,9 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDContractorPaymentsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesCompanyIDContractorPaymentsRequestBody(
+            company_id=company_id,
+            contractor_payment_body=models.ContractorPaymentBody(
                 contractor_uuid=contractor_uuid,
                 date_=date_,
                 payment_method=payment_method,
@@ -661,12 +905,14 @@ class ContractorPayments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_payment_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompaniesCompanyIDContractorPaymentsRequestBody,
+                models.ContractorPaymentBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -680,287 +926,40 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-company_id-contractor_payments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    def list(
-        self,
-        *,
-        company_id: str,
-        start_date: str,
-        end_date: str,
-        contractor_uuid: Optional[str] = None,
-        group_by_date: Optional[bool] = None,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody:
-        r"""Get contractor payments for a company
-
-        Returns an object containing individual contractor payments, within a given time period, including totals.
-
-        scope: `payrolls:read`
-
-        :param company_id: The UUID of the company
-        :param start_date: The time period for which to retrieve contractor payments
-        :param end_date: The time period for which to retrieve contractor payments. If left empty, defaults to today's date.
-        :param contractor_uuid: The UUID of the contractor. When specified, will load all payments for that contractor.
-        :param group_by_date: Display contractor payments results group by check date if set to true.
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
-            company_id=company_id,
-            start_date=start_date,
-            end_date=end_date,
-            contractor_uuid=contractor_uuid,
-            group_by_date=group_by_date,
-            page=page,
-            per=per,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_id}/contractor_payments",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-contractor_payments",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text,
-                models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody,
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def list_async(
-        self,
-        *,
-        company_id: str,
-        start_date: str,
-        end_date: str,
-        contractor_uuid: Optional[str] = None,
-        group_by_date: Optional[bool] = None,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody:
-        r"""Get contractor payments for a company
-
-        Returns an object containing individual contractor payments, within a given time period, including totals.
-
-        scope: `payrolls:read`
-
-        :param company_id: The UUID of the company
-        :param start_date: The time period for which to retrieve contractor payments
-        :param end_date: The time period for which to retrieve contractor payments. If left empty, defaults to today's date.
-        :param contractor_uuid: The UUID of the contractor. When specified, will load all payments for that contractor.
-        :param group_by_date: Display contractor payments results group by check date if set to true.
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1CompaniesCompanyIDContractorPaymentsRequest(
-            company_id=company_id,
-            start_date=start_date,
-            end_date=end_date,
-            contractor_uuid=contractor_uuid,
-            group_by_date=group_by_date,
-            page=page,
-            per=per,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_id}/contractor_payments",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-contractor_payments",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text,
-                models.GetV1CompaniesCompanyIDContractorPaymentsResponseBody,
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get(
         self,
@@ -968,8 +967,8 @@ class ContractorPayments(BaseSDK):
         company_id: str,
         contractor_payment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -978,7 +977,10 @@ class ContractorPayments(BaseSDK):
         r"""Get a single contractor payment
 
         Returns a single contractor payment.
+
         scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param contractor_payment_id: The UUID of the contractor payment
@@ -1000,9 +1002,9 @@ class ContractorPayments(BaseSDK):
 
         request = (
             models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 company_id=company_id,
                 contractor_payment_id=contractor_payment_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1019,6 +1021,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1032,39 +1036,35 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payment-contractor-payment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
@@ -1072,8 +1072,8 @@ class ContractorPayments(BaseSDK):
         company_id: str,
         contractor_payment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1082,7 +1082,10 @@ class ContractorPayments(BaseSDK):
         r"""Get a single contractor payment
 
         Returns a single contractor payment.
+
         scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param contractor_payment_id: The UUID of the contractor payment
@@ -1104,9 +1107,9 @@ class ContractorPayments(BaseSDK):
 
         request = (
             models.GetV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 company_id=company_id,
                 contractor_payment_id=contractor_payment_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1123,6 +1126,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1136,39 +1141,35 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_id-contractor_payment-contractor-payment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.ContractorPayment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.ContractorPayment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete(
         self,
@@ -1176,8 +1177,8 @@ class ContractorPayments(BaseSDK):
         company_id: str,
         contractor_payment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1188,6 +1189,8 @@ class ContractorPayments(BaseSDK):
         Cancels and deletes a contractor payment. If the contractor payment has already started processing (\"may_cancel\": true), the payment cannot be cancelled.
 
         scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param contractor_payment_id: The UUID of the contractor payment
@@ -1209,9 +1212,9 @@ class ContractorPayments(BaseSDK):
 
         request = (
             models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 company_id=company_id,
                 contractor_payment_id=contractor_payment_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1228,6 +1231,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1241,45 +1246,40 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-contractor_payment-contractor-payment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_async(
         self,
@@ -1287,8 +1287,8 @@ class ContractorPayments(BaseSDK):
         company_id: str,
         contractor_payment_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1299,6 +1299,8 @@ class ContractorPayments(BaseSDK):
         Cancels and deletes a contractor payment. If the contractor payment has already started processing (\"may_cancel\": true), the payment cannot be cancelled.
 
         scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param contractor_payment_id: The UUID of the contractor payment
@@ -1320,9 +1322,9 @@ class ContractorPayments(BaseSDK):
 
         request = (
             models.DeleteV1CompaniesCompanyIDContractorPaymentContractorPaymentRequest(
+                x_gusto_api_version=x_gusto_api_version,
                 company_id=company_id,
                 contractor_payment_id=contractor_payment_id,
-                x_gusto_api_version=x_gusto_api_version,
             )
         )
 
@@ -1339,6 +1341,8 @@ class ContractorPayments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1352,66 +1356,57 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-companies-company_id-contractor_payment-contractor-payment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def preview(
         self,
         *,
         company_uuid: str,
         contractor_payments: Union[
-            List[
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments
-            ],
-            List[
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsTypedDict
-            ],
+            List[models.ContractorPaymentsPreviewBodyContractorPayments],
+            List[models.ContractorPaymentsPreviewBodyContractorPaymentsTypedDict],
         ],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetCompaniesCompanyUUIDContractorPaymentsPreviewHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBody:
+    ) -> models.ContractorPaymentsPreview:
         r"""Preview contractor payment debit date
 
         Returns a debit_date dependent on the ACH payment speed of the company.
@@ -1420,8 +1415,10 @@ class ContractorPayments(BaseSDK):
 
         scope: `payrolls:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param contractor_payments:
+        :param contractor_payments: A list of contractor payments to preview.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1439,14 +1436,12 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequestBody(
+            company_uuid=company_uuid,
+            contractor_payments_preview_body=models.ContractorPaymentsPreviewBody(
                 contractor_payments=utils.get_pydantic_model(
                     contractor_payments,
-                    List[
-                        models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments
-                    ],
+                    List[models.ContractorPaymentsPreviewBodyContractorPayments],
                 ),
             ),
         )
@@ -1465,12 +1460,14 @@ class ContractorPayments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_payments_preview_body,
                 False,
                 False,
                 "json",
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequestBody,
+                models.ContractorPaymentsPreviewBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1484,72 +1481,57 @@ class ContractorPayments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-contractor_payments-preview",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text,
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBody,
+            return unmarshal_json_response(models.ContractorPaymentsPreview, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text,
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody(
-                data=response_data
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def preview_async(
         self,
         *,
         company_uuid: str,
         contractor_payments: Union[
-            List[
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments
-            ],
-            List[
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsTypedDict
-            ],
+            List[models.ContractorPaymentsPreviewBodyContractorPayments],
+            List[models.ContractorPaymentsPreviewBodyContractorPaymentsTypedDict],
         ],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetCompaniesCompanyUUIDContractorPaymentsPreviewHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBody:
+    ) -> models.ContractorPaymentsPreview:
         r"""Preview contractor payment debit date
 
         Returns a debit_date dependent on the ACH payment speed of the company.
@@ -1558,8 +1540,10 @@ class ContractorPayments(BaseSDK):
 
         scope: `payrolls:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param contractor_payments:
+        :param contractor_payments: A list of contractor payments to preview.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1577,14 +1561,12 @@ class ContractorPayments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequestBody(
+            company_uuid=company_uuid,
+            contractor_payments_preview_body=models.ContractorPaymentsPreviewBody(
                 contractor_payments=utils.get_pydantic_model(
                     contractor_payments,
-                    List[
-                        models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPayments
-                    ],
+                    List[models.ContractorPaymentsPreviewBodyContractorPayments],
                 ),
             ),
         )
@@ -1603,12 +1585,14 @@ class ContractorPayments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.contractor_payments_preview_body,
                 False,
                 False,
                 "json",
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewRequestBody,
+                models.ContractorPaymentsPreviewBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1622,48 +1606,237 @@ class ContractorPayments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-companies-company_uuid-contractor_payments-preview",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(
-                http_res.text,
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewResponseBody,
+            return unmarshal_json_response(models.ContractorPaymentsPreview, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text,
-                models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBodyData,
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.GetCompaniesCompanyUUIDContractorPaymentsPreviewContractorPaymentsResponseBody(
-                data=response_data
-            )
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_v1_contractor_payments_contractor_payment_id_pdf(
+        self,
+        *,
+        contractor_payment_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1ContractorPaymentsContractorPaymentIDPdfHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentIDPdfHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Get a contractor payment PDF
+
+        Get a PDF document for a single contractor payment.
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param contractor_payment_id: The UUID of the contractor payment
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1ContractorPaymentsContractorPaymentIDPdfRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_id=contractor_payment_id,
         )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/contractor_payments/{contractor_payment_id}/pdf",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-contractor_payments-contractor_payment_id-pdf",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_contractor_payments_contractor_payment_id_pdf_async(
+        self,
+        *,
+        contractor_payment_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1ContractorPaymentsContractorPaymentIDPdfHeaderXGustoAPIVersion
+        ] = models.GetV1ContractorPaymentsContractorPaymentIDPdfHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Get a contractor payment PDF
+
+        Get a PDF document for a single contractor payment.
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param contractor_payment_id: The UUID of the contractor payment
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1ContractorPaymentsContractorPaymentIDPdfRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_id=contractor_payment_id,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/contractor_payments/{contractor_payment_id}/pdf",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-contractor_payments-contractor_payment_id-pdf",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)

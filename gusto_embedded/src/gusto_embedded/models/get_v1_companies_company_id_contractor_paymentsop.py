@@ -9,8 +9,8 @@ from .contractor_payment_summary_by_dates import (
     ContractorPaymentSummaryByDates,
     ContractorPaymentSummaryByDatesTypedDict,
 )
-from .versionheader import VersionHeader
-from gusto_embedded.types import BaseModel
+from enum import Enum
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -18,8 +18,15 @@ from gusto_embedded.utils import (
     QueryParamMetadata,
 )
 import pydantic
+from pydantic import model_serializer
 from typing import Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
+
+
+class GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion(str, Enum):
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class GetV1CompaniesCompanyIDContractorPaymentsRequestTypedDict(TypedDict):
@@ -29,6 +36,10 @@ class GetV1CompaniesCompanyIDContractorPaymentsRequestTypedDict(TypedDict):
     r"""The time period for which to retrieve contractor payments"""
     end_date: str
     r"""The time period for which to retrieve contractor payments. If left empty, defaults to today's date."""
+    x_gusto_api_version: NotRequired[
+        GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion
+    ]
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     contractor_uuid: NotRequired[str]
     r"""The UUID of the contractor. When specified, will load all payments for that contractor."""
     group_by_date: NotRequired[bool]
@@ -37,8 +48,6 @@ class GetV1CompaniesCompanyIDContractorPaymentsRequestTypedDict(TypedDict):
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    x_gusto_api_version: NotRequired[VersionHeader]
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1CompaniesCompanyIDContractorPaymentsRequest(BaseModel):
@@ -56,6 +65,13 @@ class GetV1CompaniesCompanyIDContractorPaymentsRequest(BaseModel):
         str, FieldMetadata(query=QueryParamMetadata(style="form", explode=True))
     ]
     r"""The time period for which to retrieve contractor payments. If left empty, defaults to today's date."""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1CompaniesCompanyIDContractorPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     contractor_uuid: Annotated[
         Optional[str],
@@ -81,12 +97,23 @@ class GetV1CompaniesCompanyIDContractorPaymentsRequest(BaseModel):
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
-    x_gusto_api_version: Annotated[
-        Optional[VersionHeader],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["X-Gusto-API-Version", "contractor_uuid", "group_by_date", "page", "per"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
 
 
 GetV1CompaniesCompanyIDContractorPaymentsResponseBodyTypedDict = TypeAliasType(

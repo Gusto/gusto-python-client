@@ -14,10 +14,10 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class FormTypedDict(TypedDict):
-    r"""Example response"""
-
     uuid: str
     r"""The UUID of the form"""
+    employee_uuid: NotRequired[str]
+    r"""The UUID of the employee to which the form belongs, if applicable."""
     name: NotRequired[str]
     r"""The type identifier of the form"""
     title: NotRequired[str]
@@ -37,10 +37,11 @@ class FormTypedDict(TypedDict):
 
 
 class Form(BaseModel):
-    r"""Example response"""
-
     uuid: str
     r"""The UUID of the form"""
+
+    employee_uuid: Optional[str] = None
+    r"""The UUID of the employee to which the form belongs, if applicable."""
 
     name: Optional[str] = None
     r"""The type identifier of the form"""
@@ -68,39 +69,37 @@ class Form(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "name",
-            "title",
-            "description",
-            "draft",
-            "year",
-            "quarter",
-            "requires_signing",
-            "document_content_type",
-        ]
-        nullable_fields = ["year", "quarter", "document_content_type"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "employee_uuid",
+                "name",
+                "title",
+                "description",
+                "draft",
+                "year",
+                "quarter",
+                "requires_signing",
+                "document_content_type",
+            ]
+        )
+        nullable_fields = set(["year", "quarter", "document_content_type"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

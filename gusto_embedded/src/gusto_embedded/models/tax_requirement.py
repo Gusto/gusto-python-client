@@ -5,6 +5,7 @@ from .tax_requirement_metadata import (
     TaxRequirementMetadata,
     TaxRequirementMetadataTypedDict,
 )
+from .tax_requirements_value import TaxRequirementsValue, TaxRequirementsValueTypedDict
 from gusto_embedded.types import (
     BaseModel,
     Nullable,
@@ -17,22 +18,20 @@ from typing import List, Optional, Union
 from typing_extensions import NotRequired, TypeAliasType, TypedDict
 
 
-TaxRequirementApplicableIfValueTypedDict = TypeAliasType(
-    "TaxRequirementApplicableIfValueTypedDict", Union[bool, str, float]
+TaxRequirementValueTypedDict = TypeAliasType(
+    "TaxRequirementValueTypedDict", Union[bool, str, float]
 )
 r"""The required value of the requirement identified by `key`"""
 
 
-TaxRequirementApplicableIfValue = TypeAliasType(
-    "TaxRequirementApplicableIfValue", Union[bool, str, float]
-)
+TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[bool, str, float])
 r"""The required value of the requirement identified by `key`"""
 
 
 class ApplicableIfTypedDict(TypedDict):
     key: NotRequired[str]
     r"""An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set."""
-    value: NotRequired[Nullable[TaxRequirementApplicableIfValueTypedDict]]
+    value: NotRequired[Nullable[TaxRequirementValueTypedDict]]
     r"""The required value of the requirement identified by `key`"""
 
 
@@ -40,48 +39,33 @@ class ApplicableIf(BaseModel):
     key: Optional[str] = None
     r"""An identifier for an individual requirement. Uniqueness is guaranteed within a requirement set."""
 
-    value: OptionalNullable[TaxRequirementApplicableIfValue] = UNSET
+    value: OptionalNullable[TaxRequirementValue] = UNSET
     r"""The required value of the requirement identified by `key`"""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["key", "value"]
-        nullable_fields = ["value"]
-        null_default_fields = []
-
+        optional_fields = set(["key", "value"])
+        nullable_fields = set(["value"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m
-
-
-TaxRequirementValueTypedDict = TypeAliasType(
-    "TaxRequirementValueTypedDict", Union[str, bool]
-)
-r"""The \"answer\" """
-
-
-TaxRequirementValue = TypeAliasType("TaxRequirementValue", Union[str, bool])
-r"""The \"answer\" """
 
 
 class TaxRequirementTypedDict(TypedDict):
@@ -93,9 +77,11 @@ class TaxRequirementTypedDict(TypedDict):
     r"""A customer facing description of the requirement"""
     description: NotRequired[Nullable[str]]
     r"""A more detailed customer facing description of the requirement"""
-    value: NotRequired[Nullable[TaxRequirementValueTypedDict]]
-    r"""The \"answer\" """
+    value: NotRequired[Nullable[TaxRequirementsValueTypedDict]]
+    r"""The value or \"answer\" for a tax requirement. Type depends on the requirement metadata type (e.g. string for text/account_number, boolean for radio/checkbox, number for percent/currency/tax_rate). Null when the requirement has not been answered."""
     metadata: NotRequired[TaxRequirementMetadataTypedDict]
+    editable: NotRequired[bool]
+    r"""Whether the value of this requirement can be updated"""
 
 
 class TaxRequirement(BaseModel):
@@ -111,44 +97,45 @@ class TaxRequirement(BaseModel):
     description: OptionalNullable[str] = UNSET
     r"""A more detailed customer facing description of the requirement"""
 
-    value: OptionalNullable[TaxRequirementValue] = UNSET
-    r"""The \"answer\" """
+    value: OptionalNullable[TaxRequirementsValue] = UNSET
+    r"""The value or \"answer\" for a tax requirement. Type depends on the requirement metadata type (e.g. string for text/account_number, boolean for radio/checkbox, number for percent/currency/tax_rate). Null when the requirement has not been answered."""
 
     metadata: Optional[TaxRequirementMetadata] = None
 
+    editable: Optional[bool] = None
+    r"""Whether the value of this requirement can be updated"""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "key",
-            "applicable_if",
-            "label",
-            "description",
-            "value",
-            "metadata",
-        ]
-        nullable_fields = ["description", "value"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "key",
+                "applicable_if",
+                "label",
+                "description",
+                "value",
+                "metadata",
+                "editable",
+            ]
+        )
+        nullable_fields = set(["description", "value"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

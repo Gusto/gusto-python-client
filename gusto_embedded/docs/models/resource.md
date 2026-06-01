@@ -1,11 +1,13 @@
 # Resource
 
-Information about the token resource.
+The resource associated with this access token. Null when
+the token has no associated resource.
+
 
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *str*              | :heavy_check_mark: | Type of object     |
-| `uuid`             | *str*              | :heavy_check_mark: | UUID of object     |
+| Field                                                                                                                                              | Type                                                                                                                                               | Required                                                                                                                                           | Description                                                                                                                                        | Example                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`                                                                                                                                             | *Optional[str]*                                                                                                                                    | :heavy_minus_sign:                                                                                                                                 | The type of resource associated with the access token, e.g. `Company` for a company-level token or `Oauth::Application` for a system-level token.<br/> | Company                                                                                                                                            |
+| `uuid`                                                                                                                                             | *Optional[str]*                                                                                                                                    | :heavy_minus_sign:                                                                                                                                 | The UUID of the associated resource                                                                                                                | 7b1d0df1-6403-4a06-8768-c1dd7d24d27a                                                                                                               |

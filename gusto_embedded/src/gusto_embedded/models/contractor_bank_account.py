@@ -3,8 +3,7 @@
 from __future__ import annotations
 from enum import Enum
 from gusto_embedded.types import BaseModel
-from typing import Optional
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import TypedDict
 
 
 class ContractorBankAccountAccountType(str, Enum):
@@ -15,39 +14,35 @@ class ContractorBankAccountAccountType(str, Enum):
 
 
 class ContractorBankAccountTypedDict(TypedDict):
-    r"""Example response"""
-
     uuid: str
     r"""UUID of the bank account"""
-    contractor_uuid: NotRequired[str]
-    r"""UUID of the employee"""
-    account_type: NotRequired[ContractorBankAccountAccountType]
+    contractor_uuid: str
+    r"""UUID of the contractor"""
+    account_type: ContractorBankAccountAccountType
     r"""Bank account type"""
-    name: NotRequired[str]
+    name: str
     r"""Name for the bank account"""
-    routing_number: NotRequired[str]
+    routing_number: str
     r"""The bank account's routing number"""
-    hidden_account_number: NotRequired[str]
+    hidden_account_number: str
     r"""Masked bank account number"""
 
 
 class ContractorBankAccount(BaseModel):
-    r"""Example response"""
-
     uuid: str
     r"""UUID of the bank account"""
 
-    contractor_uuid: Optional[str] = None
-    r"""UUID of the employee"""
+    contractor_uuid: str
+    r"""UUID of the contractor"""
 
-    account_type: Optional[ContractorBankAccountAccountType] = None
+    account_type: ContractorBankAccountAccountType
     r"""Bank account type"""
 
-    name: Optional[str] = None
+    name: str
     r"""Name for the bank account"""
 
-    routing_number: Optional[str] = None
+    routing_number: str
     r"""The bank account's routing number"""
 
-    hidden_account_number: Optional[str] = None
+    hidden_account_number: str
     r"""Masked bank account number"""

@@ -10,7 +10,7 @@ from gusto_embedded.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
-from typing import Optional
+from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -20,6 +20,126 @@ class DocumentSignedRecipientType(str, Enum):
     COMPANY = "Company"
     EMPLOYEE = "Employee"
     CONTRACTOR = "Contractor"
+
+
+class DocumentSignedPagesTypedDict(TypedDict):
+    image_url: NotRequired[str]
+    r"""Image URL for the page"""
+    page_number: NotRequired[int]
+    r"""Page number"""
+
+
+class DocumentSignedPages(BaseModel):
+    image_url: Optional[str] = None
+    r"""Image URL for the page"""
+
+    page_number: Optional[int] = None
+    r"""Page number"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["image_url", "page_number"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class DocumentSignedFieldsTypedDict(TypedDict):
+    key: NotRequired[Nullable[str]]
+    r"""Unique identifier of the field. May be null for custom fields that do not correspond to a known Gusto-managed key mapping."""
+    value: NotRequired[Nullable[str]]
+    r"""Value of the field"""
+    x: NotRequired[Nullable[int]]
+    r"""X-coordinate location of the field on the page. May be null when the field has no positioning information."""
+    y: NotRequired[Nullable[int]]
+    r"""Y-coordinate location of the field on the page. May be null when the field has no positioning information."""
+    width: NotRequired[Nullable[int]]
+    r"""Width of the field. May be null when the field has no positioning information."""
+    height: NotRequired[Nullable[int]]
+    r"""Height of the field. May be null when the field has no positioning information."""
+    page_number: NotRequired[Nullable[int]]
+    r"""Page number of the field. May be null when the field has no positioning information."""
+    data_type: NotRequired[str]
+    r"""The field's data type"""
+    required: NotRequired[bool]
+    r"""Whether the field is required"""
+
+
+class DocumentSignedFields(BaseModel):
+    key: OptionalNullable[str] = UNSET
+    r"""Unique identifier of the field. May be null for custom fields that do not correspond to a known Gusto-managed key mapping."""
+
+    value: OptionalNullable[str] = UNSET
+    r"""Value of the field"""
+
+    x: OptionalNullable[int] = UNSET
+    r"""X-coordinate location of the field on the page. May be null when the field has no positioning information."""
+
+    y: OptionalNullable[int] = UNSET
+    r"""Y-coordinate location of the field on the page. May be null when the field has no positioning information."""
+
+    width: OptionalNullable[int] = UNSET
+    r"""Width of the field. May be null when the field has no positioning information."""
+
+    height: OptionalNullable[int] = UNSET
+    r"""Height of the field. May be null when the field has no positioning information."""
+
+    page_number: OptionalNullable[int] = UNSET
+    r"""Page number of the field. May be null when the field has no positioning information."""
+
+    data_type: Optional[str] = None
+    r"""The field's data type"""
+
+    required: Optional[bool] = None
+    r"""Whether the field is required"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "key",
+                "value",
+                "x",
+                "y",
+                "width",
+                "height",
+                "page_number",
+                "data_type",
+                "required",
+            ]
+        )
+        nullable_fields = set(
+            ["key", "value", "x", "y", "width", "height", "page_number"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class DocumentSignedTypedDict(TypedDict):
@@ -33,6 +153,10 @@ class DocumentSignedTypedDict(TypedDict):
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
     recipient_uuid: NotRequired[str]
     r"""Unique identifier for the recipient associated with the document"""
+    pages: NotRequired[List[DocumentSignedPagesTypedDict]]
+    r"""List of the document's pages and associated image URLs."""
+    fields: NotRequired[List[DocumentSignedFieldsTypedDict]]
+    r"""List of the document's fields and associated data. Values reflect the data provided at signing."""
     signed_at: NotRequired[Nullable[str]]
     r"""When the document was signed (will be `null` if unsigned)"""
     description: NotRequired[str]
@@ -63,6 +187,12 @@ class DocumentSigned(BaseModel):
     recipient_uuid: Optional[str] = None
     r"""Unique identifier for the recipient associated with the document"""
 
+    pages: Optional[List[DocumentSignedPages]] = None
+    r"""List of the document's pages and associated image URLs."""
+
+    fields: Optional[List[DocumentSignedFields]] = None
+    r"""List of the document's fields and associated data. Values reflect the data provided at signing."""
+
     signed_at: OptionalNullable[str] = UNSET
     r"""When the document was signed (will be `null` if unsigned)"""
 
@@ -83,42 +213,41 @@ class DocumentSigned(BaseModel):
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = [
-            "uuid",
-            "title",
-            "name",
-            "recipient_type",
-            "recipient_uuid",
-            "signed_at",
-            "description",
-            "requires_signing",
-            "draft",
-            "year",
-            "quarter",
-        ]
-        nullable_fields = ["signed_at", "year", "quarter"]
-        null_default_fields = []
-
+        optional_fields = set(
+            [
+                "uuid",
+                "title",
+                "name",
+                "recipient_type",
+                "recipient_uuid",
+                "pages",
+                "fields",
+                "signed_at",
+                "description",
+                "requires_signing",
+                "draft",
+                "year",
+                "quarter",
+            ]
+        )
+        nullable_fields = set(["signed_at", "year", "quarter"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

@@ -2,8 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
-from typing import Optional
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -16,9 +22,7 @@ class AuthorizationStatus(str, Enum):
     ALIEN = "alien"
 
 
-class I9AuthorizationDocumentType(str, Enum):
-    r"""The document's document type"""
-
+class DocumentType(str, Enum):
     USCIS_ALIEN_REGISTRATION_NUMBER = "uscis_alien_registration_number"
     FORM_I94 = "form_i94"
     FOREIGN_PASSPORT = "foreign_passport"
@@ -37,19 +41,19 @@ class I9AuthorizationTypedDict(TypedDict):
     r"""Whether the employer has signed the Form I-9"""
     employee_signed: bool
     r"""Whether the employee has signed the Form I-9"""
-    form_uuid: NotRequired[str]
+    form_uuid: NotRequired[Nullable[str]]
     r"""The UUID of the Form associated with this I-9 authorization. Use this with \"Employee Forms\" API endpoints."""
-    document_type: NotRequired[I9AuthorizationDocumentType]
+    document_type: NotRequired[Nullable[DocumentType]]
     r"""The document's document type"""
-    has_document_number: NotRequired[bool]
+    has_document_number: NotRequired[Nullable[bool]]
     r"""Whether or not a `document_number` exists for this document."""
-    expiration_date: NotRequired[str]
+    expiration_date: NotRequired[Nullable[str]]
     r"""The document's expiration date"""
-    country: NotRequired[str]
+    country: NotRequired[Nullable[str]]
     r"""The document's country of issuance"""
-    additional_info: NotRequired[str]
+    additional_info: NotRequired[Nullable[str]]
     r"""Any additional notes"""
-    alt_procedure: NotRequired[bool]
+    alt_procedure: NotRequired[Nullable[bool]]
     r"""Whether an alternative procedure authorized by DHS to examine documents was used"""
 
 
@@ -71,23 +75,68 @@ class I9Authorization(BaseModel):
     employee_signed: bool
     r"""Whether the employee has signed the Form I-9"""
 
-    form_uuid: Optional[str] = None
+    form_uuid: OptionalNullable[str] = UNSET
     r"""The UUID of the Form associated with this I-9 authorization. Use this with \"Employee Forms\" API endpoints."""
 
-    document_type: Optional[I9AuthorizationDocumentType] = None
+    document_type: OptionalNullable[DocumentType] = UNSET
     r"""The document's document type"""
 
-    has_document_number: Optional[bool] = None
+    has_document_number: OptionalNullable[bool] = UNSET
     r"""Whether or not a `document_number` exists for this document."""
 
-    expiration_date: Optional[str] = None
+    expiration_date: OptionalNullable[str] = UNSET
     r"""The document's expiration date"""
 
-    country: Optional[str] = None
+    country: OptionalNullable[str] = UNSET
     r"""The document's country of issuance"""
 
-    additional_info: Optional[str] = None
+    additional_info: OptionalNullable[str] = UNSET
     r"""Any additional notes"""
 
-    alt_procedure: Optional[bool] = None
+    alt_procedure: OptionalNullable[bool] = UNSET
     r"""Whether an alternative procedure authorized by DHS to examine documents was used"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "form_uuid",
+                "document_type",
+                "has_document_number",
+                "expiration_date",
+                "country",
+                "additional_info",
+                "alt_procedure",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "form_uuid",
+                "document_type",
+                "has_document_number",
+                "expiration_date",
+                "country",
+                "additional_info",
+                "alt_procedure",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

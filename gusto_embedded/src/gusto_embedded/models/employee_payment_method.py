@@ -19,71 +19,60 @@ from typing_extensions import NotRequired, TypedDict
 
 
 class EmployeePaymentMethodType(str, Enum):
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
-class SplitBy(str, Enum):
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
-
+class EmployeePaymentMethodSplitBy(str, Enum):
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
 
 
 class EmployeePaymentMethodTypedDict(TypedDict):
-    r"""Example response"""
-
     version: NotRequired[str]
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
     type: NotRequired[EmployeePaymentMethodType]
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
-    split_by: NotRequired[Nullable[SplitBy]]
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
+    split_by: NotRequired[Nullable[EmployeePaymentMethodSplitBy]]
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, then the last split `amount` must be `null` to capture the remainder."""
     splits: NotRequired[Nullable[List[PaymentMethodBankAccountTypedDict]]]
 
 
 class EmployeePaymentMethod(BaseModel):
-    r"""Example response"""
-
     version: Optional[str] = None
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
     type: Optional[EmployeePaymentMethodType] = None
-    r"""The payment method type. If type is Check, then split_by and splits do not need to be populated. If type is Direct Deposit, split_by and splits are required."""
+    r"""The payment method type. If type is Check, then `split_by` and `splits` do not need to be populated. If type is Direct Deposit, `split_by` and `splits` are required."""
 
-    split_by: OptionalNullable[SplitBy] = UNSET
-    r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the last split amount must be nil to capture the remainder."""
+    split_by: OptionalNullable[EmployeePaymentMethodSplitBy] = UNSET
+    r"""Describes how the payment will be split. If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, then the last split `amount` must be `null` to capture the remainder."""
 
     splits: OptionalNullable[List[PaymentMethodBankAccount]] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["version", "type", "split_by", "splits"]
-        nullable_fields = ["split_by", "splits"]
-        null_default_fields = []
-
+        optional_fields = set(["version", "type", "split_by", "splits"])
+        nullable_fields = set(["split_by", "splits"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

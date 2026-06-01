@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -15,8 +16,8 @@ class CompanyAttachments(BaseSDK):
         company_id: str,
         company_attachment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesAttachmentHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesAttachmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -26,7 +27,12 @@ class CompanyAttachments(BaseSDK):
 
         Retrieve the detail of an attachment uploaded by the company.
 
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
+
         scope: `company_attachments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param company_attachment_uuid: The UUID of the company attachment
@@ -47,9 +53,9 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesAttachmentRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             company_attachment_uuid=company_attachment_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -65,6 +71,8 @@ class CompanyAttachments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -78,39 +86,35 @@ class CompanyAttachments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-attachment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.CompanyAttachment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_details_async(
         self,
@@ -118,8 +122,8 @@ class CompanyAttachments(BaseSDK):
         company_id: str,
         company_attachment_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesAttachmentHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesAttachmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -129,7 +133,12 @@ class CompanyAttachments(BaseSDK):
 
         Retrieve the detail of an attachment uploaded by the company.
 
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
+
         scope: `company_attachments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param company_attachment_uuid: The UUID of the company attachment
@@ -150,9 +159,9 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesAttachmentRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             company_attachment_uuid=company_attachment_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -168,6 +177,8 @@ class CompanyAttachments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -181,47 +192,43 @@ class CompanyAttachments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-attachment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.CompanyAttachment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_list(
         self,
         *,
         company_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesAttachmentsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesAttachmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -231,7 +238,12 @@ class CompanyAttachments(BaseSDK):
 
         Retrieve a list of all the attachments uploaded by the company.
 
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
+
         scope: `company_attachments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -251,8 +263,8 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesAttachmentsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -268,6 +280,8 @@ class CompanyAttachments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -281,47 +295,43 @@ class CompanyAttachments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-attachments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanyAttachment])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.CompanyAttachment], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_list_async(
         self,
         *,
         company_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesAttachmentsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesAttachmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -331,7 +341,12 @@ class CompanyAttachments(BaseSDK):
 
         Retrieve a list of all the attachments uploaded by the company.
 
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
+
         scope: `company_attachments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -351,8 +366,8 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesAttachmentsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -368,6 +383,8 @@ class CompanyAttachments(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -381,52 +398,48 @@ class CompanyAttachments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-attachments",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.CompanyAttachment])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.CompanyAttachment], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def create(
         self,
         *,
         company_id: str,
         document: Union[
-            models.PostV1CompaniesAttachmentDocument,
-            models.PostV1CompaniesAttachmentDocumentTypedDict,
+            models.CompanyAttachmentCreateRequestBodyDocument,
+            models.CompanyAttachmentCreateRequestBodyDocumentTypedDict,
         ],
-        category: models.PostV1CompaniesAttachmentCategory,
+        category: models.CompanyAttachmentCreateRequestBodyCategory,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompaniesAttachmentHeaderXGustoAPIVersion
+        ] = models.PostV1CompaniesAttachmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -434,15 +447,21 @@ class CompanyAttachments(BaseSDK):
     ) -> models.CompanyAttachment:
         r"""Create Company Attachment and Upload File
 
-        Upload a file and create a company attachment. We recommend uploading
-        PDF files for optimal compatibility. However, the following file types are
-        allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
+        Upload a file and create a company attachment. We recommend uploading PDF files for optimal compatibility. However, the following file types are allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
+
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
 
         scope: `company_attachments:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_id: The UUID of the company
-        :param document: The binary payload of the file to be uploaded.
+        :param document: The binary payload of the file to be uploaded. Supported file types are .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
         :param category: The category of a company attachment.
+            - `gep_notice`: A tax notice attachment
+            - `compliance`: A compliance attachment
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -460,11 +479,11 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesAttachmentRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesAttachmentRequestBody(
+            company_id=company_id,
+            company_attachment_create_request_body=models.CompanyAttachmentCreateRequestBody(
                 document=utils.get_pydantic_model(
-                    document, models.PostV1CompaniesAttachmentDocument
+                    document, models.CompanyAttachmentCreateRequestBodyDocument
                 ),
                 category=category,
             ),
@@ -484,12 +503,14 @@ class CompanyAttachments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.company_attachment_create_request_body,
                 False,
                 False,
                 "multipart",
-                models.PostV1CompaniesAttachmentRequestBody,
+                models.CompanyAttachmentCreateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -503,58 +524,53 @@ class CompanyAttachments(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-attachment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
+            return unmarshal_json_response(models.CompanyAttachment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_async(
         self,
         *,
         company_id: str,
         document: Union[
-            models.PostV1CompaniesAttachmentDocument,
-            models.PostV1CompaniesAttachmentDocumentTypedDict,
+            models.CompanyAttachmentCreateRequestBodyDocument,
+            models.CompanyAttachmentCreateRequestBodyDocumentTypedDict,
         ],
-        category: models.PostV1CompaniesAttachmentCategory,
+        category: models.CompanyAttachmentCreateRequestBodyCategory,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PostV1CompaniesAttachmentHeaderXGustoAPIVersion
+        ] = models.PostV1CompaniesAttachmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -562,15 +578,21 @@ class CompanyAttachments(BaseSDK):
     ) -> models.CompanyAttachment:
         r"""Create Company Attachment and Upload File
 
-        Upload a file and create a company attachment. We recommend uploading
-        PDF files for optimal compatibility. However, the following file types are
-        allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
+        Upload a file and create a company attachment. We recommend uploading PDF files for optimal compatibility. However, the following file types are allowed: .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
+
+        ### Related guides
+        - [Manage company attachments](doc:manage-company-attachments)
 
         scope: `company_attachments:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_id: The UUID of the company
-        :param document: The binary payload of the file to be uploaded.
+        :param document: The binary payload of the file to be uploaded. Supported file types are .qbb, .qbm, .gif, .jpg, .png, .pdf, .xls, .xlsx, .doc and .docx.
         :param category: The category of a company attachment.
+            - `gep_notice`: A tax notice attachment
+            - `compliance`: A compliance attachment
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -588,11 +610,11 @@ class CompanyAttachments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesAttachmentRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompaniesAttachmentRequestBody(
+            company_id=company_id,
+            company_attachment_create_request_body=models.CompanyAttachmentCreateRequestBody(
                 document=utils.get_pydantic_model(
-                    document, models.PostV1CompaniesAttachmentDocument
+                    document, models.CompanyAttachmentCreateRequestBodyDocument
                 ),
                 category=category,
             ),
@@ -612,12 +634,14 @@ class CompanyAttachments(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.company_attachment_create_request_body,
                 False,
                 False,
                 "multipart",
-                models.PostV1CompaniesAttachmentRequestBody,
+                models.CompanyAttachmentCreateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -631,42 +655,37 @@ class CompanyAttachments(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-companies-attachment",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.CompanyAttachment)
+            return unmarshal_json_response(models.CompanyAttachment, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

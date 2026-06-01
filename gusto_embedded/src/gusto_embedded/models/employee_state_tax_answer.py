@@ -9,7 +9,7 @@ from gusto_embedded.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
-from typing import Any, Optional, Union
+from typing import Optional, Union
 from typing_extensions import NotRequired, TypeAliasType, TypedDict
 
 
@@ -26,7 +26,7 @@ class EmployeeStateTaxAnswerTypedDict(TypedDict):
     r"""The answer to the corresponding question - this may be a string, number, boolean, or null."""
     valid_from: NotRequired[str]
     r"""The effective date of the answer - currently always “2010-01-01”."""
-    valid_up_to: NotRequired[Nullable[Any]]
+    valid_up_to: NotRequired[Nullable[str]]
     r"""The effective end date of the answer - currently always null."""
 
 
@@ -37,35 +37,30 @@ class EmployeeStateTaxAnswer(BaseModel):
     valid_from: Optional[str] = None
     r"""The effective date of the answer - currently always “2010-01-01”."""
 
-    valid_up_to: OptionalNullable[Any] = UNSET
+    valid_up_to: OptionalNullable[str] = UNSET
     r"""The effective end date of the answer - currently always null."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["value", "valid_from", "valid_up_to"]
-        nullable_fields = ["value", "valid_up_to"]
-        null_default_fields = []
-
+        optional_fields = set(["value", "valid_from", "valid_up_to"])
+        nullable_fields = set(["value", "valid_up_to"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

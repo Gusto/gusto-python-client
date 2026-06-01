@@ -1,7 +1,5 @@
 # ContractorPaymentReceipt
 
-Example response
-
 
 ## Fields
 

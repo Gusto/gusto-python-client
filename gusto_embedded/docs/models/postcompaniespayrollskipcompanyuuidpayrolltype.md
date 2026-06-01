@@ -2,6 +2,14 @@
 
 Payroll type
 
+## Example Usage
+
+```python
+from gusto_embedded.models import PostCompaniesPayrollSkipCompanyUUIDPayrollType
+
+value = PostCompaniesPayrollSkipCompanyUUIDPayrollType.REGULAR
+```
+
 
 ## Values
 

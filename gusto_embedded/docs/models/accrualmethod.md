@@ -2,6 +2,14 @@
 
 Accrual method of the time off policy
 
+## Example Usage
+
+```python
+from gusto_embedded.models import AccrualMethod
+
+value = AccrualMethod.UNLIMITED
+```
+
 
 ## Values
 

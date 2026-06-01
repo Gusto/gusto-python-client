@@ -2,6 +2,14 @@
 
 The employee's authorization status
 
+## Example Usage
+
+```python
+from gusto_embedded.models import AuthorizationStatus
+
+value = AuthorizationStatus.CITIZEN
+```
+
 
 ## Values
 

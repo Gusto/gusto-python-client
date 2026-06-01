@@ -3,272 +3,13 @@
 from .basesdk import BaseSDK
 from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
-from gusto_embedded.types import OptionalNullable, UNSET
+from gusto_embedded.types import Nullable, OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
 class JobsAndCompensations(BaseSDK):
-    def create_job(
-        self,
-        *,
-        employee_id: str,
-        title: str,
-        hire_date: str,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        two_percent_shareholder: Optional[bool] = None,
-        state_wc_covered: OptionalNullable[bool] = UNSET,
-        state_wc_class_code: OptionalNullable[str] = UNSET,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Job:
-        r"""Create a job
-
-        Create a job.
-
-        scope: `jobs:write`
-
-        :param employee_id: The UUID of the employee
-        :param title: The job title
-        :param hire_date: The date when the employee was hired or rehired for the job.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
-        :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
-        :param state_wc_class_code: The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1JobsJobIDRequest(
-            employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1JobsJobIDRequestBody(
-                title=title,
-                hire_date=hire_date,
-                two_percent_shareholder=two_percent_shareholder,
-                state_wc_covered=state_wc_covered,
-                state_wc_class_code=state_wc_class_code,
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/employees/{employee_id}/jobs",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1JobsJobIDRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="post-v1-jobs-job_id",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
-            )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
-    async def create_job_async(
-        self,
-        *,
-        employee_id: str,
-        title: str,
-        hire_date: str,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        two_percent_shareholder: Optional[bool] = None,
-        state_wc_covered: OptionalNullable[bool] = UNSET,
-        state_wc_class_code: OptionalNullable[str] = UNSET,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Job:
-        r"""Create a job
-
-        Create a job.
-
-        scope: `jobs:write`
-
-        :param employee_id: The UUID of the employee
-        :param title: The job title
-        :param hire_date: The date when the employee was hired or rehired for the job.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
-        :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
-        :param state_wc_class_code: The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1JobsJobIDRequest(
-            employee_id=employee_id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1JobsJobIDRequestBody(
-                title=title,
-                hire_date=hire_date,
-                two_percent_shareholder=two_percent_shareholder,
-                state_wc_covered=state_wc_covered,
-                state_wc_class_code=state_wc_class_code,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/employees/{employee_id}/jobs",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
-                False,
-                False,
-                "json",
-                models.PostV1JobsJobIDRequestBody,
-            ),
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                base_url=base_url or "",
-                operation_id="post-v1-jobs-job_id",
-                oauth2_scopes=[],
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
-            )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
-
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
-
     def get_jobs(
         self,
         *,
@@ -277,8 +18,8 @@ class JobsAndCompensations(BaseSDK):
         per: Optional[int] = None,
         include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -287,13 +28,20 @@ class JobsAndCompensations(BaseSDK):
         r"""Get jobs for an employee
 
         Get all of the jobs that an employee holds.
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+        Compensation data in the response requires the `compensations:read` scope.
 
         scope: `jobs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param include: Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -331,6 +79,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -344,39 +94,35 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-jobs",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Job])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Job], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_jobs_async(
         self,
@@ -386,8 +132,8 @@ class JobsAndCompensations(BaseSDK):
         per: Optional[int] = None,
         include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -396,13 +142,20 @@ class JobsAndCompensations(BaseSDK):
         r"""Get jobs for an employee
 
         Get all of the jobs that an employee holds.
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+        Compensation data in the response requires the `compensations:read` scope.
 
         scope: `jobs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param include: Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -440,6 +193,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -453,39 +208,293 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-jobs",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Job])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Job], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
+        raise models.APIError("Unexpected response received", http_res)
+
+    def create_job(
+        self,
+        *,
+        employee_id: str,
+        title: Nullable[str],
+        hire_date: str,
+        x_gusto_api_version: Optional[
+            models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        two_percent_shareholder: Optional[bool] = None,
+        state_wc_covered: OptionalNullable[bool] = UNSET,
+        state_wc_class_code: OptionalNullable[str] = UNSET,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Job:
+        r"""Create a job
+
+        Create a job.
+
+        scope: `jobs:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param title: The job title.
+        :param hire_date: The date when the employee was hired or rehired for the job.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
+        :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
+        :param state_wc_class_code: The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1EmployeesEmployeeIDJobsRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            jobs_create_request_body=models.JobsCreateRequestBody(
+                title=title,
+                hire_date=hire_date,
+                two_percent_shareholder=two_percent_shareholder,
+                state_wc_covered=state_wc_covered,
+                state_wc_class_code=state_wc_class_code,
+            ),
         )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/employees/{employee_id}/jobs",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.jobs_create_request_body,
+                False,
+                False,
+                "json",
+                models.JobsCreateRequestBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-employees-employee_id-jobs",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def create_job_async(
+        self,
+        *,
+        employee_id: str,
+        title: Nullable[str],
+        hire_date: str,
+        x_gusto_api_version: Optional[
+            models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        two_percent_shareholder: Optional[bool] = None,
+        state_wc_covered: OptionalNullable[bool] = UNSET,
+        state_wc_class_code: OptionalNullable[str] = UNSET,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Job:
+        r"""Create a job
+
+        Create a job.
+
+        scope: `jobs:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param title: The job title.
+        :param hire_date: The date when the employee was hired or rehired for the job.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
+        :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
+        :param state_wc_class_code: The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1EmployeesEmployeeIDJobsRequest(
+            employee_id=employee_id,
+            x_gusto_api_version=x_gusto_api_version,
+            jobs_create_request_body=models.JobsCreateRequestBody(
+                title=title,
+                hire_date=hire_date,
+                two_percent_shareholder=two_percent_shareholder,
+                state_wc_covered=state_wc_covered,
+                state_wc_class_code=state_wc_class_code,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/employees/{employee_id}/jobs",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.jobs_create_request_body,
+                False,
+                False,
+                "json",
+                models.JobsCreateRequestBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-employees-employee_id-jobs",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_job(
         self,
@@ -493,8 +502,8 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -504,10 +513,18 @@ class JobsAndCompensations(BaseSDK):
 
         Get a job.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+        Compensation data in the response requires the `compensations:read` scope.
+
         scope: `jobs:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param job_id: The UUID of the job
-        :param include: Available options: - all_compensations: Include all effective dated compensations for the job instead of only the current compensation
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -543,6 +560,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -556,39 +575,35 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_job_async(
         self,
@@ -596,8 +611,8 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -607,10 +622,18 @@ class JobsAndCompensations(BaseSDK):
 
         Get a job.
 
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+        Compensation data in the response requires the `compensations:read` scope.
+
         scope: `jobs:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param job_id: The UUID of the job
-        :param include: Available options: - all_compensations: Include all effective dated compensations for the job instead of only the current compensation
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -646,6 +669,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -659,39 +684,35 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update(
         self,
@@ -699,9 +720,9 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        title: Optional[str] = None,
+            models.PutV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.PutV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        title: OptionalNullable[str] = UNSET,
         hire_date: Optional[str] = None,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
@@ -717,10 +738,12 @@ class JobsAndCompensations(BaseSDK):
 
         scope: `jobs:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param job_id: The UUID of the job
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param title: The job title
+        :param title: The job title.
         :param hire_date: The date when the employee was hired or rehired for the job.
         :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
         :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
@@ -743,7 +766,7 @@ class JobsAndCompensations(BaseSDK):
         request = models.PutV1JobsJobIDRequest(
             job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1JobsJobIDRequestBody(
+            jobs_update_request_body=models.JobsUpdateRequestBody(
                 version=version,
                 title=title,
                 hire_date=hire_date,
@@ -767,12 +790,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.jobs_update_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1JobsJobIDRequestBody,
+                models.JobsUpdateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -786,45 +811,40 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_async(
         self,
@@ -832,9 +852,9 @@ class JobsAndCompensations(BaseSDK):
         job_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        title: Optional[str] = None,
+            models.PutV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.PutV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        title: OptionalNullable[str] = UNSET,
         hire_date: Optional[str] = None,
         two_percent_shareholder: Optional[bool] = None,
         state_wc_covered: OptionalNullable[bool] = UNSET,
@@ -850,10 +870,12 @@ class JobsAndCompensations(BaseSDK):
 
         scope: `jobs:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param job_id: The UUID of the job
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param title: The job title
+        :param title: The job title.
         :param hire_date: The date when the employee was hired or rehired for the job.
         :param two_percent_shareholder: Whether the employee owns at least 2% of the company.
         :param state_wc_covered: Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).
@@ -876,7 +898,7 @@ class JobsAndCompensations(BaseSDK):
         request = models.PutV1JobsJobIDRequest(
             job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1JobsJobIDRequestBody(
+            jobs_update_request_body=models.JobsUpdateRequestBody(
                 version=version,
                 title=title,
                 hire_date=hire_date,
@@ -900,12 +922,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.jobs_update_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1JobsJobIDRequestBody,
+                models.JobsUpdateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -919,53 +943,48 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Job)
+            return unmarshal_json_response(models.Job, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete(
         self,
         *,
         job_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -976,6 +995,8 @@ class JobsAndCompensations(BaseSDK):
         Deletes a specific job that an employee holds.
 
         scope: `jobs:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1009,9 +1030,11 @@ class JobsAndCompensations(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1025,47 +1048,48 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_async(
         self,
         *,
         job_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1JobsJobIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1076,6 +1100,8 @@ class JobsAndCompensations(BaseSDK):
         Deletes a specific job that an employee holds.
 
         scope: `jobs:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1109,9 +1135,11 @@ class JobsAndCompensations(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1125,50 +1153,51 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-jobs-job_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_compensations(
         self,
         *,
         job_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1JobsJobIDCompensationsHeaderXGustoAPIVersion
+        ] = models.GetV1JobsJobIDCompensationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1JobsJobIDCompensationsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1176,19 +1205,24 @@ class JobsAndCompensations(BaseSDK):
     ) -> List[models.Compensation]:
         r"""Get compensations for a job
 
-        Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`. By default the API returns only the current compensation - see the `include` query parameter for retrieving all compensations.
+        Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        Note: Currently the API does not support creating multiple compensations per job - creating a compensation with the same `job_uuid` as another will fail with a relevant error.
+        *Note: Currently the API does not support creating multiple compensations per job - creating a compensation with the same job_uuid as another will fail with a relevant error.*
 
-        Use `flsa_status` to determine if an employee is eligible for overtime.
+        Use `flsa_status` to determine if an employee is eligible for overtime
+        By default the API returns only the current compensation - use the `include` parameter to return all compensations.
 
-        scope: `jobs:read`
+        scope: `compensations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param include: Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1205,11 +1239,11 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDCompensationsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             job_id=job_id,
             page=page,
             per=per,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1225,6 +1259,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1238,50 +1274,46 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-jobs-job_id-compensations",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Compensation])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Compensation], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_compensations_async(
         self,
         *,
         job_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1JobsJobIDCompensationsHeaderXGustoAPIVersion
+        ] = models.GetV1JobsJobIDCompensationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
         include: Optional[models.GetV1JobsJobIDCompensationsQueryParamInclude] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1289,19 +1321,24 @@ class JobsAndCompensations(BaseSDK):
     ) -> List[models.Compensation]:
         r"""Get compensations for a job
 
-        Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`. By default the API returns only the current compensation - see the `include` query parameter for retrieving all compensations.
+        Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        Note: Currently the API does not support creating multiple compensations per job - creating a compensation with the same `job_uuid` as another will fail with a relevant error.
+        *Note: Currently the API does not support creating multiple compensations per job - creating a compensation with the same job_uuid as another will fail with a relevant error.*
 
-        Use `flsa_status` to determine if an employee is eligible for overtime.
+        Use `flsa_status` to determine if an employee is eligible for overtime
+        By default the API returns only the current compensation - use the `include` parameter to return all compensations.
 
-        scope: `jobs:read`
+        scope: `compensations:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param include: Available options: - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param include: Available options:
+            - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1318,11 +1355,11 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDCompensationsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             job_id=job_id,
             page=page,
             per=per,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1338,6 +1375,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1351,56 +1390,53 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-jobs-job_id-compensations",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.Compensation])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(List[models.Compensation], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def create_compensation(
         self,
         *,
         job_id: str,
-        payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
+        rate: str,
+        payment_unit: models.CompensationsRequestBodyPaymentUnit,
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        rate: Optional[str] = None,
+            models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PostV1CompensationsCompensationIDMinimumWages],
-                List[models.PostV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsRequestBodyMinimumWages],
+                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1412,15 +1448,25 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Prerequisites
+        Before calling this endpoint:
+        1. A [job](ref:post-v1-jobs-job_id) must exist for the employee
+
+        ### Webhooks
+        - `employee_job_compensation.created`: Fires when a compensation is successfully created
+
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param rate: The dollar amount paid per payment unit.
-        :param effective_date: The date when the compensation takes effect.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1438,19 +1484,18 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompensationsCompensationIDRequestBody(
+            job_id=job_id,
+            compensations_request_body=models.CompensationsRequestBody(
                 rate=rate,
                 payment_unit=payment_unit,
-                effective_date=effective_date,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[
-                        List[models.PostV1CompensationsCompensationIDMinimumWages]
-                    ],
+                    Optional[List[models.CompensationsRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -1469,12 +1514,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompensationsCompensationIDRequestBody,
+                models.CompensationsRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1488,62 +1535,58 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def create_compensation_async(
         self,
         *,
         job_id: str,
-        payment_unit: models.PostV1CompensationsCompensationIDPaymentUnit,
+        rate: str,
+        payment_unit: models.CompensationsRequestBodyPaymentUnit,
         flsa_status: models.FlsaStatusType,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        rate: Optional[str] = None,
+            models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PostV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PostV1CompensationsCompensationIDMinimumWages],
-                List[models.PostV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsRequestBodyMinimumWages],
+                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1555,15 +1598,25 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Prerequisites
+        Before calling this endpoint:
+        1. A [job](ref:post-v1-jobs-job_id) must exist for the employee
+
+        ### Webhooks
+        - `employee_job_compensation.created`: Fires when a compensation is successfully created
+
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param rate: The dollar amount paid per payment unit.
-        :param effective_date: The date when the compensation takes effect.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1581,19 +1634,18 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompensationsCompensationIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PostV1CompensationsCompensationIDRequestBody(
+            job_id=job_id,
+            compensations_request_body=models.CompensationsRequestBody(
                 rate=rate,
                 payment_unit=payment_unit,
-                effective_date=effective_date,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[
-                        List[models.PostV1CompensationsCompensationIDMinimumWages]
-                    ],
+                    Optional[List[models.CompensationsRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -1612,12 +1664,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_request_body,
                 False,
                 False,
                 "json",
-                models.PostV1CompensationsCompensationIDRequestBody,
+                models.CompensationsRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1631,53 +1685,48 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="post-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_compensation(
         self,
         *,
         compensation_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.GetV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1687,8 +1736,9 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:read`
+        scope: `compensations:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1708,8 +1758,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
+            compensation_id=compensation_id,
         )
 
         req = self._build_request(
@@ -1725,6 +1775,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1738,47 +1790,43 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_compensation_async(
         self,
         *,
         compensation_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.GetV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1788,8 +1836,9 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:read`
+        scope: `compensations:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -1809,8 +1858,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
+            compensation_id=compensation_id,
         )
 
         req = self._build_request_async(
@@ -1826,6 +1875,8 @@ class JobsAndCompensations(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1839,39 +1890,35 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update_compensation(
         self,
@@ -1879,18 +1926,18 @@ class JobsAndCompensations(BaseSDK):
         compensation_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PutV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         rate: Optional[str] = None,
-        payment_unit: Optional[
-            models.PutV1CompensationsCompensationIDPaymentUnit
-        ] = None,
+        payment_unit: Optional[models.CompensationsUpdateRequestBodyPaymentUnit] = None,
         flsa_status: Optional[models.FlsaStatusType] = None,
+        effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PutV1CompensationsCompensationIDMinimumWages],
-                List[models.PutV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsUpdateRequestBodyMinimumWages],
+                List[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1902,15 +1949,22 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Webhooks
+        - `employee_job_compensation.updated`: Fires when a compensation is successfully updated
+
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1928,17 +1982,19 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompensationsCompensationIDRequestBody(
+            compensation_id=compensation_id,
+            compensations_update_request_body=models.CompensationsUpdateRequestBody(
                 version=version,
                 rate=rate,
                 payment_unit=payment_unit,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[List[models.PutV1CompensationsCompensationIDMinimumWages]],
+                    Optional[List[models.CompensationsUpdateRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -1957,12 +2013,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_update_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1CompensationsCompensationIDRequestBody,
+                models.CompensationsUpdateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -1976,45 +2034,40 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_compensation_async(
         self,
@@ -2022,18 +2075,18 @@ class JobsAndCompensations(BaseSDK):
         compensation_id: str,
         version: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.PutV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         rate: Optional[str] = None,
-        payment_unit: Optional[
-            models.PutV1CompensationsCompensationIDPaymentUnit
-        ] = None,
+        payment_unit: Optional[models.CompensationsUpdateRequestBodyPaymentUnit] = None,
         flsa_status: Optional[models.FlsaStatusType] = None,
+        effective_date: Optional[str] = None,
+        title: Optional[str] = None,
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.PutV1CompensationsCompensationIDMinimumWages],
-                List[models.PutV1CompensationsCompensationIDMinimumWagesTypedDict],
+                List[models.CompensationsUpdateRequestBodyMinimumWages],
+                List[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -2045,15 +2098,22 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`.
 
-        scope: `jobs:write`
+        ### Webhooks
+        - `employee_job_compensation.updated`: Fires when a compensation is successfully updated
+
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
-        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param rate: The dollar amount paid per payment unit.
         :param payment_unit: The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'.
         :param flsa_status: The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company.
-        :param adjust_for_minimum_wage: Determines whether the compensation should be adjusted for minimum wage. Only applies to Nonexempt employees.
+        :param effective_date: The effective date for this compensation.
+        :param title: The job title for this compensation.
+        :param adjust_for_minimum_wage: Whether the compensation should be adjusted to minimum wage during payroll calculation.
         :param minimum_wages:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -2071,17 +2131,19 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1CompensationsCompensationIDRequestBody(
+            compensation_id=compensation_id,
+            compensations_update_request_body=models.CompensationsUpdateRequestBody(
                 version=version,
                 rate=rate,
                 payment_unit=payment_unit,
                 flsa_status=flsa_status,
+                effective_date=effective_date,
+                title=title,
                 adjust_for_minimum_wage=adjust_for_minimum_wage,
                 minimum_wages=utils.get_pydantic_model(
                     minimum_wages,
-                    Optional[List[models.PutV1CompensationsCompensationIDMinimumWages]],
+                    Optional[List[models.CompensationsUpdateRequestBodyMinimumWages]],
                 ),
             ),
         )
@@ -2100,12 +2162,14 @@ class JobsAndCompensations(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.compensations_update_request_body,
                 False,
                 False,
                 "json",
-                models.PutV1CompensationsCompensationIDRequestBody,
+                models.CompensationsUpdateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -2119,53 +2183,48 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.Compensation)
+            return unmarshal_json_response(models.Compensation, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def delete_compensation(
         self,
         *,
         compensation_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2175,8 +2234,12 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`. This endpoint deletes a compensation for a job that hasn't been processed on payroll.
 
-        scope: `jobs:write`
+        ### Webhooks
+        - `employee_job_compensation.destroyed`: Fires when a compensation is successfully deleted
 
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -2196,8 +2259,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
+            compensation_id=compensation_id,
         )
 
         req = self._build_request(
@@ -2210,9 +2273,11 @@ class JobsAndCompensations(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -2226,47 +2291,48 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def delete_compensation_async(
         self,
         *,
         compensation_id: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.DeleteV1CompensationsCompensationIDHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompensationsCompensationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2276,8 +2342,12 @@ class JobsAndCompensations(BaseSDK):
 
         Compensations contain information on how much is paid out for a job. Jobs may have many compensations, but only one that is active. The current compensation is the one with the most recent `effective_date`. This endpoint deletes a compensation for a job that hasn't been processed on payroll.
 
-        scope: `jobs:write`
+        ### Webhooks
+        - `employee_job_compensation.destroyed`: Fires when a compensation is successfully deleted
 
+        scope: `compensations:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param compensation_id: The UUID of the compensation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -2297,8 +2367,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompensationsCompensationIDRequest(
-            compensation_id=compensation_id,
             x_gusto_api_version=x_gusto_api_version,
+            compensation_id=compensation_id,
         )
 
         req = self._build_request_async(
@@ -2311,9 +2381,11 @@ class JobsAndCompensations(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -2327,36 +2399,37 @@ class JobsAndCompensations(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="delete-v1-compensations-compensation_id",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

@@ -1,6 +1,20 @@
 # Frequency
 
-The frequency that employees on this pay schedule are paid with Gusto.
+The frequency that employees on this pay schedule are paid with Gusto. Only weekly, bi-weekly, twice per month, and monthly are supported on create and update.
+
+- `Every week`: Weekly pay.
+- `Every other week`: Biweekly pay.
+- `Twice per month`: Two pay dates per month; require day_1 and day_2 (use 31 for last day of month).
+- `Monthly`: One pay date per month; require day_1 (1-31).
+
+
+## Example Usage
+
+```python
+from gusto_embedded.models import Frequency
+
+value = Frequency.EVERY_WEEK
+```
 
 
 ## Values

@@ -1,6 +1,12 @@
 # ContractorPaymentMethod1
 
-The contractor's payment method.
+## Example Usage
+
+```python
+from gusto_embedded.models import ContractorPaymentMethod1
+
+value = ContractorPaymentMethod1.DIRECT_DEPOSIT
+```
 
 
 ## Values

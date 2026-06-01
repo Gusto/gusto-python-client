@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -22,7 +29,7 @@ class ID(str, Enum):
     EXTERNAL_PAYROLL = "external_payroll"
 
 
-class Requirements(str, Enum):
+class CompanyOnboardingStatusRequirements(str, Enum):
     ADD_ADDRESSES = "add_addresses"
     FEDERAL_TAX_SETUP = "federal_tax_setup"
     SELECT_INDUSTRY = "select_industry"
@@ -44,10 +51,12 @@ class OnboardingStepTypedDict(TypedDict):
     r"""The boolean flag indicating whether the step is required or optional"""
     completed: NotRequired[bool]
     r"""The boolean flag indicating whether the step is completed or not."""
+    completed_at: NotRequired[Nullable[str]]
+    r"""The ISO 8601 timestamp indicating when the onboarding step was completed."""
     skippable: NotRequired[bool]
     r"""The boolean flag indicating whether the step can be skipped or not."""
-    requirements: NotRequired[List[Requirements]]
-    r"""A list of onboarding step that are required to be completed in order to proceed with the current onboarding step."""
+    requirements: NotRequired[List[CompanyOnboardingStatusRequirements]]
+    r"""A list of onboarding steps that are required to be completed in order to proceed with the current onboarding step."""
 
 
 class OnboardingStep(BaseModel):
@@ -63,11 +72,49 @@ class OnboardingStep(BaseModel):
     completed: Optional[bool] = None
     r"""The boolean flag indicating whether the step is completed or not."""
 
+    completed_at: OptionalNullable[str] = UNSET
+    r"""The ISO 8601 timestamp indicating when the onboarding step was completed."""
+
     skippable: Optional[bool] = None
     r"""The boolean flag indicating whether the step can be skipped or not."""
 
-    requirements: Optional[List[Requirements]] = None
-    r"""A list of onboarding step that are required to be completed in order to proceed with the current onboarding step."""
+    requirements: Optional[List[CompanyOnboardingStatusRequirements]] = None
+    r"""A list of onboarding steps that are required to be completed in order to proceed with the current onboarding step."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "title",
+                "id",
+                "required",
+                "completed",
+                "completed_at",
+                "skippable",
+                "requirements",
+            ]
+        )
+        nullable_fields = set(["completed_at"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
 
 
 class CompanyOnboardingStatusTypedDict(TypedDict):
@@ -92,3 +139,19 @@ class CompanyOnboardingStatus(BaseModel):
 
     onboarding_steps: Optional[List[OnboardingStep]] = None
     r"""a list of company onboarding steps"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["onboarding_completed", "onboarding_steps"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

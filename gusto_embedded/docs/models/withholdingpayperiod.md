@@ -1,6 +1,14 @@
 # WithholdingPayPeriod
 
-The payment schedule tax rate the payroll is based on.
+The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
+
+## Example Usage
+
+```python
+from gusto_embedded.models import WithholdingPayPeriod
+
+value = WithholdingPayPeriod.EVERY_WEEK
+```
 
 
 ## Values

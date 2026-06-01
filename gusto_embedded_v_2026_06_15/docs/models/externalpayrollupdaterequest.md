@@ -1,0 +1,11 @@
+# ExternalPayrollUpdateRequest
+
+The request body for updating an external payroll with employee payroll items.
+
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `replace_fields`                                                                                                               | *Optional[bool]*                                                                                                               | :heavy_minus_sign:                                                                                                             | Patch update external payroll items when set to true, otherwise it will overwrite the previous changes.                        |
+| `external_payroll_items`                                                                                                       | List[[models.ExternalPayrollUpdateRequestExternalPayrollItems](../models/externalpayrollupdaterequestexternalpayrollitems.md)] | :heavy_check_mark:                                                                                                             | Payroll items for each employee in the external payroll.                                                                       |
