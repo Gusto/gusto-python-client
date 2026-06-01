@@ -1,43 +1,69 @@
-speakeasyVersion: 1.545.0
+speakeasyVersion: 1.769.1
 sources:
     Gusto-App-Int-OAS:
         sourceNamespace: gusto-app-int-oas
-        sourceRevisionDigest: sha256:163ef8c7de4ae2582c583b9b7677d80714669b03f45459c01f6dff9b2d3afbfb
-        sourceBlobDigest: sha256:87c1c61661402940b9497a0f9aa072ec0c8aff318aaedae2ca5ab49a21a2e0b2
+        sourceRevisionDigest: sha256:5f46e2fe34a4df36ff4e7c463ea216dbe5cfb24cada49cd30c580201d6747186
+        sourceBlobDigest: sha256:de8917152f1bf7c3cd1fdf525a6d247ac9957aa6b05b983bf7d7075a8b923fbc
         tags:
             - latest
-            - speakeasy-sdk-regen-1744935831
-            - "2024-04-01"
+            - "2025-06-15"
+    Gusto-App-Int-OAS-v2026-06-15:
+        sourceNamespace: gusto-app-int-oas-v2026-06-15
+        sourceRevisionDigest: sha256:e490d3efb436e31cb1aee597995413be3eb8df307e217702fae008691e733977
+        sourceBlobDigest: sha256:ab0cd18f291af245ed424bedaac2f7888db382f4f30445a2a7cff404d5e74064
+        tags:
+            - latest
+            - "2026-06-15"
     Gusto-OAS:
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:44e7b8dfa1de649a098ce98b82b05e5d12f7f1a796ac2f22d2a86b00acf18c1e
-        sourceBlobDigest: sha256:c0cca1c776a150a8b06dff09b846d29eadc2b7fd26b470f65725d97b395049db
+        sourceRevisionDigest: sha256:c6e7f57687bd797a94eed475d19dec03cd4fcda12021f276e8fd73879583bec0
+        sourceBlobDigest: sha256:903e7233240b1031adb5c30f7e651b80418a8922e69b3c8e7b7f840881eaca84
         tags:
             - latest
-            - speakeasy-sdk-regen-1744935831
-            - "2024-04-01"
+            - "2025-06-15"
+    Gusto-OAS-v2026-06-15:
+        sourceNamespace: gusto-oas-v2026-06-15
+        sourceRevisionDigest: sha256:71d111070a670d6af587dd9e2d68f80d74430837608b1a2ce4b45a076e17721c
+        sourceBlobDigest: sha256:ccb1178c3ecfab4e01ced2dc2e6498045f81b3e65e974deca165ac090bfe5f64
+        tags:
+            - latest
+            - "2026-06-15"
 targets:
     gusto:
         source: Gusto-OAS
         sourceNamespace: gusto-oas
-        sourceRevisionDigest: sha256:44e7b8dfa1de649a098ce98b82b05e5d12f7f1a796ac2f22d2a86b00acf18c1e
-        sourceBlobDigest: sha256:c0cca1c776a150a8b06dff09b846d29eadc2b7fd26b470f65725d97b395049db
+        sourceRevisionDigest: sha256:c6e7f57687bd797a94eed475d19dec03cd4fcda12021f276e8fd73879583bec0
+        sourceBlobDigest: sha256:903e7233240b1031adb5c30f7e651b80418a8922e69b3c8e7b7f840881eaca84
         codeSamplesNamespace: gusto-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:1971fbb55b78f1604821ab018302b82dbd2be3c5d72aa576a54ecfd04a955c94
+        codeSamplesRevisionDigest: sha256:f866d1ceaf0779b61abc2816ef22b72cf1fe99bc67e81eb3b4dcb3fde8978b5d
     gusto-app-int:
         source: Gusto-App-Int-OAS
         sourceNamespace: gusto-app-int-oas
-        sourceRevisionDigest: sha256:163ef8c7de4ae2582c583b9b7677d80714669b03f45459c01f6dff9b2d3afbfb
-        sourceBlobDigest: sha256:87c1c61661402940b9497a0f9aa072ec0c8aff318aaedae2ca5ab49a21a2e0b2
+        sourceRevisionDigest: sha256:5f46e2fe34a4df36ff4e7c463ea216dbe5cfb24cada49cd30c580201d6747186
+        sourceBlobDigest: sha256:de8917152f1bf7c3cd1fdf525a6d247ac9957aa6b05b983bf7d7075a8b923fbc
         codeSamplesNamespace: gusto-app-int-oas-python-code-samples
-        codeSamplesRevisionDigest: sha256:c00ed11b6f8344da2be1583a11c63c5e7c998c07039b4f7b3dfd0150b54554d0
+        codeSamplesRevisionDigest: sha256:58300f5a5e98b8f203d344913f778a32382d80901c29871b89bbcc8b3f537641
+    gusto-app-int-v2026-06-15:
+        source: Gusto-App-Int-OAS-v2026-06-15
+        sourceNamespace: gusto-app-int-oas-v2026-06-15
+        sourceRevisionDigest: sha256:e490d3efb436e31cb1aee597995413be3eb8df307e217702fae008691e733977
+        sourceBlobDigest: sha256:ab0cd18f291af245ed424bedaac2f7888db382f4f30445a2a7cff404d5e74064
+        codeSamplesNamespace: gusto-app-int-oas-python-code-samples-v2026-06-15-code-samples
+        codeSamplesRevisionDigest: sha256:8e96894b323b9f9bac05e976b06c1eaa52efbcdbdfa13a7e8653841799f43aa8
+    gusto-v2026-06-15:
+        source: Gusto-OAS-v2026-06-15
+        sourceNamespace: gusto-oas-v2026-06-15
+        sourceRevisionDigest: sha256:71d111070a670d6af587dd9e2d68f80d74430837608b1a2ce4b45a076e17721c
+        sourceBlobDigest: sha256:ccb1178c3ecfab4e01ced2dc2e6498045f81b3e65e974deca165ac090bfe5f64
+        codeSamplesNamespace: gusto-oas-python-code-samples-v2026-06-15-code-samples
+        codeSamplesRevisionDigest: sha256:d96ad660ca939d2e0c302eeeb48f84e6f1aafbdacee521b4ec28c147e2e58750
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
         Gusto-App-Int-OAS:
             inputs:
-                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2024-04-01.app-integrations.yaml
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2025-06-15.app-integrations.yaml
                   authHeader: Authorization
                   authSecret: $openapi_doc_auth_token
             overlays:
@@ -47,9 +73,21 @@ workflow:
                 - location: gusto_app_int/.speakeasy/speakeasy-modifications-overlay.yaml
             registry:
                 location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas
+        Gusto-App-Int-OAS-v2026-06-15:
+            inputs:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/main/generated/app-integrations/api.v2026-06-15.app-integrations.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+            overlays:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-app-int-modifications-overlay.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+                - location: gusto_app_int_v_2026_06_15/.speakeasy/speakeasy-modifications-overlay.yaml
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-v2026-06-15
         Gusto-OAS:
             inputs:
-                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2024-04-01.embedded.yaml
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2025-06-15.embedded.yaml
                   authHeader: Authorization
                   authSecret: $openapi_doc_auth_token
             overlays:
@@ -59,6 +97,18 @@ workflow:
                 - location: gusto_embedded/.speakeasy/speakeasy-modifications-overlay.yaml
             registry:
                 location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas
+        Gusto-OAS-v2026-06-15:
+            inputs:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/generated/embedded/api.v2026-06-15.embedded.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+            overlays:
+                - location: https://raw.githubusercontent.com/Gusto/Gusto-Partner-API/refs/heads/main/.speakeasy/speakeasy-modifications-overlay.yaml
+                  authHeader: Authorization
+                  authSecret: $openapi_doc_auth_token
+                - location: gusto_embedded_v_2026_06_15/.speakeasy/speakeasy-modifications-overlay.yaml
+            registry:
+                location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-v2026-06-15
     targets:
         gusto:
             target: python
@@ -83,6 +133,32 @@ workflow:
             codeSamples:
                 registry:
                     location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false
+        gusto-app-int-v2026-06-15:
+            target: python
+            source: Gusto-App-Int-OAS-v2026-06-15
+            output: gusto_app_int_v_2026_06_15
+            publish:
+                pypi:
+                    token: $pypi_token
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-app-int-oas-python-code-samples-v2026-06-15-code-samples
+                labelOverride:
+                    fixedValue: Python (SDK)
+                blocking: false
+        gusto-v2026-06-15:
+            target: python
+            source: Gusto-OAS-v2026-06-15
+            output: ./gusto_embedded_v_2026_06_15
+            publish:
+                pypi:
+                    token: $pypi_token
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/gusto/ruby-sdk/gusto-oas-python-code-samples-v2026-06-15-code-samples
                 labelOverride:
                     fixedValue: Python (SDK)
                 blocking: false

@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -26,15 +33,15 @@ class RecoveryCaseTypedDict(TypedDict):
     r"""Unique identifier of the company to which the recovery case belongs"""
     status: NotRequired[RecoveryCaseStatus]
     r"""Status of the recovery case"""
-    latest_error_code: NotRequired[str]
+    latest_error_code: NotRequired[Nullable[str]]
     r"""The latest bank error code for the recovery case. See [this doc](https://docs.gusto.com/embedded-payroll/docs/ach-codes-and-transaction-types) for a list of common ACH return codes."""
-    original_debit_date: NotRequired[str]
+    original_debit_date: NotRequired[Nullable[str]]
     r"""Date when funds were originally debited from the company's bank account"""
     check_date: NotRequired[str]
     r"""Check date for the associated payroll or contractor payments"""
-    payroll_uuid: NotRequired[str]
+    payroll_uuid: NotRequired[Nullable[str]]
     r"""The uuid of the associated payroll for which the recovery case was created. If the recovery case was created for a contractor payment, this field will be null."""
-    contractor_payment_uuids: NotRequired[List[str]]
+    contractor_payment_uuids: NotRequired[Nullable[List[str]]]
     r"""The uuids of the associated contractor payments for which the recovery case was created. If the recovery case was created for a payroll, this field will be null."""
     amount_outstanding: NotRequired[str]
     r"""Amount outstanding for the recovery case"""
@@ -54,19 +61,19 @@ class RecoveryCase(BaseModel):
     status: Optional[RecoveryCaseStatus] = None
     r"""Status of the recovery case"""
 
-    latest_error_code: Optional[str] = None
+    latest_error_code: OptionalNullable[str] = UNSET
     r"""The latest bank error code for the recovery case. See [this doc](https://docs.gusto.com/embedded-payroll/docs/ach-codes-and-transaction-types) for a list of common ACH return codes."""
 
-    original_debit_date: Optional[str] = None
+    original_debit_date: OptionalNullable[str] = UNSET
     r"""Date when funds were originally debited from the company's bank account"""
 
     check_date: Optional[str] = None
     r"""Check date for the associated payroll or contractor payments"""
 
-    payroll_uuid: Optional[str] = None
+    payroll_uuid: OptionalNullable[str] = UNSET
     r"""The uuid of the associated payroll for which the recovery case was created. If the recovery case was created for a contractor payment, this field will be null."""
 
-    contractor_payment_uuids: Optional[List[str]] = None
+    contractor_payment_uuids: OptionalNullable[List[str]] = UNSET
     r"""The uuids of the associated contractor payments for which the recovery case was created. If the recovery case was created for a payroll, this field will be null."""
 
     amount_outstanding: Optional[str] = None
@@ -74,3 +81,47 @@ class RecoveryCase(BaseModel):
 
     event_total_amount: Optional[str] = None
     r"""Total amount to be debited from the payroll or contractor payments"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "company_uuid",
+                "status",
+                "latest_error_code",
+                "original_debit_date",
+                "check_date",
+                "payroll_uuid",
+                "contractor_payment_uuids",
+                "amount_outstanding",
+                "event_total_amount",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "latest_error_code",
+                "original_debit_date",
+                "payroll_uuid",
+                "contractor_payment_uuids",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

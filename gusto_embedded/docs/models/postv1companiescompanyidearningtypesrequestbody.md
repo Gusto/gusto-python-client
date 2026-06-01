@@ -5,4 +5,4 @@
 
 | Field                                | Type                                 | Required                             | Description                          |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ | ------------------------------------ |
-| `name`                               | *str*                                | :heavy_check_mark:                   | The name of the custom earning type. |
+| `name`                               | *Optional[str]*                      | :heavy_minus_sign:                   | The name of the custom earning type. |

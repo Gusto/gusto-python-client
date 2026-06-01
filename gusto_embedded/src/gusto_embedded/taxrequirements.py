@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -14,65 +15,31 @@ class TaxRequirements(BaseSDK):
         *,
         company_uuid: str,
         state: str,
-        scheduling: Optional[bool] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        scheduling: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.TaxRequirementsState:
-        r"""Get State Tax Requirements
+        r"""Get tax requirements for a state
 
-        Get all tax requirements for a given state.
+        Retrieves the detailed tax requirements for a specific state. The response includes requirement sets grouped by
+        category (e.g., registrations, tax rates, deposit schedules), each containing individual requirements with their
+        current values, labels, and metadata describing the expected input format.
 
-        ### Metadata Examples
-
-        ```json select
-        {
-        \"type\": \"select\",
-        \"options\": [
-        { \"label\": \"Semiweekly\",  value: \"Semi-weekly\" },
-        { \"label\": \"Monthly\",  value: \"Monthly\" },
-        { \"label\": \"Quarterly\",  value: \"Quarterly\" },
-        ]
-        }
-        ```
-        ```json radio
-        {
-        \"type\": \"radio\",
-        \"options\": [
-        { \"label\": \"No, we cannot reimburse\",  value: false, short_label: \"Not Reimbursable\" },
-        { \"label\": \"Yes, we can reimburse\",  value: true, short_label: \"Reimbursable\" },
-        ]
-        }
-        ```
-        ```json account_number
-        {
-        \"type\": \"account_number\",
-        \"mask\": \"######-##',
-        \"prefix\": null
-        }
-        ```
-        ```json tax_rate
-        {
-        \"type\": \"tax_rate\",
-        \"validation\": {
-        \"type\": \"min_max\",
-        \"min\": \"0.0004\",
-        \"max\": \"0.081\"
-        }
-        }
-        ```
+        Use this to build dynamic UIs for tax setup or to read the current tax configuration for a state.
 
         scope: `company_tax_requirements:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param state: 2-letter US state abbreviation
-        :param scheduling: When true, return \"new\" requirement sets with valid `effective_from` dates that are available to save new effective dated values.
+        :param state: The two-letter state abbreviation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param scheduling: When true, return \"new\" requirement sets with valid `effective_from` dates that are available to save new effective-dated values.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -91,8 +58,8 @@ class TaxRequirements(BaseSDK):
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
             company_uuid=company_uuid,
             state=state,
-            scheduling=scheduling,
             x_gusto_api_version=x_gusto_api_version,
+            scheduling=scheduling,
         )
 
         req = self._build_request(
@@ -108,6 +75,8 @@ class TaxRequirements(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -121,104 +90,66 @@ class TaxRequirements(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-tax_requirements-state",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TaxRequirementsState)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.TaxRequirementsState, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_async(
         self,
         *,
         company_uuid: str,
         state: str,
-        scheduling: Optional[bool] = None,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        scheduling: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.TaxRequirementsState:
-        r"""Get State Tax Requirements
+        r"""Get tax requirements for a state
 
-        Get all tax requirements for a given state.
+        Retrieves the detailed tax requirements for a specific state. The response includes requirement sets grouped by
+        category (e.g., registrations, tax rates, deposit schedules), each containing individual requirements with their
+        current values, labels, and metadata describing the expected input format.
 
-        ### Metadata Examples
-
-        ```json select
-        {
-        \"type\": \"select\",
-        \"options\": [
-        { \"label\": \"Semiweekly\",  value: \"Semi-weekly\" },
-        { \"label\": \"Monthly\",  value: \"Monthly\" },
-        { \"label\": \"Quarterly\",  value: \"Quarterly\" },
-        ]
-        }
-        ```
-        ```json radio
-        {
-        \"type\": \"radio\",
-        \"options\": [
-        { \"label\": \"No, we cannot reimburse\",  value: false, short_label: \"Not Reimbursable\" },
-        { \"label\": \"Yes, we can reimburse\",  value: true, short_label: \"Reimbursable\" },
-        ]
-        }
-        ```
-        ```json account_number
-        {
-        \"type\": \"account_number\",
-        \"mask\": \"######-##',
-        \"prefix\": null
-        }
-        ```
-        ```json tax_rate
-        {
-        \"type\": \"tax_rate\",
-        \"validation\": {
-        \"type\": \"min_max\",
-        \"min\": \"0.0004\",
-        \"max\": \"0.081\"
-        }
-        }
-        ```
+        Use this to build dynamic UIs for tax setup or to read the current tax configuration for a state.
 
         scope: `company_tax_requirements:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param state: 2-letter US state abbreviation
-        :param scheduling: When true, return \"new\" requirement sets with valid `effective_from` dates that are available to save new effective dated values.
+        :param state: The two-letter state abbreviation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param scheduling: When true, return \"new\" requirement sets with valid `effective_from` dates that are available to save new effective-dated values.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -237,8 +168,8 @@ class TaxRequirements(BaseSDK):
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
             company_uuid=company_uuid,
             state=state,
-            scheduling=scheduling,
             x_gusto_api_version=x_gusto_api_version,
+            scheduling=scheduling,
         )
 
         req = self._build_request_async(
@@ -254,6 +185,8 @@ class TaxRequirements(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -267,39 +200,35 @@ class TaxRequirements(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-tax_requirements-state",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.TaxRequirementsState)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.TaxRequirementsState, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update_state(
         self,
@@ -307,26 +236,37 @@ class TaxRequirements(BaseSDK):
         company_uuid: str,
         state: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         requirement_sets: Optional[
-            Union[List[models.RequirementSets], List[models.RequirementSetsTypedDict]]
+            Union[
+                List[models.TaxRequirementSetUpdate],
+                List[models.TaxRequirementSetUpdateTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ):
-        r"""Update State Tax Requirements
+        r"""Update tax requirements for a state
 
-        Update State Tax Requirements
+        Updates the tax requirement answers for a specific state. Submit answers to the requirement questions returned
+        by [GET /v1/companies/{company_uuid}/tax_requirements/{state}](ref:get-v1-companies-company_uuid-tax_requirements-state).
+
+        ### Prerequisites
+
+        1. Retrieve current requirements via [GET /v1/companies/{company_uuid}/tax_requirements/{state}](ref:get-v1-companies-company_uuid-tax_requirements-state)
+        2. Ensure that each requirement set that you're updating includes the correct `key`, `state`, and `effective_from` values from the GET response
 
         scope: `company_tax_requirements:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param state: 2-letter US state abbreviation
+        :param state: The two-letter state abbreviation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param requirement_sets:
+        :param requirement_sets: Array of requirement sets to update. Each set corresponds to a category of requirements for the state.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -348,7 +288,7 @@ class TaxRequirements(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody(
                 requirement_sets=utils.get_pydantic_model(
-                    requirement_sets, Optional[List[models.RequirementSets]]
+                    requirement_sets, Optional[List[models.TaxRequirementSetUpdate]]
                 ),
             ),
         )
@@ -373,6 +313,8 @@ class TaxRequirements(BaseSDK):
                 "json",
                 models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -386,45 +328,40 @@ class TaxRequirements(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_uuid-tax_requirements-state",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_state_async(
         self,
@@ -432,26 +369,37 @@ class TaxRequirements(BaseSDK):
         company_uuid: str,
         state: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         requirement_sets: Optional[
-            Union[List[models.RequirementSets], List[models.RequirementSetsTypedDict]]
+            Union[
+                List[models.TaxRequirementSetUpdate],
+                List[models.TaxRequirementSetUpdateTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ):
-        r"""Update State Tax Requirements
+        r"""Update tax requirements for a state
 
-        Update State Tax Requirements
+        Updates the tax requirement answers for a specific state. Submit answers to the requirement questions returned
+        by [GET /v1/companies/{company_uuid}/tax_requirements/{state}](ref:get-v1-companies-company_uuid-tax_requirements-state).
+
+        ### Prerequisites
+
+        1. Retrieve current requirements via [GET /v1/companies/{company_uuid}/tax_requirements/{state}](ref:get-v1-companies-company_uuid-tax_requirements-state)
+        2. Ensure that each requirement set that you're updating includes the correct `key`, `state`, and `effective_from` values from the GET response
 
         scope: `company_tax_requirements:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param company_uuid: The UUID of the company
-        :param state: 2-letter US state abbreviation
+        :param state: The two-letter state abbreviation
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param requirement_sets:
+        :param requirement_sets: Array of requirement sets to update. Each set corresponds to a category of requirements for the state.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -473,7 +421,7 @@ class TaxRequirements(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody(
                 requirement_sets=utils.get_pydantic_model(
-                    requirement_sets, Optional[List[models.RequirementSets]]
+                    requirement_sets, Optional[List[models.TaxRequirementSetUpdate]]
                 ),
             ),
         )
@@ -498,6 +446,8 @@ class TaxRequirements(BaseSDK):
                 "json",
                 models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -511,63 +461,61 @@ class TaxRequirements(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-companies-company_uuid-tax_requirements-state",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_all(
         self,
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyUUIDTaxRequirementsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTaxRequirementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ResponseBody]:
-        r"""Get All Tax Requirement States
+    ) -> List[models.TaxRequirementStatesList]:
+        r"""Get all tax requirements for a company
 
-        Returns objects describing the states that have tax requirements for the company
+        Retrieves all states for which a company has tax requirements, along with a boolean indicating whether tax setup
+        is complete for each state. Use this to determine which states still need tax setup during company onboarding.
 
         scope: `company_tax_requirements:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -604,6 +552,8 @@ class TaxRequirements(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -617,57 +567,58 @@ class TaxRequirements(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-tax_requirements",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.ResponseBody])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(
+                List[models.TaxRequirementStatesList], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_all_async(
         self,
         *,
         company_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1CompaniesCompanyUUIDTaxRequirementsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyUUIDTaxRequirementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ResponseBody]:
-        r"""Get All Tax Requirement States
+    ) -> List[models.TaxRequirementStatesList]:
+        r"""Get all tax requirements for a company
 
-        Returns objects describing the states that have tax requirements for the company
+        Retrieves all states for which a company has tax requirements, along with a boolean indicating whether tax setup
+        is complete for each state. Use this to determine which states still need tax setup during company onboarding.
 
         scope: `company_tax_requirements:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -704,6 +655,8 @@ class TaxRequirements(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -717,36 +670,34 @@ class TaxRequirements(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-companies-company_uuid-tax_requirements",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.ResponseBody])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(
+                List[models.TaxRequirementStatesList], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

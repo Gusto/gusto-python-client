@@ -2,6 +2,14 @@
 
 The status of the information request
 
+## Example Usage
+
+```python
+from gusto_embedded.models import InformationRequestStatus
+
+value = InformationRequestStatus.PENDING_RESPONSE
+```
+
 
 ## Values
 

@@ -1,6 +1,12 @@
 # EntityType
 
-The tax payer type of the company.
+## Example Usage
+
+```python
+from gusto_embedded.models import EntityType
+
+value = EntityType.C_CORPORATION
+```
 
 
 ## Values

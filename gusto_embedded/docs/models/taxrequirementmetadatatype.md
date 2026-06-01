@@ -12,6 +12,14 @@ Describes the type of requirement - each type may have additional metadata prope
 - `workers_compensation_rate`: A decimal value representing a percentage, see `risk_class_code`, `risk_class_description`, and `rate_type`
 
 
+## Example Usage
+
+```python
+from gusto_embedded.models import TaxRequirementMetadataType
+
+value = TaxRequirementMetadataType.TEXT
+```
+
 
 ## Values
 

@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class RehireEmploymentStatus(str, Enum):
+class EmploymentStatus(str, Enum):
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     PART_TIME = "part_time"
@@ -19,8 +20,6 @@ class RehireEmploymentStatus(str, Enum):
 
 
 class RehireTypedDict(TypedDict):
-    r"""Example response"""
-
     version: NotRequired[str]
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
     effective_date: NotRequired[str]
@@ -29,7 +28,7 @@ class RehireTypedDict(TypedDict):
     r"""The boolean flag indicating whether Gusto will file a new hire report for the employee."""
     work_location_uuid: NotRequired[str]
     r"""The uuid of the employee's work location."""
-    employment_status: NotRequired[RehireEmploymentStatus]
+    employment_status: NotRequired[EmploymentStatus]
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
@@ -40,8 +39,6 @@ class RehireTypedDict(TypedDict):
 
 
 class Rehire(BaseModel):
-    r"""Example response"""
-
     version: Optional[str] = None
     r"""The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field."""
 
@@ -54,7 +51,7 @@ class Rehire(BaseModel):
     work_location_uuid: Optional[str] = None
     r"""The uuid of the employee's work location."""
 
-    employment_status: Optional[RehireEmploymentStatus] = None
+    employment_status: Optional[EmploymentStatus] = None
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     two_percent_shareholder: Optional[bool] = None
@@ -65,3 +62,30 @@ class Rehire(BaseModel):
 
     active: Optional[bool] = None
     r"""Whether the employee's rehire has gone into effect."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "version",
+                "effective_date",
+                "file_new_hire_report",
+                "work_location_uuid",
+                "employment_status",
+                "two_percent_shareholder",
+                "employee_uuid",
+                "active",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

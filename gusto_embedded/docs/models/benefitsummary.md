@@ -1,7 +1,5 @@
 # BenefitSummary
 
-Benefit summary response
-
 
 ## Fields
 
@@ -12,4 +10,4 @@ Benefit summary response
 | `description`                                                                                                      | *Optional[str]*                                                                                                    | :heavy_minus_sign:                                                                                                 | Description of the benefit.                                                                                        |
 | `company_benefit_deduction`                                                                                        | *Optional[str]*                                                                                                    | :heavy_minus_sign:                                                                                                 | The aggregate of employee deduction for all employees given the period of time and the specific company benefit.   |
 | `company_benefit_contribution`                                                                                     | *Optional[str]*                                                                                                    | :heavy_minus_sign:                                                                                                 | The aggregate of company contribution for all employees given the period of time and the specific company benefit. |
-| `employees`                                                                                                        | [Optional[models.BenefitSummaryEmployees]](../models/benefitsummaryemployees.md)                                   | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |
+| `employees`                                                                                                        | List[[models.BenefitSummaryEmployees](../models/benefitsummaryemployees.md)]                                       | :heavy_minus_sign:                                                                                                 | N/A                                                                                                                |

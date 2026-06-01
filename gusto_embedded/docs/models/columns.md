@@ -1,5 +1,13 @@
 # Columns
 
+## Example Usage
+
+```python
+from gusto_embedded.models import Columns
+
+value = Columns.BANK_ACCOUNT_ACCOUNT_NUMBER
+```
+
 
 ## Values
 
@@ -24,8 +32,8 @@
 | `EMPLOYEE_COMPENSATION`                | employee_compensation                  |
 | `EMPLOYEE_DEDUCTIONS`                  | employee_deductions                    |
 | `EMPLOYEE_DEPARTMENT`                  | employee_department                    |
-| `EMPLOYEE_DONATIONS`                   | employee_donations                     |
 | `EMPLOYEE_EMAIL`                       | employee_email                         |
+| `EMPLOYEE_DONATIONS`                   | employee_donations                     |
 | `EMPLOYEE_FEDERAL_INCOME_TAX`          | employee_federal_income_tax            |
 | `EMPLOYEE_FIRST_NAME`                  | employee_first_name                    |
 | `EMPLOYEE_LAST_NAME`                   | employee_last_name                     |
@@ -35,6 +43,7 @@
 | `EMPLOYEE_PHONE_NUMBER`                | employee_phone_number                  |
 | `EMPLOYEE_SOCIAL_SECURITY_TAX`         | employee_social_security_tax           |
 | `EMPLOYEE_TAXES`                       | employee_taxes                         |
+| `EMPLOYEE_UUID`                        | employee_uuid                          |
 | `EMPLOYEE_WORK_EMAIL`                  | employee_work_email                    |
 | `EMPLOYER_ADDITIONAL_TAXES`            | employer_additional_taxes              |
 | `EMPLOYER_BENEFIT_CONTRIBUTIONS`       | employer_benefit_contributions         |
@@ -70,6 +79,7 @@
 | `PAYCHECK_TIPS`                        | paycheck_tips                          |
 | `PAYMENT_METHOD`                       | payment_method                         |
 | `PAYROLL_TYPE`                         | payroll_type                           |
+| `PAYROLL_UUID`                         | payroll_uuid                           |
 | `PREFERRED_FIRST_NAME`                 | preferred_first_name                   |
 | `RECURRING_REIMBURSEMENTS`             | recurring_reimbursements               |
 | `REGULAR_EARNINGS`                     | regular_earnings                       |

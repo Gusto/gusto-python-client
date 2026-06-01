@@ -25,7 +25,7 @@ class PaymentMethodBankAccountTypedDict(TypedDict):
     priority: NotRequired[int]
     r"""The order of priority for each payment split, with priority 1 being the first bank account paid. Priority must be unique and sequential."""
     split_amount: NotRequired[Nullable[int]]
-    r"""The cents amount allocated for each payment split"""
+    r"""If `split_by` is 'Amount', this is in cents (e.g., 500 for $5.00) and exactly one account must have a `split_amount` of `null` to capture the remainder. If `split_by` is 'Percentage', this is the percentage value (e.g., 60 for 60%)."""
 
 
 class PaymentMethodBankAccount(BaseModel):
@@ -44,34 +44,31 @@ class PaymentMethodBankAccount(BaseModel):
     r"""The order of priority for each payment split, with priority 1 being the first bank account paid. Priority must be unique and sequential."""
 
     split_amount: OptionalNullable[int] = UNSET
-    r"""The cents amount allocated for each payment split"""
+    r"""If `split_by` is 'Amount', this is in cents (e.g., 500 for $5.00) and exactly one account must have a `split_amount` of `null` to capture the remainder. If `split_by` is 'Percentage', this is the percentage value (e.g., 60 for 60%)."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = ["name", "hidden_account_number", "priority", "split_amount"]
-        nullable_fields = ["split_amount"]
-        null_default_fields = []
-
+        optional_fields = set(
+            ["name", "hidden_account_number", "priority", "split_amount"]
+        )
+        nullable_fields = set(["split_amount"])
         serialized = handler(self)
-
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
-            val = serialized.get(k)
-            serialized.pop(k, None)
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
 
-            optional_nullable = k in optional_fields and k in nullable_fields
-            is_set = (
-                self.__pydantic_fields_set__.intersection({n})
-                or k in null_default_fields
-            )  # pylint: disable=no-member
-
-            if val is not None and val != UNSET_SENTINEL:
-                m[k] = val
-            elif val != UNSET_SENTINEL and (
-                not k in optional_fields or (optional_nullable and is_set)
-            ):
-                m[k] = val
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
 
         return m

@@ -2,6 +2,14 @@
 
 Pay classification for the entry.
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PayClassification
+
+value = PayClassification.REGULAR
+```
+
 
 ## Values
 

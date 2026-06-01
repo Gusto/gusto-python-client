@@ -3,7 +3,8 @@
 from __future__ import annotations
 from datetime import datetime
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -48,6 +49,30 @@ class PayPeriodPayroll(BaseModel):
     payroll_type: Optional[PayrollType] = None
     r"""Whether it is regular pay period or transition pay period."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "payroll_uuid",
+                "check_date",
+                "processed",
+                "payroll_deadline",
+                "payroll_type",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class PayPeriodTypedDict(TypedDict):
     r"""The representation of a pay period."""
@@ -76,3 +101,21 @@ class PayPeriod(BaseModel):
 
     payroll: Optional[PayPeriodPayroll] = None
     r"""Information about the payroll for the pay period."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["start_date", "end_date", "pay_schedule_uuid", "payroll"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

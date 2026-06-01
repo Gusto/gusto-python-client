@@ -2,7 +2,14 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import (
+    BaseModel,
+    Nullable,
+    OptionalNullable,
+    UNSET,
+    UNSET_SENTINEL,
+)
+from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -17,47 +24,92 @@ class TimeOffType(str, Enum):
 class TimeOffActivityTypedDict(TypedDict):
     r"""Representation of a Time Off Activity"""
 
-    policy_uuid: NotRequired[str]
+    policy_uuid: NotRequired[Nullable[str]]
     r"""unique identifier of a time off policy"""
     time_off_type: NotRequired[TimeOffType]
     r"""Type of the time off activity"""
-    policy_name: NotRequired[str]
+    policy_name: NotRequired[Nullable[str]]
     r"""The name of the time off policy for this activity"""
     event_type: NotRequired[str]
     r"""The type of the time off event/activity"""
-    event_description: NotRequired[str]
+    event_description: NotRequired[Nullable[str]]
     r"""A description for the time off event/activity"""
-    effective_time: NotRequired[str]
+    effective_time: NotRequired[Nullable[str]]
     r"""The datetime of the time off activity"""
-    balance: NotRequired[str]
+    balance: NotRequired[Nullable[str]]
     r"""The time off balance at the time of the activity"""
-    balance_change: NotRequired[str]
+    balance_change: NotRequired[Nullable[str]]
     r"""The amount the time off balance changed as a result of the activity"""
 
 
 class TimeOffActivity(BaseModel):
     r"""Representation of a Time Off Activity"""
 
-    policy_uuid: Optional[str] = None
+    policy_uuid: OptionalNullable[str] = UNSET
     r"""unique identifier of a time off policy"""
 
     time_off_type: Optional[TimeOffType] = None
     r"""Type of the time off activity"""
 
-    policy_name: Optional[str] = None
+    policy_name: OptionalNullable[str] = UNSET
     r"""The name of the time off policy for this activity"""
 
     event_type: Optional[str] = None
     r"""The type of the time off event/activity"""
 
-    event_description: Optional[str] = None
+    event_description: OptionalNullable[str] = UNSET
     r"""A description for the time off event/activity"""
 
-    effective_time: Optional[str] = None
+    effective_time: OptionalNullable[str] = UNSET
     r"""The datetime of the time off activity"""
 
-    balance: Optional[str] = None
+    balance: OptionalNullable[str] = UNSET
     r"""The time off balance at the time of the activity"""
 
-    balance_change: Optional[str] = None
+    balance_change: OptionalNullable[str] = UNSET
     r"""The amount the time off balance changed as a result of the activity"""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "policy_uuid",
+                "time_off_type",
+                "policy_name",
+                "event_type",
+                "event_description",
+                "effective_time",
+                "balance",
+                "balance_change",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "policy_uuid",
+                "policy_name",
+                "event_description",
+                "effective_time",
+                "balance",
+                "balance_change",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m

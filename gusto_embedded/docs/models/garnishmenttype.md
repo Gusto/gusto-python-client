@@ -1,6 +1,12 @@
 # GarnishmentType
 
-The specific type of garnishment for court ordered garnishments.
+## Example Usage
+
+```python
+from gusto_embedded.models import GarnishmentType
+
+value = GarnishmentType.CHILD_SUPPORT
+```
 
 
 ## Values

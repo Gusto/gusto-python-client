@@ -1,0 +1,26 @@
+# ContractorOnboardingStatusOnboardingStatus
+
+One of the "onboarding_status" enum values.
+
+## Example Usage
+
+```python
+from gusto_embedded_v_2026_06_15.models import ContractorOnboardingStatusOnboardingStatus
+
+value = ContractorOnboardingStatusOnboardingStatus.ONBOARDING_COMPLETED
+
+# Open enum: unrecognized values are captured as UnrecognizedStr
+```
+
+
+## Values
+
+| Name                          | Value                         |
+| ----------------------------- | ----------------------------- |
+| `ONBOARDING_COMPLETED`        | onboarding_completed          |
+| `ADMIN_ONBOARDING_REVIEW`     | admin_onboarding_review       |
+| `ADMIN_ONBOARDING_INCOMPLETE` | admin_onboarding_incomplete   |
+| `SELF_ONBOARDING_NOT_INVITED` | self_onboarding_not_invited   |
+| `SELF_ONBOARDING_INVITED`     | self_onboarding_invited       |
+| `SELF_ONBOARDING_STARTED`     | self_onboarding_started       |
+| `SELF_ONBOARDING_REVIEW`      | self_onboarding_review        |

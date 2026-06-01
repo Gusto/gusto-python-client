@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -13,6 +14,10 @@ class ContractorOnboardingStatusOnboardingStatus(str, Enum):
     ONBOARDING_COMPLETED = "onboarding_completed"
     ADMIN_ONBOARDING_REVIEW = "admin_onboarding_review"
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
+    SELF_ONBOARDING_NOT_INVITED = "self_onboarding_not_invited"
+    SELF_ONBOARDING_INVITED = "self_onboarding_invited"
+    SELF_ONBOARDING_STARTED = "self_onboarding_started"
+    SELF_ONBOARDING_REVIEW = "self_onboarding_review"
 
 
 class ContractorOnboardingStatusOnboardingStepTypedDict(TypedDict):
@@ -44,6 +49,22 @@ class ContractorOnboardingStatusOnboardingStep(BaseModel):
     requirements: Optional[List[str]] = None
     r"""A list of onboarding steps required to begin this step."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["title", "id", "required", "completed", "requirements"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class ContractorOnboardingStatusTypedDict(TypedDict):
     r"""The representation of an contractor's onboarding status."""
@@ -69,3 +90,19 @@ class ContractorOnboardingStatus(BaseModel):
 
     onboarding_steps: Optional[List[ContractorOnboardingStatusOnboardingStep]] = None
     r"""List of steps required to onboard a contractor."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["onboarding_status", "onboarding_steps"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

@@ -1,0 +1,9 @@
+# SubmitInformationRequestRequest
+
+
+## Fields
+
+| Field                                                                                          | Type                                                                                           | Required                                                                                       | Description                                                                                    |
+| ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `information_request_uuid`                                                                     | *str*                                                                                          | :heavy_check_mark:                                                                             | The UUID of the information request                                                            |
+| `body`                                                                                         | [models.SubmitInformationRequestRequestBody](../models/submitinformationrequestrequestbody.md) | :heavy_check_mark:                                                                             | N/A                                                                                            |

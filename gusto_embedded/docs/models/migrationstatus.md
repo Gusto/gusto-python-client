@@ -1,6 +1,14 @@
 # MigrationStatus
 
-The migration status. 'success' is the only valid return value.
+The migration status. Always returns `success` for a successful migration.
+
+## Example Usage
+
+```python
+from gusto_embedded.models import MigrationStatus
+
+value = MigrationStatus.SUCCESS
+```
 
 
 ## Values

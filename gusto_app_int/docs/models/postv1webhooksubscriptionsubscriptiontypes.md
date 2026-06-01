@@ -1,5 +1,13 @@
 # PostV1WebhookSubscriptionSubscriptionTypes
 
+## Example Usage
+
+```python
+from gusto_app_integration.models import PostV1WebhookSubscriptionSubscriptionTypes
+
+value = PostV1WebhookSubscriptionSubscriptionTypes.BANK_ACCOUNT
+```
+
 
 ## Values
 
@@ -18,5 +26,7 @@
 | `LOCATION`                  | Location                    |
 | `NOTIFICATION`              | Notification                |
 | `PAYROLL`                   | Payroll                     |
+| `PAYROLL_SYNC`              | PayrollSync                 |
 | `PAY_SCHEDULE`              | PaySchedule                 |
+| `PEOPLE_BATCH`              | PeopleBatch                 |
 | `SIGNATORY`                 | Signatory                   |

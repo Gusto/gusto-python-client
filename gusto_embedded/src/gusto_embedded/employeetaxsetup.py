@@ -5,6 +5,7 @@ from gusto_embedded import models, utils
 from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
+from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 from typing import Any, List, Mapping, Optional, Union
 
 
@@ -14,18 +15,20 @@ class EmployeeTaxSetup(BaseSDK):
         *,
         employee_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeeFederalTax:
-        r"""Get an employee's federal taxes
+        r"""Get federal taxes for an employee
 
-        Get attributes relevant for an employee's federal taxes.
+        Returns federal tax information for an employee. The response structure varies based on the w4_data_type (pre_2020_w4 or rev_2020_w4).
 
         scope: `employee_federal_taxes:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -45,8 +48,8 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request(
@@ -62,6 +65,8 @@ class EmployeeTaxSetup(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -75,57 +80,55 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-federal_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.EmployeeFederalTax, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_federal_taxes_async(
         self,
         *,
         employee_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeeFederalTax:
-        r"""Get an employee's federal taxes
+        r"""Get federal taxes for an employee
 
-        Get attributes relevant for an employee's federal taxes.
+        Returns federal tax information for an employee. The response structure varies based on the w4_data_type (pre_2020_w4 or rev_2020_w4).
 
         scope: `employee_federal_taxes:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -145,8 +148,8 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request_async(
@@ -162,6 +165,8 @@ class EmployeeTaxSetup(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -175,76 +180,78 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-federal_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(models.EmployeeFederalTax, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update_federal_taxes(
         self,
         *,
         employee_uuid: str,
         version: str,
+        w4_data_type: models.PutV1EmployeesEmployeeIDFederalTaxesW4DataType,
+        filing_status: models.FilingStatus,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        filing_status: Optional[str] = None,
-        extra_withholding: OptionalNullable[str] = UNSET,
+            models.PutV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         two_jobs: Optional[bool] = None,
-        dependents_amount: Optional[str] = None,
-        other_income: Optional[str] = None,
-        deductions: Optional[str] = None,
-        w4_data_type: Optional[str] = None,
+        dependents_amount: Optional[float] = None,
+        other_income: Optional[float] = None,
+        deductions: Optional[float] = None,
+        extra_withholding: Optional[float] = None,
+        federal_withholding_allowance: Optional[int] = None,
+        additional_withholding: Optional[float] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeeFederalTax:
-        r"""Update an employee's federal taxes
+        r"""Update federal taxes for an employee
 
-        Update attributes relevant for an employee's federal taxes.
+        Updates federal tax (W4) information for an employee. Only rev_2020_w4 format is accepted for updates.
 
         scope: `employee_federal_taxes:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param employee_uuid: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param w4_data_type: The version of the W4 form. Only rev_2020_w4 is accepted for updates.
+        :param filing_status: Determines which tax return form an individual will use. One of: Single, Married, Head of Household, Exempt from withholding.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param filing_status:
-        :param extra_withholding:
-        :param two_jobs:
-        :param dependents_amount:
-        :param other_income:
-        :param deductions:
-        :param w4_data_type:
+        :param two_jobs: If there are only two jobs (e.g., you and your spouse each have a job), set to true.
+        :param dependents_amount: Amount for dependents; a dependent entitles the taxpayer to claim a dependency exemption.
+        :param other_income: Other income amount.
+        :param deductions: Deductions other than the standard deduction to reduce withholding.
+        :param extra_withholding: Additional amount to be withheld from each paycheck.
+        :param federal_withholding_allowance: Only applicable when w4_data_type is 'pre_2020_w4' (pre-2020 W4 forms are deprecated for updates).
+        :param additional_withholding: Only applicable when w4_data_type is 'pre_2020_w4' (pre-2020 W4 forms are deprecated for updates).
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -261,17 +268,19 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             request_body=models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody(
                 version=version,
+                w4_data_type=w4_data_type,
                 filing_status=filing_status,
-                extra_withholding=extra_withholding,
                 two_jobs=two_jobs,
                 dependents_amount=dependents_amount,
                 other_income=other_income,
                 deductions=deductions,
-                w4_data_type=w4_data_type,
+                extra_withholding=extra_withholding,
+                federal_withholding_allowance=federal_withholding_allowance,
+                additional_withholding=additional_withholding,
             ),
         )
 
@@ -295,6 +304,8 @@ class EmployeeTaxSetup(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -308,82 +319,83 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-federal_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            return unmarshal_json_response(models.EmployeeFederalTax, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_federal_taxes_async(
         self,
         *,
         employee_uuid: str,
         version: str,
+        w4_data_type: models.PutV1EmployeesEmployeeIDFederalTaxesW4DataType,
+        filing_status: models.FilingStatus,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
-        filing_status: Optional[str] = None,
-        extra_withholding: OptionalNullable[str] = UNSET,
+            models.PutV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         two_jobs: Optional[bool] = None,
-        dependents_amount: Optional[str] = None,
-        other_income: Optional[str] = None,
-        deductions: Optional[str] = None,
-        w4_data_type: Optional[str] = None,
+        dependents_amount: Optional[float] = None,
+        other_income: Optional[float] = None,
+        deductions: Optional[float] = None,
+        extra_withholding: Optional[float] = None,
+        federal_withholding_allowance: Optional[int] = None,
+        additional_withholding: Optional[float] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
     ) -> models.EmployeeFederalTax:
-        r"""Update an employee's federal taxes
+        r"""Update federal taxes for an employee
 
-        Update attributes relevant for an employee's federal taxes.
+        Updates federal tax (W4) information for an employee. Only rev_2020_w4 format is accepted for updates.
 
         scope: `employee_federal_taxes:write`
 
+        If set, this operation will use `company_access_auth` from the global security.
+
         :param employee_uuid: The UUID of the employee
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/versioning#object-layer) for information on how to use this field.
+        :param w4_data_type: The version of the W4 form. Only rev_2020_w4 is accepted for updates.
+        :param filing_status: Determines which tax return form an individual will use. One of: Single, Married, Head of Household, Exempt from withholding.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param filing_status:
-        :param extra_withholding:
-        :param two_jobs:
-        :param dependents_amount:
-        :param other_income:
-        :param deductions:
-        :param w4_data_type:
+        :param two_jobs: If there are only two jobs (e.g., you and your spouse each have a job), set to true.
+        :param dependents_amount: Amount for dependents; a dependent entitles the taxpayer to claim a dependency exemption.
+        :param other_income: Other income amount.
+        :param deductions: Deductions other than the standard deduction to reduce withholding.
+        :param extra_withholding: Additional amount to be withheld from each paycheck.
+        :param federal_withholding_allowance: Only applicable when w4_data_type is 'pre_2020_w4' (pre-2020 W4 forms are deprecated for updates).
+        :param additional_withholding: Only applicable when w4_data_type is 'pre_2020_w4' (pre-2020 W4 forms are deprecated for updates).
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -400,17 +412,19 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDFederalTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             request_body=models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody(
                 version=version,
+                w4_data_type=w4_data_type,
                 filing_status=filing_status,
-                extra_withholding=extra_withholding,
                 two_jobs=two_jobs,
                 dependents_amount=dependents_amount,
                 other_income=other_income,
                 deductions=deductions,
-                w4_data_type=w4_data_type,
+                extra_withholding=extra_withholding,
+                federal_withholding_allowance=federal_withholding_allowance,
+                additional_withholding=additional_withholding,
             ),
         )
 
@@ -434,6 +448,8 @@ class EmployeeTaxSetup(BaseSDK):
                 "json",
                 models.PutV1EmployeesEmployeeIDFederalTaxesRequestBody,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -447,65 +463,60 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-federal_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, models.EmployeeFederalTax)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            return unmarshal_json_response(models.EmployeeFederalTax, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, ["409", "422"], "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def get_state_taxes(
         self,
         *,
         employee_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
+    ) -> List[models.EmployeeStateTaxesList]:
         r"""Get an employee's state taxes
 
         Get attributes relevant for an employee's state taxes.
 
         The data required to correctly calculate an employee's state taxes varies by both home and work location. This API returns information about each question that must be answered grouped by state. Mostly commonly, an employee lives and works in the same state and will only have questions for a single state. The response contains metadata about each question, the type of answer expected, and the current answer stored in Gusto for that question.
 
-        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. Until effective dated answers are supported, the `valid_from` and `valid_up_to` must always be `\"2010-01-01\"` and `null` respectively.
+        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. The `valid_from` and `valid_up_to` fields are optional and currently ignored.
 
         ## About filing new hire reports
         Payroll Admins are responsible for filing a new hire report for each Employee. The `file_new_hire_report` question will only be listed if:
@@ -516,6 +527,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         scope: `employee_state_taxes:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -535,8 +547,8 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request(
@@ -552,6 +564,8 @@ class EmployeeTaxSetup(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -565,59 +579,57 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-state_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(
+                List[models.EmployeeStateTaxesList], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def get_state_taxes_async(
         self,
         *,
         employee_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.GetV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
+    ) -> List[models.EmployeeStateTaxesList]:
         r"""Get an employee's state taxes
 
         Get attributes relevant for an employee's state taxes.
 
         The data required to correctly calculate an employee's state taxes varies by both home and work location. This API returns information about each question that must be answered grouped by state. Mostly commonly, an employee lives and works in the same state and will only have questions for a single state. The response contains metadata about each question, the type of answer expected, and the current answer stored in Gusto for that question.
 
-        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. Until effective dated answers are supported, the `valid_from` and `valid_up_to` must always be `\"2010-01-01\"` and `null` respectively.
+        Answers are represented by an array. Today, this array can only be empty or contain exactly one element, but is designed to allow for forward compatibility with effective-dated fields. The `valid_from` and `valid_up_to` fields are optional and currently ignored.
 
         ## About filing new hire reports
         Payroll Admins are responsible for filing a new hire report for each Employee. The `file_new_hire_report` question will only be listed if:
@@ -628,6 +640,7 @@ class EmployeeTaxSetup(BaseSDK):
 
         scope: `employee_state_taxes:read`
 
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
@@ -647,8 +660,8 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request_async(
@@ -664,6 +677,8 @@ class EmployeeTaxSetup(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -677,39 +692,37 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="get-v1-employees-employee_id-state_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
+            return unmarshal_json_response(
+                List[models.EmployeeStateTaxesList], http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     def update_state_taxes(
         self,
@@ -717,20 +730,22 @@ class EmployeeTaxSetup(BaseSDK):
         employee_uuid: str,
         states: Union[List[models.States], List[models.StatesTypedDict]],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
+    ) -> List[models.EmployeeStateTaxesList]:
         r"""Update an employee's state taxes
 
         Update attributes relevant for an employee's state taxes.
 
-        As described for the GET endpoint, the answers must be supplied in the effective-dated format, but currently only a single answer will be accepted - `valid_from` and `valid_up_to` must be `\"2010-01-01\"` and `null` respectively.
+        As described for the GET endpoint, the answers must be supplied in the effective-dated format, but currently only a single answer will be accepted. The `valid_from` and `valid_up_to` fields are optional and currently ignored.
 
         scope: `employee_state_taxes:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param states:
@@ -751,9 +766,9 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDStateTaxesRequestBody(
+            employee_uuid=employee_uuid,
+            employee_state_taxes_request=models.EmployeeStateTaxesRequest(
                 states=utils.get_pydantic_model(states, List[models.States]),
             ),
         )
@@ -772,12 +787,14 @@ class EmployeeTaxSetup(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.employee_state_taxes_request,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDStateTaxesRequestBody,
+                models.EmployeeStateTaxesRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -791,45 +808,42 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = self.do_request(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-state_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
+            return unmarshal_json_response(
+                List[models.EmployeeStateTaxesList], http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)
 
     async def update_state_taxes_async(
         self,
@@ -837,20 +851,22 @@ class EmployeeTaxSetup(BaseSDK):
         employee_uuid: str,
         states: Union[List[models.States], List[models.StatesTypedDict]],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FOUR_MINUS_04_MINUS_01,
+            models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeeStateTax]:
+    ) -> List[models.EmployeeStateTaxesList]:
         r"""Update an employee's state taxes
 
         Update attributes relevant for an employee's state taxes.
 
-        As described for the GET endpoint, the answers must be supplied in the effective-dated format, but currently only a single answer will be accepted - `valid_from` and `valid_up_to` must be `\"2010-01-01\"` and `null` respectively.
+        As described for the GET endpoint, the answers must be supplied in the effective-dated format, but currently only a single answer will be accepted. The `valid_from` and `valid_up_to` fields are optional and currently ignored.
 
         scope: `employee_state_taxes:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_uuid: The UUID of the employee
         :param states:
@@ -871,9 +887,9 @@ class EmployeeTaxSetup(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1EmployeesEmployeeIDStateTaxesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PutV1EmployeesEmployeeIDStateTaxesRequestBody(
+            employee_uuid=employee_uuid,
+            employee_state_taxes_request=models.EmployeeStateTaxesRequest(
                 states=utils.get_pydantic_model(states, List[models.States]),
             ),
         )
@@ -892,12 +908,14 @@ class EmployeeTaxSetup(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body,
+                request.employee_state_taxes_request,
                 False,
                 False,
                 "json",
-                models.PutV1EmployeesEmployeeIDStateTaxesRequestBody,
+                models.EmployeeStateTaxesRequest,
             ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -911,42 +929,39 @@ class EmployeeTaxSetup(BaseSDK):
 
         http_res = await self.do_request_async(
             hook_ctx=HookContext(
+                config=self.sdk_configuration,
                 base_url=base_url or "",
                 operation_id="put-v1-employees-employee_id-state_taxes",
-                oauth2_scopes=[],
+                oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
             ),
             request=req,
-            error_status_codes=["404", "422", "4XX", "5XX"],
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return utils.unmarshal_json(http_res.text, List[models.EmployeeStateTax])
+            return unmarshal_json_response(
+                List[models.EmployeeStateTaxesList], http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
-            response_data = utils.unmarshal_json(
-                http_res.text, models.UnprocessableEntityErrorObjectErrorData
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.UnprocessableEntityErrorObjectError(data=response_data)
-        if utils.match_response(http_res, ["404", "4XX"], "*"):
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError(
-                "API error occurred", http_res.status_code, http_res_text, http_res
-            )
+            raise models.APIError("API error occurred", http_res, http_res_text)
 
-        content_type = http_res.headers.get("Content-Type")
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError(
-            f"Unexpected response received (code: {http_res.status_code}, type: {content_type})",
-            http_res.status_code,
-            http_res_text,
-            http_res,
-        )
+        raise models.APIError("Unexpected response received", http_res)

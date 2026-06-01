@@ -1,0 +1,19 @@
+# PeopleBatchResults
+
+A people batch with processing results.
+
+
+## Fields
+
+| Field                                                                    | Type                                                                     | Required                                                                 | Description                                                              |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `uuid`                                                                   | *str*                                                                    | :heavy_check_mark:                                                       | The unique identifier of the people batch.                               |
+| `idempotency_key`                                                        | *str*                                                                    | :heavy_check_mark:                                                       | The idempotency key provided when creating the batch.                    |
+| `status`                                                                 | [models.PeopleBatchResultsStatus](../models/peoplebatchresultsstatus.md) | :heavy_check_mark:                                                       | The current status of the batch processing.                              |
+| `submitted_at`                                                           | [date](https://docs.python.org/3/library/datetime.html#date-objects)     | :heavy_minus_sign:                                                       | The timestamp when the batch was submitted.                              |
+| `completed_at`                                                           | [date](https://docs.python.org/3/library/datetime.html#date-objects)     | :heavy_minus_sign:                                                       | The timestamp when the batch processing completed.                       |
+| `submitted_items`                                                        | *OptionalNullable[int]*                                                  | :heavy_minus_sign:                                                       | The number of items submitted in the batch.                              |
+| `processed_items`                                                        | *Optional[int]*                                                          | :heavy_minus_sign:                                                       | The number of items successfully processed.                              |
+| `excluded_items`                                                         | *Optional[int]*                                                          | :heavy_minus_sign:                                                       | The number of items excluded from processing.                            |
+| `results`                                                                | List[[models.Results](../models/results.md)]                             | :heavy_minus_sign:                                                       | The results for each batch item.                                         |
+| `exclusions`                                                             | List[[models.Exclusions](../models/exclusions.md)]                       | :heavy_minus_sign:                                                       | Items excluded from processing due to validation errors.                 |

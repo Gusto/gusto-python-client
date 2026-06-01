@@ -1,7 +1,5 @@
 # BenefitTypeRequirements
 
-Benefit type requirements response
-
 
 ## Fields
 

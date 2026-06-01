@@ -3,7 +3,8 @@
 from __future__ import annotations
 from .flsa_status_type import FlsaStatusType
 from enum import Enum
-from gusto_embedded.types import BaseModel
+from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
@@ -37,6 +38,22 @@ class MinimumWages(BaseModel):
     effective_date: Optional[str] = None
     r"""The effective date of the minimum wage."""
 
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["uuid", "wage", "effective_date"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
 
 class CompensationTypedDict(TypedDict):
     r"""The representation of compensation in Gusto."""
@@ -55,6 +72,8 @@ class CompensationTypedDict(TypedDict):
     r"""The unit accompanying the compensation rate. If the employee is an owner, rate should be 'Paycheck'."""
     flsa_status: NotRequired[FlsaStatusType]
     r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
+    title: NotRequired[str]
+    r"""The job title for this compensation."""
     effective_date: NotRequired[str]
     r"""The effective date for this compensation. For the first compensation, this defaults to the job's hire date."""
     adjust_for_minimum_wage: NotRequired[bool]
@@ -87,6 +106,9 @@ class Compensation(BaseModel):
     flsa_status: Optional[FlsaStatusType] = None
     r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
 
+    title: Optional[str] = None
+    r"""The job title for this compensation."""
+
     effective_date: Optional[str] = None
     r"""The effective date for this compensation. For the first compensation, this defaults to the job's hire date."""
 
@@ -95,3 +117,32 @@ class Compensation(BaseModel):
 
     minimum_wages: Optional[List[MinimumWages]] = None
     r"""The minimum wages associated with the compensation."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            [
+                "version",
+                "job_uuid",
+                "employee_uuid",
+                "rate",
+                "payment_unit",
+                "flsa_status",
+                "title",
+                "effective_date",
+                "adjust_for_minimum_wage",
+                "minimum_wages",
+            ]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

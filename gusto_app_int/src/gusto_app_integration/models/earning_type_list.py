@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 from .earning_type import EarningType, EarningTypeTypedDict
-from gusto_app_integration.types import BaseModel
+from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
 class EarningTypeListTypedDict(TypedDict):
-    r"""Example response"""
+    r"""Lists of default and custom earning types for a company."""
 
     default: NotRequired[List[EarningTypeTypedDict]]
     r"""The default earning types for the company."""
@@ -17,10 +18,26 @@ class EarningTypeListTypedDict(TypedDict):
 
 
 class EarningTypeList(BaseModel):
-    r"""Example response"""
+    r"""Lists of default and custom earning types for a company."""
 
     default: Optional[List[EarningType]] = None
     r"""The default earning types for the company."""
 
     custom: Optional[List[EarningType]] = None
     r"""The custom earning types for the company."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["default", "custom"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m

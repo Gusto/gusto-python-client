@@ -2,6 +2,14 @@
 
 Employee employment type to filter by
 
+## Example Usage
+
+```python
+from gusto_embedded.models import EmploymentType
+
+value = EmploymentType.EXEMPT
+```
+
 
 ## Values
 

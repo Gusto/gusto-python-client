@@ -1,0 +1,25 @@
+# EmployeeOnboardingStatus
+
+## Example Usage
+
+```python
+from gusto_app_integration_v_2026_06_15.models import EmployeeOnboardingStatus
+
+value = EmployeeOnboardingStatus.ONBOARDING_COMPLETED
+
+# Open enum: unrecognized values are captured as UnrecognizedStr
+```
+
+
+## Values
+
+| Name                                    | Value                                   |
+| --------------------------------------- | --------------------------------------- |
+| `ONBOARDING_COMPLETED`                  | onboarding_completed                    |
+| `ADMIN_ONBOARDING_INCOMPLETE`           | admin_onboarding_incomplete             |
+| `SELF_ONBOARDING_PENDING_INVITE`        | self_onboarding_pending_invite          |
+| `SELF_ONBOARDING_INVITED`               | self_onboarding_invited                 |
+| `SELF_ONBOARDING_INVITED_STARTED`       | self_onboarding_invited_started         |
+| `SELF_ONBOARDING_INVITED_OVERDUE`       | self_onboarding_invited_overdue         |
+| `SELF_ONBOARDING_COMPLETED_BY_EMPLOYEE` | self_onboarding_completed_by_employee   |
+| `SELF_ONBOARDING_AWAITING_ADMIN_REVIEW` | self_onboarding_awaiting_admin_review   |

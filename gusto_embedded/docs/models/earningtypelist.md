@@ -1,6 +1,6 @@
 # EarningTypeList
 
-Example response
+Lists of default and custom earning types for a company.
 
 
 ## Fields

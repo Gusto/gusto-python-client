@@ -1,0 +1,16 @@
+# Event
+
+Representation of an Event
+
+
+## Fields
+
+| Field                                                                           | Type                                                                            | Required                                                                        | Description                                                                     |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `uuid`                                                                          | *str*                                                                           | :heavy_check_mark:                                                              | Unique identifier for the event.                                                |
+| `event_type`                                                                    | *Optional[str]*                                                                 | :heavy_minus_sign:                                                              | Description of the event (e.g., payroll.submitted, or company.form.signed).     |
+| `resource_type`                                                                 | [Optional[models.ResourceType]](../models/resourcetype.md)                      | :heavy_minus_sign:                                                              | Name of the parent resource of the described entity.                            |
+| `resource_uuid`                                                                 | *Optional[str]*                                                                 | :heavy_minus_sign:                                                              | Unique identifier for the parent resource.                                      |
+| `entity_type`                                                                   | *Optional[str]*                                                                 | :heavy_minus_sign:                                                              | Name of the entity that the event corresponds to.                               |
+| `entity_uuid`                                                                   | *Optional[str]*                                                                 | :heavy_minus_sign:                                                              | Unique identifier for the entity.                                               |
+| `timestamp`                                                                     | *Optional[int]*                                                                 | :heavy_minus_sign:                                                              | Time at which this event was created. Measured in seconds since the Unix epoch. |
