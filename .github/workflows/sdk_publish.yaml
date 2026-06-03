@@ -11,10 +11,13 @@ permissions:
       - main
     paths:
       - gusto_embedded/.speakeasy/gen.lock
+      - gusto_app_int/.speakeasy/gen.lock
+      - gusto_app_int_v_2026_06_15/.speakeasy/gen.lock
+      - gusto_embedded_v_2026_06_15/.speakeasy/gen.lock
   workflow_dispatch: {}
 jobs:
-  publish-embedded:
-    uses: Gusto/sdk-generation-action/.github/workflows/workflow-executor.yaml@main
+  publish-gusto:
+    uses: Gusto/sdk-generation-action/.github/workflows/sdk-publish.yaml@main
     with:
       target: gusto
       runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
@@ -22,10 +25,28 @@ jobs:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       pypi_token: ${{ secrets.PYPI_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
-  publish-app-int:
+  publish-gusto-app-int:
     uses: Gusto/sdk-generation-action/.github/workflows/sdk-publish.yaml@main
     with:
       target: gusto-app-int
+      runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
+    secrets:
+      github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      pypi_token: ${{ secrets.PYPI_TOKEN }}
+      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+  publish-gusto-app-int-v2026-06-15:
+    uses: Gusto/sdk-generation-action/.github/workflows/sdk-publish.yaml@main
+    with:
+      target: gusto-app-int-v2026-06-15
+      runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
+    secrets:
+      github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      pypi_token: ${{ secrets.PYPI_TOKEN }}
+      speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+  publish-gusto-v2026-06-15:
+    uses: Gusto/sdk-generation-action/.github/workflows/sdk-publish.yaml@main
+    with:
+      target: gusto-v2026-06-15
       runs-on: "{\"group\": \"gusto-ubuntu-default\"}"
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
