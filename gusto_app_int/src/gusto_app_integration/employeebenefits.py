@@ -1881,8 +1881,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request(
@@ -1984,8 +1984,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request_async(
@@ -2091,8 +2091,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             employee_section603_high_earner_status_create_request=models.EmployeeSection603HighEarnerStatusCreateRequest(
                 effective_year=effective_year,
                 is_high_earner=is_high_earner,
@@ -2214,8 +2214,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             employee_section603_high_earner_status_create_request=models.EmployeeSection603HighEarnerStatusCreateRequest(
                 effective_year=effective_year,
                 is_high_earner=is_high_earner,
@@ -2335,9 +2335,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -2446,9 +2446,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -2559,9 +2559,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
             employee_section603_high_earner_status_update_request=models.EmployeeSection603HighEarnerStatusUpdateRequest(
                 is_high_earner=is_high_earner,
             ),
@@ -2682,9 +2682,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
             employee_section603_high_earner_status_update_request=models.EmployeeSection603HighEarnerStatusUpdateRequest(
                 is_high_earner=is_high_earner,
             ),

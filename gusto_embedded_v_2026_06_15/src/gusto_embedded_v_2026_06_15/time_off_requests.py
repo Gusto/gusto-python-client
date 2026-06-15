@@ -20,7 +20,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffAdminApprovedRequestsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffAdminApprovedRequestsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -74,7 +74,7 @@ class TimeOffRequests(BaseSDK):
                 approver_uuid=approver_uuid,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -151,7 +151,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffAdminApprovedRequestsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffAdminApprovedRequestsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -205,7 +205,7 @@ class TimeOffRequests(BaseSDK):
                 approver_uuid=approver_uuid,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -782,7 +782,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffRequestsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffRequestsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -832,7 +832,7 @@ class TimeOffRequests(BaseSDK):
                 employee_note=employee_note,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -909,7 +909,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffRequestsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffRequestsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -959,7 +959,7 @@ class TimeOffRequests(BaseSDK):
                 employee_note=employee_note,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -1036,7 +1036,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffRequestsPreviewHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffRequestsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -1086,7 +1086,7 @@ class TimeOffRequests(BaseSDK):
                 policy_uuid=policy_uuid,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -1165,7 +1165,7 @@ class TimeOffRequests(BaseSDK):
         policy_uuid: str,
         start_date: str,
         end_date: str,
-        days: Dict[str, str],
+        days: Mapping[str, str],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyUUIDTimeOffRequestsPreviewHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyUUIDTimeOffRequestsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -1215,7 +1215,7 @@ class TimeOffRequests(BaseSDK):
                 policy_uuid=policy_uuid,
                 start_date=start_date,
                 end_date=end_date,
-                days=days,
+                days=utils.unmarshal(days, Dict[str, str]),
             ),
         )
 
@@ -1705,7 +1705,7 @@ class TimeOffRequests(BaseSDK):
         ] = models.PutV1TimeOffRequestsTimeOffRequestUUIDApproveHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         approver_uuid: Optional[str] = None,
         employer_note: Optional[str] = None,
-        days: Optional[Dict[str, str]] = None,
+        days: Optional[Mapping[str, str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1747,7 +1747,7 @@ class TimeOffRequests(BaseSDK):
             body=models.PutV1TimeOffRequestsTimeOffRequestUUIDApproveRequestBody(
                 approver_uuid=approver_uuid,
                 employer_note=employer_note,
-                days=days,
+                days=utils.unmarshal(days, Optional[Dict[str, str]]),
             ),
         )
 
@@ -1832,7 +1832,7 @@ class TimeOffRequests(BaseSDK):
         ] = models.PutV1TimeOffRequestsTimeOffRequestUUIDApproveHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         approver_uuid: Optional[str] = None,
         employer_note: Optional[str] = None,
-        days: Optional[Dict[str, str]] = None,
+        days: Optional[Mapping[str, str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1874,7 +1874,7 @@ class TimeOffRequests(BaseSDK):
             body=models.PutV1TimeOffRequestsTimeOffRequestUUIDApproveRequestBody(
                 approver_uuid=approver_uuid,
                 employer_note=employer_note,
-                days=days,
+                days=utils.unmarshal(days, Optional[Dict[str, str]]),
             ),
         )
 

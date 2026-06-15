@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class ContractorDocuments(BaseSDK):
@@ -637,8 +637,8 @@ class ContractorDocuments(BaseSDK):
         *,
         document_uuid: str,
         fields: Union[
-            List[models.PutV1ContractorDocumentSignFields],
-            List[models.PutV1ContractorDocumentSignFieldsTypedDict],
+            Iterable[models.PutV1ContractorDocumentSignFields],
+            Iterable[models.PutV1ContractorDocumentSignFieldsTypedDict],
         ],
         agree: bool,
         x_gusto_api_version: Optional[
@@ -768,8 +768,8 @@ class ContractorDocuments(BaseSDK):
         *,
         document_uuid: str,
         fields: Union[
-            List[models.PutV1ContractorDocumentSignFields],
-            List[models.PutV1ContractorDocumentSignFieldsTypedDict],
+            Iterable[models.PutV1ContractorDocumentSignFields],
+            Iterable[models.PutV1ContractorDocumentSignFieldsTypedDict],
         ],
         agree: bool,
         x_gusto_api_version: Optional[

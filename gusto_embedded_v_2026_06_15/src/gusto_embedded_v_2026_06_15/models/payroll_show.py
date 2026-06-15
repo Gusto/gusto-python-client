@@ -294,7 +294,7 @@ class PayrollShowAmountType(str, Enum, metaclass=utils.OpenEnumMeta):
 class PayrollShowDeductionsTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the deduction."""
-    amount: NotRequired[float]
+    amount: NotRequired[str]
     r"""The amount of the deduction for the pay period."""
     amount_type: NotRequired[PayrollShowAmountType]
     r"""The amount type of the deduction for the pay period. Only present for unprocessed payrolls."""
@@ -308,7 +308,7 @@ class PayrollShowDeductions(BaseModel):
     name: Optional[str] = None
     r"""The name of the deduction."""
 
-    amount: Optional[float] = None
+    amount: Optional[str] = None
     r"""The amount of the deduction for the pay period."""
 
     amount_type: Optional[PayrollShowAmountType] = None
@@ -351,7 +351,7 @@ class PayrollShowDeductions(BaseModel):
 class PayrollShowTaxesTypedDict(TypedDict):
     name: str
     employer: bool
-    amount: float
+    amount: str
 
 
 class PayrollShowTaxes(BaseModel):
@@ -359,22 +359,22 @@ class PayrollShowTaxes(BaseModel):
 
     employer: bool
 
-    amount: float
+    amount: str
 
 
 class PayrollShowBenefitsTypedDict(TypedDict):
     name: NotRequired[str]
-    employee_deduction: NotRequired[float]
-    company_contribution: NotRequired[float]
+    employee_deduction: NotRequired[str]
+    company_contribution: NotRequired[str]
     imputed: NotRequired[bool]
 
 
 class PayrollShowBenefits(BaseModel):
     name: Optional[str] = None
 
-    employee_deduction: Optional[float] = None
+    employee_deduction: Optional[str] = None
 
-    company_contribution: Optional[float] = None
+    company_contribution: Optional[str] = None
 
     imputed: Optional[bool] = None
 
@@ -419,7 +419,7 @@ class EmployeeCompensationsTypedDict(TypedDict):
     memo: NotRequired[Nullable[str]]
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
     fixed_compensations: NotRequired[List[PayrollShowFixedCompensationsTypedDict]]
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
     hourly_compensations: NotRequired[List[PayrollShowHourlyCompensationsTypedDict]]
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
     paid_time_off: NotRequired[List[PayrollShowPaidTimeOffTypedDict]]
@@ -473,7 +473,7 @@ class EmployeeCompensations(BaseModel):
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
 
     fixed_compensations: Optional[List[PayrollShowFixedCompensations]] = None
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
 
     hourly_compensations: Optional[List[PayrollShowHourlyCompensations]] = None
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""

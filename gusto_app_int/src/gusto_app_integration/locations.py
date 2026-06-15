@@ -815,8 +815,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
-            location_uuid=location_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            location_uuid=location_uuid,
             effective_date=effective_date,
         )
 
@@ -916,8 +916,8 @@ class Locations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1LocationsLocationUUIDMinimumWagesRequest(
-            location_uuid=location_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            location_uuid=location_uuid,
             effective_date=effective_date,
         )
 

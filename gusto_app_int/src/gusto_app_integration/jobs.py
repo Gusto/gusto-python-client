@@ -5,7 +5,7 @@ from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
 from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Jobs(BaseSDK):
@@ -24,8 +24,8 @@ class Jobs(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -172,8 +172,8 @@ class Jobs(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,

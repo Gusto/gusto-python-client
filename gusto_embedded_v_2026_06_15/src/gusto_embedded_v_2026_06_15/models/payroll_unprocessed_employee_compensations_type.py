@@ -249,7 +249,7 @@ class PayrollUnprocessedEmployeeCompensationsTypeTypedDict(TypedDict):
     fixed_compensations: NotRequired[
         List[PayrollUnprocessedEmployeeCompensationsTypeFixedCompensationsTypedDict]
     ]
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
     hourly_compensations: NotRequired[
         List[PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensationsTypedDict]
     ]
@@ -302,7 +302,7 @@ class PayrollUnprocessedEmployeeCompensationsType(BaseModel):
     fixed_compensations: Optional[
         List[PayrollUnprocessedEmployeeCompensationsTypeFixedCompensations]
     ] = None
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
 
     hourly_compensations: Optional[
         List[PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensations]

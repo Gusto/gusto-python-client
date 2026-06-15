@@ -48,8 +48,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            wire_in_request_uuid=wire_in_request_uuid,
         )
 
         req = self._build_request(
@@ -148,8 +148,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            wire_in_request_uuid=wire_in_request_uuid,
         )
 
         req = self._build_request_async(
@@ -256,8 +256,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            wire_in_request_uuid=wire_in_request_uuid,
             wire_in_request_update_request_body=models.WireInRequestUpdateRequestBody(
                 date_sent=date_sent,
                 bank_name=bank_name,
@@ -382,8 +382,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutWireInRequestsWireInRequestUUIDRequest(
-            wire_in_request_uuid=wire_in_request_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            wire_in_request_uuid=wire_in_request_uuid,
             wire_in_request_update_request_body=models.WireInRequestUpdateRequestBody(
                 date_sent=date_sent,
                 bank_name=bank_name,
@@ -504,8 +504,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             page=page,
             per=per,
         )
@@ -604,8 +604,8 @@ class WireInRequests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesCompanyUUIDWireInRequestUUIDRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             page=page,
             per=per,
         )

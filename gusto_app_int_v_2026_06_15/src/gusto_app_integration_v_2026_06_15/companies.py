@@ -261,8 +261,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -363,8 +363,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -463,8 +463,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -574,8 +574,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -865,8 +865,8 @@ class Companies(BaseSDK):
             models.ProvisionCreateRequestBodyCompanyTypedDict,
         ],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.PostV1ProvisionHeaderXGustoAPIVersion
+        ] = models.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -991,8 +991,8 @@ class Companies(BaseSDK):
             models.ProvisionCreateRequestBodyCompanyTypedDict,
         ],
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.PostV1ProvisionHeaderXGustoAPIVersion
+        ] = models.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

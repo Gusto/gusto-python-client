@@ -7,7 +7,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional
 
 
 class Reports(BaseSDK):
@@ -15,8 +15,8 @@ class Reports(BaseSDK):
         self,
         *,
         company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
+        columns: Iterable[models.Columns],
+        groupings: Iterable[models.Groupings],
         file_type: models.FileType,
         x_gusto_api_version: Optional[
             models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
@@ -30,9 +30,9 @@ class Reports(BaseSDK):
         payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
         employment_type: Optional[models.EmploymentType] = None,
         employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -82,8 +82,8 @@ class Reports(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             create_report_body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
+                columns=utils.unmarshal(columns, List[models.Columns]),
+                groupings=utils.unmarshal(groupings, List[models.Groupings]),
                 custom_name=custom_name,
                 file_type=file_type,
                 with_totals=with_totals,
@@ -94,9 +94,13 @@ class Reports(BaseSDK):
                 payment_method=payment_method,
                 employment_type=employment_type,
                 employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
             ),
         )
 
@@ -174,8 +178,8 @@ class Reports(BaseSDK):
         self,
         *,
         company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
+        columns: Iterable[models.Columns],
+        groupings: Iterable[models.Groupings],
         file_type: models.FileType,
         x_gusto_api_version: Optional[
             models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
@@ -189,9 +193,9 @@ class Reports(BaseSDK):
         payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
         employment_type: Optional[models.EmploymentType] = None,
         employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -241,8 +245,8 @@ class Reports(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             create_report_body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
+                columns=utils.unmarshal(columns, List[models.Columns]),
+                groupings=utils.unmarshal(groupings, List[models.Groupings]),
                 custom_name=custom_name,
                 file_type=file_type,
                 with_totals=with_totals,
@@ -253,9 +257,13 @@ class Reports(BaseSDK):
                 payment_method=payment_method,
                 employment_type=employment_type,
                 employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
             ),
         )
 

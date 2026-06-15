@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Webhooks(BaseSDK):
@@ -212,7 +212,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -254,7 +254,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -330,7 +333,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -372,7 +375,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -485,8 +491,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -591,8 +597,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -660,7 +666,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -699,10 +707,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -783,7 +794,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -822,10 +835,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -943,8 +959,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -1049,8 +1065,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -1159,8 +1175,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1284,8 +1300,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1405,8 +1421,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -1513,8 +1529,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(

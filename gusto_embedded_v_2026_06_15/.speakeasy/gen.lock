@@ -1,26 +1,26 @@
 lockVersion: 2.0.0
 id: 8bb7f281-1704-44a6-a188-a5280e71bf8a
 management:
-  docChecksum: 0a8003916e58c40d736ffe66fefa7aaa
+  docChecksum: c3e55dc7c6c146493047092517b85c75
   docVersion: "2026-06-15"
-  speakeasyVersion: 1.769.1
-  generationVersion: 2.892.1
-  releaseVersion: 0.0.1
-  configChecksum: 6fc01b190c7c317589876896709163e8
+  speakeasyVersion: 1.778.0
+  generationVersion: 2.904.2
+  releaseVersion: 0.0.2
+  configChecksum: 93c3fb680b15c835964c5b64d1120d7f
   repoURL: https://github.com/Gusto/gusto-python-client.git
   repoSubDirectory: gusto_embedded_v_2026_06_15
   installationURL: https://github.com/Gusto/gusto-python-client.git#subdirectory=gusto_embedded_v_2026_06_15
   published: true
 persistentEdits:
-  generation_id: c75680ed-3537-4eb8-b89a-cb3e9dde6db8
-  pristine_commit_hash: 9d00741b66828c5b92bb5f1913a90c065d6c7444
-  pristine_tree_hash: c69ae3bdfcdeea82ac740edacae1452ee7f79d93
+  generation_id: d165329a-c87e-44a6-a6c5-2aefcafe3bac
+  pristine_commit_hash: e39272039d01f2edb41ecda308970e42f6b512e4
+  pristine_tree_hash: cf25fe4634803a0c9b0a81d4dfb6fe9ff2b1ded6
 features:
   python:
     additionalDependencies: 1.1.0
     additionalProperties: 1.0.1
     constsAndDefaults: 1.0.7
-    core: 6.0.24
+    core: 6.0.30
     defaultEnabledRetries: 0.2.0
     deprecations: 3.0.2
     devContainers: 3.0.0
@@ -36,7 +36,7 @@ features:
     globalServerURLs: 3.2.1
     groups: 3.0.1
     inputOutputModels: 3.0.0
-    methodArguments: 1.1.0
+    methodArguments: 1.1.1
     methodSecurity: 3.0.3
     multipartFileContentType: 1.0.0
     nameOverrides: 3.0.3
@@ -45,8 +45,8 @@ features:
     retries: 3.0.5
     sdkHooks: 1.2.1
     serverIDs: 3.0.0
-    unions: 3.1.5
-    uploadStreams: 1.0.2
+    unions: 3.1.6
+    uploadStreams: 1.0.3
 trackedFiles:
   .devcontainer/README.md:
     id: b170c0f184ac
@@ -206,8 +206,8 @@ trackedFiles:
     pristine_git_object: 7d84256e2958b9ea36f42a1ba37841fd266cb5ec
   docs/models/blockers.md:
     id: be05f80f786d
-    last_write_checksum: sha1:cf271f373494c3d486034ed3879c6de0c7fb44a6
-    pristine_git_object: b96b99dec729c7b3aa39d135a0be08390b11ac4f
+    last_write_checksum: sha1:918445d6dc21497c11ccff05f31a9a00dca30a9c
+    pristine_git_object: e2db1ac3676428d82d9f5a3cd98e8fad1ff4532d
   docs/models/blockertype.md:
     id: 491d41b39d65
     last_write_checksum: sha1:778eec353353dd18b424e892004779f16dc51f32
@@ -270,8 +270,8 @@ trackedFiles:
     pristine_git_object: 3388e6ef97d8c3b6a2d81289ea2b0fd4f977521d
   docs/models/companyattachmentcreaterequestbodydocument.md:
     id: 14b11a3a1c34
-    last_write_checksum: sha1:097bbf7561ab47b7c2c8bf0ce1f915ae690353c7
-    pristine_git_object: 598f54bac429bf962b6e2640f2a4ec431c17986f
+    last_write_checksum: sha1:c9facc1067cd86e0d2cf7b6c8f1419780b5d36b5
+    pristine_git_object: c0d00ccbf91b342840206632c175afef177c2f5a
   docs/models/companyattachmentdownloadurl.md:
     id: 9827209742f1
     last_write_checksum: sha1:9c170cbd763d489fb7a7195f64d3532715698cc9
@@ -572,6 +572,22 @@ trackedFiles:
     id: 722946cabcf5
     last_write_checksum: sha1:1d18cd96d9d225ded162c0587398fe7c8566a80b
     pristine_git_object: 7f2d4a48da567589629d2e6c520049e987d141e0
+  docs/models/contractorpaymentlisting.md:
+    id: 37f29c684087
+    last_write_checksum: sha1:06b12b8b2f45ad38bcfc56d7a4be13d60abfc6bc
+    pristine_git_object: b13307e178606acf72f5ad7da8eaab6f8d19b439
+  docs/models/contractorpaymentlistingpaymentmethod.md:
+    id: fa7b2c1344d3
+    last_write_checksum: sha1:df7bcd9c9907fe1901d008b580c528c73ca70739
+    pristine_git_object: 9018c424ec4fff2295b621926e8a8678048f1667
+  docs/models/contractorpaymentlistingstatus.md:
+    id: 1249bcd5df99
+    last_write_checksum: sha1:6a030bb3e77c54c1670a3c6d99bc5bfa27c02e45
+    pristine_git_object: 73df9b80e2049c19cc59e7df0f6758931a3caf15
+  docs/models/contractorpaymentlistingwagetype.md:
+    id: 7e980de18040
+    last_write_checksum: sha1:2f7a2ab2fba65efdd9a29799e27228736b54c055
+    pristine_git_object: 761665e0308fa11b5f920a71c183090f92fb51df
   docs/models/contractorpaymentmethod.md:
     id: 4aeb122ac3b5
     last_write_checksum: sha1:6c926b3842207d2742cff7644244b9d13986b2e0
@@ -736,6 +752,10 @@ trackedFiles:
     id: d9fe2b433f65
     last_write_checksum: sha1:16898c223f219a7dc13d436812f213e792614dac
     pristine_git_object: 5d1c9b952e0b9312ace55504ba4bce2dabb4db40
+  docs/models/customwithholdings.md:
+    id: 9f67c4ddf5f6
+    last_write_checksum: sha1:a863d5db8b8796c77da8cde31c60c7e443b21e68
+    pristine_git_object: 134f84f8ecf2bd90c453747c3dc4ca4422b74959
   docs/models/datefilterby.md:
     id: e86c7c97d814
     last_write_checksum: sha1:1a416aa95900852aa931a5209174afefe63b468f
@@ -762,8 +782,8 @@ trackedFiles:
     pristine_git_object: 3afe082d54d10784d4c2d18a8f9b52383fbd55d9
   docs/models/deletedepartmentrequest.md:
     id: ba9cf41722bf
-    last_write_checksum: sha1:8af1f594a2dfa6277b7cb31bf14a20dca38b9e02
-    pristine_git_object: fa5403d9558d867938b11fddc5ab6390ff2d5b76
+    last_write_checksum: sha1:307ae1ed3132c076e19633d12c2e1735755c408b
+    pristine_git_object: 5e11e97f01a08b6f1bf458b84061e81cf79fbb71
   docs/models/deletev1companiescompanyidbankaccountsbankaccountidheaderxgustoapiversion.md:
     id: b55fcf37d9f5
     last_write_checksum: sha1:81748a56ceb979c47aa038f32737c12d5844f79a
@@ -794,8 +814,8 @@ trackedFiles:
     pristine_git_object: b12acd24a25fb8b3a99830f2826ba7c5b541d2f3
   docs/models/deletev1companiescompanyidpayrollsrequest.md:
     id: 306e4ca39f9a
-    last_write_checksum: sha1:b6d9e93d2eeeffe476970e8ed52cb8351a2fd3da
-    pristine_git_object: 8ae555aa813a086340147ea9a1814c1434cb6db0
+    last_write_checksum: sha1:206d09b69bd6c90a137051c0e32ccf70f4f72245
+    pristine_git_object: 9c17b7055f2c03e4779bc7b4736ede0e126c1d77
   docs/models/deletev1companiescompanyuuidholidaypaypolicyheaderxgustoapiversion.md:
     id: 1a86ad620004
     last_write_checksum: sha1:caac1ce98b302003b15995a5b760fb18eeaba1b5
@@ -810,8 +830,8 @@ trackedFiles:
     pristine_git_object: 69d3017fcbb2d30f0e5d8b569f4f341891f611bf
   docs/models/deletev1companiescompanyuuidsignatoriessignatoryuuidrequest.md:
     id: 3c59f322d694
-    last_write_checksum: sha1:fcd82df3096809b70e9e07a9a95258604ffda725
-    pristine_git_object: 64eb8d98b8ec22c177f7c2939ce24b9a8cc2cc4a
+    last_write_checksum: sha1:0b6bbbb1cfb91ae70eba2eb8dcc8d4373a60762b
+    pristine_git_object: bc943c395f11745c9fc7f03b1ad155665b16f67a
   docs/models/deletev1companybenefitscompanybenefitidheaderxgustoapiversion.md:
     id: a4fab4762b8b
     last_write_checksum: sha1:432a83b89c574b93bfe674fafa2bdd0c6c9e4580
@@ -834,8 +854,8 @@ trackedFiles:
     pristine_git_object: 1ddc686a8ee5936547d60adf5dc67a9233f1a013
   docs/models/deletev1contractorpaymentgroupscontractorpaymentgroupidrequest.md:
     id: c3369e2b983e
-    last_write_checksum: sha1:1f05b6617647b2bf281c8c59d64b0dbe9c332e1f
-    pristine_git_object: 151e2c4b6c4bf60c1155179ef2ced93afbfb9d7f
+    last_write_checksum: sha1:dde9462ca9b0678b3d14518a7a39e00ac7f621ed
+    pristine_git_object: b8aac02957370ea60c8153c698c8a312e259b266
   docs/models/deletev1contractorscontractoruuidheaderxgustoapiversion.md:
     id: 177aee4e1a18
     last_write_checksum: sha1:61879d52564051a76905843eb94b051d9ed98502
@@ -846,8 +866,8 @@ trackedFiles:
     pristine_git_object: a5c2c6f81898cbfba7f951b1254b3b64d7010103
   docs/models/deletev1contractorscontractoruuidrehirerequest.md:
     id: 2b48149db324
-    last_write_checksum: sha1:e21bafc575bb7f8275f256bddecbafe76bc9b820
-    pristine_git_object: a7b067ebca81908af469596d03015fea0c2473cb
+    last_write_checksum: sha1:f3061cf66c62065fac2e8f4237e76b63228c0bfd
+    pristine_git_object: 9b156172057acc1f6afa6ab6d76e9d2b8e077457
   docs/models/deletev1contractorscontractoruuidrequest.md:
     id: 4c8e72928571
     last_write_checksum: sha1:add0cf010d09cf372ae1f677e0724da38a59b193
@@ -858,8 +878,8 @@ trackedFiles:
     pristine_git_object: 8e6c95fbe43069cfdc4a3b70c6a025f2425e7609
   docs/models/deletev1contractorscontractoruuidterminationrequest.md:
     id: 16a802812dbd
-    last_write_checksum: sha1:5339f8afefeafa36444fed593e1ff4b32fe6a8ec
-    pristine_git_object: 2496ffc802e001f936a820eaab210be6fd98796a
+    last_write_checksum: sha1:0f57177c4b796d4c1082692a08f82c64a2e40537
+    pristine_git_object: 00717d08e3616457a4f3a68f26f614256d1fad45
   docs/models/deletev1employeebenefitsemployeebenefitidheaderxgustoapiversion.md:
     id: 0e9d69693373
     last_write_checksum: sha1:eb23367866c056d338df6d7ced6f3ef9facf5e49
@@ -930,8 +950,8 @@ trackedFiles:
     pristine_git_object: a46a9cebab231ac1f70a66b99be35641e66b3717
   docs/models/deletev1jobsjobidrequest.md:
     id: dcb42d8fb9d3
-    last_write_checksum: sha1:a40b5f433a9177c2268aa25d1523b0a5d56313e2
-    pristine_git_object: 6724cfe689c93be352954cdad206c307b58332f8
+    last_write_checksum: sha1:a7c196f24c11c8b1a3322aae74abb22599294eda
+    pristine_git_object: 6d9df121e729d60e5c517b2d19404024b6129e77
   docs/models/deletev1recurringreimbursementsheaderxgustoapiversion.md:
     id: 060231488a8f
     last_write_checksum: sha1:ac530e1d55d62637850238a5932ba668ce0a81db
@@ -954,8 +974,8 @@ trackedFiles:
     pristine_git_object: 367af7c1861bcadc3514a486f5b3593f10d3793b
   docs/models/deletev1webhooksubscriptionuuidrequest.md:
     id: 24f1d40e16f6
-    last_write_checksum: sha1:f0ffa08b88ab307c76aa2c45beaa5baa801b4439
-    pristine_git_object: b44156c9feee50ace1fb938c36ce6cafcce293fa
+    last_write_checksum: sha1:e5579667f0169dedc74f5eb2397b9902e3c262c5
+    pristine_git_object: 3b1cbfd9ce7914558acfacd77fb3c4bdde90e45a
   docs/models/deletev1webhooksubscriptionuuidsecurity.md:
     id: 3deb093db84b
     last_write_checksum: sha1:8740b24efc9bb23066f3d39311254a17b913b79d
@@ -966,8 +986,8 @@ trackedFiles:
     pristine_git_object: ffce2a78d0050899501767a83ae0c766f5d3997e
   docs/models/deletev1workaddressesworkaddressuuidrequest.md:
     id: 35718dbe6d0b
-    last_write_checksum: sha1:51a04e719ff7033831b29ebb321148f81dafcf04
-    pristine_git_object: e21c51ef856960c88973c35533d240413bf288d9
+    last_write_checksum: sha1:a8126fe3d046f4e504bdf7fb970912f0f99b85e1
+    pristine_git_object: 103375b831f574790646bb08af3d2734a0f30f67
   docs/models/department.md:
     id: a35d7d606751
     last_write_checksum: sha1:e9c947ef8fdf90833d48e7205aa0b972746f3f93
@@ -1202,8 +1222,8 @@ trackedFiles:
     pristine_git_object: c11f44f2291a46111a3ce9699151e775de1a75db
   docs/models/employeecompensations.md:
     id: 6c49e8f6102a
-    last_write_checksum: sha1:d2ff894f0be3a37ae12b675b0234a4717e05115c
-    pristine_git_object: a0c2a28b643534ef1d2545db21bcbfcdcfe3cf0b
+    last_write_checksum: sha1:327e7fd7ba81c694259d99c1c83a62293152149c
+    pristine_git_object: 8aaab6ec949ce5b2c0427bbad20b69f614b3a60e
   docs/models/employeecustomfield.md:
     id: f1461f3ee2fe
     last_write_checksum: sha1:952615f347e0f80c9f75a131eb48a99cf3e7b9c2
@@ -1250,12 +1270,16 @@ trackedFiles:
     pristine_git_object: 72335d3a49f863bcb9b872157158b5d622fd410a
   docs/models/employeeonboardingstatus.md:
     id: 9b98e864b573
-    last_write_checksum: sha1:5eacfcfe663a5e4cf2b7d48021a029b2f4d2edf2
-    pristine_git_object: 1bcf08408c41188180b3e5831dda8e067398a458
+    last_write_checksum: sha1:bbde0eef5fdcd7857331da5833d2904b3cf21077
+    pristine_git_object: 08704151d281d803fd5ad65f96bd8c8d4e4b67ed
   docs/models/employeeonboardingstatus1.md:
     id: "348218618354"
     last_write_checksum: sha1:ddbb74a188a34a785928fde4dff2da1d75e45d6a
     pristine_git_object: bd7a3eaebd9493d186d4bfd21823dc80ff09d838
+  docs/models/employeeonboardingstatuscategory.md:
+    id: 65239daa3f1b
+    last_write_checksum: sha1:29cd01017bd98e24905d9b3b7d284facd75e92f5
+    pristine_git_object: fd757c7717974cf87313829c1813b3336cb51f0d
   docs/models/employeeonboardingstatusonboardingstep.md:
     id: 4c1c95be4669
     last_write_checksum: sha1:748d349954d5c47035da14da9771725ae12fac01
@@ -1464,6 +1488,10 @@ trackedFiles:
     id: 01a516a88f68
     last_write_checksum: sha1:bdb635a0bd0f11913b36eef9924009dedced382c
     pristine_git_object: b218cab8a549da048e6de81d837b33cd24b06355
+  docs/models/federal.md:
+    id: dfb8b2c938ef
+    last_write_checksum: sha1:6a7bb36ef8a5d41674b2f66606b37f2f38340112
+    pristine_git_object: d2eb15963fc55406823ebaa9d3b9a0cb8304efe1
   docs/models/federalholidays.md:
     id: 7a2d71f5250e
     last_write_checksum: sha1:2aa29bb693ea982f9efdb122b8e42b08fb9229fa
@@ -1492,6 +1520,10 @@ trackedFiles:
     id: a0e8b6b2567f
     last_write_checksum: sha1:1297a28d74e75acff3410afccae6690ae87dfcbf
     pristine_git_object: 521acc7db32b6434da2dda44c2dc267e5c5d589a
+  docs/models/fieldt.md:
+    id: b45bd96c7b1d
+    last_write_checksum: sha1:c5ef7c7c3482523ad58aeb8c032aa980f52fa9f8
+    pristine_git_object: f4b14246e02b7506ce675160d94d9c20df266432
   docs/models/filetype.md:
     id: 6474ff839025
     last_write_checksum: sha1:bdc3aaa3b16d4863705a3d2feb1dbd56fac0f293
@@ -1630,32 +1662,32 @@ trackedFiles:
     pristine_git_object: eb80648905227cdbd93ae50c4dc3ec894489590f
   docs/models/getcompaniescompanyuuidwireinrequestuuidrequest.md:
     id: 8d8b75157646
-    last_write_checksum: sha1:df583de9e84f6370de358d81eab2e7a93d60086e
-    pristine_git_object: f0499c07a00067d6e5130c80a00db60a7746e629
+    last_write_checksum: sha1:ad86f3972ca520deb2e41a06c54de2e0a8eb20be
+    pristine_git_object: 484c54d79003a42a46849de895e3b5710d4a0e35
   docs/models/getcompaniesdepartmentsheaderxgustoapiversion.md:
     id: 4d4594a3c6e6
     last_write_checksum: sha1:8b48fb0da6a40ff14cc9b5a2fec0a749a2231684
     pristine_git_object: d8507b24bcddf590fbc22e98dd8fd5d7a4b9b160
   docs/models/getcompaniesdepartmentsrequest.md:
     id: a61ebf4ee118
-    last_write_checksum: sha1:f13fbaf077f9bb422598183d6239c7ee0b0d9cf8
-    pristine_git_object: 0ec638e323177c89b1948d655f31d4314099b377
+    last_write_checksum: sha1:e2f954a0df55b1e1697f7c016e37cd0197db3383
+    pristine_git_object: d598309d2ca3ad4694db5a0aa6dc9d9296a165d4
   docs/models/getcompanynotificationsheaderxgustoapiversion.md:
     id: 09f6be0fe6a0
     last_write_checksum: sha1:9574cd3169c9d8181bf57c15a47123ea0fa62333
     pristine_git_object: 13b1e21fccc7834f3419757c9ff2a6c310b8cd29
   docs/models/getcompanynotificationsrequest.md:
     id: d9d552594b63
-    last_write_checksum: sha1:1e0f8d08640ef93ca55de13deb4a6b4cdac7542c
-    pristine_git_object: 637a1ff07729bd9b9be4c047ba9f25abc3f03c86
+    last_write_checksum: sha1:ac3e3382a76e7d21c3dee0768120323567a40e8e
+    pristine_git_object: b870aa1738995087fd1fc08049cad88a80093a28
   docs/models/getdepartmentheaderxgustoapiversion.md:
     id: 2b542b244895
     last_write_checksum: sha1:cb418f1e5fc6aaa645f7824b6a6d7705176db128
     pristine_git_object: e14267c553f7b3744442768de2363516f10cd25b
   docs/models/getdepartmentrequest.md:
     id: 4224280cb519
-    last_write_checksum: sha1:1af0b412d6aa245611b3d218d888de0ab110455b
-    pristine_git_object: 8db1cf927cb21ac7a70fab04402c324d4c3f2bc9
+    last_write_checksum: sha1:66966f9bcf28b586c0346f777079735e1ef616a1
+    pristine_git_object: 23a6159c7c251ac2048e14c3d3bfb0f6d7bdf105
   docs/models/getemployeeytdbenefitamountsfromdifferentcompanyheaderxgustoapiversion.md:
     id: da7bbcc52e44
     last_write_checksum: sha1:b581f27847282fe621184987e0c60efab0089ed1
@@ -1702,8 +1734,8 @@ trackedFiles:
     pristine_git_object: 7b9ab22463178035896686326aa1d6c42fbab9c3
   docs/models/getnotificationsnotificationuuidrequest.md:
     id: 62e4af8be916
-    last_write_checksum: sha1:ccbe21dcc4b400e6b8c68694af24f2a94c936e67
-    pristine_git_object: 53bfcd35d38e28a82be5a19cf3ee002f8a689b4a
+    last_write_checksum: sha1:1bb91938d79e644421b7c62ebd8f4087836a32a7
+    pristine_git_object: 4c5a3710299989312084bef7172d766a93f6308c
   docs/models/getrecoverycasesheaderxgustoapiversion.md:
     id: cce0da36e603
     last_write_checksum: sha1:0112d6320ebb38959b09250239e2863065f4d881
@@ -1810,8 +1842,8 @@ trackedFiles:
     pristine_git_object: f35b15dba05c783e5bd99c1e48690a6ca7843f48
   docs/models/getv1companiescompanyidcontractorpaymentgroupsrequest.md:
     id: 7204cf786010
-    last_write_checksum: sha1:522e34251564ee512e92906ac5c2abf3cf819ca1
-    pristine_git_object: 9e83cb0dc335f9a1bcd35b742e9099d8c1ccb607
+    last_write_checksum: sha1:655a46c192ef59fcd1ffd6c493593bcbe3f0459d
+    pristine_git_object: 6e84055080f88b8c1b8fd449c763dc069fa5e7fa
   docs/models/getv1companiescompanyidcontractorpaymentsheaderxgustoapiversion.md:
     id: f4f5b787abe6
     last_write_checksum: sha1:5d0de809dd7608283c91ab6658bdbad9ad3cfe7f
@@ -1830,8 +1862,8 @@ trackedFiles:
     pristine_git_object: afd42b666220b227e6a3f3dbb9239ee411e9dc09
   docs/models/getv1companiescompanyidcontractorspaymentdetailsrequest.md:
     id: 521c21287e14
-    last_write_checksum: sha1:ee93ea69a420b707fe13ea0d71c9e69446d9f21e
-    pristine_git_object: 0d986047a45cdccf132060337ccc89a8b6795a60
+    last_write_checksum: sha1:c1822673c6c6fde73b763df3b0eff9bc543963f7
+    pristine_git_object: 3e6b39b9cb0af6cf582d5d9f753beae73e39e071
   docs/models/getv1companiescompanyidcustomfieldsheaderxgustoapiversion.md:
     id: 31414dab58c7
     last_write_checksum: sha1:eddb43c64c6d686922fe912015e7e653dfea8b67
@@ -1874,8 +1906,8 @@ trackedFiles:
     pristine_git_object: 09315755e01bbaf4472d4b6ca350e127712a8816
   docs/models/getv1companiescompanyidfederaltaxdetailsrequest.md:
     id: c671f3fe5b25
-    last_write_checksum: sha1:61f7d278ce09a86fc2edffbc97cd30df1e072b23
-    pristine_git_object: 14459d04a025324e64cbc3b50f213d9669a604ec
+    last_write_checksum: sha1:03069ac8b7612fbcd6a377b2b4b1d5534342287b
+    pristine_git_object: 07967a24e3f85f5faf90bcab939587392b521754
   docs/models/getv1companiescompanyidlocationsheaderxgustoapiversion.md:
     id: 0c83792c46d1
     last_write_checksum: sha1:1fcff15de3df898444288370e44164ad9f6bb836
@@ -1892,10 +1924,14 @@ trackedFiles:
     id: 6366ac379cce
     last_write_checksum: sha1:655228371790fa2953a3fa6987b769e5efb98781
     pristine_git_object: 4ba58e7f8633252d349eae43602278320d802f6d
+  docs/models/getv1companiescompanyidpayrollreversalsheaderxgustoapiversion.md:
+    id: e8d5c96348c9
+    last_write_checksum: sha1:435b97418cfd57b23fc780b0030bf360ecc4f5a8
+    pristine_git_object: 304f6600354724ccea2d253db11e3c49b8401977
   docs/models/getv1companiescompanyidpayrollreversalsrequest.md:
     id: 1c85a798e584
-    last_write_checksum: sha1:99a71314d1656755739fd22495fdd9c47beae392
-    pristine_git_object: f46286b22b070951a4c3da3539f23fb5a0a7d7ba
+    last_write_checksum: sha1:f00db094e4a7c71b44d0f41502a1c40a75e12184
+    pristine_git_object: 918d87b715b22296a07e9497d6a0d9f25177e9c2
   docs/models/getv1companiescompanyidpayrollsheaderxgustoapiversion.md:
     id: df3f762ebcdd
     last_write_checksum: sha1:c4c3c06908697308fc1b7a4162cae403f3c7782e
@@ -1906,8 +1942,8 @@ trackedFiles:
     pristine_git_object: c4b65ed87bebd5a7423186e347daad5253155d02
   docs/models/getv1companiescompanyidpayrollsidpartnerdisbursementsrequest.md:
     id: bb1204c8abc8
-    last_write_checksum: sha1:dae2fdaf59443719d212ee173391c8a64c9c5466
-    pristine_git_object: 1dcfd430036804771fbaa8c01ca2da2b51c899af
+    last_write_checksum: sha1:198669cfb7e72126d908d842808cc10cbdb712ce
+    pristine_git_object: 3d70561d5af6b8793e1a32f6d56581cb6364d697
   docs/models/getv1companiescompanyidpayrollspayrollidheaderxgustoapiversion.md:
     id: e34e096b88f0
     last_write_checksum: sha1:2d0012b670dfdb8798b94fa1915a7a1820a7f818
@@ -1918,16 +1954,16 @@ trackedFiles:
     pristine_git_object: 84e52b5593a8f7b6baba2d7f9601d5cfcc4c0b2f
   docs/models/getv1companiescompanyidpayrollspayrollidrequest.md:
     id: 18b7df56f915
-    last_write_checksum: sha1:1f724cbaa4c349e5b27fe0512ae8a33a4c40ca28
-    pristine_git_object: 437f96d447b639d69e898c4439f7a1bc63f621e8
+    last_write_checksum: sha1:666a8b347d05884f7cd3de16d318b96828a25719
+    pristine_git_object: bc90ad8697ecd47ec44159164e4b7738df745bb6
   docs/models/getv1companiescompanyidpayrollsqueryparaminclude.md:
     id: f0ab7b48060c
     last_write_checksum: sha1:76fecb402abb332744974db8c11878c761a7172d
     pristine_git_object: 06aa237dfe84e5f48f15064a4344eb41eae6b963
   docs/models/getv1companiescompanyidpayrollsrequest.md:
     id: f74644d59582
-    last_write_checksum: sha1:0d30f2facdbbb6f32e125e9e9e2c6bbebbbc9e83
-    pristine_git_object: 92805c2285d7a3b8d30da0ddef57e1afd229f87b
+    last_write_checksum: sha1:03bf3f514fac3769985ab707cca338dbac6a166b
+    pristine_git_object: fed93555892520176cd274e4b05cdf7c68b6eeb2
   docs/models/getv1companiescompanyidpayschedulesassignmentsheaderxgustoapiversion.md:
     id: 8de2ec62f405
     last_write_checksum: sha1:f6c61102f7db88216674b9f5fb8d50a2ca7edc73
@@ -1954,8 +1990,8 @@ trackedFiles:
     pristine_git_object: fc709432b818783b81cf136bba14a53f64aaf30a
   docs/models/getv1companiescompanyidpayschedulespreviewrequest.md:
     id: 7fbbd6dc40e2
-    last_write_checksum: sha1:d5f5287f2e7cdda638f94f59bcca4e55f2560a2d
-    pristine_git_object: 3fb46982cd8884cd72f0dca57d05a9cf500e4034
+    last_write_checksum: sha1:a1fcd329ce6111183c2d8dd475660a06eaee41c0
+    pristine_git_object: 345f14800211d584d35c0fde1f98c92afae9ef6b
   docs/models/getv1companiescompanyidpayschedulesrequest.md:
     id: b07564200b9f
     last_write_checksum: sha1:c851031186b4911cda304fd5ca0277ef81ffddc9
@@ -1994,24 +2030,24 @@ trackedFiles:
     pristine_git_object: f5e8a10a045d33decc6947409b820242ec0cae21
   docs/models/getv1companiescompanyuuidsignatoriesrequest.md:
     id: 42fb6410f213
-    last_write_checksum: sha1:c9f55bda47f260f56e6f25cd2c82c8579ba9fb7d
-    pristine_git_object: da8123764cc84cc8a12253496bb889e3cf763902
+    last_write_checksum: sha1:27897c3452fa08b76be2f25d68a78c7f3c1b9aff
+    pristine_git_object: 1b6a534cac14d53d0fb24be3f22c723538fa8629
   docs/models/getv1companiescompanyuuidtaxrequirementsheaderxgustoapiversion.md:
     id: c8958ca5e31d
     last_write_checksum: sha1:ca3ae8cba62e7b88726014fccd9960f69bcade64
     pristine_git_object: 13555b55809f901d3024209199a5c23d250c145c
   docs/models/getv1companiescompanyuuidtaxrequirementsrequest.md:
     id: "026132448195"
-    last_write_checksum: sha1:11bf48a8dca5008d85252121fe4a337310ded763
-    pristine_git_object: f4e03fa89266b42bb042301f3c4fbf74f3f6023a
+    last_write_checksum: sha1:e9e95f51def5fd85078684bf21c8eb6a15337cc5
+    pristine_git_object: c05407c42c7964b583c85c9b1f6c09bd71c30fe1
   docs/models/getv1companiescompanyuuidtaxrequirementsstateheaderxgustoapiversion.md:
     id: a73c89c8f3f9
     last_write_checksum: sha1:227d8df21c17ff4bfbc582d920bcee5fbd1e5144
     pristine_git_object: c65b48fd5bebbd12de16c17b7379f1adacd26783
   docs/models/getv1companiescompanyuuidtaxrequirementsstaterequest.md:
     id: 6b104729e251
-    last_write_checksum: sha1:1e244b0220812808ecb0ca12476b5976c439d305
-    pristine_git_object: bc1a063fbfa27d6bb6e409c0ec3c8e61798645d3
+    last_write_checksum: sha1:eba49a75a1cb222ee07cae6d83c7e8d900dcf283
+    pristine_git_object: 47480df77bf224bd2ecb817f1909fc6b75ab00c7
   docs/models/getv1companiescompanyuuidtimeoffbalancesheaderxgustoapiversion.md:
     id: 21217f8edb90
     last_write_checksum: sha1:0ad1aa382eab17a6b78bd33cca41a4d1b3b78e15
@@ -2050,8 +2086,8 @@ trackedFiles:
     pristine_git_object: 618bcff5066e7bd11d3b6c980fd8f8e10dd2691e
   docs/models/getv1companiesrequest.md:
     id: e2f1037ade12
-    last_write_checksum: sha1:34d99629ebd4b9e00c11940f14a29e5f3b7d6404
-    pristine_git_object: ddf4598ff558fc0bf94368fb59dafe71ad520980
+    last_write_checksum: sha1:755dc3743653fbba8faf5803705fcedd24a38814
+    pristine_git_object: 4a4c0132dbb7845ff662ecbee81ef4dd5ba70086
   docs/models/getv1companybenefitscompanybenefitidcontributionexclusionsheaderxgustoapiversion.md:
     id: 0fa158f0c89d
     last_write_checksum: sha1:14b4d00c1e4f57e82ab2e66a637df2e15115ea39
@@ -2090,8 +2126,8 @@ trackedFiles:
     pristine_git_object: 45483e7884a889eab82296c9e5b315c2ee52a28e
   docs/models/getv1companyfinishonboardingrequest.md:
     id: b44f8cd2c2ee
-    last_write_checksum: sha1:97359dab42d1458d243d570e379e4ee20f4b54f4
-    pristine_git_object: 25b53553e79aa78f467ab58535c13190ae9985e6
+    last_write_checksum: sha1:5932bd4c77ea57ce24bc25ed4a675655822e1924
+    pristine_git_object: ce122267f61e5514c0979ed5e88d968836b1c51d
   docs/models/getv1companyformheaderxgustoapiversion.md:
     id: c2bead90dd71
     last_write_checksum: sha1:6c637b859322b648fa3675a954cfc2b83226ecfe
@@ -2122,16 +2158,16 @@ trackedFiles:
     pristine_git_object: cc40b8bf7d9fb681e78075555acf83ed1ac86b1d
   docs/models/getv1companyindustryrequest.md:
     id: 2fbfbff9199a
-    last_write_checksum: sha1:90c6dae038324c3c1ac7c3932146f6bc1c7a6646
-    pristine_git_object: 3394230d9db304e3df5430a234f780e4944e3ed4
+    last_write_checksum: sha1:c3fd281aa2f012b55feb49a9f2e7e0868106053f
+    pristine_git_object: a7b683e8365699f0d5137bc8b2f0fe27917be8fc
   docs/models/getv1companyonboardingstatusheaderxgustoapiversion.md:
     id: d67ab589fa58
     last_write_checksum: sha1:071d80977ec88c4e1478c7e2ec5e62a621ec9c1d
     pristine_git_object: 4c91f1c4568e61ebaa18ba3b06f09cc4569f06f5
   docs/models/getv1companyonboardingstatusrequest.md:
     id: 34fd982eef33
-    last_write_checksum: sha1:e33854200419e6d1cd3fe60ac2fa5450b9c0b8bc
-    pristine_git_object: e7d9a6ccbb6cfae344b1aa0abe441bf0a18efbbd
+    last_write_checksum: sha1:d6298219c128d1d73543ba9c270648500839af0a
+    pristine_git_object: 51fbef25094d71469ecab96344acc53e79169254
   docs/models/getv1companypaymentconfigsheaderxgustoapiversion.md:
     id: 9d15deb53069
     last_write_checksum: sha1:66edb9f438f8c8d049eb69e3ca7c1043032da3aa
@@ -2202,16 +2238,16 @@ trackedFiles:
     pristine_git_object: 5025d20337f5ff121af8a25343da6d285d60a7e0
   docs/models/getv1contractorpaymentgroupscontractorpaymentgroupidrequest.md:
     id: 1007d1e0224a
-    last_write_checksum: sha1:208203f91b98f91773eede1389fd29355aff90f3
-    pristine_git_object: b96ae30fa63b00d9d2731675013051ed9626a9a8
+    last_write_checksum: sha1:7de0b2b101a8ec7403f16ac6c6ea29010fa4acd4
+    pristine_git_object: 43ff84ba44c0ad08fadaddca08ab89b606781658
   docs/models/getv1contractorpaymentgroupsidpartnerdisbursementsheaderxgustoapiversion.md:
     id: 6af7a38e0bcb
     last_write_checksum: sha1:5272381156196556d76d02f836d05ad134538d0c
     pristine_git_object: 5e12aacf39324493891e2577f3c45dc9b969e050
   docs/models/getv1contractorpaymentgroupsidpartnerdisbursementsrequest.md:
     id: e9eaf73a11dd
-    last_write_checksum: sha1:39267e5a885618c3d2d74de9a412a629a706525b
-    pristine_git_object: c73f4965dcb8de75cbcd3675f65499136e006232
+    last_write_checksum: sha1:948fb5b35ce5ceca6697f2ba4c51b2e7b3031c85
+    pristine_git_object: a9f03ceccc0d9b6c21c516d44e41ae83f8f4ba18
   docs/models/getv1contractorpaymentscontractorpaymentidpdfheaderxgustoapiversion.md:
     id: 2c32d2e732bd
     last_write_checksum: sha1:ae114ca4ec260476f245205a14048d8484a70603
@@ -2272,6 +2308,14 @@ trackedFiles:
     id: b47f75269f3a
     last_write_checksum: sha1:33d2121743c4a121b510c65e08ca1706c7b55c32
     pristine_git_object: 51738b1f632ada267f3835be8f25272ddf38c32a
+  docs/models/getv1contractorscontractoruuidpaymentsheaderxgustoapiversion.md:
+    id: 97ef042ef9cc
+    last_write_checksum: sha1:9f6b6ae85c8d051939f676ad637ba2bbb11c17c4
+    pristine_git_object: 139c64e90766bfb78413dd96aeeb964908d3f726
+  docs/models/getv1contractorscontractoruuidpaymentsrequest.md:
+    id: 1971f9e6951d
+    last_write_checksum: sha1:823f3afd22531cb728d065f61e7396c8ee35f60b
+    pristine_git_object: 525b2962d06ce4fd54b26ef268793d0959ee5180
   docs/models/getv1contractorscontractoruuidqueryparaminclude.md:
     id: 8e8e7b19b2ce
     last_write_checksum: sha1:6355a6a1e6004b425b99613b34c2645f0376cb03
@@ -2326,8 +2370,8 @@ trackedFiles:
     pristine_git_object: 7b4605aa6f8a7933f75eb3545d9b5ed14d0494c5
   docs/models/getv1employeesemployeeidcustomfieldsrequest.md:
     id: 528971b8aa8d
-    last_write_checksum: sha1:3998cc6d74753e9e2ab1042523e226deed73728c
-    pristine_git_object: ad3665fed8d31556b04063492b74668c3893adb6
+    last_write_checksum: sha1:543fedfe62da50ed887c6efcf07630b42a81e687
+    pristine_git_object: dd48aea74608c9e6e059498eba97a908fd8b0ddd
   docs/models/getv1employeesemployeeidemployeebenefitsheaderxgustoapiversion.md:
     id: 9f1ff8ca4dba
     last_write_checksum: sha1:7d55bb86ce31b13d5e992e153dda6c3a8be8f8e0
@@ -2370,8 +2414,8 @@ trackedFiles:
     pristine_git_object: 5b31882c5eeeb0554cf539ddabb57022dd9329f2
   docs/models/getv1employeesemployeeidhomeaddressesrequest.md:
     id: 2db0bc82832c
-    last_write_checksum: sha1:4bf5c24ca76cd171eda42e8f3b1404f960b6f4dc
-    pristine_git_object: 25bcddc36560596b77b6e02f1a039dd9fc78ab72
+    last_write_checksum: sha1:424c4f5f2de86c18ab7813da2d26a394876bf1b1
+    pristine_git_object: 50cef7ab0ddfc6c1174e377db7190b14569aed06
   docs/models/getv1employeesemployeeidi9authorizationdocumentoptionsheaderxgustoapiversion.md:
     id: 26887ff51d54
     last_write_checksum: sha1:993058f526af3be70e44adc2d9929577af6804a4
@@ -2406,8 +2450,8 @@ trackedFiles:
     pristine_git_object: 89d9023deefd975e748401b956ff1f02a3c2bbf0
   docs/models/getv1employeesemployeeidjobsrequest.md:
     id: 69a9c24c722f
-    last_write_checksum: sha1:9c574c720f2a95b97d4ee6ed2e3e7eae5fdb2bdb
-    pristine_git_object: 1de83b22bb69cabe92d3b7c0586fed421530ecfa
+    last_write_checksum: sha1:6d04b450f74144aab457990103f4a563be5b506b
+    pristine_git_object: b7ba032678e00a525c37658f944d3a9f937f9906
   docs/models/getv1employeesemployeeidonboardingstatusheaderxgustoapiversion.md:
     id: 58b7dc3235b2
     last_write_checksum: sha1:043034a9b329046c2c18a700a45d549b6a0d9d8c
@@ -2462,8 +2506,8 @@ trackedFiles:
     pristine_git_object: 82b0c0f4ad6c36532035bee6f97debb4188f4896
   docs/models/getv1employeesemployeeidworkaddressesrequest.md:
     id: e43728e47a3a
-    last_write_checksum: sha1:f4fcdf809ccf7d0ae3c3b132337f789a24e8ef0a
-    pristine_git_object: 00b143d58c5ff80209473e31642b9618bc60a943
+    last_write_checksum: sha1:7f23586e14e8f0544a5d6ab12c83adf7309c26f6
+    pristine_git_object: 93254bf5957eb2e1c49d76f7f57bd587d9d53771
   docs/models/getv1employeesemployeeuuidpaystubsheaderxgustoapiversion.md:
     id: 6923e3fc2da1
     last_write_checksum: sha1:9a8fb809804df9093aba474332d2539a7aa64ce4
@@ -2478,16 +2522,16 @@ trackedFiles:
     pristine_git_object: 8fcece395377901a18762b35e466a363b2f6ae41
   docs/models/getv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearrequest.md:
     id: 26a889c306e3
-    last_write_checksum: sha1:c75f797082d41d5939a9576e8095bb4a91ff642f
-    pristine_git_object: 098f64eadf222fd3f023fc69a38bea18fd042454
+    last_write_checksum: sha1:2ce9bc8050060d129120c6af43a5e58338365a41
+    pristine_git_object: 2d27a7def9dc48592f4f927e4b1e62a241050d14
   docs/models/getv1employeesemployeeuuidsection603highearnerstatusesheaderxgustoapiversion.md:
     id: cd07a69db8b3
     last_write_checksum: sha1:38552c842076c6844587b2e263c0f1803445791d
     pristine_git_object: 9d6c528e396a6eb5a5a2a049966d213847d49853
   docs/models/getv1employeesemployeeuuidsection603highearnerstatusesrequest.md:
     id: 800013cafed2
-    last_write_checksum: sha1:a3e99abdd2c8d04150e293f25b6ae031534952d5
-    pristine_git_object: de8d6594a51ea6b711fbff54f6488ccff101bf9e
+    last_write_checksum: sha1:646852b4312d1a7e810a472f12a82498a18318a4
+    pristine_git_object: 743bef6256e81fc0bc30d84713e33d669bf679f5
   docs/models/getv1employeesheaderxgustoapiversion.md:
     id: 8662bc987474
     last_write_checksum: sha1:5a1a63ca991520b2a68b370191c3cddd2a633a3c
@@ -2532,18 +2576,22 @@ trackedFiles:
     id: a5042d4b1acf
     last_write_checksum: sha1:56e8fac669f6b9b800a7948007da33583057704a
     pristine_git_object: dc41283ec3aed61fa99dcb231a2e94e2360f49d5
+  docs/models/getv1generateddocumentsdocumenttyperequestuuidheaderxgustoapiversion.md:
+    id: 1d43f10ff2bb
+    last_write_checksum: sha1:04726ffe11bd07ebc4a4627922f79875c271c5e4
+    pristine_git_object: a96e7be95629c543342818021b76c40631ede0a4
   docs/models/getv1generateddocumentsdocumenttyperequestuuidrequest.md:
     id: cc6519dd97d2
-    last_write_checksum: sha1:9312b21b029bd94bef7a060d04ed43b7b53776c0
-    pristine_git_object: 17b976d85075653b5a2edfc20a621e32fe5b8354
+    last_write_checksum: sha1:1e15369a315de74c1f83af98349a4a5fb0bab1d9
+    pristine_git_object: 0a727a02c9d7edcdd574ebd13f69accd18faac91
   docs/models/getv1homeaddresseshomeaddressuuidheaderxgustoapiversion.md:
     id: 593f9f27264f
     last_write_checksum: sha1:4f099fa3f959ec58c7f10f16b55619b128361fd1
     pristine_git_object: 5f705136bc73d08e64fdedf566297b6a4981890e
   docs/models/getv1homeaddresseshomeaddressuuidrequest.md:
     id: 28fc8b01d014
-    last_write_checksum: sha1:29634ec1d0dcaa76de944e5ef8f26b727fa761b7
-    pristine_git_object: 654451d4b21846e3139f3589f44d2b97d3a78079
+    last_write_checksum: sha1:40fb3788a3f454730152f0e96b60f059eeb2a439
+    pristine_git_object: fd27eac533d55b33504965e97faf7af740759c5f
   docs/models/getv1jobsjobidcompensationsheaderxgustoapiversion.md:
     id: d9db13bfa8f4
     last_write_checksum: sha1:5c39befea4e7b5a172b8e4726586c7f657442d7d
@@ -2566,8 +2614,8 @@ trackedFiles:
     pristine_git_object: 8bad057a2d6e91e56a4677fe5cfb9b1c6bfcb6c8
   docs/models/getv1jobsjobidrequest.md:
     id: 53126311766c
-    last_write_checksum: sha1:0dd2479f3ec007e1d9df75786412327ef0e1e263
-    pristine_git_object: 369b8fda37205b6282430c45b147f84853481731
+    last_write_checksum: sha1:3b35c2009f45e6d01d1ef98a41646543a7d4d179
+    pristine_git_object: 832f38ec929943871676fa775589c00db59c0e08
   docs/models/getv1locationslocationidheaderxgustoapiversion.md:
     id: f574fabc1e73
     last_write_checksum: sha1:5fc7e09c36ffba2944caed192a5ad67f8c80fcfc
@@ -2582,40 +2630,40 @@ trackedFiles:
     pristine_git_object: 0499df6678f1f5f89380bd5a776771dc90be29a7
   docs/models/getv1locationslocationuuidminimumwagesrequest.md:
     id: 240a22a8d2f4
-    last_write_checksum: sha1:0c9b8f7e0e649398c6ed86767795597247c5512c
-    pristine_git_object: 12dc539732e03bc7918fa574b41ac160c270501e
+    last_write_checksum: sha1:75b1c331c82b052a36df5cccf5d029cd33c0e302
+    pristine_git_object: 7b94700f8c5790de2b982cf2fe46065036bf57fc
   docs/models/getv1partnermanagedcompaniescompanyuuidmigrationreadinessheaderxgustoapiversion.md:
     id: ae9cb110a778
     last_write_checksum: sha1:61993a0da9e96ef0b71288a42a29ce44dc682bff
     pristine_git_object: 32c7a0ad06c697e644a4c4a2d660ce6f0619f192
   docs/models/getv1partnermanagedcompaniescompanyuuidmigrationreadinessrequest.md:
     id: 09b3c0e1452e
-    last_write_checksum: sha1:818ce03f14bccd2b7a98111a505289ad33b3b3b9
-    pristine_git_object: 1341dfdfb3e6fa95a335d3c604673b83c1229417
+    last_write_checksum: sha1:cfa782e7590fcd520493109926a29bfc371d221e
+    pristine_git_object: bc3bbc431b93fcedad38197145c611c658a9bd37
   docs/models/getv1partnermanagedcompaniescompanyuuidtermsofserviceheaderxgustoapiversion.md:
     id: b8416db6eb63
     last_write_checksum: sha1:cf9a35c3e291911c292b1a504e0fc573148503a8
     pristine_git_object: cffef8057a8a13d522755ad56a52cd931ad02e7e
   docs/models/getv1partnermanagedcompaniescompanyuuidtermsofservicerequest.md:
     id: 8205c7b545fe
-    last_write_checksum: sha1:d7a81846a056cfeef64e145a70241ecad4ae0647
-    pristine_git_object: ccbc28dc2a16b00b4b61ed965ca2c2d8886d2eef
+    last_write_checksum: sha1:2a9895f67ae6d227979864294772ccbdc79bbf5c
+    pristine_git_object: dbe06b69abac88fdb3789e9348c96aa408ef6adf
   docs/models/getv1paymentreceiptspayrollspayrolluuidheaderxgustoapiversion.md:
     id: f5cb5ff39287
     last_write_checksum: sha1:386be5066b7af35a4576f2f89853e76284eb8b5e
     pristine_git_object: 8bf41e8b8fce3d7b7014c718fe590202fb7596c2
   docs/models/getv1paymentreceiptspayrollspayrolluuidrequest.md:
     id: fb06cfe6df12
-    last_write_checksum: sha1:418aaab87bb4f02caad587129a9ffce1e8d0a9a8
-    pristine_git_object: 67b2b44151edbcf356cdcb3e1e550960ce3d6dfc
+    last_write_checksum: sha1:dfd4ac0e7ed0fdce0a90c36edc974510c25a18a6
+    pristine_git_object: 075d7ac7dcf201833e88f53f278910f3885d85eb
   docs/models/getv1payrolldigestspayrolldigestuuidheaderxgustoapiversion.md:
     id: 8e271dac4e7e
     last_write_checksum: sha1:3ba4c225a9b27ef675a90050015d62dab8806b6c
     pristine_git_object: cd95e032b0ffbf55d0a202023e1335758b071fda
   docs/models/getv1payrolldigestspayrolldigestuuidrequest.md:
     id: 47697135af2f
-    last_write_checksum: sha1:402bd6b4599425630f377183bf48dafdc4388263
-    pristine_git_object: cb1212f36706fe183f479a610ee700a3a9104d89
+    last_write_checksum: sha1:94f7a693e7986e8da773ef1ad541493200aa6123
+    pristine_git_object: 7e920c080122b919e4fe037c7951ee23ed871ab0
   docs/models/getv1payrolldigestspayrolldigestuuidsecurity.md:
     id: 70d55741fb20
     last_write_checksum: sha1:2771f1e6855e2a2a60b2edd32d67d7b7e496ec83
@@ -2634,8 +2682,8 @@ trackedFiles:
     pristine_git_object: d78013e1a69050f9392bbaef03fcb0e55457e35e
   docs/models/getv1peoplebatchespeoplebatchuuidrequest.md:
     id: 5c89c1b18268
-    last_write_checksum: sha1:83dec0df21fc7717cad1d46a678de4ee3974ab6e
-    pristine_git_object: 8e49dea731b27dce897ccf3638fc9725eda5122e
+    last_write_checksum: sha1:f6dc671e5a2a74391de6878ef203128e625ade07
+    pristine_git_object: 607ff3a4cb70de4b2bb421fd9c961e3c4ce2321f
   docs/models/getv1recurringreimbursementsheaderxgustoapiversion.md:
     id: b64d7c2c5185
     last_write_checksum: sha1:f9f3ef2f83de235e20e87d1e8fbb6d5057f43b17
@@ -2734,8 +2782,8 @@ trackedFiles:
     pristine_git_object: 581be9a5cf79ecac431ba49a8acd4f85a2d5baee
   docs/models/getv1webhooksubscriptionuuidrequest.md:
     id: 8274fc2e1315
-    last_write_checksum: sha1:d29bfd06b696660069f114b75b322b15692ce980
-    pristine_git_object: 1668e8ab3d7e5f7cbf2a94cfe2e3e26adf59f73f
+    last_write_checksum: sha1:08fc1b42ffe44c430ec148bf9114c504dff5f2df
+    pristine_git_object: 227e3d31aa791520747f1d8ff00a50eeb561da3c
   docs/models/getv1webhooksubscriptionuuidsecurity.md:
     id: dd2624fa02af
     last_write_checksum: sha1:be3cfd94b2d1ce8ac5630aeff3d15fd1a02b8f7e
@@ -2746,8 +2794,8 @@ trackedFiles:
     pristine_git_object: fd04b9a39aaf169f20c4d11cf011401125f3cc82
   docs/models/getv1webhooksubscriptionverificationtokenuuidrequest.md:
     id: ac93c05cb2ff
-    last_write_checksum: sha1:fcbde7fcdeb8dec50aca9c9c281ffe492fda9e6f
-    pristine_git_object: 9f8ff4ca44f07ebc5a3ba9f96dafd5cc10a6891d
+    last_write_checksum: sha1:5dc7cb3e213a3c958cd756095f9d2190895799e0
+    pristine_git_object: 4fabc561e29ad113db0b779aa9a4700f786e7c19
   docs/models/getv1webhooksubscriptionverificationtokenuuidsecurity.md:
     id: aab731f5d8e5
     last_write_checksum: sha1:f43b34588877321b110362087021516fe53bb302
@@ -2758,8 +2806,8 @@ trackedFiles:
     pristine_git_object: 4da7f34ff34925c5e645ff375bc976ca552a26f5
   docs/models/getv1workaddressesworkaddressuuidrequest.md:
     id: b0234750f955
-    last_write_checksum: sha1:94637b19f0318e362d75b125a062b39ccf5f3cb5
-    pristine_git_object: 7888f2035b06c2c11d4a8b4a22901a6c51b43600
+    last_write_checksum: sha1:98c4c6a589490c65677dd9a99f94274d8a403371
+    pristine_git_object: 93b1aabd846b34cbb59ddff3531655330210c93d
   docs/models/getversionemployeestimeoffactivitiesheaderxgustoapiversion.md:
     id: 98b80660e466
     last_write_checksum: sha1:fe56dd1995698b11ccf6d73fa31dc5632b199c63
@@ -2774,8 +2822,8 @@ trackedFiles:
     pristine_git_object: 313f9212fa14c858e21930fcbbba3bf4f54021db
   docs/models/getwireinrequestswireinrequestuuidrequest.md:
     id: 35b9a706020f
-    last_write_checksum: sha1:944382d4ad83ebc873b90dbb0378afd1ee16ce92
-    pristine_git_object: 38bb1575bcb3e1e7d212a1a76365dc8de32c21de
+    last_write_checksum: sha1:2709ae4fdbc99e86f5142c13ec6fedebad8db5c1
+    pristine_git_object: 9d253a5380100471cc6339268a48021ab6adeb7b
   docs/models/groupings.md:
     id: fa84e4438763
     last_write_checksum: sha1:ce39df90f0adb942dd6bcaed27faca633ccd7ba7
@@ -3088,6 +3136,10 @@ trackedFiles:
     id: 5363d2a90efd
     last_write_checksum: sha1:641bd1bf41e617c292e417212810cdc195f28a00
     pristine_git_object: 3839c5e7449c8fd75e5f0c4b92454bee4f6f9c78
+  docs/models/overridetype.md:
+    id: ef136931a00a
+    last_write_checksum: sha1:12743e70e493da156ed554d14cd3eb0e54a16b2b
+    pristine_git_object: 06424831bbc76f12d563696732d7a9bc8bc7e476
   docs/models/ownertype.md:
     id: 96bf508ddec4
     last_write_checksum: sha1:fbe5173cfe25b6f949f782e4b4dbe91c48f8e4b0
@@ -3190,8 +3242,8 @@ trackedFiles:
     pristine_git_object: cb61b9857d01e3df1a86a16d5ea746088123d51e
   docs/models/patchv1companiescompanyidpayrollsidpartnerdisbursementsrequest.md:
     id: 5655ae816c21
-    last_write_checksum: sha1:e18d589571847ba49262ec84dd84c76bda26bd7e
-    pristine_git_object: 193bd9722272df567651b118b1162764f4b39f43
+    last_write_checksum: sha1:207c8597770591405b7343ae0782517ec613f8c9
+    pristine_git_object: 077b3cd61ba19881e794a3cfe80141afd943ffe3
   docs/models/patchv1companiescompanyidpayrollsidpartnerdisbursementsrequestbody.md:
     id: c798c71309a3
     last_write_checksum: sha1:a92f86ae8bf734e53bc511aec06a92083645ef7a
@@ -3214,8 +3266,8 @@ trackedFiles:
     pristine_git_object: e2f4e74b329caa5c668e0a3ce16f2b653ee71d93
   docs/models/patchv1contractorpaymentgroupsidpartnerdisbursementsrequest.md:
     id: "327443042138"
-    last_write_checksum: sha1:050ebe857e6ac08a5078e0eb8d676ef1941db704
-    pristine_git_object: 8cb885f49efcbb75796c96ba0df1ca76c2528e1e
+    last_write_checksum: sha1:004f0d531fe3b5c0f6a7de23f881b66491db9fd6
+    pristine_git_object: 72660c44cddd4400216ed55c9d733113ec9de39f
   docs/models/patchv1contractorpaymentgroupsidpartnerdisbursementsrequestbody.md:
     id: ae601a808214
     last_write_checksum: sha1:a67545e83e31b5a2be355973e19ff885a30ad92d
@@ -3226,8 +3278,8 @@ trackedFiles:
     pristine_git_object: 9fc09784e5fd5833a28f391e449f73f76badc39a
   docs/models/patchv1employeesemployeeuuidsection603highearnerstatuseseffectiveyearrequest.md:
     id: 15150bb2f878
-    last_write_checksum: sha1:7170ed8bd961f0e47a4fb299c4bbe30a0c7e3399
-    pristine_git_object: f1af0ad52c2cd7f6bc4ff09a71c9ac02e4b7064f
+    last_write_checksum: sha1:6449cb355cc3434044cb4b70b8ae1d0e8cb70be8
+    pristine_git_object: 1571ce7da4333b1e7e82532016a35b0989452d0d
   docs/models/pathparamdocumenttype.md:
     id: 5485b6b78b72
     last_write_checksum: sha1:89a80f1546cd6060f3f3fa19d9ec9314c5e7cc5a
@@ -3396,6 +3448,10 @@ trackedFiles:
     id: 04aaa5a44e0e
     last_write_checksum: sha1:d4e1410f06d042a62062469707d77da5b40fcc87
     pristine_git_object: db37b4c0c4ba36742ed1c790154e4b389090760e
+  docs/models/payrolldigestresultsblockers.md:
+    id: b701890ffed6
+    last_write_checksum: sha1:1f6a23f3da80b406628f59001850ee5731db6dbb
+    pristine_git_object: ae2ae4c00121131023d8df2aa08c72867a9d92e6
   docs/models/payrolldigestresultscategory.md:
     id: 49cebeff01ae
     last_write_checksum: sha1:16cfc14023cc1503dc957a616d1492865528107f
@@ -3422,8 +3478,8 @@ trackedFiles:
     pristine_git_object: f38b8cee37a880a98066eaefe046e835f980cf85
   docs/models/payrolldigestresultsresults.md:
     id: 5b709a666fde
-    last_write_checksum: sha1:6fdba7c87e8e2271054a2aabc17cc4cd62d16508
-    pristine_git_object: 096472e27e4c935cfca617b1fa28d6e7cd94800c
+    last_write_checksum: sha1:1599b3ecd39bf62a82c7abe43d29c7ac07d41bb2
+    pristine_git_object: 304349eb49cd652aab36a444592f41db185a948b
   docs/models/payrolldigestresultsresultsstatus.md:
     id: a26fdbc348bf
     last_write_checksum: sha1:372eb9fed2e5a94fd4073e15e948d4185a7b36c7
@@ -3442,8 +3498,8 @@ trackedFiles:
     pristine_git_object: 1d32d06308c88016d017e31c148655fd6f4f2aa4
   docs/models/payrollemployeecompensationstype.md:
     id: 3f04eb56a4d4
-    last_write_checksum: sha1:567604e099c3b166c7cd6012af5cad734145fe57
-    pristine_git_object: 847ccfc673480941fe3f017bac5b504eecf29153
+    last_write_checksum: sha1:8d9cededd1f09c864cc8e4792b2553daa676fc42
+    pristine_git_object: 380b6542a32acc42021bf742237f66baa4557c59
   docs/models/payrollemployeecompensationstypepaidtimeoff.md:
     id: 48eea4a56355
     last_write_checksum: sha1:3a878c5c6f34e7ac8613a7b2ac100cc14fac2591
@@ -3538,12 +3594,12 @@ trackedFiles:
     pristine_git_object: 92841dfdb037563f457c478eafdbd255fe1e07d1
   docs/models/payrollshowbenefits.md:
     id: 6da9a07a8ddf
-    last_write_checksum: sha1:0a1b0d732774ae3825f01795be356118e05bfdea
-    pristine_git_object: 87225208f2bcf832de14b684e341007307a77336
+    last_write_checksum: sha1:2c70b92890bdbeb7d03ef001fd2923ceffc62291
+    pristine_git_object: d26aa873f467fd22dd247c173f047052a24e4aa3
   docs/models/payrollshowdeductions.md:
     id: ba4c48f79cc6
-    last_write_checksum: sha1:1015943a0437da258a373af336c026c13c730a7c
-    pristine_git_object: e7812fd301e9c40c86be7c7877410cd952c2f393
+    last_write_checksum: sha1:0d3c3d4ae6fe522eb41c47c989615af27672044a
+    pristine_git_object: 6fe574803c0795ffac99f8cf999084e1e284c781
   docs/models/payrollshowfixedcompensations.md:
     id: 9d4025e17e3e
     last_write_checksum: sha1:213963258c9fed4c372563a0a10301983c6e50ab
@@ -3566,8 +3622,8 @@ trackedFiles:
     pristine_git_object: 44b9a7efde8ce4290e30e68acb6e9ddf8d2272d4
   docs/models/payrollshowtaxes.md:
     id: a2ee712b9149
-    last_write_checksum: sha1:a92637aae0fa4ea591ac54592d7a6cc6e80d050f
-    pristine_git_object: d84c5b6354eba1696a01ca13a98082d49263fde2
+    last_write_checksum: sha1:462ba80cda84e5ce746472ffbb12733928e29efb
+    pristine_git_object: 580bf89e292d5b67b2597e3a51ff0755dadb3287
   docs/models/payrollsmodel.md:
     id: c743f31724c5
     last_write_checksum: sha1:3c3d9c7de44ccabffbc35fe31d33e9efc7ccfb06
@@ -3606,8 +3662,8 @@ trackedFiles:
     pristine_git_object: 5e6a0dc611a71d32a3a5ddf8155ee40a48b322d1
   docs/models/payrollunprocessedemployeecompensationstype.md:
     id: 42c48b5530fe
-    last_write_checksum: sha1:c202518be6a4c3e8d59f5fa635b05ff381dd26de
-    pristine_git_object: be06ed6fcea972b849558f481ea1c790e0c2e1ce
+    last_write_checksum: sha1:5aa52583813a30865f21b8c9fcbb85a551e3626a
+    pristine_git_object: 40450768b1fbd894a23c04a7a0ff369b8a922ee9
   docs/models/payrollunprocessedemployeecompensationstypefixedcompensations.md:
     id: e9f7f9a1dfc9
     last_write_checksum: sha1:4b788ef402004406f4f0d2cd5fcd42b86d22b81b
@@ -3642,8 +3698,16 @@ trackedFiles:
     pristine_git_object: 18b49824cc6d06d05676e92ca1029ac6c245d02a
   docs/models/payrollupdateemployeecompensations.md:
     id: eed8c448b0af
-    last_write_checksum: sha1:40125edbf51dbc132dfc4d162a09f86135b30a01
-    pristine_git_object: 507281cd5077aff5009b5f81af2997bb3d01c332
+    last_write_checksum: sha1:05d13296582a0e40af21894ee953ab4be2cef623
+    pristine_git_object: 3aeeda59d62f01b9cd692c7cf64b3e12b25a7b66
+  docs/models/payrollupdateemployeecompensationsamounttype.md:
+    id: e244d3c05848
+    last_write_checksum: sha1:5b4351d67f10cae0df7dce3955933a169bc7d763
+    pristine_git_object: d579bbfee1d24bcf8b1922254726bfc6ca1ee8cf
+  docs/models/payrollupdateemployeecompensationscustomwithholdingsamounttype.md:
+    id: 3f34074106e6
+    last_write_checksum: sha1:b28c9891314673d09c7d6b533125d50d77f9524e
+    pristine_git_object: 616ced69459ff42e213f5b1e69bb0858624f27b7
   docs/models/payrollupdatefixedcompensations.md:
     id: 4a8a5373d923
     last_write_checksum: sha1:8ccf5471b01fe37e420da6309931d017c565c5ed
@@ -3652,6 +3716,10 @@ trackedFiles:
     id: b081d81a5ac2
     last_write_checksum: sha1:12fcd0c6d1b2fcc1b6a6056b04b24a6e940ef7aa
     pristine_git_object: 57677194d30e56b1b6c416100f3ec28921ee1bbe
+  docs/models/payrollupdateoverridetype.md:
+    id: 3bbc58ae12c6
+    last_write_checksum: sha1:4172ce4bad1ed2f26a826577c3e9f1630dc8d310
+    pristine_git_object: 603d56ee58119cb7b7e14be73d84cd8df9e389cb
   docs/models/payrollupdatepaidtimeoff.md:
     id: 7b115bfc2e0e
     last_write_checksum: sha1:0490277e731d386a6f5d3d8a270519fa8ad1850c
@@ -3866,8 +3934,8 @@ trackedFiles:
     pristine_git_object: c2f55016fabe4be10eaf70415ff405b0873e30cd
   docs/models/postdepartmentsrequest.md:
     id: 4018caf28870
-    last_write_checksum: sha1:f28d87850903ccc7664fd4d6eda0ff1786af57ac
-    pristine_git_object: b200ce253c56ce9a058b16dc6ccb4027bfc4f89a
+    last_write_checksum: sha1:3c54a11c97a07638c19ac71d045d37de871c1d3b
+    pristine_git_object: 6cabc424cf23c96bfd274930bac98df1a8a021e3
   docs/models/postemployeeytdbenefitamountsfromdifferentcompanyheaderxgustoapiversion.md:
     id: 4ba357eff9d0
     last_write_checksum: sha1:16015201f779e4acfa2466dfd282d24cd8104c8a
@@ -3882,16 +3950,16 @@ trackedFiles:
     pristine_git_object: d100a1ec930cd126c5c36238a89b1dea0b59de22
   docs/models/postpartnermanagedcompaniescompanyuuidaccepttermsofservicerequest.md:
     id: 485f8a21c3de
-    last_write_checksum: sha1:b2d2796734c6dcd3a24a7e80b421789a7b28d7da
-    pristine_git_object: 1ce9754f952a2772b39d75b185a847acbb4269be
+    last_write_checksum: sha1:deeae64fca4dca57fe3fbfa534d4ffcadbe585dd
+    pristine_git_object: a07571d74b4bbd068453808636dd7a5b3ab3aae3
   docs/models/postpartnermanagedcompaniescompanyuuidretrievetermsofserviceheaderxgustoapiversion.md:
     id: 42dca11a3521
     last_write_checksum: sha1:73626384aa93124b1261f3089bf958ab70ee854d
     pristine_git_object: 699f590487c90e3bb27f503722bd42f60d22dc2c
   docs/models/postpartnermanagedcompaniescompanyuuidretrievetermsofservicerequest.md:
     id: 56db215d0267
-    last_write_checksum: sha1:482d2e8328e2afde3483e96ccaa58072dd42a83e
-    pristine_git_object: 1232cfaa380c9aff94c098defceeff42d2dfb69b
+    last_write_checksum: sha1:bfbc4a317da127bd092320d77151caebf8370880
+    pristine_git_object: e28026c9c22c2aa6b3331a9970232bceebab68c6
   docs/models/postpayrollsgrossuppayrolluuidheaderxgustoapiversion.md:
     id: 278ee30904df
     last_write_checksum: sha1:961fac56590d893fed5e1f3abd069e34c0302953
@@ -4022,8 +4090,8 @@ trackedFiles:
     pristine_git_object: d96a90d156dba5f0ff26387adc0aa86cfe0b2071
   docs/models/postv1companiescompanyidpayrollsrequestbody.md:
     id: 993ba9bb0429
-    last_write_checksum: sha1:90ce905996b3401c437bea9b5a277b13becf40ec
-    pristine_git_object: fbe3236987309d527ffa41ac7dc9609857b8530b
+    last_write_checksum: sha1:360de3c164bb31d9eba3c1522e43e14ff87f39c9
+    pristine_git_object: 70cc4af0929d6cc28e76ecfd828152089d29e558
   docs/models/postv1companiescompanyidpayrollswithholdingpayperiod.md:
     id: 66a43b46b8cf
     last_write_checksum: sha1:e18cc18419360f269515b1da5d33e7bf96e6007a
@@ -4094,8 +4162,8 @@ trackedFiles:
     pristine_git_object: 593b89028dbf8626daff3c7db8f18ac2b1b85e9b
   docs/models/postv1companiescompanyidpeoplebatchesrequest.md:
     id: f2fb41eb19f6
-    last_write_checksum: sha1:bb11e09d3430c52905d820c3efea2e4102e60342
-    pristine_git_object: a1c4185c13b93336248b2db49c5d301376624aee
+    last_write_checksum: sha1:c8fc803d446572e9a80842654e1922e51f99a88f
+    pristine_git_object: 08638596f9cf1f22b4ffa85607f108b967f81666
   docs/models/postv1companiescompanyidpeoplebatchesrequestbody.md:
     id: 20d2fcb3c9bc
     last_write_checksum: sha1:3e93f730bf129fd8d7e4a14133faae245f31cee4
@@ -4146,8 +4214,8 @@ trackedFiles:
     pristine_git_object: bb3762f18f610924f3a6aeef5d69bf0e01622690
   docs/models/postv1companiescompanyuuidsignatoriesinviterequest.md:
     id: 150dbf419978
-    last_write_checksum: sha1:8ecb17deb27a278a95d849d682df22f3131afe90
-    pristine_git_object: 19db6a282c389b14360b7e6a9d1927c5a9518ac5
+    last_write_checksum: sha1:72382bad96868bb51f16c805b5e45b1d4cee7ae1
+    pristine_git_object: 94993834e6a15ef8e30672638c06a483ae1bf41d
   docs/models/postv1companiescompanyuuidtimeoffadminapprovedrequestsheaderxgustoapiversion.md:
     id: 654d1fb86725
     last_write_checksum: sha1:48e4067e03fa26d1b93ee1446f32cc74e3d25e38
@@ -4206,8 +4274,8 @@ trackedFiles:
     pristine_git_object: c199b3e3ebce66928bc25d4ca01bf506dab21c39
   docs/models/postv1companysignatoriesrequest.md:
     id: 838b774566d9
-    last_write_checksum: sha1:917496cf038faeffb67926088dc8f8eec4011f5e
-    pristine_git_object: 4d6c880b2231068a00beae24c032624a664b1136
+    last_write_checksum: sha1:495a7028f2158c0c834b45b667843355f57b6766
+    pristine_git_object: 901d7fb46be293c4ff4bb0d70970accc020fbc9e
   docs/models/postv1compensationscompensationidheaderxgustoapiversion.md:
     id: 24f39e1325e3
     last_write_checksum: sha1:f809064c064251019430f55ddddc34dce0e5c46c
@@ -4230,8 +4298,8 @@ trackedFiles:
     pristine_git_object: 30dec98ead2685da3bb983abe07fcfe988189053
   docs/models/postv1contractorscontractoruuidrehirerequest.md:
     id: f8ee64160637
-    last_write_checksum: sha1:05d0649b2d52fbda4a73931a7afdfdcfaf99f288
-    pristine_git_object: f56bb83b0d16806fc86726a1689cd6cbeedf6aea
+    last_write_checksum: sha1:2760efd4811a330d4d0b8e6dc527f5a428428492
+    pristine_git_object: b6c1f130d68231fd31a1c3da58ca82e74b977009
   docs/models/postv1contractorscontractoruuidrehirerequestbody.md:
     id: e2085f1497a6
     last_write_checksum: sha1:6d14d0614dc68b4b28c6db4b7647e84f49e88ed2
@@ -4242,8 +4310,8 @@ trackedFiles:
     pristine_git_object: d9df0d739994ce25d9bd85412ea5f8d1ab1a659b
   docs/models/postv1contractorscontractoruuidterminationrequest.md:
     id: 80c01264adc0
-    last_write_checksum: sha1:dcf00f76822be3a813ee436cdcc41a6268e881d9
-    pristine_git_object: 48b504dce5855c5083c9037cbfdd5e4053d19c45
+    last_write_checksum: sha1:e709c5f7936a4486d26ae3dbaf0550a216fc2873
+    pristine_git_object: 8d1f8fa6f0bbc396c5786dcb40f0138617afa140
   docs/models/postv1contractorscontractoruuidterminationrequestbody.md:
     id: 53169b7f99cc
     last_write_checksum: sha1:80d7fd83fe78ee37f2f23012a263eb39994c429d
@@ -4278,8 +4346,8 @@ trackedFiles:
     pristine_git_object: b34fc00e0e8a3465a6c3d960af77947f31069d95
   docs/models/postv1employeesemployeeidhomeaddressesrequest.md:
     id: 09f45e83475a
-    last_write_checksum: sha1:ad70462a6f796c9922d221d2f01cd5258a10c544
-    pristine_git_object: 1835d19354e88d505359d2e549dd8bcb81f93b48
+    last_write_checksum: sha1:f55cb8d3d851ea71c2545e6129465f6aa1a52360
+    pristine_git_object: 482a81820ec43e18419f9c521151cf301fbb8026
   docs/models/postv1employeesemployeeidhomeaddressesrequestbody.md:
     id: 796e03da5af8
     last_write_checksum: sha1:29bce5bdac51eabf4bc3b00ad09c5bf85edaf4e3
@@ -4290,8 +4358,8 @@ trackedFiles:
     pristine_git_object: 395efb5c078b75e52b53cb53bd898f1ffb38e8fe
   docs/models/postv1employeesemployeeidjobsrequest.md:
     id: c5b63fd62577
-    last_write_checksum: sha1:8cdb29e8d04a83608a6804f38dee88cf5ce91e3e
-    pristine_git_object: 7efa19ce5327e0cfeb40cf99facfd40c5aea496d
+    last_write_checksum: sha1:006faf8c005a1607a92663aec2344dd7a8f1027d
+    pristine_git_object: 546dfcaea82dfd9fa87d9ce8f222d5f6d42bbf1b
   docs/models/postv1employeesemployeeidrecurringreimbursementsheaderxgustoapiversion.md:
     id: 3fd118e030be
     last_write_checksum: sha1:d8c7cdc327bbb3a7cee54d0541819a764524a3a6
@@ -4350,8 +4418,8 @@ trackedFiles:
     pristine_git_object: 32602d152551611075cd8173a3d400b10d22264d
   docs/models/postv1employeesemployeeidworkaddressesrequest.md:
     id: 9a13857b1e01
-    last_write_checksum: sha1:cec3033bebbb943408a4967d9b0c111c476949aa
-    pristine_git_object: 2e4dca5173df25c6be30c52243e890ec38a11cb0
+    last_write_checksum: sha1:261649414672abd2850292e3ed04f48b428b22af
+    pristine_git_object: 077c3a6fcfe47758319c16f17a25a43951b9101c
   docs/models/postv1employeesemployeeidworkaddressesrequestbody.md:
     id: 3250db5a72e5
     last_write_checksum: sha1:84cd5d039ae43dba89c1ce66d8bc7bbfc220248c
@@ -4362,8 +4430,8 @@ trackedFiles:
     pristine_git_object: 1b76fca0870fc6bb356eaa8b540b46f4dd7b1b36
   docs/models/postv1employeesemployeeuuidsection603highearnerstatusesrequest.md:
     id: a2a27c0aec9e
-    last_write_checksum: sha1:bda56a563fcd7eb89315d7ed8b3ac064cd4f0f2d
-    pristine_git_object: 04d29ebeb04bb9c38f44fb84e806f1c1a2ad6770
+    last_write_checksum: sha1:ac9f428457448695b45efc7be4884602c212f1ab
+    pristine_git_object: 3f15857a3d547f777497e7e0772050e96c2afa93
   docs/models/postv1employeesheaderxgustoapiversion.md:
     id: 63eba27d02c1
     last_write_checksum: sha1:67e0a450d0e09555ec583eae33af1d994cebd167
@@ -4398,8 +4466,8 @@ trackedFiles:
     pristine_git_object: a0291810976b305f8df27d7bfa6d7fa4268beb7b
   docs/models/postv1partnermanagedcompaniescompanyuuidtermsofservicerequest.md:
     id: 9c066c006f29
-    last_write_checksum: sha1:ecb5b6446d07c2f3d63487a9f42fcc9e1fd024f9
-    pristine_git_object: 35edc9df08b2aaa91496f77923e6216d2c104ecd
+    last_write_checksum: sha1:e6eb6ef45c4b3f68a587d8ddaf834259af02e123
+    pristine_git_object: 1935049486fc67a03477d77607104878d1acb34f
   docs/models/postv1partnermanagedcompaniesheaderxgustoapiversion.md:
     id: 5a07d292dd45
     last_write_checksum: sha1:a60d9e8008daf858022a45d03299e43d1299c56c
@@ -4518,8 +4586,8 @@ trackedFiles:
     pristine_git_object: 553017f5abc350f1359f3b0aff2993dee19d191b
   docs/models/postv1webhooksubscriptionsubscriptiontypes.md:
     id: 9526e8313c09
-    last_write_checksum: sha1:aec12488580c014070362d84f6892cb03467fcdf
-    pristine_git_object: 439d74f8ce6c81adbd824733077b93291349af45
+    last_write_checksum: sha1:e8e736793cb3756d958c49a922a6162aa0292afa
+    pristine_git_object: edd477690f5ef07e8ea7f5dbc7006481398d5395
   docs/models/presidentsday.md:
     id: 14d8f2080179
     last_write_checksum: sha1:e1570908bc0df73b977cd8e0551396e01ed344f6
@@ -4550,8 +4618,8 @@ trackedFiles:
     pristine_git_object: 1779a7707cdf28506caafb8964e229707cd1f6da
   docs/models/putaddpeopletodepartmentrequest.md:
     id: e3c4f81cf55d
-    last_write_checksum: sha1:bedb2ed8dc682c7825fe97b283b993533c158504
-    pristine_git_object: 9be03f3ffe5cb9aef6b62c8877dec4f727ee44d7
+    last_write_checksum: sha1:b83b73dbd94e3c7b138751e709e2635271250b7a
+    pristine_git_object: 00b4b74430c03e5d3f26bd51580ed9d0a44a7877
   docs/models/putapiv1companiescompanyidpayrollspayrollidcancelheaderxgustoapiversion.md:
     id: e43d61f6c184
     last_write_checksum: sha1:c9bb1db5f69249e0d3cb793f38a4f7619a64f3ec
@@ -4566,16 +4634,16 @@ trackedFiles:
     pristine_git_object: 4669e71deb7184124ef6d03116abf4d1f0003f4d
   docs/models/putdepartmentsrequest.md:
     id: 244955f78290
-    last_write_checksum: sha1:77acf43119df1a052619c9102b0a921cec530f71
-    pristine_git_object: fff7a2017e729f5c560411ef2f44fcd4afbd67fa
+    last_write_checksum: sha1:4abaf16491afb076ec00c3c648de77fbcfe7b5a1
+    pristine_git_object: edd8b60f8f7d3341b8c036b3c01b1a3dc0b6e39a
   docs/models/putremovepeoplefromdepartmentheaderxgustoapiversion.md:
     id: c89343ad8eed
     last_write_checksum: sha1:0a2074f3cbffc4ad234d995856b9fb43beeef7ed
     pristine_git_object: e34319b6e1b06b0b9a096859b68948922b92b0fc
   docs/models/putremovepeoplefromdepartmentrequest.md:
     id: 2ad30c52510e
-    last_write_checksum: sha1:77eb712d341f1b92a0028fbd3142d2fcb9ea54b2
-    pristine_git_object: 10465483e9e05c0fd0c535409f1b41ce512d56e1
+    last_write_checksum: sha1:9e08b16d1675e9db171d73c0410686b5b05f8e8e
+    pristine_git_object: b46ad9fdeff5cb88bbd1872df170e4a38c0ae1b7
   docs/models/putv1companiescompanyidbankaccountsverifyheaderxgustoapiversion.md:
     id: c46562278c19
     last_write_checksum: sha1:096512b169636ed6bfdbb2a35f9b3ce6f215a1c3
@@ -4602,8 +4670,8 @@ trackedFiles:
     pristine_git_object: 1ca9c75c83d41ccc43de36167d2536ed7ecdb530
   docs/models/putv1companiescompanyidfederaltaxdetailsrequest.md:
     id: 91b4551acf72
-    last_write_checksum: sha1:8a6ae65d884262792e52ca6033197288170ab29c
-    pristine_git_object: 532df2b330f39781385813922e0d7b4de9be5eb3
+    last_write_checksum: sha1:8733e4382266b4796727564bdc474b81397692aa
+    pristine_git_object: 829b6024e2ca8ec7b2f9174dbebd8483cf152743
   docs/models/putv1companiescompanyidpayrollsheaderxgustoapiversion.md:
     id: 438c8108696c
     last_write_checksum: sha1:b4cda5af663afac2f68ce0644b0ca18f172b0745
@@ -4750,16 +4818,16 @@ trackedFiles:
     pristine_git_object: e4cd48067136a5ab72e6a13822d03f7908ee6330
   docs/models/putv1companiescompanyuuidsignatoriessignatoryuuidrequest.md:
     id: edccb4bb4fc5
-    last_write_checksum: sha1:24a0f58a41846e6181116754f09f75a9c4cc3c35
-    pristine_git_object: df8383e4e627b5db28fc29bcbddf2dce64166b57
+    last_write_checksum: sha1:f7a7be4a047e6a37e9746029837d3df396fc3f72
+    pristine_git_object: 082c8fc490de859a0616372a5aa9bc9bbaebf2cc
   docs/models/putv1companiescompanyuuidtaxrequirementsstateheaderxgustoapiversion.md:
     id: bbf222d46b83
     last_write_checksum: sha1:0e432f32b05017951a3b92141a35fd80daa58eb4
     pristine_git_object: 3d9ad5be89c853b4ad87c75173dc8a4508618de9
   docs/models/putv1companiescompanyuuidtaxrequirementsstaterequest.md:
     id: 05831b0febf3
-    last_write_checksum: sha1:f7c60603e50a59d07e75d7d4feda078d81a83d2e
-    pristine_git_object: d6e69fd595d80f1e82ecf21dc57307e447a7b153
+    last_write_checksum: sha1:4aee82db4a899ac451d3a655318e898ea28f5221
+    pristine_git_object: ba7d60aebb33964cd604d744214cfaf824b498fd
   docs/models/putv1companiescompanyuuidtaxrequirementsstaterequestbody.md:
     id: d43bc7631ef8
     last_write_checksum: sha1:3f2f75fb5d677bda1cd860665ed01ff0b8d850e1
@@ -4770,8 +4838,8 @@ trackedFiles:
     pristine_git_object: 030430ded01ae5bd799deb10f732ba26ae4b444a
   docs/models/putv1companiesrequest.md:
     id: 7e73b41a4deb
-    last_write_checksum: sha1:5339bffb0a1731f925b620ab26d4ff8f8bb3d0bf
-    pristine_git_object: dbbbdf00130e9a885271bb9052fc91550736fe0b
+    last_write_checksum: sha1:5bc9e1ad8b9b91407427a591c9c3cb5ec76ba621
+    pristine_git_object: c672f1e891d8b972952443d31cb19065a96b60ed
   docs/models/putv1companiesrequestbody.md:
     id: 1bfadbb0d32d
     last_write_checksum: sha1:4222ea2f130a0246f6942556ebe961abeb4fec04
@@ -4818,8 +4886,8 @@ trackedFiles:
     pristine_git_object: 3a0d87e288237b57770ea215adfde0cc4b6f041c
   docs/models/putv1companyindustryrequest.md:
     id: c24621ef38b5
-    last_write_checksum: sha1:2647d91e3d1cad893dd43f13ef618e6b66178bc1
-    pristine_git_object: e3a90dbbbc9d5e2bc925833b11a75bc79c22200f
+    last_write_checksum: sha1:33f29acae72b7266e6d7de77971cfeb7b4ba6d25
+    pristine_git_object: d17c058b656592665469786a5e7c7c7132dd4a2a
   docs/models/putv1companypaymentconfigsheaderxgustoapiversion.md:
     id: d5de932c01ff
     last_write_checksum: sha1:09b4e9d6f98b6c5e4c2a5a389659003167920fb5
@@ -4858,8 +4926,8 @@ trackedFiles:
     pristine_git_object: 22db271e1e3573185fd9f102b64e650d31f52fe6
   docs/models/putv1contractorpaymentgroupscontractorpaymentgroupidfundrequest.md:
     id: fe07bd6a949f
-    last_write_checksum: sha1:7b0819d5918a50a41ada26a754025d3bfdcd26c7
-    pristine_git_object: 747183a5a1270babe18f5f18143203f26763b9d8
+    last_write_checksum: sha1:269d576ca619ed62538d0a0e983d0905581047be
+    pristine_git_object: 209812c48884259fe24e9819480b8115b37c0b51
   docs/models/putv1contractorscontractoridpaymentmethodheaderxgustoapiversion.md:
     id: 20afaba6ce4f
     last_write_checksum: sha1:1bc6dd32d40c9f708da3549b27696c244896e5fe
@@ -5110,8 +5178,8 @@ trackedFiles:
     pristine_git_object: cf5e85a5c08d1e2252b4eed7b5b09ec9222d6060
   docs/models/putv1jobsjobidrequest.md:
     id: bc6f4552a25c
-    last_write_checksum: sha1:736928c56db63fdf53901c6afc3852b711590801
-    pristine_git_object: efab47a766301993e8a976020874fcf251bd0566
+    last_write_checksum: sha1:0d104bf879b2fe4595a81eab99f407cc9614dfaa
+    pristine_git_object: 7c45054b2cc85b26f1d5c0831452c3795a51af4f
   docs/models/putv1locationslocationidheaderxgustoapiversion.md:
     id: 0519d477376e
     last_write_checksum: sha1:8f0213b7eda023d7b42b3c34d5a661bc16a15a45
@@ -5130,16 +5198,16 @@ trackedFiles:
     pristine_git_object: 6f5e78768bc516aee094929bd45e64f960a9faa9
   docs/models/putv1partnermanagedcompaniescompanyuuidmigraterequest.md:
     id: 3a346c4da122
-    last_write_checksum: sha1:7a083c9fc1f278b1e0401087066f49e659c616a9
-    pristine_git_object: d14af88d990d1dbaecd0eb77111e11e1229f60b0
+    last_write_checksum: sha1:8da79c8d3f13cbb4dec22fd9e8a7b34cac57c398
+    pristine_git_object: f78a0856761a05dfd1a964cc22265960d4e65b36
   docs/models/putv1partnermanagedcompaniescompanyuuidtermsofserviceheaderxgustoapiversion.md:
     id: 4f90daa57592
     last_write_checksum: sha1:92e10e9dabbdeaaffcdf7eaf054d91aaaaba8eaf
     pristine_git_object: 757baa88c1adec94d83b6fa58923230253f2faee
   docs/models/putv1partnermanagedcompaniescompanyuuidtermsofservicerequest.md:
     id: f85d0727da52
-    last_write_checksum: sha1:72d4c4b2125876820384390501558aeca46beb1a
-    pristine_git_object: ca95c50c04ae5b65abf993c7334087061160657b
+    last_write_checksum: sha1:be051ac05405e3ae5eeedc90d67335832351d9d2
+    pristine_git_object: 4d475a552d17ff2d31b4e10bef769fa31c8e8b45
   docs/models/putv1recurringreimbursementsheaderxgustoapiversion.md:
     id: 7a81935d67a3
     last_write_checksum: sha1:c17652f4adc556695320c5b901fa499dc7896f0a
@@ -5306,8 +5374,8 @@ trackedFiles:
     pristine_git_object: aa357aa175b2d766f195e7dc2379c47f22ffd8a8
   docs/models/putv1verifywebhooksubscriptionuuidrequest.md:
     id: b9876c77983b
-    last_write_checksum: sha1:d6c0d653f5c3dfce4db365edb96d0b15d29293e9
-    pristine_git_object: f58c26ec5b002e2e595cb729e9f1429f1d968de3
+    last_write_checksum: sha1:00db70d0e1e5ecd793976c896c6c60c5b105aa9d
+    pristine_git_object: 0a19b2e649143a9400a514426ed1c144bc513d82
   docs/models/putv1verifywebhooksubscriptionuuidrequestbody.md:
     id: fc58d6bba1f7
     last_write_checksum: sha1:8b38ba52de1f29a05acf6374cfb095fb353225c8
@@ -5322,8 +5390,8 @@ trackedFiles:
     pristine_git_object: e60c63dc8a89606d1aff3baf1dfd479462260f65
   docs/models/putv1webhooksubscriptionuuidrequest.md:
     id: 378e848842b1
-    last_write_checksum: sha1:452b844acaf5d13bde4ee5c5298458f3a7a2223c
-    pristine_git_object: 5c099288b455845057ae7384ee1dad50c410bb47
+    last_write_checksum: sha1:2713ba47a095044bc6a6736eaf3ea8696edb4e8e
+    pristine_git_object: 56c0a7ed9b1fffd04454340b917326fa21d1bc80
   docs/models/putv1webhooksubscriptionuuidrequestbody.md:
     id: 7ea35f6c5cb1
     last_write_checksum: sha1:bd9069eecfe38f6de3c75940e12607571330682b
@@ -5334,16 +5402,16 @@ trackedFiles:
     pristine_git_object: 6a5e764a3f1c40d28c57e8c9cf3c0804a57ad396
   docs/models/putv1webhooksubscriptionuuidsubscriptiontypes.md:
     id: 5fdaf94a9bc6
-    last_write_checksum: sha1:cbd2b941ec3cd4f128bcbd1a5ae7726e9d98f466
-    pristine_git_object: 1f553621ea36e80538c79c7dda4f34bc9270ff11
+    last_write_checksum: sha1:4a3f729a8f876528089831ad873b404c63aa8dd1
+    pristine_git_object: 871dc10c351d8624f603d2dca8fa582d8209613f
   docs/models/putv1workaddressesworkaddressuuidheaderxgustoapiversion.md:
     id: 479d77c5e139
     last_write_checksum: sha1:400fa18ba3dc4312efb90b24266545e291bb152c
     pristine_git_object: 4e73fad365eb67ddbbce6a1ffddb30c562e7bc71
   docs/models/putv1workaddressesworkaddressuuidrequest.md:
     id: 44f18d9cdba0
-    last_write_checksum: sha1:9528263f59ec4a379f6406bfde5e64a8ad886706
-    pristine_git_object: 68a6e593722d93bfca3027c20bdecda66048fd20
+    last_write_checksum: sha1:c2cb2dfcc16a0985131a4c318464f1fc9da95816
+    pristine_git_object: 3daa2c1176409f2ae193d0f82ea1900f69c8e0fe
   docs/models/putv1workaddressesworkaddressuuidrequestbody.md:
     id: 1e0957075fe6
     last_write_checksum: sha1:e1ff25a475b2fabf4bb078ef7aa1e4908aff9f96
@@ -5354,8 +5422,8 @@ trackedFiles:
     pristine_git_object: 2664fded2c45b313524320f0fe5ca80151a789f0
   docs/models/putwireinrequestswireinrequestuuidrequest.md:
     id: 976cc5ef0e58
-    last_write_checksum: sha1:ac03959034ed788ad4ea8ab07d57b99d8db01bf8
-    pristine_git_object: ae44c9cc73be785c28dfaa0d72d4b31d639646e4
+    last_write_checksum: sha1:2daf5cf56fdf5526ac180088dfcf3f1be7961a28
+    pristine_git_object: ab379b8c188a9a4096d0f6fb4369fe0e37e70531
   docs/models/queryparamfrequency.md:
     id: fdd320708978
     last_write_checksum: sha1:783d19ae106318995786a8e20ad16a68684d685e
@@ -5588,6 +5656,10 @@ trackedFiles:
     id: c398a10335b2
     last_write_checksum: sha1:be5a68fbcc984e8dc0b7202bb5b36553d0d92a41
     pristine_git_object: 5672f131512ce9ad66d88455371da69ac8f557b0
+  docs/models/state.md:
+    id: e560b4e72643
+    last_write_checksum: sha1:947539c12fe6fe1a562ccfff60b4f0d4b0daa944
+    pristine_git_object: aca584ef003968930c98ff7d8e58d2289f89b56b
   docs/models/states.md:
     id: 592664fee1cd
     last_write_checksum: sha1:299045b237e12d2bd95e68b4b34bc04a5793b38c
@@ -5618,8 +5690,8 @@ trackedFiles:
     pristine_git_object: c8fb52ffade4beac6bc53419fc65642af7030e37
   docs/models/subscriptiontypes.md:
     id: deab3aa152dd
-    last_write_checksum: sha1:3f1bdf66f596ad3052a214fe5631292cf66fd712
-    pristine_git_object: ed910d5b7e66e6b0a3821e38b8c9e928d41fa11e
+    last_write_checksum: sha1:8bdd4a82758c3d5fe88d2b08a60f68b1a3e3422c
+    pristine_git_object: f57d5a44affeb96a5109c203fbb412be9d9f0ddb
   docs/models/supportedbenefit.md:
     id: 10121cd69414
     last_write_checksum: sha1:066303e866733f6462d62c4efb8ef5ed2488ab62
@@ -5816,10 +5888,6 @@ trackedFiles:
     id: 444a7043f8e1
     last_write_checksum: sha1:5dd5dec40a4b5a9cf78f7832644fb8ecd7504f8b
     pristine_git_object: 5c4ac128d64face057dca1732fc38396ac59810a
-  docs/models/versionheader.md:
-    id: c8fafc842b14
-    last_write_checksum: sha1:86923c8ed2a5ebcd540aae422d30e37e28523cbd
-    pristine_git_object: b1e84e2162f3e2533bd7db148a4de52c74787556
   docs/models/veteransday.md:
     id: a138b184d926
     last_write_checksum: sha1:ff905fa71922570a9e793976117d5824c50d94bd
@@ -5894,8 +5962,8 @@ trackedFiles:
     pristine_git_object: 0c02d4fb87a25e677f96e0e47d0f09faf9d34cad
   docs/sdks/companies/README.md:
     id: 67e8a49afa67
-    last_write_checksum: sha1:dbb8a3c89476e9a95b003ead1ff10994e8aaded4
-    pristine_git_object: 4f9412e493f67bb5d96538c9e728cbafb2f55a8a
+    last_write_checksum: sha1:04681961a7dacb982b550180a29adb6ffddab9e0
+    pristine_git_object: 4d96aee61e77194b221f46a8f11b5d843d581c95
   docs/sdks/companyattachments/README.md:
     id: 105a968c3402
     last_write_checksum: sha1:361b9b6e0b615ae84c9d569d66c99ba38e09eeaa
@@ -5922,8 +5990,8 @@ trackedFiles:
     pristine_git_object: 380b533295378c327d91efd2ef4df8939303fc67
   docs/sdks/contractorpaymentgroups/README.md:
     id: 827b7ed15692
-    last_write_checksum: sha1:2e00fe4071f0c20f3c66fac94fe69e25d9f40392
-    pristine_git_object: ec0c34a232417cf4d4a1e6995df111abaed087ea
+    last_write_checksum: sha1:fffeebb85a1c5ca5b3459e9762f7e5d2e18552d3
+    pristine_git_object: 32c3d90783bffedb27d4c583c1e022e6628863ce
   docs/sdks/contractorpaymentmethods/README.md:
     id: 8e60120cdd11
     last_write_checksum: sha1:fd010efd3afa80fe735223c1fa4c1dd6ba054886
@@ -5934,12 +6002,12 @@ trackedFiles:
     pristine_git_object: f989d04f9659547213c3b35d6a6d2bd429964cfa
   docs/sdks/contractorpayments/README.md:
     id: 2636bdbff20f
-    last_write_checksum: sha1:f98c5defe52a96f20812a3ff04f8d2266da93c58
-    pristine_git_object: 69059c928c89127d564ebcd9e6a87100d394626b
+    last_write_checksum: sha1:238c95a499edc0aa70de8a5a6b0020344111cceb
+    pristine_git_object: e6d6cd7a02d17a33246eeedfcae710a32d162a34
   docs/sdks/contractors/README.md:
     id: e5de017cf9e6
-    last_write_checksum: sha1:1e7eaee110fd25ab24e650d743a26962d638ac0b
-    pristine_git_object: d8248228a9e618f615b777262b8728e6925905c5
+    last_write_checksum: sha1:c0f2ece164d126ce07ceb16b31867fb38fd7a416
+    pristine_git_object: 31a03e3900125e332d19b6b276bc63811ec8c769
   docs/sdks/departments/README.md:
     id: 12342c54f2cb
     last_write_checksum: sha1:2ed753cfe7d05e336f4574406b79367b8b083823
@@ -5974,8 +6042,8 @@ trackedFiles:
     pristine_git_object: 5d6c2e47604dda89219459148c8ee52158d42c20
   docs/sdks/employees/README.md:
     id: 3adbd327ce9d
-    last_write_checksum: sha1:84b3598ab853f216a9605ecb4e580f7eb44c13a9
-    pristine_git_object: 484600d979606ec1b38c8ad92ce1e74a22a91229
+    last_write_checksum: sha1:486a58af9b5287dd2f2f68999a75ca78e98f2ff5
+    pristine_git_object: bbb816c3f7f3243ccd44d281bf8056ee31b06a1a
   docs/sdks/employeetaxsetup/README.md:
     id: 65804e377e2e
     last_write_checksum: sha1:4ef76b5bcd85bfbf7b00d6532a4ad1cd33d1754c
@@ -6002,8 +6070,8 @@ trackedFiles:
     pristine_git_object: 7e2fb07e76f6a5ee417dac4c0c83230c166b515b
   docs/sdks/generateddocuments/README.md:
     id: 5072871eb0eb
-    last_write_checksum: sha1:66864db16a69372bceb9f95bad643e84774ac044
-    pristine_git_object: e3127e3850e6de9a89908527f4cc943ad957e4c2
+    last_write_checksum: sha1:c4ac244af263c3e150dab8e4a08a58e4683b5049
+    pristine_git_object: 84775c9a4ff081ecd096a3956341ad7d3e13480a
   docs/sdks/historicalemployees/README.md:
     id: 38adbb7622ee
     last_write_checksum: sha1:502eed81d9a7cfaefe0625ca080e9491e7674a7c
@@ -6034,16 +6102,16 @@ trackedFiles:
     pristine_git_object: 87d266d211bf5b0e3f7eb239f6f6d7d30dced9c7
   docs/sdks/jobsandcompensations/README.md:
     id: f262ef7b4c37
-    last_write_checksum: sha1:c0d9d766b4f0ea2aabc179b980c45a16545b970a
-    pristine_git_object: 7a2dd0f6046a277739121271fe5e41fbc983a655
+    last_write_checksum: sha1:c48bc1cfabac9c26a2117d9abb13c38d60527ff0
+    pristine_git_object: 20229962ce2a2c2c37e0e182e04fa3703e2ffe5a
   docs/sdks/locations/README.md:
     id: 18f4bc68d8e9
     last_write_checksum: sha1:f4a29039a59990488db1c64df21286fe40cf8c75
     pristine_git_object: 85447e9851b2d9c836f6ecde1321967eec9850fb
   docs/sdks/notifications/README.md:
     id: 271bac956045
-    last_write_checksum: sha1:d0c8c51d7b6c594be8d17784ca20b29d7e5b352e
-    pristine_git_object: ced672afb5d6d158465e67aa3d55aa3ec7ef8076
+    last_write_checksum: sha1:6fa942a91a168597b2999a0ce09d6494382c36f2
+    pristine_git_object: d6c8cc5e0b2d976a0ee796a568f2626951e72990
   docs/sdks/paymentconfigssdk/README.md:
     id: 11a4cb7956fe
     last_write_checksum: sha1:f641e4a0908a433fb2ab61b25e577bc3cf9be24d
@@ -6054,12 +6122,12 @@ trackedFiles:
     pristine_git_object: 863c80a57c1c4ce7a86c954b640f5cf80ce8cd58
   docs/sdks/payrolls/README.md:
     id: f6fb115a2746
-    last_write_checksum: sha1:503804e301aee4f0a06939815b70d461da44b32e
-    pristine_git_object: daefbca03a14da413d780fe27f3c35de3ae59a60
+    last_write_checksum: sha1:23ef870070a9f99bf6011bd3470a490317745a21
+    pristine_git_object: 4546f46fb73600efac1a9dbd4e89cfa4068a5713
   docs/sdks/payschedules/README.md:
     id: c0aa724eca5e
-    last_write_checksum: sha1:d33906c4c1b2d9b6a994e110956a6bb9aaa61f66
-    pristine_git_object: a5f529f8937d07f17aa24e26ece07fd9680af49c
+    last_write_checksum: sha1:10df54b21ada1db0eb1a8f46b7bc9fbc6f223f96
+    pristine_git_object: 8a6e7f385d55a2eeb8c5c8523116a8bae2bd3605
   docs/sdks/peoplebatches/README.md:
     id: 9ac77915c062
     last_write_checksum: sha1:b9476d78c93e94934f19c1fcfbad5b61b1b8101a
@@ -6118,8 +6186,8 @@ trackedFiles:
     pristine_git_object: 61fc62731ce866a65cf6a62b32c1c4612147a41d
   pyproject.toml:
     id: 5d07e7d72637
-    last_write_checksum: sha1:8e9deab3abd6302776f9157baf2fef49e1bb4b22
-    pristine_git_object: 25e4fdc3638aa11f085e255821d1b359c1a68014
+    last_write_checksum: sha1:005945ab3a16ae5cd9962cd026e758a7e4dd14b6
+    pristine_git_object: 116a1ede5c966fa1516d777ce83dec62934a9747
   scripts/prepare_readme.py:
     id: e0c5957a6035
     last_write_checksum: sha1:2bb1b963c948d7d337244bfb9bcc583dc55b08b6
@@ -6130,8 +6198,8 @@ trackedFiles:
     pristine_git_object: c35748f360329c2bc370e9b189f49b1a360b2c48
   src/gusto_embedded_v_2026_06_15/__init__.py:
     id: 82160299be6f
-    last_write_checksum: sha1:36306d1d404b6aeb912d27f1d9c52f098ff7bf9b
-    pristine_git_object: dd02e42e4cc509dc90e6ae70493054021faa5f9c
+    last_write_checksum: sha1:eec86b555287a1f966479167defba81fe37be83f
+    pristine_git_object: d028dd22db25a8dfa0f8c44641ceed256e9d9e46
   src/gusto_embedded_v_2026_06_15/_hooks/__init__.py:
     id: 6998b9df7e1a
     last_write_checksum: sha1:e3111289afd28ad557c21d9e2f918caabfb7037d
@@ -6146,8 +6214,8 @@ trackedFiles:
     pristine_git_object: 85f418244971db7fb1128a79fd70f80a3100a229
   src/gusto_embedded_v_2026_06_15/_version.py:
     id: 9db54840723e
-    last_write_checksum: sha1:d31ba3c705005a2a67a7147b7e4ce55450fbe684
-    pristine_git_object: ec2efc052259bab5668fb3f180e87758783d22f8
+    last_write_checksum: sha1:3aad83f2c89c342f3d64b3a0aa871c16f7aaa679
+    pristine_git_object: 1d2a2b391191991a9cda366489217eb6ce1073ef
   src/gusto_embedded_v_2026_06_15/achtransactions.py:
     id: 29fab8a43f21
     last_write_checksum: sha1:1559dc585407c26a472a8e4bbad26210f0ec60c7
@@ -6162,8 +6230,8 @@ trackedFiles:
     pristine_git_object: c6186776be043fa5ca8091c1c06392e951bdcdad
   src/gusto_embedded_v_2026_06_15/companies.py:
     id: 4951c8ed2067
-    last_write_checksum: sha1:2b1db753e8f748b06e918917475ab28363b6b43e
-    pristine_git_object: a27e83295ee81eb0a2a1a24bf5d3e950c35c5dbc
+    last_write_checksum: sha1:e665f8bd3da8a1ee6a6c5ca04fd4dc116cb96326
+    pristine_git_object: 0e397740eba4d9b4290a381bc124bbcf9719ed78
   src/gusto_embedded_v_2026_06_15/companyattachment_sdk.py:
     id: 90392ee62998
     last_write_checksum: sha1:f0494d8be6f827f940fdd1432cb22502ad82ac22
@@ -6174,24 +6242,24 @@ trackedFiles:
     pristine_git_object: ccd2c63cf4dad4fcf36b5b695fc07c0cb7d64d93
   src/gusto_embedded_v_2026_06_15/companybenefits.py:
     id: 69329d2d01b5
-    last_write_checksum: sha1:a2cb47c1160c13d6e8ec5a61b5fb76d1d18de869
-    pristine_git_object: 59f1ac0ac3f7c5fbcedebb2f6690590380991a48
+    last_write_checksum: sha1:fd821a2a85832d448e20dd78bc73d9828ce8c58a
+    pristine_git_object: 704bcdb707b183528f4734f21f25b6ad23e12105
   src/gusto_embedded_v_2026_06_15/companyforms.py:
     id: 5988c6856144
     last_write_checksum: sha1:cf6cfa607aa902c87d23fd2d4af8e4420c56851a
     pristine_git_object: 7845ca4e563fa8dd1e8c509bb91dc28f396d079e
   src/gusto_embedded_v_2026_06_15/contractordocuments.py:
     id: 32a37b035648
-    last_write_checksum: sha1:e610462078d541d5c870864227624fae7ed06ff5
-    pristine_git_object: c60f683c3eba604d567d595aa42063b723e13e0e
+    last_write_checksum: sha1:b9646350d31334e344f3865806af898d3984d206
+    pristine_git_object: b60a05e979109cde807c3b18eae3f6e739ed9909
   src/gusto_embedded_v_2026_06_15/contractorforms.py:
     id: cf54507643e6
     last_write_checksum: sha1:ce7d09f26473873cafbe50ac9fdc614300b96e55
     pristine_git_object: 8749b61ccc888518257afcbda7570d14952610c2
   src/gusto_embedded_v_2026_06_15/contractorpaymentgroups.py:
     id: d042c771054e
-    last_write_checksum: sha1:0615a3751d8f66d7b5c8032b48da7f854cd8dda4
-    pristine_git_object: 30e941027db459439cde9c12442fd98930db37ae
+    last_write_checksum: sha1:40b5e6539433218ce49442d40a15e6eb9a9e4e2f
+    pristine_git_object: b066b4887db5baa2fe1a0af7a7465cf8682e6265
   src/gusto_embedded_v_2026_06_15/contractorpaymentmethod_sdk.py:
     id: 61fd1490681a
     last_write_checksum: sha1:507d81e789cc71bfa9b3a280c9b06f1cf457d8e2
@@ -6202,28 +6270,28 @@ trackedFiles:
     pristine_git_object: 7f937d886314ed77ebf78a060a43fe706c5b9f4a
   src/gusto_embedded_v_2026_06_15/contractorpayments.py:
     id: b6830a7c57fa
-    last_write_checksum: sha1:629ff445ea94028c6ca41efcc492b678940f7bbc
-    pristine_git_object: 8b53396ee6aeaa21c48e8e5bf1f50d0ca940e61e
+    last_write_checksum: sha1:efc5e69228ffb3a4d56253398252abbfbbeaa9c5
+    pristine_git_object: 6d71a43f3fbf8ac899a3b91200f4bd0b3ea6e210
   src/gusto_embedded_v_2026_06_15/contractors.py:
     id: 88964512bd4f
-    last_write_checksum: sha1:4fbb4bfad099d981080511befe3febf87b39151b
-    pristine_git_object: 5c47f15f70cc73570bc86d2a1890197ce0b8688a
+    last_write_checksum: sha1:f0e60bd768c18fb5524bcdb50ff39a0acef85430
+    pristine_git_object: 78843bfd553474169471af503520fe71822eacef
   src/gusto_embedded_v_2026_06_15/departments.py:
     id: c596115a00d6
-    last_write_checksum: sha1:ed6b2c1478d3d342a5f1513cd492963b6410e8db
-    pristine_git_object: 1be22a68d2ab3c23276217f189fdbd162119807b
+    last_write_checksum: sha1:f1acfc7ad70b976eb2378c17577ab9fe4f4b38f1
+    pristine_git_object: cdf28c9a92a626bc82ced6f31f85c57d92a326a8
   src/gusto_embedded_v_2026_06_15/earningtypes.py:
     id: d3498155c8d5
     last_write_checksum: sha1:55733a2a624209d09aa99463b9c239cdd454674e
     pristine_git_object: a14b907b8959ebf8f44514acafc6e227a612bfa9
   src/gusto_embedded_v_2026_06_15/employeeaddresses.py:
     id: 1374cdced836
-    last_write_checksum: sha1:c83b2f8ba931b777f26d60a52f6ca0c3c24e86bd
-    pristine_git_object: 1dc9d6a53d08746a7f62461e4e9083f3832f4d18
+    last_write_checksum: sha1:a276d137457d7dd86463f6612d1fa4bad91c3dc0
+    pristine_git_object: f0a18e5ec2ead4f9ae4f473620fbdb65cb44c8bd
   src/gusto_embedded_v_2026_06_15/employeebenefits.py:
     id: 9e05318c4afc
-    last_write_checksum: sha1:0ac037a4f3e7bc64aaa265cfdeb897bd01e3570f
-    pristine_git_object: 5353af54a59996469906267d52661790291b3a00
+    last_write_checksum: sha1:ad8553b843f7490185188eb1813369314316062a
+    pristine_git_object: c57fc8fab335df3933c56a73d22b4c051d840e3b
   src/gusto_embedded_v_2026_06_15/employeeemployments.py:
     id: db2b36a4e05a
     last_write_checksum: sha1:69efa56d09aa11178816ceaf1c4e6058dadbab35
@@ -6234,68 +6302,68 @@ trackedFiles:
     pristine_git_object: 3be5b8d035974a98c10ec4a3cbe11b3642a3acd5
   src/gusto_embedded_v_2026_06_15/employeepaymentmethod_sdk.py:
     id: 9ba59e7ca49d
-    last_write_checksum: sha1:9ee41c6f84e0511e6cb3ee9ad3341fd92b5a00ce
-    pristine_git_object: 7dba57fc7232a16aaab8b42c53382c6b5cb143e6
+    last_write_checksum: sha1:b8187a33512d253230a102e8fc15b5656ed18ced
+    pristine_git_object: 304499c86bf0fbf4c3427c9276374083edfba4b9
   src/gusto_embedded_v_2026_06_15/employeepaymentmethods.py:
     id: 7dcdac1022b6
     last_write_checksum: sha1:b8e8b900601afc61fc39b05e5ccb82a6b586923f
     pristine_git_object: 00e88d4c6574efb625a927fff106ca0d6d2a15fd
   src/gusto_embedded_v_2026_06_15/employees.py:
     id: 760d4f2d59c3
-    last_write_checksum: sha1:bb8d28a73e2f15f4141a169b458d6f5f5154cf8d
-    pristine_git_object: 5cfa89e3a9314efa5f63c425eafcec1802011f29
+    last_write_checksum: sha1:d8be3b24c4b71578fe24f9ef68b30203730ab8cf
+    pristine_git_object: a905dd7b447cba2d9a9d4b59faaf35a5a804c375
   src/gusto_embedded_v_2026_06_15/employeetaxsetup.py:
     id: 35b61721d147
-    last_write_checksum: sha1:1b2290b136df374da6dfdc0607a872739bdef785
-    pristine_git_object: b449a4cfcc919cd1d1af41a2a3a08c9551c8d5aa
+    last_write_checksum: sha1:756c1c01e09dfdaf9dc1424a3e9806dd970fe524
+    pristine_git_object: f76b44f74b2ea5fe4f22fb725681016ab2fa528e
   src/gusto_embedded_v_2026_06_15/events.py:
     id: 893c98549c12
     last_write_checksum: sha1:3ffcab16d4a64dc68757e44c1deb5a79ccfc0efe
     pristine_git_object: 8a9a584c11327f1185fabc9a5826841ea760dd00
   src/gusto_embedded_v_2026_06_15/externalpayrolls.py:
     id: d0a433cb5b7f
-    last_write_checksum: sha1:62542ea88989c22ce50d92cb80361c6c381bc576
-    pristine_git_object: 241f2ccfbc5479b62dd20c16d8b88453093fc848
+    last_write_checksum: sha1:1840c085fc8226bf3d382dc5df6636ae6f690c5d
+    pristine_git_object: 85c8c0dbd4cc2100ff0d05ffa6c2c6ddd1ecc769
   src/gusto_embedded_v_2026_06_15/federaltaxdetails_sdk.py:
     id: cc896052cee4
-    last_write_checksum: sha1:c4aeebfb4f71eece358f6748d2b7ef6b9542f79a
-    pristine_git_object: 6ee1e8f1414558f819b0fdd82747effc3e863af1
+    last_write_checksum: sha1:b6da0346755f2972d22492aad8b7bea5fa5a81a1
+    pristine_git_object: 74c03b2d58fdb330f4b6eea8c00430a118471c44
   src/gusto_embedded_v_2026_06_15/flows.py:
     id: d244c7a7ae6e
-    last_write_checksum: sha1:4754d66e2affd5018a577bf23c197222e5e25a4d
-    pristine_git_object: 1ce1498d8da672686e30967e34f3a00b9c8b7f7d
+    last_write_checksum: sha1:eb3546efc11fccdfa439aef96d29fedba2f8b00d
+    pristine_git_object: d475381a2a0c5f8c6c15708d5d2d459f68a0012c
   src/gusto_embedded_v_2026_06_15/garnishments.py:
     id: dd81bc491415
     last_write_checksum: sha1:b71a6836c1cbfa32be4f5fa603e7cef317f2421a
     pristine_git_object: ea4ab4cdff5d24e6fa96bb2123fdfd93b4cd338f
   src/gusto_embedded_v_2026_06_15/generateddocuments.py:
     id: db16ccac4ea3
-    last_write_checksum: sha1:b7fb499b01656c9e60fda854dbc473a134ebff14
-    pristine_git_object: 330d4f6713f8fd8e0ef683c1a542f645eb397bdd
+    last_write_checksum: sha1:be2925c5491bc87f5c6227438e338fd43b71bf4f
+    pristine_git_object: 09637734876613e86d8b5091696f1ca41232a54f
   src/gusto_embedded_v_2026_06_15/historicalemployees.py:
     id: 85b0771aaae3
     last_write_checksum: sha1:b9e183b08108daa7e7f9d131e372542f11263b8f
     pristine_git_object: 2e06331c79db7ffbfc92ff4a9f2cf3505a2f5b79
   src/gusto_embedded_v_2026_06_15/holidaypaypolicies.py:
     id: 325b3fdf4349
-    last_write_checksum: sha1:f8fbf7fcce2a00ea4c473b826ea3f4a9786aa550
-    pristine_git_object: 329817f8de03070400c6cc0175c0d116a825b5f9
+    last_write_checksum: sha1:44f6cc8cac376a845d05e85c4a0ee620bf01b718
+    pristine_git_object: 0c03e0ff7623705e88cff854c3da524eed29c871
   src/gusto_embedded_v_2026_06_15/httpclient.py:
     id: cf532e7a5ef5
     last_write_checksum: sha1:5e55338d6ee9f01ab648cad4380201a8a3da7dd7
     pristine_git_object: 89560b566073785535643e694c112bedbd3db13d
   src/gusto_embedded_v_2026_06_15/i9verification.py:
     id: 046bf98ea1f8
-    last_write_checksum: sha1:035a1b39d8b98a80431e960d0167a5ea3bd86b91
-    pristine_git_object: 42f309cbd4e10674c7f263fa3c58126d5d00726e
+    last_write_checksum: sha1:80b73fc787e38d95b3252360688b3915da75ceb1
+    pristine_git_object: 8e065df58e87a6318de279fa2283f91919dda7cf
   src/gusto_embedded_v_2026_06_15/industryselection.py:
     id: eeaaea3bc752
-    last_write_checksum: sha1:61f8c8bf22fd789932628538d97473a14d00bbee
-    pristine_git_object: b899a3f2de761e6e47094dc87850c6e6170a3f82
+    last_write_checksum: sha1:cc367a9ea7d11a20556fc0e068987d71f4e0c787
+    pristine_git_object: c21c94a82afd8133cee42d77739c29ed6a5a8f14
   src/gusto_embedded_v_2026_06_15/information_requests.py:
     id: c4f3dbab7c01
-    last_write_checksum: sha1:4a367c4a3f51633b27f9fd25e69b0e91bd4d01cf
-    pristine_git_object: 6851f7dd74bd8930dfd6c3a11c23b4a63d76652b
+    last_write_checksum: sha1:fa1f4262ea97fd9ecdd55ee4c280ae00178f9793
+    pristine_git_object: d443c7bb2f8c290fecf10bc68980c08bd099ddec
   src/gusto_embedded_v_2026_06_15/introspection.py:
     id: a3d219faf392
     last_write_checksum: sha1:97c797c022067dee13cee2f00d16ea95880f2b5b
@@ -6306,16 +6374,16 @@ trackedFiles:
     pristine_git_object: e9fbdfd7e520019c5f2888d4c4e3e2ee08da78ca
   src/gusto_embedded_v_2026_06_15/jobsandcompensations.py:
     id: 07cbe90461d2
-    last_write_checksum: sha1:a29c5d637b94ed8d025cceb0cba4e005d7eab52b
-    pristine_git_object: 0f33075000db12d65c59b8446afadd9174dd7781
+    last_write_checksum: sha1:0fb4d5f38a0cfd84cf2bff32497f8e66fb9e12c0
+    pristine_git_object: db35ac713f1a616d0e8d26420bce721df6d3eefd
   src/gusto_embedded_v_2026_06_15/locations.py:
     id: 078d2f9fd356
-    last_write_checksum: sha1:d3499368d8bad6638a4008d9f03b6b439c690a01
-    pristine_git_object: 6b7a194dfd408aa1869571bb0c235347d1b4af7f
+    last_write_checksum: sha1:a90b19e429b77fc7f23b8f3ab903fe3c53d9259e
+    pristine_git_object: 14551675b86b2d77658bbf8cce189f4babf804e3
   src/gusto_embedded_v_2026_06_15/models/__init__.py:
     id: 4d37a522079f
-    last_write_checksum: sha1:43c44f60b01f4dbd43eed279c0bf105a8887d7c5
-    pristine_git_object: 88717fb169be0b3800bf3165b17572a670a2bd68
+    last_write_checksum: sha1:e45eacba2e82f3784738d66d3ee5cf28d5d82f41
+    pristine_git_object: 967b97797625baadb0e04a98a912a31878a094aa
   src/gusto_embedded_v_2026_06_15/models/ach_transaction.py:
     id: 7355442d08a7
     last_write_checksum: sha1:ebb253a5bbc68ccdba4820ba3e9537a52acf382e
@@ -6366,8 +6434,8 @@ trackedFiles:
     pristine_git_object: 5c0daa6161260860fef220a6555dbc3e9036c774
   src/gusto_embedded_v_2026_06_15/models/company_attachment_create_request_body.py:
     id: 3ebbcc750b95
-    last_write_checksum: sha1:046e3b6781b30ab40d5bf2f18c6201666c7240d6
-    pristine_git_object: 036860013cf71f73e19b95403277013997ccfded
+    last_write_checksum: sha1:aa2b99d6dfaa62797be980e7ae915e94621cae19
+    pristine_git_object: 5016d2cfa8cb951013b9299ab2735cb9e8a84f76
   src/gusto_embedded_v_2026_06_15/models/company_attachment_download_url.py:
     id: e23f7a502f0a
     last_write_checksum: sha1:a2333f0938e5f5e9a0b7e50503cb89196c4f71f3
@@ -6508,6 +6576,10 @@ trackedFiles:
     id: 60b419f6eb2a
     last_write_checksum: sha1:1c67b6b490671455cd199c81c1ce212286844581
     pristine_git_object: 043774ef1122316bf14969ebd734aa60727048b4
+  src/gusto_embedded_v_2026_06_15/models/contractor_payment_listing.py:
+    id: 51b1fc5e7d3b
+    last_write_checksum: sha1:93c627bd076df7ed9ec11a7a5282f824ac86031d
+    pristine_git_object: faf79168d80489d6d64f8334b33515f793527d73
   src/gusto_embedded_v_2026_06_15/models/contractor_payment_method.py:
     id: cbf640f4c94e
     last_write_checksum: sha1:e4b5bde726d01740d3fac2a666ce79c6010d2700
@@ -6582,8 +6654,8 @@ trackedFiles:
     pristine_git_object: 69fd3d7bccc1def690e3f10df555ddd1e4c8f815
   src/gusto_embedded_v_2026_06_15/models/delete_v1_companies_company_id_payrollsop.py:
     id: 551f7e69b422
-    last_write_checksum: sha1:9c42dca83428e5911e1071023d64a700ce894dd9
-    pristine_git_object: 50719a13b5d5d748126d044cb2bfbeaf39e254c7
+    last_write_checksum: sha1:22e63b54730996f6017d80e3980ab016ee123062
+    pristine_git_object: 94c52df7106a69381cc265dc406addf46f2974aa
   src/gusto_embedded_v_2026_06_15/models/delete_v1_companies_company_uuid_holiday_pay_policyop.py:
     id: 461fdca890ea
     last_write_checksum: sha1:e6f20c761d662fec55e93699954f9891e6b42567
@@ -6790,8 +6862,8 @@ trackedFiles:
     pristine_git_object: 206c0d7b3ec4f2580d593ce74dae1340e6f25bd3
   src/gusto_embedded_v_2026_06_15/models/employee_onboarding_status.py:
     id: 8588aea6f923
-    last_write_checksum: sha1:9a5ff2ca5f7e13f8b231134c27bff2c834c07a99
-    pristine_git_object: c9ce1ce2113b0e447ce1a79e1fd0cb1724dd0d4c
+    last_write_checksum: sha1:6434570c6f4537aeb7aca188b3cd6c4ec130b350
+    pristine_git_object: ae47a597833063a81c9ac795b5d066fcef506887
   src/gusto_embedded_v_2026_06_15/models/employee_pay_stubs_list.py:
     id: d269991665a4
     last_write_checksum: sha1:7c447c25baadf3000b45d9f6518194089774c345
@@ -6958,8 +7030,8 @@ trackedFiles:
     pristine_git_object: 735a15b415add211a9224f0cc9011523a2b1ca8d
   src/gusto_embedded_v_2026_06_15/models/get_company_notificationsop.py:
     id: 8279709f5319
-    last_write_checksum: sha1:6b30b1bc1b074c4c5f117ad74804482ffbed5953
-    pristine_git_object: 401aadb2ce2d8351554f7a06498822c2e19cc8e9
+    last_write_checksum: sha1:af1f32ebb19557dc08103d22f65fa4c164541b34
+    pristine_git_object: 2eedf01b00de34709f6e570d9ce9751e221f49e9
   src/gusto_embedded_v_2026_06_15/models/get_departmentop.py:
     id: 10a50bceb3dd
     last_write_checksum: sha1:c5c0b8eaf4fd9a3037345a0044f6d9981fa4c1c8
@@ -7038,16 +7110,16 @@ trackedFiles:
     pristine_git_object: 2bc34e69770b47147d1e2d53c113784331ce532d
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_contractor_payment_groupsop.py:
     id: f31044c5f07c
-    last_write_checksum: sha1:240314d8ad93b72761802157abd20763c20e2483
-    pristine_git_object: b27a9d87e76a66c11e884a6b26e41ef787e52382
+    last_write_checksum: sha1:06efba35255b4295656e1e2d40e939c98b08f2d3
+    pristine_git_object: b8ac4878a6edfa241584e3944288387b3791210c
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_contractor_paymentsop.py:
     id: a25c28567ae4
     last_write_checksum: sha1:78897359b5cbc67ab54e1a7a5bc8950d0a1c345a
     pristine_git_object: c6d88f7d00c22d6de38c17ed3d02b1d1b2b48145
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_contractors_payment_detailsop.py:
     id: aca2372ee9b7
-    last_write_checksum: sha1:c2e3dabcce618cce9017db043a844c73451ebfb1
-    pristine_git_object: cd45ccb93675bce249b7f377ae7bd82e236d408a
+    last_write_checksum: sha1:8403ad5b196b7dcfbb1d7410cd2b247d191a99ee
+    pristine_git_object: 198d20108aa03cbc0c95c9a40fbc0cbb46acf336
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_custom_fieldsop.py:
     id: 79b250d440a6
     last_write_checksum: sha1:ec3e130544bdcc86773102ee28ea23b1b3b34932
@@ -7086,16 +7158,16 @@ trackedFiles:
     pristine_git_object: 06be2bb489650d95d0d5bca1792652dad400e66c
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_pay_schedules_previewop.py:
     id: 10d3da064656
-    last_write_checksum: sha1:67b4757196502e07ff0e7e956508394c5f6d9b3d
-    pristine_git_object: ab0298ce9df972ce775e05ab894a84bb39950d98
+    last_write_checksum: sha1:a8b4e5c4baa2c314f7aa245fafe8da515117933c
+    pristine_git_object: 026a0a6ffa0aab241aef06c40ba3f5a7662af588
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_pay_schedulesop.py:
     id: 66d530a6db16
     last_write_checksum: sha1:823e8cdf69010557508f811ba8c59744935af0cc
     pristine_git_object: 7a140e1098ddf6630c83c899463559ddb5f15f39
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_payroll_reversalsop.py:
     id: 60deffe82f3d
-    last_write_checksum: sha1:12f793e1ab625b2347b60eb4c4f271d5f005ccbb
-    pristine_git_object: 5f2e544b79b3ac17445ef6b032ac5b14092a6c45
+    last_write_checksum: sha1:cfd50664f907b0638bdaf38cd40c86a044bd4329
+    pristine_git_object: e84d0f784f5fcfa08d145592a997785134a7fe8f
   src/gusto_embedded_v_2026_06_15/models/get_v1_companies_company_id_payrolls_id_partner_disbursementsop.py:
     id: 1cc62126d4f4
     last_write_checksum: sha1:d73d16735ad26f08da75c9c8d03ae45ec52892e7
@@ -7190,8 +7262,8 @@ trackedFiles:
     pristine_git_object: 9f721100da21393ea823345285a78a44448d5931
   src/gusto_embedded_v_2026_06_15/models/get_v1_company_onboarding_statusop.py:
     id: e2d57be90893
-    last_write_checksum: sha1:aeec2913afeb2567bc7a7641234bfeb3fa6950cb
-    pristine_git_object: 3fd8a9e1796875f7ea582b5e8226e846210df4aa
+    last_write_checksum: sha1:d1263dfe8d7d5096dd1a8c0d380da5ef5197a398
+    pristine_git_object: 21f742bee93c81c94b424076111cf9f8c9d72c65
   src/gusto_embedded_v_2026_06_15/models/get_v1_company_payment_configsop.py:
     id: 6beda012bda0
     last_write_checksum: sha1:6b50b2b15b126fa6fd4128d178f3d6748763bccd
@@ -7260,6 +7332,10 @@ trackedFiles:
     id: 047dd43718c4
     last_write_checksum: sha1:1dbec0b1d63b81ed8084bbf482b0d43937d733b7
     pristine_git_object: fead3479e00890368edb488ba39c92503741abea
+  src/gusto_embedded_v_2026_06_15/models/get_v1_contractors_contractor_uuid_paymentsop.py:
+    id: da321e8aae95
+    last_write_checksum: sha1:288ab9fa35fc7f1556a3e40f0ef6c6cf5cf9effa
+    pristine_git_object: 6fad51ce5069b7fb115380a605135e77ad6e46ad
   src/gusto_embedded_v_2026_06_15/models/get_v1_contractors_contractor_uuidop.py:
     id: 98c2dc4b91d8
     last_write_checksum: sha1:4c073a4707721cb188e14af9af21d077bea64dfb
@@ -7286,8 +7362,8 @@ trackedFiles:
     pristine_git_object: 69f036045003464026cb76146447bd50b186a946
   src/gusto_embedded_v_2026_06_15/models/get_v1_employees_employee_id_custom_fieldsop.py:
     id: 1156e4875c99
-    last_write_checksum: sha1:67dbdbb90056ff30bdfa767b8842cc16db9bbb9e
-    pristine_git_object: a04b17c3f629aedfd95f2f9b038b18eda35c7c3c
+    last_write_checksum: sha1:f1f7f1afd9e21dc14ee978eaad18f68c959bc5e4
+    pristine_git_object: 66ecdd79df32c4a2669cbe97a2a4d8bb8390ab94
   src/gusto_embedded_v_2026_06_15/models/get_v1_employees_employee_id_employee_benefitsop.py:
     id: 9ee66a9e0138
     last_write_checksum: sha1:6a52ec0108a6e691e17e77283d7f25c139cc1894
@@ -7322,8 +7398,8 @@ trackedFiles:
     pristine_git_object: 2236d8c6c1d935d1b374c286ae16e2f00060a0a3
   src/gusto_embedded_v_2026_06_15/models/get_v1_employees_employee_id_jobsop.py:
     id: 65c0e362e2e1
-    last_write_checksum: sha1:9da2020ef5e74a870e8ae2018e30ecf67baac1ba
-    pristine_git_object: f59648027229b7ccffcedc2b3996671d28bbee85
+    last_write_checksum: sha1:8c9a0e05e6fb0ee52e2d7f75c30f4dc87cc5d27a
+    pristine_git_object: ad8604860bfe8743f9d22e287fe322153ad217e5
   src/gusto_embedded_v_2026_06_15/models/get_v1_employees_employee_id_onboarding_statusop.py:
     id: 59738474e608
     last_write_checksum: sha1:9a30acfd7adfbc902f942237be1ceafdd003c5d6
@@ -7386,8 +7462,8 @@ trackedFiles:
     pristine_git_object: df86f29eb1c5a7ad6b2a346fa96e4668e02bddfb
   src/gusto_embedded_v_2026_06_15/models/get_v1_generated_documents_document_type_request_uuidop.py:
     id: b36725261330
-    last_write_checksum: sha1:e6e02bcb14cec9d39d37554eedc553c3d71afb60
-    pristine_git_object: f88bc65f68fc6009f6d4b479ba91fa93b0988f51
+    last_write_checksum: sha1:f55d522f3eb3970a2d8436a46d210c5614144396
+    pristine_git_object: 30df39614abd0b2fff192086057e4115bbd32ba1
   src/gusto_embedded_v_2026_06_15/models/get_v1_home_addresses_home_address_uuidop.py:
     id: ec0b02bfa08d
     last_write_checksum: sha1:a049957310bfae04b56beba2e9f6c7900bcf93da
@@ -7398,8 +7474,8 @@ trackedFiles:
     pristine_git_object: d5dff46b24ca8e293c205596fc9b22a8f171b575
   src/gusto_embedded_v_2026_06_15/models/get_v1_jobs_job_idop.py:
     id: 3cc1739d6865
-    last_write_checksum: sha1:d411e741f448350ff4961103c607a4285c96435f
-    pristine_git_object: 87d6e5259890a45487254a702923c1457c9515bf
+    last_write_checksum: sha1:3035a2a1b6d628eca58334f4520c72ed70e15a49
+    pristine_git_object: b2b21284f7c54e45cd7cd96c2588c4f052ed224e
   src/gusto_embedded_v_2026_06_15/models/get_v1_locations_location_idop.py:
     id: 59e36f66a137
     last_write_checksum: sha1:03f85860c8815c5771dfd53c261f9d2b2cf107d0
@@ -7418,8 +7494,8 @@ trackedFiles:
     pristine_git_object: b105ed66dbac50b1375bc36be17170586ad238c1
   src/gusto_embedded_v_2026_06_15/models/get_v1_payment_receipts_payrolls_payroll_uuidop.py:
     id: 66ddce87ed61
-    last_write_checksum: sha1:d14766d11086c73a4ccba96eb3798e1500b20e39
-    pristine_git_object: e894b8f61d11e8ac6ac0e0324817c4bb4a6da5f1
+    last_write_checksum: sha1:f1787ba24f93618aa3052bd94d99cd9593c65a40
+    pristine_git_object: 2e2a193a1617c18642166c4c91383a58d48c51d9
   src/gusto_embedded_v_2026_06_15/models/get_v1_payroll_digests_payroll_digest_uuidop.py:
     id: 6a97262d50f1
     last_write_checksum: sha1:abea5b0b4cee08a7a3720ebe668d8dde7d0d22a0
@@ -7770,12 +7846,12 @@ trackedFiles:
     pristine_git_object: ea47ebf4d0516d068753417453709fb12d33ccbb
   src/gusto_embedded_v_2026_06_15/models/payroll_digest_results.py:
     id: 6c0e177bdbe6
-    last_write_checksum: sha1:16fc564fbffc9c46a485c570d30012a549ebe985
-    pristine_git_object: 629c3e9020357bf8111d8bd95144050e402a961d
+    last_write_checksum: sha1:5615ea5e99e2752f5c79c35a38337be0771ad627
+    pristine_git_object: 6ae5534860647d6c1c08b3ba6e6754bb6931a12b
   src/gusto_embedded_v_2026_06_15/models/payroll_employee_compensations_type.py:
     id: d028da4a50ab
-    last_write_checksum: sha1:b63645935f35eb05493a35f6f813d84222289c80
-    pristine_git_object: 48da6c0f04bcc40380e6b234e8c2689c4dab8f3e
+    last_write_checksum: sha1:d524098f6178232a8b3b58f5aa53d1bbf1999d66
+    pristine_git_object: d1f5b288ac953b4282744655a51603660ff09d0f
   src/gusto_embedded_v_2026_06_15/models/payroll_fixed_compensation_types_type.py:
     id: 8bff367d96cf
     last_write_checksum: sha1:690ffa32b781ffd3a16dc0743e9e399dc7b8ea7a
@@ -7818,8 +7894,8 @@ trackedFiles:
     pristine_git_object: 86d85a16f02aad4be839a29f8e78fae900be8479
   src/gusto_embedded_v_2026_06_15/models/payroll_show.py:
     id: 8c1cd7208d6e
-    last_write_checksum: sha1:bdf77420f7fc84bcb1fb4a8a62af3585004a2705
-    pristine_git_object: 45b37e44ff1821aafdfec13aecc1f4aebfb209ab
+    last_write_checksum: sha1:c363309534f6374ee1765db812f9df2c3e5c15b8
+    pristine_git_object: fa2de02cf222b3f43024eb297eb0676e7daa8a88
   src/gusto_embedded_v_2026_06_15/models/payroll_submission_blocker_request_type.py:
     id: b08fad1595e2
     last_write_checksum: sha1:ba86956d3b0f1ed94c244cfb18272c29607f61dd
@@ -7838,12 +7914,12 @@ trackedFiles:
     pristine_git_object: ca85ebf019e3c855e89f1ece057b51d5f4e90959
   src/gusto_embedded_v_2026_06_15/models/payroll_unprocessed_employee_compensations_type.py:
     id: f79e54d76d4f
-    last_write_checksum: sha1:acc62322d31c4f3b4141b296fa482e50e2cd624c
-    pristine_git_object: bbc66872f949a8127175a4ba47842f1a8c9d9474
+    last_write_checksum: sha1:e91e9d231f02abbe467670923a762bdc3b32c539
+    pristine_git_object: c1a9e68af36bdde0b53630da85c45e762380bc4b
   src/gusto_embedded_v_2026_06_15/models/payroll_update.py:
     id: f51fa8c0a61b
-    last_write_checksum: sha1:6d30932e27932f3e04a31fdf3c8398fac17807fd
-    pristine_git_object: 9062ce5d008939be081f5d2627bafaab2b782e4a
+    last_write_checksum: sha1:ebe35a21deeef7c6924611c0eaa1cd6f56416050
+    pristine_git_object: 308d228d909e0256da01000112de8adb412c155e
   src/gusto_embedded_v_2026_06_15/models/people_batch.py:
     id: 7de4243732cf
     last_write_checksum: sha1:876912c3371b7b43dcacf362be952e96a13cc7e7
@@ -7946,8 +8022,8 @@ trackedFiles:
     pristine_git_object: 6fe0073c22a3b8fecfecd04aec7209c66974cf16
   src/gusto_embedded_v_2026_06_15/models/post_v1_companies_company_id_payrollsop.py:
     id: 8f553bbb8dba
-    last_write_checksum: sha1:9750478e8ac28ea6fc01295b95d90dfacfddfc52
-    pristine_git_object: 4bcd52e67ac7716cf546ae68d1d5c6f30dfde223
+    last_write_checksum: sha1:ddf16cf5c07bc5c85268c854d8d916825b440c5b
+    pristine_git_object: 5dffe64969b1a1357ac86e593be402145e7fbcbc
   src/gusto_embedded_v_2026_06_15/models/post_v1_companies_company_id_people_batchesop.py:
     id: 0940ef549f02
     last_write_checksum: sha1:50f92404cb5ae6cdce42c72959bd6e1b4ecca106
@@ -8102,8 +8178,8 @@ trackedFiles:
     pristine_git_object: ba67e7af30e5e8d8ab8530ca7810d23ffa937698
   src/gusto_embedded_v_2026_06_15/models/post_v1_webhook_subscriptionop.py:
     id: 7108245cb397
-    last_write_checksum: sha1:ad142aa97be4e699fe09dc21857f29f4be454fb6
-    pristine_git_object: fd7dbaa7e0273d0d04206bd854bce8ed305f0040
+    last_write_checksum: sha1:7146553f1249c7a02173637a420605beb1ca578c
+    pristine_git_object: de7ce72eb9c61499db6eeae08551dae3f6cd0c3d
   src/gusto_embedded_v_2026_06_15/models/printable_payroll_checks_body.py:
     id: b952798cdb6e
     last_write_checksum: sha1:f897a74bd02994b3aff04d1fbb7f64c9d75d2a4b
@@ -8370,8 +8446,8 @@ trackedFiles:
     pristine_git_object: be3d4d67267f213c0cd8b678965205d6024ab353
   src/gusto_embedded_v_2026_06_15/models/put_v1_webhook_subscription_uuidop.py:
     id: 3244d714d639
-    last_write_checksum: sha1:a09c6b64ce9f7f116f8af0134d94cdfa73d386a1
-    pristine_git_object: 8dbb92a584eebe75e41dee6bd71f751638bc6a08
+    last_write_checksum: sha1:63ce63a84f0c32efe9fbf6b126df9921c48b3022
+    pristine_git_object: 289a0a6882ee21dcb4df0376ad0a116e0077cee9
   src/gusto_embedded_v_2026_06_15/models/put_v1_work_addresses_work_address_uuidop.py:
     id: ab9b9d7dc9d7
     last_write_checksum: sha1:f48d69789c8bdf63e6cbe1230e19fb2292d45106
@@ -8524,14 +8600,10 @@ trackedFiles:
     id: ff6fbb32fb3c
     last_write_checksum: sha1:b49b7a38339f72acdde4aac330bbb75e0eb02eca
     pristine_git_object: 6d68f1648191a7d1cf074e8573717428725ae59b
-  src/gusto_embedded_v_2026_06_15/models/versionheader.py:
-    id: 95b3e9a7af99
-    last_write_checksum: sha1:c6c3d2fe64b1e1203c9bfc5d82157c43485fdab7
-    pristine_git_object: 39bb6cb724d35a493d61915ce3fefedd910704b0
   src/gusto_embedded_v_2026_06_15/models/webhook_subscription.py:
     id: d6b5c150bda0
-    last_write_checksum: sha1:cde8edc42e130b38bbfa82ea177310bf7e1ae5f2
-    pristine_git_object: 646f4b496dc94eb61ce39b5d7c676e4e765cc760
+    last_write_checksum: sha1:f81a6c9372fc5e97b1cb1c6edd5274591bcfad06
+    pristine_git_object: 5cd6b5c6218aaaa0705b7a2379cba73e90e76fa4
   src/gusto_embedded_v_2026_06_15/models/webhook_verification_token_response.py:
     id: 10ea176b56e2
     last_write_checksum: sha1:f0d289e17dbf88633c4b5b157ebfe3c29668aca4
@@ -8558,28 +8630,28 @@ trackedFiles:
     pristine_git_object: 985fd98b9e2b440b50121abd757becd85e21ffce
   src/gusto_embedded_v_2026_06_15/notifications.py:
     id: be7b8e0080ca
-    last_write_checksum: sha1:0dc21fc9531b4b506197d9737b1befa74902d456
-    pristine_git_object: 9a0a125a04f025c3e84983d27617cd3d26d266e0
+    last_write_checksum: sha1:c3261f83d2f01357c7217900bda1ec5361b08ebb
+    pristine_git_object: 416515f6dd27d3d48ba35d2b2faf64f45b75cdc1
   src/gusto_embedded_v_2026_06_15/paymentconfigs_sdk.py:
     id: 8746bda578fd
     last_write_checksum: sha1:5966b9306751fe1af5f541c45579a7c9e28812e9
     pristine_git_object: 1f99c47f364691724b6d165828b08010c74ed254
   src/gusto_embedded_v_2026_06_15/payroll_digests.py:
     id: c85918acd397
-    last_write_checksum: sha1:127e0b7c46d1bc49546cb0ff8f656d3a5654b899
-    pristine_git_object: 808e6d7a1ca86dd06d2fc59ad84581c970aa3879
+    last_write_checksum: sha1:890ae6d41f4244a5d988eaeb6d162f15d768e211
+    pristine_git_object: 4bf22d690c4e65caee40b39b0574616c6bc23a43
   src/gusto_embedded_v_2026_06_15/payrolls.py:
     id: f5a86e2dca95
-    last_write_checksum: sha1:983daf68aa37749496f5d151c26485165dd99c47
-    pristine_git_object: a6f751dbc88b803fa597a2d440fea651e2088df6
+    last_write_checksum: sha1:f57b9c38c378a3209854d8b88140ca941583c6d1
+    pristine_git_object: 65ef5077285c104e19036985731c96187cb79279
   src/gusto_embedded_v_2026_06_15/payschedules.py:
     id: d882e40d2418
-    last_write_checksum: sha1:898a8fe0e0cd93a18d3d0569768294b9b15d2784
-    pristine_git_object: 51d69d982a8c729d9a4ca1ddd6d860bb486a45f0
+    last_write_checksum: sha1:f78aa491085254e922fcba88ca19e67381aa7451
+    pristine_git_object: e203727eae5a343ecd3abce5947e635b64450f02
   src/gusto_embedded_v_2026_06_15/people_batches.py:
     id: 26c1f74c5e74
-    last_write_checksum: sha1:a22e7504d87d5a0c6df0266bc06e75850f5bda28
-    pristine_git_object: d5a90f17d90af30ddca750dfa943e8869d4c3e1f
+    last_write_checksum: sha1:af82678c5dd4bb1503db89f1dea97b4b9fb9acad
+    pristine_git_object: e09daf908ad1a0059c70f0e6ee3e764737b33763
   src/gusto_embedded_v_2026_06_15/py.typed:
     id: d59a58690f29
     last_write_checksum: sha1:8efc425ffe830805ffcc0f3055871bdcdc542c60
@@ -8594,12 +8666,12 @@ trackedFiles:
     pristine_git_object: ad1383d4956042b35f51b7b52ed5f7c19f03e7c3
   src/gusto_embedded_v_2026_06_15/reports.py:
     id: 48127c151065
-    last_write_checksum: sha1:fcff9d03e1f11f30effa93df6cdd47a6a3d8c77f
-    pristine_git_object: fb751bcd1f3c2de5fb6172f3e009a1326d6f9aad
+    last_write_checksum: sha1:d9ebc78c357415518dbaa30c323fc9cd6ab849de
+    pristine_git_object: 5709484b4f44537dc0944ee5b014959f3419f631
   src/gusto_embedded_v_2026_06_15/salary_estimates.py:
     id: a89f1f5dbb9c
-    last_write_checksum: sha1:ea0022c651c5d0e90546a1e113dbc3f79565b739
-    pristine_git_object: 061418b2a79583878f22d137637f3c742b992ad5
+    last_write_checksum: sha1:31b93affbc57bf507255d9a57a7efe6c544f5531
+    pristine_git_object: 3fdf0abe93ed996edf788843682d2b34e4c9b22f
   src/gusto_embedded_v_2026_06_15/sdk.py:
     id: ed9ae41b677a
     last_write_checksum: sha1:c3fcb05af23299ca76ca334e3bcc9161df452e24
@@ -8610,32 +8682,32 @@ trackedFiles:
     pristine_git_object: b04ae1d4837313445f546362b1ae3920eda5ad04
   src/gusto_embedded_v_2026_06_15/signatories.py:
     id: 82dfb501bcde
-    last_write_checksum: sha1:a01cc686e120cad47e7ed3a4c81e1cf59322967a
-    pristine_git_object: 8b1d50bda25a80af1e91b22b3099a94cfa8eb1d0
+    last_write_checksum: sha1:aa711163a6a9e7929bfa96e65e0304a80f52429d
+    pristine_git_object: 7e5c9b3ddc4186151ef064fd48599ca4a85c46bc
   src/gusto_embedded_v_2026_06_15/suspensions.py:
     id: fec3166ad329
     last_write_checksum: sha1:440bd9b0d095c6e6fa73d54c9d65d9599ca14710
     pristine_git_object: d9823d72998ba39b7080b90e3ad7ec5dc97d72b2
   src/gusto_embedded_v_2026_06_15/taxrequirements.py:
     id: f47b7840fe05
-    last_write_checksum: sha1:277d9b8ca0609021c2f3bb9952ee945c176c9383
-    pristine_git_object: f16d052ebb01b1790fe444b8219da30fe794172b
+    last_write_checksum: sha1:0248195ad1989497e4f846a54eaaca6d236df896
+    pristine_git_object: e60ee7a921ab1a5902dbb134f8eca52d78e47d65
   src/gusto_embedded_v_2026_06_15/time_off_requests.py:
     id: 69d6d433dca6
-    last_write_checksum: sha1:ba776a8fca426a0192050d70f3882c134f0ff767
-    pristine_git_object: f8c451fe6e9898abe0370435efff34c1cd2e95ac
+    last_write_checksum: sha1:8d040676fc4598a27972f4adcd8439d85332bb43
+    pristine_git_object: bf2947f090ef7d8126904fb28fed31e919fc04b9
   src/gusto_embedded_v_2026_06_15/timeoffpolicies.py:
     id: 40947ea99f81
-    last_write_checksum: sha1:4abaff9348cce06f6b69d35da6d3a5bd63e7b849
-    pristine_git_object: eceda054dbf6ae731745dacc2ae15e63f3cb5d36
+    last_write_checksum: sha1:08e23481cbd20c350428fd32da092ac3cc55968e
+    pristine_git_object: 85e60efa8515a63771bcea830d3a424a6bd9ae88
   src/gusto_embedded_v_2026_06_15/types/__init__.py:
     id: d9b0d6dd0f2b
     last_write_checksum: sha1:f9ad14217f832e74f594285960125add50324be9
     pristine_git_object: faa268137bc01c9d08cfadc4797017db48747a96
   src/gusto_embedded_v_2026_06_15/types/base64fileinput.py:
     id: bb31f847d3e2
-    last_write_checksum: sha1:4780e893d3853b5a6e28d9a6ca3ee102ce0f502d
-    pristine_git_object: 25fc53989ed497649363f983219fc58705c8bf87
+    last_write_checksum: sha1:1522687ae3398374c35710cad993a6e82b5ab99d
+    pristine_git_object: 862566fe2b1db830276b390e136e65090e5963d2
   src/gusto_embedded_v_2026_06_15/types/basemodel.py:
     id: c44f05985cd1
     last_write_checksum: sha1:10d84aedeb9d35edfdadf2c3020caa1d24d8b584
@@ -8662,12 +8734,12 @@ trackedFiles:
     pristine_git_object: 3324e1bc2668c54c4d5f5a1a845675319757a828
   src/gusto_embedded_v_2026_06_15/utils/eventstreaming.py:
     id: d5f9af6044bb
-    last_write_checksum: sha1:620d78a8b4e3b854e08d136e02e40a01a786bd70
-    pristine_git_object: 3bdcd6d3d4fc772cb7f5fca8685dcdc8c85e13e8
+    last_write_checksum: sha1:7d1dc68f8b48486ab646653aa05cc38752e1f912
+    pristine_git_object: a8d4fe5cc88d3c7337339e1b36a61bbf7ca8c4eb
   src/gusto_embedded_v_2026_06_15/utils/forms.py:
     id: 27f11ad34013
-    last_write_checksum: sha1:0ca31459b99f761fcc6d0557a0a38daac4ad50f4
-    pristine_git_object: 1e550bd5c2c35d977ddc10f49d77c23cb12c158d
+    last_write_checksum: sha1:dcf527960992b8baef3b21937c7e6c4e652630c0
+    pristine_git_object: 193f264960f3014c81d41543b9023c14c44c12e6
   src/gusto_embedded_v_2026_06_15/utils/headers.py:
     id: c1497cd3642a
     last_write_checksum: sha1:7c6df233ee006332b566a8afa9ce9a245941d935
@@ -8698,12 +8770,12 @@ trackedFiles:
     pristine_git_object: b50b2efb2c8c28d60610611659ee53cb8fea6fbb
   src/gusto_embedded_v_2026_06_15/utils/serializers.py:
     id: adfc5bf5e12d
-    last_write_checksum: sha1:61009f2e4ef6613a1a5af813fe020373dae5a492
-    pristine_git_object: d2149f8b909cb96628db140ac3cddb1b1e981367
+    last_write_checksum: sha1:7485f1425b0661fd84836186570df90207eec6af
+    pristine_git_object: 1031ed930bad5ece220cf7416a56c29f40f0588b
   src/gusto_embedded_v_2026_06_15/utils/unions.py:
     id: cf316b3adca4
-    last_write_checksum: sha1:6e38049f323e0b5fb4bd0e88ab51ec447197ccb0
-    pristine_git_object: a227f4e87be22fce682fcae5813b71835199ec5e
+    last_write_checksum: sha1:cd6201e6f43c51545a32f5bd4ac9f508e1ba0c29
+    pristine_git_object: 2434640235f9607bd894361dcba872ceb5b26533
   src/gusto_embedded_v_2026_06_15/utils/unmarshal_json_response.py:
     id: 84b71d8c5d0e
     last_write_checksum: sha1:8c1c3847d99ea8c7327fa26bbad16120835b1192
@@ -8718,12 +8790,12 @@ trackedFiles:
     pristine_git_object: dae01a44384ac3bc13ae07453a053bf6c898ebe3
   src/gusto_embedded_v_2026_06_15/webhooks.py:
     id: dc683ba66285
-    last_write_checksum: sha1:1a55daf6f3ce37f66d8f44b671fc26057f9d95f1
-    pristine_git_object: 4cabc78c82896a8727cdeacaa3e8d3b9775f5b43
+    last_write_checksum: sha1:00177a66d6361ad0156fa52958cee33c949d9766
+    pristine_git_object: d64e6301fd346f9b616dc12139f06d44b7b55380
   src/gusto_embedded_v_2026_06_15/wireinrequests.py:
     id: 8c17f04447a0
-    last_write_checksum: sha1:3e9f5df8fa7c0831f6b6b8b633aa8230b6e950b8
-    pristine_git_object: e325886442560719356e014a2ea4b1957192c2ae
+    last_write_checksum: sha1:8bdbcb63772ee11157c23e7746702ce403b90878
+    pristine_git_object: 202ab6774196b649135ae2fd29427ab4b46e4b27
 examples:
   get-ach-transactions:
     speakeasy-default-get-ach-transactions:
@@ -9759,6 +9831,9 @@ examples:
           X-Gusto-API-Version: "2026-06-15"
       requestBody:
         application/json: {"start_date": "2025-07-01"}
+      responses:
+        "422":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}]}
   delete-v1-contractors-contractor_uuid-rehire:
     speakeasy-default-delete-v1-contractors-contractor-uuid-rehire:
       parameters:
@@ -9766,6 +9841,9 @@ examples:
           contractor_uuid: "<id>"
         header:
           X-Gusto-API-Version: "2026-06-15"
+      responses:
+        "422":
+          application/json: {"errors": []}
   post-v1-contractors-contractor_uuid-termination:
     speakeasy-default-post-v1-contractors-contractor-uuid-termination:
       parameters:
@@ -9775,6 +9853,9 @@ examples:
           X-Gusto-API-Version: "2026-06-15"
       requestBody:
         application/json: {"end_date": "2025-06-15"}
+      responses:
+        "422":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}]}
   delete-v1-contractors-contractor_uuid-termination:
     speakeasy-default-delete-v1-contractors-contractor-uuid-termination:
       parameters:
@@ -9782,6 +9863,9 @@ examples:
           contractor_uuid: "<id>"
         header:
           X-Gusto-API-Version: "2026-06-15"
+      responses:
+        "422":
+          application/json: {"errors": []}
   get-v1-contractors-contractor_uuid:
     speakeasy-default-get-v1-contractors-contractor-uuid:
       parameters:
@@ -12880,4 +12964,21 @@ examples:
           application/json: {"uuid": "1abe7289-f78c-4339-88a8-85081eccbe5e", "idempotency_key": "fe854863-de8e-4f8d-969c-e489e9c596f2", "status": "completed", "submitted_at": "2024-10-08T07:24:00.354Z"}
         "404":
           application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}]}
+  get-v1-contractors-contractor_uuid-payments:
+    speakeasy-default-get-v1-contractors-contractor-uuid-payments:
+      parameters:
+        path:
+          contractor_uuid: "<id>"
+        query:
+          sort_by: "check_date:desc"
+        header:
+          X-Gusto-API-Version: "2026-06-15"
+      responses:
+        "200":
+          application/json: [{"uuid": "4c253703-bc3f-484d-b971-5348e5a9a5d9"}]
+        "404":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}]}
+        "422":
+          application/json: {"errors": [{"error_key": "<value>", "category": "<value>"}]}
 examplesVersion: 1.0.2
+releaseNotes: "## Python SDK Changes:\n* `gusto.payrolls.get()`:  `response.employee_compensations[]` **Changed** (Breaking ⚠️)\n* `gusto.payrolls.create_off_cycle()`:  `request.employee_uuids` **Changed** (Breaking ⚠️)\n* `gusto.contractors.delete_v1_contractors_contractor_uuid_termination()`:  `error.status[422]` **Added**\n* `gusto.payrolls.get_receipt()`:  `request` **Changed**\n* `gusto.contractor_payments.get_v1_contractors_contractor_uuid_payments()`: **Added**\n* `gusto.employees.get_onboarding_status()`:  `response.blockers` **Added**\n* `gusto.employees.update_onboarding_status()`:  `response.blockers` **Added**\n* `gusto.payrolls.get_approved_reversals()`:  `request.x_gusto_api_version` **Changed**\n* `gusto.contractors.delete_v1_contractors_contractor_uuid_rehire()`:  `error.status[422]` **Added**\n* `gusto.payrolls.update()`: \n  *  `request.employee_compensations[].custom_withholdings` **Added**\n* `gusto.contractors.post_v1_contractors_contractor_uuid_rehire()`:  `error.status[422]` **Added**\n* `gusto.contractors.post_v1_contractors_contractor_uuid_termination()`:  `error.status[422]` **Added**\n* `gusto.generated_documents.get()`:  `request.x_gusto_api_version` **Changed**\n* `gusto.pay_schedules.get_preview()`:  `request.pay_schedule_uuid` **Added**\n* `gusto.webhooks.list_subscriptions()`:  `response.[].subscription_types[].enum(time_off_request)` **Added**\n* `gusto.webhooks.create_subscription()`: \n  *  `request.subscription_types[].enum(time_off_request)` **Added**\n  *  `response.subscription_types[].enum(time_off_request)` **Added**\n* `gusto.webhooks.get_subscription()`:  `response.subscription_types[].enum(time_off_request)` **Added**\n* `gusto.webhooks.update_subscription()`: \n  *  `request.subscription_types[].enum(time_off_request)` **Added**\n  *  `response.subscription_types[].enum(time_off_request)` **Added**\n* `gusto.webhooks.verify()`:  `response.subscription_types[].enum(time_off_request)` **Added**\n"

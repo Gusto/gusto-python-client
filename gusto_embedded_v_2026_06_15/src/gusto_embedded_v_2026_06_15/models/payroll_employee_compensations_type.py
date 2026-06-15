@@ -307,7 +307,7 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
     memo: NotRequired[Nullable[str]]
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
     fixed_compensations: NotRequired[List[FixedCompensationsTypedDict]]
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
     hourly_compensations: NotRequired[List[HourlyCompensationsTypedDict]]
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
     paid_time_off: NotRequired[
@@ -356,7 +356,7 @@ class PayrollEmployeeCompensationsType(BaseModel):
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
 
     fixed_compensations: Optional[List[FixedCompensations]] = None
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
 
     hourly_compensations: Optional[List[HourlyCompensations]] = None
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""

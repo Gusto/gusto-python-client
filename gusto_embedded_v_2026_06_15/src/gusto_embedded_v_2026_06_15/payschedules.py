@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class PaySchedules(BaseSDK):
@@ -988,6 +988,7 @@ class PaySchedules(BaseSDK):
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
         end_date: Optional[date] = None,
+        pay_schedule_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1013,6 +1014,7 @@ class PaySchedules(BaseSDK):
         :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
         :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
         :param end_date: End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today.
+        :param pay_schedule_uuid: Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1037,6 +1039,7 @@ class PaySchedules(BaseSDK):
             day_1=day_1,
             day_2=day_2,
             end_date=end_date,
+            pay_schedule_uuid=pay_schedule_uuid,
         )
 
         req = self._build_request(
@@ -1115,6 +1118,7 @@ class PaySchedules(BaseSDK):
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
         end_date: Optional[date] = None,
+        pay_schedule_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1140,6 +1144,7 @@ class PaySchedules(BaseSDK):
         :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
         :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
         :param end_date: End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today.
+        :param pay_schedule_uuid: Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1164,6 +1169,7 @@ class PaySchedules(BaseSDK):
             day_1=day_1,
             day_2=day_2,
             end_date=end_date,
+            pay_schedule_uuid=pay_schedule_uuid,
         )
 
         req = self._build_request_async(
@@ -1757,12 +1763,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1901,12 +1910,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2045,12 +2057,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2188,12 +2203,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,

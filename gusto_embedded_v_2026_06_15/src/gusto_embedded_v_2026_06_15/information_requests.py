@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class InformationRequests(BaseSDK):
@@ -224,8 +224,8 @@ class InformationRequests(BaseSDK):
         information_request_uuid: str,
         required_questions: Optional[
             Union[
-                List[models.SubmitInformationRequestRequiredQuestions],
-                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+                Iterable[models.SubmitInformationRequestRequiredQuestions],
+                Iterable[models.SubmitInformationRequestRequiredQuestionsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -338,8 +338,8 @@ class InformationRequests(BaseSDK):
         information_request_uuid: str,
         required_questions: Optional[
             Union[
-                List[models.SubmitInformationRequestRequiredQuestions],
-                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+                Iterable[models.SubmitInformationRequestRequiredQuestions],
+                Iterable[models.SubmitInformationRequestRequiredQuestionsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,

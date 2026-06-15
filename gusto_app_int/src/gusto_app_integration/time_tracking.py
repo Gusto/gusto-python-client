@@ -6,7 +6,7 @@ from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
 from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, Dict, List, Mapping, Optional, Union
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
 
 
 class TimeTracking(BaseSDK):
@@ -17,7 +17,7 @@ class TimeTracking(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion
         ] = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        entity_uuids: Optional[List[str]] = None,
+        entity_uuids: Optional[Iterable[str]] = None,
         entity_type: Optional[models.QueryParamEntityType] = None,
         status: Optional[models.QueryParamStatus] = None,
         sort_by: Optional[models.SortBy] = None,
@@ -73,7 +73,7 @@ class TimeTracking(BaseSDK):
         request = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
-            entity_uuids=entity_uuids,
+            entity_uuids=utils.unmarshal(entity_uuids, Optional[List[str]]),
             entity_type=entity_type,
             status=status,
             sort_by=sort_by,
@@ -147,7 +147,7 @@ class TimeTracking(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion
         ] = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        entity_uuids: Optional[List[str]] = None,
+        entity_uuids: Optional[Iterable[str]] = None,
         entity_type: Optional[models.QueryParamEntityType] = None,
         status: Optional[models.QueryParamStatus] = None,
         sort_by: Optional[models.SortBy] = None,
@@ -203,7 +203,7 @@ class TimeTracking(BaseSDK):
         request = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
-            entity_uuids=entity_uuids,
+            entity_uuids=utils.unmarshal(entity_uuids, Optional[List[str]]),
             entity_type=entity_type,
             status=status,
             sort_by=sort_by,
@@ -283,11 +283,11 @@ class TimeTracking(BaseSDK):
         ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         job_uuid: Optional[str] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetCreateBodyEntries],
-                List[models.TimeSheetCreateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetCreateBodyEntries],
+                Iterable[models.TimeSheetCreateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -341,7 +341,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetCreateBodyEntries]]
                 ),
@@ -429,11 +429,11 @@ class TimeTracking(BaseSDK):
         ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         job_uuid: Optional[str] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetCreateBodyEntries],
-                List[models.TimeSheetCreateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetCreateBodyEntries],
+                Iterable[models.TimeSheetCreateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -487,7 +487,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetCreateBodyEntries]]
                 ),
@@ -778,11 +778,11 @@ class TimeTracking(BaseSDK):
         time_zone: Optional[str] = None,
         shift_started_at: Optional[datetime] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetUpdateBodyEntries],
-                List[models.TimeSheetUpdateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetUpdateBodyEntries],
+                Iterable[models.TimeSheetUpdateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -838,7 +838,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetUpdateBodyEntries]]
                 ),
@@ -927,11 +927,11 @@ class TimeTracking(BaseSDK):
         time_zone: Optional[str] = None,
         shift_started_at: Optional[datetime] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetUpdateBodyEntries],
-                List[models.TimeSheetUpdateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetUpdateBodyEntries],
+                Iterable[models.TimeSheetUpdateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -987,7 +987,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetUpdateBodyEntries]]
                 ),

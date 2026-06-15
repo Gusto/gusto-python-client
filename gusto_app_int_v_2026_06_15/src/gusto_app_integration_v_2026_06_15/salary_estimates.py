@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class SalaryEstimates(BaseSDK):
@@ -17,8 +17,10 @@ class SalaryEstimates(BaseSDK):
         employee_id: str,
         zip_code: str,
         occupations: Union[
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict],
+            Iterable[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
+            Iterable[
+                models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion
@@ -151,8 +153,10 @@ class SalaryEstimates(BaseSDK):
         employee_id: str,
         zip_code: str,
         occupations: Union[
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict],
+            Iterable[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
+            Iterable[
+                models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion
@@ -481,8 +485,8 @@ class SalaryEstimates(BaseSDK):
         uuid: str,
         zip_code: str,
         occupations: Union[
-            List[models.PutV1SalaryEstimatesIDOccupations],
-            List[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
+            Iterable[models.PutV1SalaryEstimatesIDOccupations],
+            Iterable[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion
@@ -609,8 +613,8 @@ class SalaryEstimates(BaseSDK):
         uuid: str,
         zip_code: str,
         occupations: Union[
-            List[models.PutV1SalaryEstimatesIDOccupations],
-            List[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
+            Iterable[models.PutV1SalaryEstimatesIDOccupations],
+            Iterable[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion

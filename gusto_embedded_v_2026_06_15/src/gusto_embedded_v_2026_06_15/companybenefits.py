@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class CompanyBenefits(BaseSDK):
@@ -2025,8 +2025,8 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         employee_benefits: Union[
-            List[models.EmployeeBenefitForCompanyBenefit],
-            List[models.EmployeeBenefitForCompanyBenefitTypedDict],
+            Iterable[models.EmployeeBenefitForCompanyBenefit],
+            Iterable[models.EmployeeBenefitForCompanyBenefitTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsHeaderXGustoAPIVersion
@@ -2153,8 +2153,8 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         employee_benefits: Union[
-            List[models.EmployeeBenefitForCompanyBenefit],
-            List[models.EmployeeBenefitForCompanyBenefitTypedDict],
+            Iterable[models.EmployeeBenefitForCompanyBenefit],
+            Iterable[models.EmployeeBenefitForCompanyBenefitTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsHeaderXGustoAPIVersion
@@ -2711,8 +2711,8 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         contribution_exclusions: Union[
-            List[models.ContributionExclusion],
-            List[models.ContributionExclusionTypedDict],
+            Iterable[models.ContributionExclusion],
+            Iterable[models.ContributionExclusionTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompanyBenefitsCompanyBenefitIDContributionExclusionsHeaderXGustoAPIVersion
@@ -2837,8 +2837,8 @@ class CompanyBenefits(BaseSDK):
         *,
         company_benefit_id: str,
         contribution_exclusions: Union[
-            List[models.ContributionExclusion],
-            List[models.ContributionExclusionTypedDict],
+            Iterable[models.ContributionExclusion],
+            Iterable[models.ContributionExclusionTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompanyBenefitsCompanyBenefitIDContributionExclusionsHeaderXGustoAPIVersion

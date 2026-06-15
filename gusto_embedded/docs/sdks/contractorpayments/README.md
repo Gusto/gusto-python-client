@@ -12,6 +12,7 @@
 * [delete](#delete) - Cancel a contractor payment
 * [preview](#preview) - Preview contractor payment debit date
 * [get_v1_contractor_payments_contractor_payment_id_pdf](#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
+* [get_v1_contractors_contractor_uuid_payments](#get_v1_contractors_contractor_uuid_payments) - Get contractor payments
 
 ## get_receipt
 
@@ -398,3 +399,54 @@ with Gusto(
 | -------------------------- | -------------------------- | -------------------------- |
 | models.NotFoundErrorObject | 404                        | application/json           |
 | models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## get_v1_contractors_contractor_uuid_payments
+
+Returns a paginated list of payments for a single contractor.
+
+Results are sortable by `check_date` or `created_at`. Append `:asc` or `:desc` to control direction (e.g., `check_date:desc`).
+
+scope: `contractor_pay_stubs:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-contractors-contractor_uuid-payments" method="get" path="/v1/contractors/{contractor_uuid}/payments" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.contractor_payments.get_v1_contractors_contractor_uuid_payments(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1ContractorsContractorUUIDPaymentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, sort_by="check_date:desc")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `contractor_uuid`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the contractor                                                                                                                                                                                                   |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1ContractorsContractorUUIDPaymentsHeaderXGustoAPIVersion]](../../models/getv1contractorscontractoruuidpaymentsheaderxgustoapiversion.md)                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `sort_by`                                                                                                                                                                                                                    | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Sort the results. Format: `field` or `field:direction` where `field` is `check_date` or `created_at` and `direction` is `asc` or `desc`.                                                                                     | check_date:desc                                                                                                                                                                                                              |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |                                                                                                                                                                                                                              |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[List[models.ContractorPaymentListing]](../../models/.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |

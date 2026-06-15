@@ -230,8 +230,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.RevokeAccessTokenHeaderXGustoAPIVersion
+        ] = models.RevokeAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -327,8 +327,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.RevokeAccessTokenHeaderXGustoAPIVersion
+        ] = models.RevokeAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

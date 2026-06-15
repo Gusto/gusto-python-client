@@ -48,8 +48,8 @@ class FederalTaxDetailsSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDFederalTaxDetailsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -148,8 +148,8 @@ class FederalTaxDetailsSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDFederalTaxDetailsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -283,8 +283,8 @@ class FederalTaxDetailsSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDFederalTaxDetailsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             federal_tax_details_update=models.FederalTaxDetailsUpdate(
                 version=version,
                 legal_name=legal_name,
@@ -438,8 +438,8 @@ class FederalTaxDetailsSDK(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyIDFederalTaxDetailsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             federal_tax_details_update=models.FederalTaxDetailsUpdate(
                 version=version,
                 legal_name=legal_name,

@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional
 
 
 class Contractors(BaseSDK):
@@ -15,11 +15,11 @@ class Contractors(BaseSDK):
         self,
         *,
         company_id: str,
-        contractor_uuid: Optional[str] = None,
-        contractor_payment_group_uuid: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -58,9 +58,9 @@ class Contractors(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
         :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -77,10 +77,10 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             contractor_uuid=contractor_uuid,
             contractor_payment_group_uuid=contractor_payment_group_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -145,11 +145,11 @@ class Contractors(BaseSDK):
         self,
         *,
         company_id: str,
-        contractor_uuid: Optional[str] = None,
-        contractor_payment_group_uuid: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -188,9 +188,9 @@ class Contractors(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
         :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -207,10 +207,10 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             contractor_uuid=contractor_uuid,
             contractor_payment_group_uuid=contractor_payment_group_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -279,7 +279,7 @@ class Contractors(BaseSDK):
             models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion
         ] = models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1ContractorsContractorUUIDQueryParamInclude]
+            Iterable[models.GetV1ContractorsContractorUUIDQueryParamInclude]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -315,7 +315,10 @@ class Contractors(BaseSDK):
         request = models.GetV1ContractorsContractorUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             contractor_uuid=contractor_uuid,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1ContractorsContractorUUIDQueryParamInclude]],
+            ),
         )
 
         req = self._build_request(
@@ -382,7 +385,7 @@ class Contractors(BaseSDK):
             models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion
         ] = models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1ContractorsContractorUUIDQueryParamInclude]
+            Iterable[models.GetV1ContractorsContractorUUIDQueryParamInclude]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -418,7 +421,10 @@ class Contractors(BaseSDK):
         request = models.GetV1ContractorsContractorUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             contractor_uuid=contractor_uuid,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1ContractorsContractorUUIDQueryParamInclude]],
+            ),
         )
 
         req = self._build_request_async(
@@ -839,7 +845,7 @@ class Contractors(BaseSDK):
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -891,7 +897,12 @@ class Contractors(BaseSDK):
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+                ],
+            ),
             page=page,
             per=per,
         )
@@ -966,7 +977,7 @@ class Contractors(BaseSDK):
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -1018,7 +1029,12 @@ class Contractors(BaseSDK):
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+                ],
+            ),
             page=page,
             per=per,
         )

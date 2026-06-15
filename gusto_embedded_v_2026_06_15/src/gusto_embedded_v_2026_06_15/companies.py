@@ -523,8 +523,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -627,8 +627,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -729,8 +729,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -842,8 +842,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -1131,10 +1131,10 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion
         ] = models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        additional_steps: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1150,8 +1150,8 @@ class Companies(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1168,9 +1168,9 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             additional_steps=additional_steps,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1235,10 +1235,10 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion
         ] = models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        additional_steps: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1254,8 +1254,8 @@ class Companies(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1272,9 +1272,9 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             additional_steps=additional_steps,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1387,8 +1387,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -1506,8 +1506,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -1624,8 +1624,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=utils.get_pydantic_model(
                 body, models.PartnerManagedCompanyMigrateRequest
             ),
@@ -1754,8 +1754,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=utils.get_pydantic_model(
                 body, models.PartnerManagedCompanyMigrateRequest
             ),
@@ -2132,8 +2132,8 @@ class Companies(BaseSDK):
 
         request = (
             models.GetV1PartnerManagedCompaniesCompanyUUIDMigrationReadinessRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
             )
         )
 
@@ -2236,8 +2236,8 @@ class Companies(BaseSDK):
 
         request = (
             models.GetV1PartnerManagedCompaniesCompanyUUIDMigrationReadinessRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
             )
         )
 
@@ -2352,8 +2352,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                     email=email,
                     ip_address=ip_address,
@@ -2478,8 +2478,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                     email=email,
                     ip_address=ip_address,
@@ -2599,8 +2599,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                     email=email,
                 ),
@@ -2718,8 +2718,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                     email=email,
                 ),
@@ -2831,8 +2831,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -2935,8 +2935,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -3043,8 +3043,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                 email=email,
             ),
@@ -3166,8 +3166,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                 email=email,
             ),
@@ -3289,8 +3289,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                 email=email,
                 ip_address=ip_address,
@@ -3414,8 +3414,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                 email=email,
                 ip_address=ip_address,

@@ -205,7 +205,7 @@ with GustoAppIntegration() as gusto_app_integration:
         "email": "Fred_Durgan@yahoo.com",
     }, company={
         "name": "<value>",
-    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)

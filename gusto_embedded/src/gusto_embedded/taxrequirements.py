@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class TaxRequirements(BaseSDK):
@@ -56,9 +56,9 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             state=state,
-            x_gusto_api_version=x_gusto_api_version,
             scheduling=scheduling,
         )
 
@@ -166,9 +166,9 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             state=state,
-            x_gusto_api_version=x_gusto_api_version,
             scheduling=scheduling,
         )
 
@@ -240,8 +240,8 @@ class TaxRequirements(BaseSDK):
         ] = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         requirement_sets: Optional[
             Union[
-                List[models.TaxRequirementSetUpdate],
-                List[models.TaxRequirementSetUpdateTypedDict],
+                Iterable[models.TaxRequirementSetUpdate],
+                Iterable[models.TaxRequirementSetUpdateTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -283,9 +283,9 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             state=state,
-            x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody(
                 requirement_sets=utils.get_pydantic_model(
                     requirement_sets, Optional[List[models.TaxRequirementSetUpdate]]
@@ -373,8 +373,8 @@ class TaxRequirements(BaseSDK):
         ] = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         requirement_sets: Optional[
             Union[
-                List[models.TaxRequirementSetUpdate],
-                List[models.TaxRequirementSetUpdateTypedDict],
+                Iterable[models.TaxRequirementSetUpdate],
+                Iterable[models.TaxRequirementSetUpdateTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -416,9 +416,9 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             state=state,
-            x_gusto_api_version=x_gusto_api_version,
             request_body=models.PutV1CompaniesCompanyUUIDTaxRequirementsStateRequestBody(
                 requirement_sets=utils.get_pydantic_model(
                     requirement_sets, Optional[List[models.TaxRequirementSetUpdate]]
@@ -535,8 +535,8 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -638,8 +638,8 @@ class TaxRequirements(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDTaxRequirementsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(

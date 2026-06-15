@@ -54,8 +54,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -157,8 +157,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -286,8 +286,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.SignatoryCreateRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -436,8 +436,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.SignatoryCreateRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -583,8 +583,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.SignatoryInviteRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -730,8 +730,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.SignatoryInviteRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -879,9 +879,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
             body=models.SignatoryUpdateRequest(
                 version=version,
                 first_name=first_name,
@@ -1029,9 +1029,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
             body=models.SignatoryUpdateRequest(
                 version=version,
                 first_name=first_name,
@@ -1156,9 +1156,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1262,9 +1262,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(

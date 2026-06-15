@@ -16,10 +16,10 @@ class Notifications(BaseSDK):
         self,
         *,
         company_uuid: str,
-        status: Optional[models.QueryParamStatus] = None,
         x_gusto_api_version: Optional[
             models.GetCompanyNotificationsHeaderXGustoAPIVersion
         ] = models.GetCompanyNotificationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        status: Optional[models.QueryParamStatus] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -36,8 +36,8 @@ class Notifications(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company for which you would like to return notifications
-        :param status:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param status:
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -56,9 +56,9 @@ class Notifications(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompanyNotificationsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             status=status,
-            x_gusto_api_version=x_gusto_api_version,
             page=page,
             per=per,
         )
@@ -119,10 +119,10 @@ class Notifications(BaseSDK):
         self,
         *,
         company_uuid: str,
-        status: Optional[models.QueryParamStatus] = None,
         x_gusto_api_version: Optional[
             models.GetCompanyNotificationsHeaderXGustoAPIVersion
         ] = models.GetCompanyNotificationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        status: Optional[models.QueryParamStatus] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -139,8 +139,8 @@ class Notifications(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company for which you would like to return notifications
-        :param status:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param status:
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -159,9 +159,9 @@ class Notifications(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompanyNotificationsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             status=status,
-            x_gusto_api_version=x_gusto_api_version,
             page=page,
             per=per,
         )
@@ -260,8 +260,8 @@ class Notifications(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetNotificationsNotificationUUIDRequest(
-            notification_uuid=notification_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            notification_uuid=notification_uuid,
         )
 
         req = self._build_request(
@@ -369,8 +369,8 @@ class Notifications(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetNotificationsNotificationUUIDRequest(
-            notification_uuid=notification_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            notification_uuid=notification_uuid,
         )
 
         req = self._build_request_async(

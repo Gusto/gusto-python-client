@@ -16,8 +16,8 @@ class GeneratedDocuments(BaseSDK):
         document_type: models.PathParamDocumentType,
         request_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -50,9 +50,9 @@ class GeneratedDocuments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             document_type=document_type,
             request_uuid=request_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -119,8 +119,8 @@ class GeneratedDocuments(BaseSDK):
         document_type: models.PathParamDocumentType,
         request_uuid: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -153,9 +153,9 @@ class GeneratedDocuments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1GeneratedDocumentsDocumentTypeRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             document_type=document_type,
             request_uuid=request_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(

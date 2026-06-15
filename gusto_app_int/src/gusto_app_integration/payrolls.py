@@ -5,7 +5,7 @@ from gusto_app_integration import models, utils
 from gusto_app_integration._hooks import HookContext
 from gusto_app_integration.types import OptionalNullable, UNSET
 from gusto_app_integration.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Payrolls(BaseSDK):
@@ -16,12 +16,12 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
@@ -78,13 +78,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -156,12 +163,12 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
@@ -218,13 +225,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -298,7 +312,7 @@ class Payrolls(BaseSDK):
             models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -348,10 +362,17 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
             page=page,
             per=per,
             sort_by=sort_by,
@@ -422,7 +443,7 @@ class Payrolls(BaseSDK):
             models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -472,10 +493,17 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
             page=page,
             per=per,
             sort_by=sort_by,
@@ -543,8 +571,8 @@ class Payrolls(BaseSDK):
         company_id: str,
         payroll_id: str,
         employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
@@ -676,8 +704,8 @@ class Payrolls(BaseSDK):
         company_id: str,
         payroll_id: str,
         employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
@@ -814,7 +842,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -868,7 +896,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -953,7 +983,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1007,7 +1037,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 

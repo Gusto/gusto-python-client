@@ -20,7 +20,7 @@ class Flows(BaseSDK):
         ] = models.PostV1CompanyFlowsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         entity_uuid: Optional[str] = None,
         entity_type: Optional[models.CreateFlowRequestEntityType] = None,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[Mapping[str, Any]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -78,7 +78,7 @@ class Flows(BaseSDK):
                 flow_type=flow_type,
                 entity_uuid=entity_uuid,
                 entity_type=entity_type,
-                options=options,
+                options=utils.unmarshal(options, Optional[Dict[str, Any]]),
             ),
         )
 
@@ -162,7 +162,7 @@ class Flows(BaseSDK):
         ] = models.PostV1CompanyFlowsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         entity_uuid: Optional[str] = None,
         entity_type: Optional[models.CreateFlowRequestEntityType] = None,
-        options: Optional[Dict[str, Any]] = None,
+        options: Optional[Mapping[str, Any]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -220,7 +220,7 @@ class Flows(BaseSDK):
                 flow_type=flow_type,
                 entity_uuid=entity_uuid,
                 entity_type=entity_type,
-                options=options,
+                options=utils.unmarshal(options, Optional[Dict[str, Any]]),
             ),
         )
 

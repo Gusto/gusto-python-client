@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class PeopleBatches(BaseSDK):
@@ -16,7 +16,7 @@ class PeopleBatches(BaseSDK):
         company_id: str,
         idempotency_key: str,
         batch_action: models.PostV1CompaniesCompanyIDPeopleBatchesBatchAction,
-        batch: Union[List[models.Batch], List[models.BatchTypedDict]],
+        batch: Union[Iterable[models.Batch], Iterable[models.BatchTypedDict]],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyIDPeopleBatchesHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDPeopleBatchesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -56,8 +56,8 @@ class PeopleBatches(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPeopleBatchesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             request_body=models.PostV1CompaniesCompanyIDPeopleBatchesRequestBody(
                 idempotency_key=idempotency_key,
                 batch_action=batch_action,
@@ -146,7 +146,7 @@ class PeopleBatches(BaseSDK):
         company_id: str,
         idempotency_key: str,
         batch_action: models.PostV1CompaniesCompanyIDPeopleBatchesBatchAction,
-        batch: Union[List[models.Batch], List[models.BatchTypedDict]],
+        batch: Union[Iterable[models.Batch], Iterable[models.BatchTypedDict]],
         x_gusto_api_version: Optional[
             models.PostV1CompaniesCompanyIDPeopleBatchesHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDPeopleBatchesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -186,8 +186,8 @@ class PeopleBatches(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyIDPeopleBatchesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             request_body=models.PostV1CompaniesCompanyIDPeopleBatchesRequestBody(
                 idempotency_key=idempotency_key,
                 batch_action=batch_action,
@@ -310,8 +310,8 @@ class PeopleBatches(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PeopleBatchesPeopleBatchUUIDRequest(
-            people_batch_uuid=people_batch_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            people_batch_uuid=people_batch_uuid,
         )
 
         req = self._build_request(
@@ -412,8 +412,8 @@ class PeopleBatches(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PeopleBatchesPeopleBatchUUIDRequest(
-            people_batch_uuid=people_batch_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            people_batch_uuid=people_batch_uuid,
         )
 
         req = self._build_request_async(

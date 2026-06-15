@@ -153,6 +153,162 @@ class PayrollUpdateDeductions(BaseModel):
         return m
 
 
+class OverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently supported."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollUpdateEmployeeCompensationsAmountType(str, Enum):
+    r"""How to interpret the amount."""
+
+    DOLLARS = "dollars"
+    PERCENTAGE = "percentage"
+
+
+class FederalTypedDict(TypedDict):
+    r"""Federal one-time custom withholding override."""
+
+    override_type: NotRequired[OverrideType]
+    r"""Override mode. Only `one_time` is currently supported."""
+    amount: NotRequired[str]
+    r"""The amount to be withheld for this payroll."""
+    amount_type: NotRequired[PayrollUpdateEmployeeCompensationsAmountType]
+    r"""How to interpret the amount."""
+
+
+class Federal(BaseModel):
+    r"""Federal one-time custom withholding override."""
+
+    override_type: Optional[OverrideType] = None
+    r"""Override mode. Only `one_time` is currently supported."""
+
+    amount: Optional[str] = None
+    r"""The amount to be withheld for this payroll."""
+
+    amount_type: Optional[PayrollUpdateEmployeeCompensationsAmountType] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["override_type", "amount", "amount_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollUpdateOverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently supported."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollUpdateEmployeeCompensationsCustomWithholdingsAmountType(str, Enum):
+    r"""How to interpret the amount."""
+
+    DOLLARS = "dollars"
+    PERCENTAGE = "percentage"
+
+
+class StateTypedDict(TypedDict):
+    employee_state_field_uuid: NotRequired[str]
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+    override_type: NotRequired[PayrollUpdateOverrideType]
+    r"""Override mode. Only `one_time` is currently supported."""
+    amount: NotRequired[str]
+    r"""The amount to be withheld for this payroll."""
+    amount_type: NotRequired[
+        PayrollUpdateEmployeeCompensationsCustomWithholdingsAmountType
+    ]
+    r"""How to interpret the amount."""
+
+
+class State(BaseModel):
+    employee_state_field_uuid: Optional[str] = None
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+
+    override_type: Optional[PayrollUpdateOverrideType] = None
+    r"""Override mode. Only `one_time` is currently supported."""
+
+    amount: Optional[str] = None
+    r"""The amount to be withheld for this payroll."""
+
+    amount_type: Optional[
+        PayrollUpdateEmployeeCompensationsCustomWithholdingsAmountType
+    ] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["employee_state_field_uuid", "override_type", "amount", "amount_type"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class CustomWithholdingsTypedDict(TypedDict):
+    r"""Optional per-payroll one-time custom withholdings for federal and/or state income tax.
+    When provided, the supplied override takes precedence over any persistent withholding schedule for this run.
+    This field is in limited release; if your application does not have access, requests including it are silently ignored.
+
+    """
+
+    federal: NotRequired[FederalTypedDict]
+    r"""Federal one-time custom withholding override."""
+    state: NotRequired[List[StateTypedDict]]
+    r"""State one-time custom withholding overrides, one entry per state field."""
+
+
+class CustomWithholdings(BaseModel):
+    r"""Optional per-payroll one-time custom withholdings for federal and/or state income tax.
+    When provided, the supplied override takes precedence over any persistent withholding schedule for this run.
+    This field is in limited release; if your application does not have access, requests including it are silently ignored.
+
+    """
+
+    federal: Optional[Federal] = None
+    r"""Federal one-time custom withholding override."""
+
+    state: Optional[List[State]] = None
+    r"""State one-time custom withholding overrides, one entry per state field."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["federal", "state"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
 class PayrollUpdatePaidTimeOffTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the PTO. This also serves as the unique, immutable identifier for the PTO. Must pass in name or policy_uuid but not both."""
@@ -255,6 +411,12 @@ class PayrollUpdateEmployeeCompensationsTypedDict(TypedDict):
     fixed_compensations: NotRequired[List[PayrollUpdateFixedCompensationsTypedDict]]
     hourly_compensations: NotRequired[List[PayrollUpdateHourlyCompensationsTypedDict]]
     deductions: NotRequired[List[PayrollUpdateDeductionsTypedDict]]
+    custom_withholdings: NotRequired[CustomWithholdingsTypedDict]
+    r"""Optional per-payroll one-time custom withholdings for federal and/or state income tax.
+    When provided, the supplied override takes precedence over any persistent withholding schedule for this run.
+    This field is in limited release; if your application does not have access, requests including it are silently ignored.
+
+    """
     paid_time_off: NotRequired[List[PayrollUpdatePaidTimeOffTypedDict]]
     r"""An array of all paid time off the employee is eligible for this pay period. Each paid time off object can be the name or the specific policy_uuid."""
     reimbursements: NotRequired[List[PayrollUpdateReimbursementsTypedDict]]
@@ -283,6 +445,13 @@ class PayrollUpdateEmployeeCompensations(BaseModel):
 
     deductions: Optional[List[PayrollUpdateDeductions]] = None
 
+    custom_withholdings: Optional[CustomWithholdings] = None
+    r"""Optional per-payroll one-time custom withholdings for federal and/or state income tax.
+    When provided, the supplied override takes precedence over any persistent withholding schedule for this run.
+    This field is in limited release; if your application does not have access, requests including it are silently ignored.
+
+    """
+
     paid_time_off: Optional[List[PayrollUpdatePaidTimeOff]] = None
     r"""An array of all paid time off the employee is eligible for this pay period. Each paid time off object can be the name or the specific policy_uuid."""
 
@@ -301,6 +470,7 @@ class PayrollUpdateEmployeeCompensations(BaseModel):
                 "fixed_compensations",
                 "hourly_compensations",
                 "deductions",
+                "custom_withholdings",
                 "paid_time_off",
                 "reimbursements",
             ]

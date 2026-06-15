@@ -32,7 +32,7 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 python:
-  version: 0.4.0
+  version: 0.4.1
   additionalDependencies:
     dev: {}
     main: {}
@@ -52,6 +52,9 @@ python:
   enableCustomCodeRegions: false
   enumFormat: enum
   envVarPrefix: GUSTO
+  eventStreamClassNames:
+    async: EventStreamAsync
+    sync: EventStream
   fixFlags:
     asyncPaginationSep2025: false
     conflictResistantModelImportsFeb2026: false
@@ -71,6 +74,7 @@ python:
       webhooks: ""
   inferUnionDiscriminators: true
   inputModelSuffix: input
+  inputTypedDictSuffix: TypedDict
   license: MIT
   maxMethodParams: 999
   methodArguments: infer-optional-args
@@ -85,6 +89,7 @@ python:
   preApplyUnionDiscriminators: false
   pytestFilterWarnings: []
   pytestTimeout: 0
+  rawResponseHelpers: false
   responseFormat: flat
   sseFlatResponse: false
   templateVersion: v2

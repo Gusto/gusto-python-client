@@ -194,8 +194,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.HeaderXGustoAPIVersion
+        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -295,8 +295,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.HeaderXGustoAPIVersion
+        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -397,8 +397,8 @@ class Introspection(BaseSDK):
             models.OauthAccessTokenRequestBodyTypedDict,
         ],
         x_gusto_api_version: Optional[
-            models.HeaderXGustoAPIVersion
-        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.OauthAccessTokenHeaderXGustoAPIVersion
+        ] = models.OauthAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -495,8 +495,8 @@ class Introspection(BaseSDK):
             models.OauthAccessTokenRequestBodyTypedDict,
         ],
         x_gusto_api_version: Optional[
-            models.HeaderXGustoAPIVersion
-        ] = models.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.OauthAccessTokenHeaderXGustoAPIVersion
+        ] = models.OauthAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,

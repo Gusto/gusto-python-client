@@ -394,6 +394,7 @@ with Gusto() as gusto:
 * [delete](docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
 * [preview](docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
 * [get_v1_contractor_payments_contractor_payment_id_pdf](docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
+* [get_v1_contractors_contractor_uuid_payments](docs/sdks/contractorpayments/README.md#get_v1_contractors_contractor_uuid_payments) - Get contractor payments
 
 ### [Contractors](docs/sdks/contractors/README.md)
 
@@ -899,11 +900,11 @@ with Gusto() as gusto:
 
 
 **Inherit from [`GustoError`](./src/gusto_embedded/models/gustoerror.py)**:
-* [`UnprocessableEntityError1`](./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 159 of 299 methods.*
-* [`ConflictErrorObject`](./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 2 of 299 methods.*
-* [`PeopleBatchConflictError`](./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollDigestConflictError`](./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollBlockersError`](./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 299 methods.*
+* [`UnprocessableEntityError1`](./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 164 of 300 methods.*
+* [`ConflictErrorObject`](./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 2 of 300 methods.*
+* [`PeopleBatchConflictError`](./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 300 methods.*
+* [`PayrollDigestConflictError`](./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 300 methods.*
+* [`PayrollBlockersError`](./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 300 methods.*
 * [`ResponseValidationError`](./src/gusto_embedded/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>

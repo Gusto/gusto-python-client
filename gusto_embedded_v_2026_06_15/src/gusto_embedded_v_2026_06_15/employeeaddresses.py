@@ -53,8 +53,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -155,8 +155,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -271,8 +271,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDHomeAddressesRequestBody(
                 street_1=street_1,
                 street_2=street_2,
@@ -408,8 +408,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDHomeAddressesRequestBody(
                 street_1=street_1,
                 street_2=street_2,
@@ -531,8 +531,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1HomeAddressesHomeAddressUUIDRequest(
-            home_address_uuid=home_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            home_address_uuid=home_address_uuid,
         )
 
         req = self._build_request(
@@ -633,8 +633,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1HomeAddressesHomeAddressUUIDRequest(
-            home_address_uuid=home_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            home_address_uuid=home_address_uuid,
         )
 
         req = self._build_request_async(
@@ -1224,8 +1224,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -1325,8 +1325,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -1429,8 +1429,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDWorkAddressesRequestBody(
                 location_uuid=location_uuid,
                 effective_date=effective_date,
@@ -1549,8 +1549,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDWorkAddressesRequestBody(
                 location_uuid=location_uuid,
                 effective_date=effective_date,
@@ -1665,8 +1665,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request(
@@ -1765,8 +1765,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request_async(
@@ -1871,8 +1871,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
             body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
                 version=version,
                 location_uuid=location_uuid,
@@ -1994,8 +1994,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
             body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
                 version=version,
                 location_uuid=location_uuid,
@@ -2111,8 +2111,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request(
@@ -2216,8 +2216,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request_async(

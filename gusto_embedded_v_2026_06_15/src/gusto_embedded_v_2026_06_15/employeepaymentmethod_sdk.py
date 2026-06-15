@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class EmployeePaymentMethodSDK(BaseSDK):
@@ -936,8 +936,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
         ] = UNSET,
         splits: OptionalNullable[
             Union[
-                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
-                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
+                Iterable[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
+                Iterable[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1074,8 +1074,8 @@ class EmployeePaymentMethodSDK(BaseSDK):
         ] = UNSET,
         splits: OptionalNullable[
             Union[
-                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
-                List[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
+                Iterable[models.PutV1EmployeesEmployeeIDPaymentMethodSplits],
+                Iterable[models.PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict],
             ]
         ] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,

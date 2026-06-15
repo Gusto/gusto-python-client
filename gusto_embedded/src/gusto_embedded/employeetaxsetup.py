@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class EmployeeTaxSetup(BaseSDK):
@@ -728,7 +728,7 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        states: Union[List[models.States], List[models.StatesTypedDict]],
+        states: Union[Iterable[models.States], Iterable[models.StatesTypedDict]],
         x_gusto_api_version: Optional[
             models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
         ] = models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -849,7 +849,7 @@ class EmployeeTaxSetup(BaseSDK):
         self,
         *,
         employee_uuid: str,
-        states: Union[List[models.States], List[models.StatesTypedDict]],
+        states: Union[Iterable[models.States], Iterable[models.StatesTypedDict]],
         x_gusto_api_version: Optional[
             models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion
         ] = models.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,

@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class TimeOffPolicies(BaseSDK):
@@ -690,8 +690,8 @@ class TimeOffPolicies(BaseSDK):
         *,
         time_off_policy_uuid: str,
         employees: Union[
-            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
-            List[
+            Iterable[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            Iterable[
                 models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
             ],
         ],
@@ -815,8 +815,8 @@ class TimeOffPolicies(BaseSDK):
         *,
         time_off_policy_uuid: str,
         employees: Union[
-            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
-            List[
+            Iterable[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            Iterable[
                 models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
             ],
         ],
