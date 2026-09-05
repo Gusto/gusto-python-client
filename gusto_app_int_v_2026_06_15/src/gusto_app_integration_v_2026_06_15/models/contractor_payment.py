@@ -16,7 +16,7 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class ContractorPaymentPaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
+class PaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The payment method."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
@@ -52,7 +52,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""The payment date."""
     hours: NotRequired[str]
     r"""The number of hours worked for the payment."""
-    payment_method: NotRequired[ContractorPaymentPaymentMethod]
+    payment_method: NotRequired[PaymentMethod]
     r"""The payment method."""
     reimbursement: NotRequired[str]
     r"""The reimbursement amount in the payment."""
@@ -92,7 +92,7 @@ class ContractorPayment(BaseModel):
     hours: Optional[str] = None
     r"""The number of hours worked for the payment."""
 
-    payment_method: Optional[ContractorPaymentPaymentMethod] = None
+    payment_method: Optional[PaymentMethod] = None
     r"""The payment method."""
 
     reimbursement: Optional[str] = None
@@ -126,7 +126,7 @@ class ContractorPayment(BaseModel):
     def serialize_payment_method(self, value):
         if isinstance(value, str):
             try:
-                return models.ContractorPaymentPaymentMethod(value)
+                return models.PaymentMethod(value)
             except ValueError:
                 return value
         return value

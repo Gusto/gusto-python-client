@@ -9,7 +9,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.introspection.get_token_info(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gai_client.companies.get_admins(company_id="<id>", x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -31,7 +31,7 @@ async def main():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gai_client:
 
-        res = await gai_client.introspection.get_token_info_async(x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+        res = await gai_client.companies.get_admins_async(company_id="<id>", x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
         # Handle response
         print(res)

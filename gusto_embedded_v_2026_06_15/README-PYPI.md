@@ -202,15 +202,9 @@ import os
 
 with Gusto() as gusto:
 
-    res = gusto.companies.create_partner_managed(security=gusto_embedded_v_2026_06_15.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.put_v1_partner_managed_companies_company_uuid_disassociate(security=gusto_embedded_v_2026_06_15.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), user={
-        "first_name": "Marco",
-        "last_name": "Trantow",
-        "email": "Jewell_Greenholt72@hotmail.com",
-    }, company={
-        "name": "<value>",
-    }, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1PartnerManagedCompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    ), company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -245,6 +239,7 @@ with Gusto() as gusto:
 * [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 * [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#get_onboarding_status) - Get company onboarding status
 * [finish_onboarding](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
+* [put_v1_partner_managed_companies_company_uuid_disassociate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#put_v1_partner_managed_companies_company_uuid_disassociate) - Disassociate a partner managed company
 * [migrate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#migrate) - Migrate company to embedded payroll
 * [create_partner_managed](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
 * [get_v1_partner_managed_companies_company_uuid_migration_readiness](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companies/README.md#get_v1_partner_managed_companies_company_uuid_migration_readiness) - Check company migration readiness
@@ -292,6 +287,18 @@ with Gusto() as gusto:
 * [get_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companyforms/README.md#get_pdf) - Get a company form pdf
 * [sign](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/companyforms/README.md#sign) - Sign a company form
 
+### [ContractorPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md)
+
+* [get_v1_contractors_contractor_uuid_payments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get_v1_contractors_contractor_uuid_payments) - Get contractor payments
+* [get_v1_contractor_payments_contractor_payment_id_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
+* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
+* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
+* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
+* [get_receipt](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
+* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
+
 ### [ContractorDocuments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractordocuments/README.md)
 
 * [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractordocuments/README.md#get_all) - Get all contractor documents
@@ -326,17 +333,6 @@ with Gusto() as gusto:
 ### [ContractorPaymentMethods](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpaymentmethods/README.md)
 
 * [create_bank_account](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpaymentmethods/README.md#create_bank_account) - Create a contractor bank account
-
-### [ContractorPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md)
-
-* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
-* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
-* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
-* [get_receipt](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
-* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
-* [get_v1_contractor_payments_contractor_payment_id_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
 
 ### [Contractors](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/contractors/README.md)
 
@@ -555,6 +551,15 @@ with Gusto() as gusto:
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/locations/README.md#get) - Get all company locations
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/locations/README.md#create) - Create a company location
 
+### [MemberPortalInvitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md)
+
+* [post_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#post_v1_employees_employee_id_member_portal_invitations) - Create an employee member portal invitation
+* [get_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#get_v1_employees_employee_id_member_portal_invitations) - Get an employee member portal invitation
+* [delete_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#delete_v1_employees_employee_id_member_portal_invitations) - Cancel an employee member portal invitation
+* [post_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#post_v1_contractors_contractor_uuid_member_portal_invitations) - Create a contractor member portal invitation
+* [get_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#get_v1_contractors_contractor_uuid_member_portal_invitations) - Get a contractor member portal invitation
+* [delete_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/memberportalinvitations/README.md#delete_v1_contractors_contractor_uuid_member_portal_invitations) - Cancel a contractor member portal invitation
+
 ### [Notifications](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/notifications/README.md)
 
 * [get_company_notifications](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
@@ -564,6 +569,11 @@ with Gusto() as gusto:
 
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/paymentconfigssdk/README.md#get) - Get a company's payment configs
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/paymentconfigssdk/README.md#update) - Update a company's payment configs
+
+### [PayrollCancellations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/payrollcancellations/README.md)
+
+* [post_v1_payroll_batches](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/payrollcancellations/README.md#post_v1_payroll_batches) - Create a payroll cancellation batch
+* [get_v1_payroll_batches_payroll_batch_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/payrollcancellations/README.md#get_v1_payroll_batches_payroll_batch_uuid) - Get a payroll cancellation batch
 
 ### [PayrollDigests](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/payrolldigests/README.md)
 
@@ -625,11 +635,17 @@ with Gusto() as gusto:
 
 ### [Reports](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md)
 
+* [post_v1_bulk_reports](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#post_v1_bulk_reports) - Create a bulk report batch
+* [get_v1_bulk_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#get_v1_bulk_reports_request_uuid) - Get a bulk report batch
 * [post_v1_companies_company_id_reports_employees_annual_fica_wage](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 * [create_custom](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#create_custom) - Create a custom report
 * [post_payrolls_payroll_uuid_reports_general_ledger](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
 * [get_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reports/README.md#get_template) - Get a report template
+
+### [ReverseWireTransactions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reversewiretransactions/README.md)
+
+* [get_reverse_wire_transactions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/reversewiretransactions/README.md#get_reverse_wire_transactions) - Get all reverse wire transactions for a company
 
 ### [SalaryEstimates](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/salaryestimates/README.md)
 
@@ -646,6 +662,11 @@ with Gusto() as gusto:
 * [invite](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/signatories/README.md#invite) - Invite a signatory
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/signatories/README.md#update) - Update a signatory
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/signatories/README.md#delete) - Delete a signatory
+
+### [TaxPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/taxpayments/README.md)
+
+* [get_tax_payments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/taxpayments/README.md#get_tax_payments) - Get all tax payments for a company
+* [get_tax_payment](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/taxpayments/README.md#get_tax_payment) - Get a tax payment for a company
 
 ### [TaxRequirements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/docs/sdks/taxrequirements/README.md)
 
@@ -825,7 +846,7 @@ with Gusto(
 * [`GustoError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/gustoerror.py): The base class for HTTP error responses.
   * [`NotFoundErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/notfounderrorobject.py): Not Found     The requested resource does not exist. Make sure the provided ID/UUID is valid. *
 
-<details><summary>Less common errors (10)</summary>
+<details><summary>Less common errors (12)</summary>
 
 <br />
 
@@ -836,11 +857,13 @@ with Gusto(
 
 
 **Inherit from [`GustoError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/gustoerror.py)**:
-* [`UnprocessableEntityError1`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 159 of 302 methods.*
-* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 2 of 302 methods.*
-* [`PeopleBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 302 methods.*
-* [`PayrollDigestConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 302 methods.*
-* [`PayrollBlockersError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 302 methods.*
+* [`UnprocessableEntityError1`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 172 of 317 methods.*
+* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/conflicterrorobject.py): Conflict    This may happen when the resource version provided does not match the current version — retrieve the latest version and retry — or when the request conflicts with another in-progress operation on the same resource. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `409`. Applicable to 3 of 317 methods.*
+* [`ForbiddenErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/forbiddenerrorobject.py): Forbidden    The targeted company has been archived because its EIN was reassigned to a replacement company. Use the replacement company referenced in the error metadata. Status code `403`. Applicable to 1 of 317 methods.*
+* [`PayrollBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/payrollbatchconflicterror.py): Error response when a payroll cancellation idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 317 methods.*
+* [`PayrollDigestConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 317 methods.*
+* [`PeopleBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 317 methods.*
+* [`PayrollBlockersError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 317 methods.*
 * [`ResponseValidationError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded_v_2026_06_15/./src/gusto_embedded_v_2026_06_15/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -981,6 +1004,20 @@ class CustomClient(AsyncHttpClient):
 
 s = Gusto(async_client=CustomClient(httpx.AsyncClient()))
 ```
+### httpx2 (Pydantic's httpx fork)
+
+[httpx2](https://httpx2.pydantic.dev/) is Pydantic's maintained fork of `httpx`. To run this SDK on httpx2, call `alias_httpx()` at your program's entry point, before importing the SDK, so every `import httpx` — including the ones inside the SDK — resolves to `httpx2`:
+```python
+import httpx2
+
+httpx2.alias_httpx()
+
+from gusto_embedded_v_2026_06_15 import Gusto
+
+s = Gusto()
+```
+
+An SDK can also be generated against httpx2 directly, so it depends on the fork instead of `httpx`, by setting `python.httpClientLibrary: httpx2` in `gen.yaml`.
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->

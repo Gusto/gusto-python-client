@@ -19,12 +19,12 @@ class ContractorPaymentDetailsListPaymentMethod(str, Enum):
     CHECK = "Check"
 
 
-class ContractorPaymentDetailsListSplitBy(str, Enum):
+class SplitBy(str, Enum):
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
 
 
-class ContractorPaymentDetailsListSplitsTypedDict(TypedDict):
+class SplitsTypedDict(TypedDict):
     bank_account_uuid: NotRequired[str]
     name: NotRequired[str]
     hidden_account_number: NotRequired[str]
@@ -39,7 +39,7 @@ class ContractorPaymentDetailsListSplitsTypedDict(TypedDict):
     account_type: NotRequired[str]
 
 
-class ContractorPaymentDetailsListSplits(BaseModel):
+class Splits(BaseModel):
     bank_account_uuid: Optional[str] = None
 
     name: Optional[str] = None
@@ -102,9 +102,9 @@ class ContractorPaymentDetailsListTypedDict(TypedDict):
     payment_method: NotRequired[ContractorPaymentDetailsListPaymentMethod]
     first_name: NotRequired[str]
     last_name: NotRequired[str]
-    split_by: NotRequired[Nullable[ContractorPaymentDetailsListSplitBy]]
+    split_by: NotRequired[Nullable[SplitBy]]
     r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the amount represents cents and the last split amount must be `null` to capture the remainder."""
-    splits: NotRequired[Nullable[List[ContractorPaymentDetailsListSplitsTypedDict]]]
+    splits: NotRequired[Nullable[List[SplitsTypedDict]]]
 
 
 class ContractorPaymentDetailsList(BaseModel):
@@ -116,10 +116,10 @@ class ContractorPaymentDetailsList(BaseModel):
 
     last_name: Optional[str] = None
 
-    split_by: OptionalNullable[ContractorPaymentDetailsListSplitBy] = UNSET
+    split_by: OptionalNullable[SplitBy] = UNSET
     r"""Describes how the payment will be split. If split_by is Percentage, then the split amounts must add up to exactly 100. If split_by is Amount, then the amount represents cents and the last split amount must be `null` to capture the remainder."""
 
-    splits: OptionalNullable[List[ContractorPaymentDetailsListSplits]] = UNSET
+    splits: OptionalNullable[List[Splits]] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):

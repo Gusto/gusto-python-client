@@ -205,7 +205,7 @@ with GustoAppIntegration() as gusto_app_integration:
         "email": "Fred_Durgan@yahoo.com",
     }, company={
         "name": "<value>",
-    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -254,7 +254,6 @@ with GustoAppIntegration() as gusto_app_integration:
 
 ### [Contractors](docs/sdks/contractors/README.md)
 
-* [get_v1_companies_company_id_contractors_payment_details](docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 * [get_by_id](docs/sdks/contractors/README.md#get_by_id) - Get a contractor
 * [update](docs/sdks/contractors/README.md#update) - Update a contractor
 * [get](docs/sdks/contractors/README.md#get) - Get contractors of a company
@@ -393,7 +392,6 @@ with GustoAppIntegration() as gusto_app_integration:
 
 ### [Reports](docs/sdks/reports/README.md)
 
-* [post_v1_companies_company_id_reports_employees_annual_fica_wage](docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 * [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
 * [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 
@@ -545,8 +543,8 @@ with GustoAppIntegration(
 
 
 **Inherit from [`GustoAppIntegrationError`](./src/gusto_app_integration_v_2026_06_15/models/gustoappintegrationerror.py)**:
-* [`UnprocessableEntityErrorObject`](./src/gusto_app_integration_v_2026_06_15/models/unprocessableentityerrorobject.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 65 of 137 methods.*
-* [`ConflictErrorObject`](./src/gusto_app_integration_v_2026_06_15/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 1 of 137 methods.*
+* [`UnprocessableEntityErrorObject`](./src/gusto_app_integration_v_2026_06_15/models/unprocessableentityerrorobject.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 64 of 135 methods.*
+* [`ConflictErrorObject`](./src/gusto_app_integration_v_2026_06_15/models/conflicterrorobject.py): Conflict    This may happen when the resource version provided does not match the current version — retrieve the latest version and retry — or when the request conflicts with another in-progress operation on the same resource. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `409`. Applicable to 1 of 135 methods.*
 * [`ResponseValidationError`](./src/gusto_app_integration_v_2026_06_15/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -685,6 +683,20 @@ class CustomClient(AsyncHttpClient):
 
 s = GustoAppIntegration(async_client=CustomClient(httpx.AsyncClient()))
 ```
+### httpx2 (Pydantic's httpx fork)
+
+[httpx2](https://httpx2.pydantic.dev/) is Pydantic's maintained fork of `httpx`. To run this SDK on httpx2, call `alias_httpx()` at your program's entry point, before importing the SDK, so every `import httpx` — including the ones inside the SDK — resolves to `httpx2`:
+```python
+import httpx2
+
+httpx2.alias_httpx()
+
+from gusto_app_integration_v_2026_06_15 import GustoAppIntegration
+
+s = GustoAppIntegration()
+```
+
+An SDK can also be generated against httpx2 directly, so it depends on the fork instead of `httpx`, by setting `python.httpClientLibrary: httpx2` in `gen.yaml`.
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->

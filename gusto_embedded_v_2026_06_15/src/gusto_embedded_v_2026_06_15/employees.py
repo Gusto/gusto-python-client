@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Employees(BaseSDK):
@@ -17,11 +17,11 @@ class Employees(BaseSDK):
         self,
         *,
         employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -36,9 +36,9 @@ class Employees(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -55,10 +55,10 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -96,6 +96,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -123,11 +128,11 @@ class Employees(BaseSDK):
         self,
         *,
         employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -142,9 +147,9 @@ class Employees(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -161,10 +166,10 @@ class Employees(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -202,6 +207,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -321,6 +331,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -447,6 +462,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -557,6 +577,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -665,6 +690,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -700,7 +730,7 @@ class Employees(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        include: Optional[List[models.GetV1EmployeesQueryParamInclude]] = None,
+        include: Optional[Iterable[models.GetV1EmployeesQueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -737,7 +767,9 @@ class Employees(BaseSDK):
         request = models.GetV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
-            include=include,
+            include=utils.unmarshal(
+                include, Optional[List[models.GetV1EmployeesQueryParamInclude]]
+            ),
         )
 
         req = self._build_request(
@@ -775,6 +807,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -805,7 +842,7 @@ class Employees(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        include: Optional[List[models.GetV1EmployeesQueryParamInclude]] = None,
+        include: Optional[Iterable[models.GetV1EmployeesQueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -842,7 +879,9 @@ class Employees(BaseSDK):
         request = models.GetV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
-            include=include,
+            include=utils.unmarshal(
+                include, Optional[List[models.GetV1EmployeesQueryParamInclude]]
+            ),
         )
 
         req = self._build_request_async(
@@ -880,6 +919,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1015,6 +1059,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1155,6 +1204,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1262,6 +1316,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1369,6 +1428,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1409,13 +1473,13 @@ class Employees(BaseSDK):
         search_term: Optional[str] = None,
         sort_by: Optional[str] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
         ] = None,
         onboarded: Optional[bool] = None,
         onboarded_active: Optional[bool] = None,
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
-        uuids: Optional[List[str]] = None,
+        uuids: Optional[Iterable[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1469,12 +1533,17 @@ class Employees(BaseSDK):
             payroll_uuid=payroll_uuid,
             search_term=search_term,
             sort_by=sort_by,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+                ],
+            ),
             onboarded=onboarded,
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            uuids=uuids,
+            uuids=utils.unmarshal(uuids, Optional[List[str]]),
             page=page,
             per=per,
         )
@@ -1514,6 +1583,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1549,13 +1623,13 @@ class Employees(BaseSDK):
         search_term: Optional[str] = None,
         sort_by: Optional[str] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
         ] = None,
         onboarded: Optional[bool] = None,
         onboarded_active: Optional[bool] = None,
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
-        uuids: Optional[List[str]] = None,
+        uuids: Optional[Iterable[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1609,12 +1683,17 @@ class Employees(BaseSDK):
             payroll_uuid=payroll_uuid,
             search_term=search_term,
             sort_by=sort_by,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+                ],
+            ),
             onboarded=onboarded,
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            uuids=uuids,
+            uuids=utils.unmarshal(uuids, Optional[List[str]]),
             page=page,
             per=per,
         )
@@ -1654,6 +1733,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1790,6 +1874,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1931,6 +2020,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2073,6 +2167,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2210,6 +2309,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2331,6 +2435,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2457,6 +2566,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2580,6 +2694,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2698,6 +2817,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2851,6 +2975,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3009,6 +3138,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

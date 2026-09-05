@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Webhooks(BaseSDK):
@@ -91,6 +91,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscriptions",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -188,6 +193,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscriptions",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -213,7 +223,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -255,7 +265,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -300,6 +313,11 @@ class Webhooks(BaseSDK):
                 operation_id="post-v1-webhook-subscription",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -331,7 +349,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -373,7 +391,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -418,6 +439,11 @@ class Webhooks(BaseSDK):
                 operation_id="post-v1-webhook-subscription",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -486,8 +512,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -524,6 +550,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -592,8 +623,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -630,6 +661,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -661,7 +697,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -700,10 +738,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -748,6 +789,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -784,7 +830,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -823,10 +871,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -871,6 +922,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -944,8 +1000,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -982,6 +1038,11 @@ class Webhooks(BaseSDK):
                 operation_id="delete-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1050,8 +1111,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -1088,6 +1149,11 @@ class Webhooks(BaseSDK):
                 operation_id="delete-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1156,8 +1222,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -1194,6 +1260,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-verification-token-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1264,8 +1335,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -1302,6 +1373,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-verification-token-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1376,8 +1452,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1424,6 +1500,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-verify-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1501,8 +1582,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1549,6 +1630,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-verify-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1657,6 +1743,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhooks-health_check",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1754,6 +1845,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhooks-health_check",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

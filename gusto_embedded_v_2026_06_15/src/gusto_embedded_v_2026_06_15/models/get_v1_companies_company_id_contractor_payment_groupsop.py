@@ -24,6 +24,10 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion(str, 
 class GetV1CompaniesCompanyIDContractorPaymentGroupsRequestTypedDict(TypedDict):
     company_id: str
     r"""The UUID of the company"""
+    x_gusto_api_version: NotRequired[
+        GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
+    ]
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     start_date: NotRequired[str]
     r"""The time period for which to retrieve contractor payment groups. Defaults to 6 months ago."""
     end_date: NotRequired[str]
@@ -32,10 +36,6 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequestTypedDict(TypedDict):
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    x_gusto_api_version: NotRequired[
-        GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
-    ]
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
@@ -43,6 +43,13 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the company"""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     start_date: Annotated[
         Optional[str],
@@ -68,17 +75,10 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
-    x_gusto_api_version: Annotated[
-        Optional[GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
-            ["start_date", "end_date", "page", "per", "X-Gusto-API-Version"]
+            ["X-Gusto-API-Version", "start_date", "end_date", "page", "per"]
         )
         serialized = handler(self)
         m = {}

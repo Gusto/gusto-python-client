@@ -16,7 +16,7 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class WageType(str, Enum):
+class ContractorWageType(str, Enum):
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     FIXED = "Fixed"
@@ -84,7 +84,7 @@ class Address(BaseModel):
         return m
 
 
-class ContractorOnboardingStatus1(str, Enum):
+class OnboardingStatus(str, Enum):
     r"""One of the \"onboarding_status\" enum values."""
 
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
@@ -155,7 +155,7 @@ class ContractorStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
-class ContractorMemberPortalInvitationStatusTypedDict(TypedDict):
+class MemberPortalInvitationStatusTypedDict(TypedDict):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: NotRequired[ContractorStatus]
@@ -168,7 +168,7 @@ class ContractorMemberPortalInvitationStatusTypedDict(TypedDict):
     r"""The date and time when the password reset was last resent."""
 
 
-class ContractorMemberPortalInvitationStatus(BaseModel):
+class MemberPortalInvitationStatus(BaseModel):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: Optional[ContractorStatus] = None
@@ -225,7 +225,7 @@ class ContractorTypedDict(TypedDict):
     r"""The UUID of the contractor in Gusto."""
     company_uuid: NotRequired[str]
     r"""The UUID of the company the contractor is employed by."""
-    wage_type: NotRequired[WageType]
+    wage_type: NotRequired[ContractorWageType]
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
     is_active: NotRequired[bool]
     r"""The status of the contractor with the company."""
@@ -247,6 +247,8 @@ class ContractorTypedDict(TypedDict):
     r"""Whether company's Employer Identification Number (EIN) is present"""
     email: NotRequired[Nullable[str]]
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     start_date: NotRequired[str]
     r"""The contractor's start date."""
     address: NotRequired[Nullable[AddressTypedDict]]
@@ -261,7 +263,7 @@ class ContractorTypedDict(TypedDict):
     """
     onboarded: NotRequired[bool]
     r"""The updated onboarding status for the contractor"""
-    onboarding_status: NotRequired[ContractorOnboardingStatus1]
+    onboarding_status: NotRequired[OnboardingStatus]
     r"""One of the \"onboarding_status\" enum values."""
     payment_method: NotRequired[Nullable[ContractorPaymentMethod1]]
     r"""The contractor's payment method."""
@@ -282,7 +284,7 @@ class ContractorTypedDict(TypedDict):
     rehire_cancellation_eligible: NotRequired[bool]
     r"""Whether the contractor's pending rehire can be cancelled."""
     member_portal_invitation_status: NotRequired[
-        Nullable[ContractorMemberPortalInvitationStatusTypedDict]
+        Nullable[MemberPortalInvitationStatusTypedDict]
     ]
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
     partner_portal_invitation_sent: NotRequired[Nullable[bool]]
@@ -298,7 +300,7 @@ class Contractor(BaseModel):
     company_uuid: Optional[str] = None
     r"""The UUID of the company the contractor is employed by."""
 
-    wage_type: Optional[WageType] = None
+    wage_type: Optional[ContractorWageType] = None
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     is_active: Optional[bool] = True
@@ -331,6 +333,9 @@ class Contractor(BaseModel):
     email: OptionalNullable[str] = UNSET
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
 
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     start_date: Optional[str] = None
     r"""The contractor's start date."""
 
@@ -351,7 +356,7 @@ class Contractor(BaseModel):
     onboarded: Optional[bool] = None
     r"""The updated onboarding status for the contractor"""
 
-    onboarding_status: Optional[ContractorOnboardingStatus1] = None
+    onboarding_status: Optional[OnboardingStatus] = None
     r"""One of the \"onboarding_status\" enum values."""
 
     payment_method: OptionalNullable[ContractorPaymentMethod1] = UNSET
@@ -381,9 +386,9 @@ class Contractor(BaseModel):
     rehire_cancellation_eligible: Optional[bool] = None
     r"""Whether the contractor's pending rehire can be cancelled."""
 
-    member_portal_invitation_status: OptionalNullable[
-        ContractorMemberPortalInvitationStatus
-    ] = UNSET
+    member_portal_invitation_status: OptionalNullable[MemberPortalInvitationStatus] = (
+        UNSET
+    )
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     partner_portal_invitation_sent: OptionalNullable[bool] = UNSET
@@ -405,6 +410,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "start_date",
                 "address",
                 "hourly_rate",
@@ -434,6 +440,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "address",
                 "file_new_hire_report",
                 "work_state",

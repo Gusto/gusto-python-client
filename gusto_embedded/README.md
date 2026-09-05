@@ -244,7 +244,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -262,15 +262,9 @@ import os
 
 with Gusto() as gusto:
 
-    res = gusto.companies.create_partner_managed(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.put_v1_partner_managed_companies_company_uuid_disassociate(security=gusto_embedded.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), user={
-        "first_name": "Marco",
-        "last_name": "Trantow",
-        "email": "Jewell_Greenholt72@hotmail.com",
-    }, company={
-        "name": "<value>",
-    }, x_gusto_api_version=gusto_embedded.PostV1PartnerManagedCompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    ), company_uuid="<id>", x_gusto_api_version=gusto_embedded.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -298,18 +292,19 @@ with Gusto() as gusto:
 
 ### [Companies](docs/sdks/companies/README.md)
 
-* [create_partner_managed](docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
+* [list_admins](docs/sdks/companies/README.md#list_admins) - Get all the admins at a company
+* [create_admin](docs/sdks/companies/README.md#create_admin) - Create an admin for the company
 * [get](docs/sdks/companies/README.md#get) - Get a company
 * [update](docs/sdks/companies/README.md#update) - Update a company
+* [get_custom_fields](docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
+* [get_onboarding_status](docs/sdks/companies/README.md#get_onboarding_status) - Get company onboarding status
+* [finish_onboarding](docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
+* [put_v1_partner_managed_companies_company_uuid_disassociate](docs/sdks/companies/README.md#put_v1_partner_managed_companies_company_uuid_disassociate) - Disassociate a partner managed company
 * [migrate](docs/sdks/companies/README.md#migrate) - Migrate company to embedded payroll
+* [create_partner_managed](docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
 * [get_v1_partner_managed_companies_company_uuid_migration_readiness](docs/sdks/companies/README.md#get_v1_partner_managed_companies_company_uuid_migration_readiness) - Check company migration readiness
 * [accept_terms_of_service](docs/sdks/companies/README.md#accept_terms_of_service) - Accept terms of service for a company user
 * [retrieve_terms_of_service](docs/sdks/companies/README.md#retrieve_terms_of_service) - Retrieve terms of service status for a company user
-* [list_admins](docs/sdks/companies/README.md#list_admins) - Get all the admins at a company
-* [create_admin](docs/sdks/companies/README.md#create_admin) - Create an admin for the company
-* [get_onboarding_status](docs/sdks/companies/README.md#get_onboarding_status) - Get company onboarding status
-* [finish_onboarding](docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
-* [get_custom_fields](docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 
 ### [Companies.Suspensions](docs/sdks/suspensions/README.md)
 
@@ -322,23 +317,23 @@ with Gusto() as gusto:
 
 ### [CompanyAttachments](docs/sdks/companyattachments/README.md)
 
-* [get_details](docs/sdks/companyattachments/README.md#get_details) - Get Company Attachment Details
 * [get_list](docs/sdks/companyattachments/README.md#get_list) - Get List of Company Attachments
 * [create](docs/sdks/companyattachments/README.md#create) - Create Company Attachment and Upload File
+* [get_details](docs/sdks/companyattachments/README.md#get_details) - Get Company Attachment Details
 
 ### [CompanyBenefits](docs/sdks/companybenefits/README.md)
 
+* [get_all](docs/sdks/companybenefits/README.md#get_all) - Get all supported benefits
+* [get_supported](docs/sdks/companybenefits/README.md#get_supported) - Get a supported benefit
+* [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by benefit type
 * [list](docs/sdks/companybenefits/README.md#list) - Get benefits for a company
 * [create](docs/sdks/companybenefits/README.md#create) - Create a company benefit
 * [get](docs/sdks/companybenefits/README.md#get) - Get a company benefit
 * [update](docs/sdks/companybenefits/README.md#update) - Update a company benefit
 * [delete](docs/sdks/companybenefits/README.md#delete) - Delete a company benefit
-* [get_all](docs/sdks/companybenefits/README.md#get_all) - Get all supported benefits
-* [get_supported](docs/sdks/companybenefits/README.md#get_supported) - Get a supported benefit
-* [get_summary](docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
 * [get_employee_benefits](docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
 * [update_employee_benefits](docs/sdks/companybenefits/README.md#update_employee_benefits) - Bulk update employee benefits for a company benefit
-* [get_requirements](docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by benefit type
+* [get_summary](docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
 * [get_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
 * [put_v1_company_benefits_company_benefit_id_contribution_exclusions](docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
@@ -348,6 +343,18 @@ with Gusto() as gusto:
 * [get](docs/sdks/companyforms/README.md#get) - Get a company form
 * [get_pdf](docs/sdks/companyforms/README.md#get_pdf) - Get a company form pdf
 * [sign](docs/sdks/companyforms/README.md#sign) - Sign a company form
+
+### [ContractorPayments](docs/sdks/contractorpayments/README.md)
+
+* [get_v1_contractors_contractor_uuid_payments](docs/sdks/contractorpayments/README.md#get_v1_contractors_contractor_uuid_payments) - Get contractor payments
+* [get_v1_contractor_payments_contractor_payment_id_pdf](docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
+* [list](docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
+* [create](docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
+* [get](docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
+* [delete](docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
+* [preview](docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
+* [get_receipt](docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
+* [fund](docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
 
 ### [ContractorDocuments](docs/sdks/contractordocuments/README.md)
 
@@ -365,12 +372,12 @@ with Gusto() as gusto:
 
 ### [ContractorPaymentGroups](docs/sdks/contractorpaymentgroups/README.md)
 
+* [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
+* [fund](docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
 * [get_list](docs/sdks/contractorpaymentgroups/README.md#get_list) - Get contractor payment groups for a company
 * [create](docs/sdks/contractorpaymentgroups/README.md#create) - Create a contractor payment group
-* [preview](docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
 * [get](docs/sdks/contractorpaymentgroups/README.md#get) - Get a contractor payment group
 * [delete](docs/sdks/contractorpaymentgroups/README.md#delete) - Cancel a contractor payment group
-* [fund](docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
 * [get_v1_contractor_payment_groups_id_partner_disbursements](docs/sdks/contractorpaymentgroups/README.md#get_v1_contractor_payment_groups_id_partner_disbursements) - Get partner disbursements for a contractor payment group
 * [patch_v1_contractor_payment_groups_id_partner_disbursements](docs/sdks/contractorpaymentgroups/README.md#patch_v1_contractor_payment_groups_id_partner_disbursements) - Update partner disbursements for a contractor payment group
 
@@ -384,26 +391,8 @@ with Gusto() as gusto:
 
 * [create_bank_account](docs/sdks/contractorpaymentmethods/README.md#create_bank_account) - Create a contractor bank account
 
-### [ContractorPayments](docs/sdks/contractorpayments/README.md)
-
-* [get_receipt](docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
-* [fund](docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
-* [list](docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
-* [create](docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
-* [get](docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
-* [delete](docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
-* [preview](docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
-* [get_v1_contractor_payments_contractor_payment_id_pdf](docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
-
 ### [Contractors](docs/sdks/contractors/README.md)
 
-* [list](docs/sdks/contractors/README.md#list) - Get contractors of a company
-* [create](docs/sdks/contractors/README.md#create) - Create a contractor
-* [get](docs/sdks/contractors/README.md#get) - Get a contractor
-* [update](docs/sdks/contractors/README.md#update) - Update a contractor
-* [delete](docs/sdks/contractors/README.md#delete) - Delete a contractor
-* [get_onboarding_status](docs/sdks/contractors/README.md#get_onboarding_status) - Get the contractor's onboarding status
-* [update_onboarding_status](docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
 * [get_address](docs/sdks/contractors/README.md#get_address) - Get a contractor address
 * [update_address](docs/sdks/contractors/README.md#update_address) - Create or update a contractor's address
 * [get_v1_companies_company_id_contractors_payment_details](docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
@@ -411,16 +400,23 @@ with Gusto() as gusto:
 * [delete_v1_contractors_contractor_uuid_rehire](docs/sdks/contractors/README.md#delete_v1_contractors_contractor_uuid_rehire) - Cancel a pending contractor rehire
 * [post_v1_contractors_contractor_uuid_termination](docs/sdks/contractors/README.md#post_v1_contractors_contractor_uuid_termination) - Schedule a contractor termination
 * [delete_v1_contractors_contractor_uuid_termination](docs/sdks/contractors/README.md#delete_v1_contractors_contractor_uuid_termination) - Cancel a pending contractor termination
+* [get](docs/sdks/contractors/README.md#get) - Get a contractor
+* [update](docs/sdks/contractors/README.md#update) - Update a contractor
+* [delete](docs/sdks/contractors/README.md#delete) - Delete a contractor
+* [list](docs/sdks/contractors/README.md#list) - Get contractors of a company
+* [create](docs/sdks/contractors/README.md#create) - Create a contractor
+* [get_onboarding_status](docs/sdks/contractors/README.md#get_onboarding_status) - Get the contractor's onboarding status
+* [update_onboarding_status](docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
 
 ### [Departments](docs/sdks/departments/README.md)
 
-* [get_all](docs/sdks/departments/README.md#get_all) - Get all departments of a company
-* [create](docs/sdks/departments/README.md#create) - Create a department
 * [get](docs/sdks/departments/README.md#get) - Get a department
 * [update](docs/sdks/departments/README.md#update) - Update a department
 * [delete](docs/sdks/departments/README.md#delete) - Delete a department
 * [add_people](docs/sdks/departments/README.md#add_people) - Add people to a department
 * [remove_people](docs/sdks/departments/README.md#remove_people) - Remove people from a department
+* [get_all](docs/sdks/departments/README.md#get_all) - Get all departments of a company
+* [create](docs/sdks/departments/README.md#create) - Create a department
 
 ### [EarningTypes](docs/sdks/earningtypes/README.md)
 
@@ -458,24 +454,24 @@ with Gusto() as gusto:
 
 ### [EmployeeEmployments](docs/sdks/employeeemployments/README.md)
 
-* [get_terminations](docs/sdks/employeeemployments/README.md#get_terminations) - Get terminations for an employee
-* [create_termination](docs/sdks/employeeemployments/README.md#create_termination) - Create an employee termination
-* [delete_termination](docs/sdks/employeeemployments/README.md#delete_termination) - Delete an employee termination
-* [update_termination](docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
 * [get_rehire](docs/sdks/employeeemployments/README.md#get_rehire) - Get an employee rehire
 * [create_rehire](docs/sdks/employeeemployments/README.md#create_rehire) - Create an employee rehire
 * [rehire](docs/sdks/employeeemployments/README.md#rehire) - Update an employee rehire
 * [delete_rehire](docs/sdks/employeeemployments/README.md#delete_rehire) - Delete an employee rehire
 * [get_history](docs/sdks/employeeemployments/README.md#get_history) - Get employment history for an employee
+* [get_terminations](docs/sdks/employeeemployments/README.md#get_terminations) - Get terminations for an employee
+* [create_termination](docs/sdks/employeeemployments/README.md#create_termination) - Create an employee termination
+* [delete_termination](docs/sdks/employeeemployments/README.md#delete_termination) - Delete an employee termination
+* [update_termination](docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
 * [get_v1_terminations_employee_id](docs/sdks/employeeemployments/README.md#get_v1_terminations_employee_id) - Get an employee termination
 
 ### [EmployeeForms](docs/sdks/employeeforms/README.md)
 
-* [generate_w2](docs/sdks/employeeforms/README.md#generate_w2) - Generate a W2 form [DEMO]
 * [list](docs/sdks/employeeforms/README.md#list) - Get all employee forms
 * [get](docs/sdks/employeeforms/README.md#get) - Get an employee form
 * [get_pdf](docs/sdks/employeeforms/README.md#get_pdf) - Get the employee form pdf
 * [sign](docs/sdks/employeeforms/README.md#sign) - Sign an employee form
+* [generate_w2](docs/sdks/employeeforms/README.md#generate_w2) - Generate a W2 form [DEMO]
 
 ### [EmployeePaymentMethod](docs/sdks/employeepaymentmethodsdk/README.md)
 
@@ -491,18 +487,18 @@ with Gusto() as gusto:
 
 ### [Employees](docs/sdks/employees/README.md)
 
-* [list](docs/sdks/employees/README.md#list) - Get employees of a company
-* [create](docs/sdks/employees/README.md#create) - Create an employee
+* [get_custom_fields](docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
 * [get_v1_companies_company_id_employees_payment_details](docs/sdks/employees/README.md#get_v1_companies_company_id_employees_payment_details) - Get employee payment details for a company
-* [create_historical](docs/sdks/employees/README.md#create_historical) - Create a historical employee
+* [get_time_off_activities](docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
 * [get](docs/sdks/employees/README.md#get) - Get an employee
 * [update](docs/sdks/employees/README.md#update) - Update an employee.
 * [delete](docs/sdks/employees/README.md#delete) - Delete an onboarding employee
-* [get_custom_fields](docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
-* [update_onboarding_documents_config](docs/sdks/employees/README.md#update_onboarding_documents_config) - Update employee onboarding documents config
+* [list](docs/sdks/employees/README.md#list) - Get employees of a company
+* [create](docs/sdks/employees/README.md#create) - Create an employee
 * [get_onboarding_status](docs/sdks/employees/README.md#get_onboarding_status) - Get the employee's onboarding status
 * [update_onboarding_status](docs/sdks/employees/README.md#update_onboarding_status) - Update the employee's onboarding status
-* [get_time_off_activities](docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
+* [update_onboarding_documents_config](docs/sdks/employees/README.md#update_onboarding_documents_config) - Update employee onboarding documents config
+* [create_historical](docs/sdks/employees/README.md#create_historical) - Create a historical employee
 
 ### [EmployeeTaxSetup](docs/sdks/employeetaxsetup/README.md)
 
@@ -519,13 +515,13 @@ with Gusto() as gusto:
 
 * [get](docs/sdks/externalpayrolls/README.md#get) - Get external payrolls for a company
 * [create](docs/sdks/externalpayrolls/README.md#create) - Create an external payroll for a company
+* [list_tax_liabilities](docs/sdks/externalpayrolls/README.md#list_tax_liabilities) - Get tax liabilities
+* [update_tax_liabilities](docs/sdks/externalpayrolls/README.md#update_tax_liabilities) - Update tax liabilities
+* [finalize_tax_liabilities](docs/sdks/externalpayrolls/README.md#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 * [retrieve](docs/sdks/externalpayrolls/README.md#retrieve) - Get an external payroll
 * [update](docs/sdks/externalpayrolls/README.md#update) - Update an external payroll
 * [delete](docs/sdks/externalpayrolls/README.md#delete) - Delete an external payroll
 * [calculate_taxes](docs/sdks/externalpayrolls/README.md#calculate_taxes) - Get tax suggestions for an external payroll
-* [list_tax_liabilities](docs/sdks/externalpayrolls/README.md#list_tax_liabilities) - Get tax liabilities
-* [update_tax_liabilities](docs/sdks/externalpayrolls/README.md#update_tax_liabilities) - Update tax liabilities
-* [finalize_tax_liabilities](docs/sdks/externalpayrolls/README.md#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 
 ### [FederalTaxDetails](docs/sdks/federaltaxdetailssdk/README.md)
 
@@ -540,9 +536,9 @@ with Gusto() as gusto:
 
 * [list](docs/sdks/garnishments/README.md#list) - Get garnishments for an employee
 * [create](docs/sdks/garnishments/README.md#create) - Create a garnishment
+* [get_child_support_data](docs/sdks/garnishments/README.md#get_child_support_data) - Get child support garnishment data
 * [get](docs/sdks/garnishments/README.md#get) - Get a garnishment
 * [update](docs/sdks/garnishments/README.md#update) - Update a garnishment
-* [get_child_support_data](docs/sdks/garnishments/README.md#get_child_support_data) - Get child support garnishment data
 
 ### [GeneratedDocuments](docs/sdks/generateddocuments/README.md)
 
@@ -584,8 +580,8 @@ with Gusto() as gusto:
 
 ### [Introspection](docs/sdks/introspection/README.md)
 
-* [get_info](docs/sdks/introspection/README.md#get_info) - Get info about the current access token
 * [oauth_access_token](docs/sdks/introspection/README.md#oauth_access_token) - Create a System Access Token or Refresh an Access Token
+* [get_info](docs/sdks/introspection/README.md#get_info) - Get info about the current access token
 
 ### [Invoices](docs/sdks/invoices/README.md)
 
@@ -593,34 +589,48 @@ with Gusto() as gusto:
 
 ### [JobsAndCompensations](docs/sdks/jobsandcompensations/README.md)
 
-* [get_jobs](docs/sdks/jobsandcompensations/README.md#get_jobs) - Get jobs for an employee
-* [create_job](docs/sdks/jobsandcompensations/README.md#create_job) - Create a job
-* [get_job](docs/sdks/jobsandcompensations/README.md#get_job) - Get a job
-* [update](docs/sdks/jobsandcompensations/README.md#update) - Update a job
-* [delete](docs/sdks/jobsandcompensations/README.md#delete) - Delete an individual job
 * [get_compensations](docs/sdks/jobsandcompensations/README.md#get_compensations) - Get compensations for a job
 * [create_compensation](docs/sdks/jobsandcompensations/README.md#create_compensation) - Create a compensation
 * [get_compensation](docs/sdks/jobsandcompensations/README.md#get_compensation) - Get a compensation
 * [update_compensation](docs/sdks/jobsandcompensations/README.md#update_compensation) - Update a compensation
 * [delete_compensation](docs/sdks/jobsandcompensations/README.md#delete_compensation) - Delete a compensation
+* [get_job](docs/sdks/jobsandcompensations/README.md#get_job) - Get a job
+* [update](docs/sdks/jobsandcompensations/README.md#update) - Update a job
+* [delete](docs/sdks/jobsandcompensations/README.md#delete) - Delete an individual job
+* [get_jobs](docs/sdks/jobsandcompensations/README.md#get_jobs) - Get jobs for an employee
+* [create_job](docs/sdks/jobsandcompensations/README.md#create_job) - Create a job
 
 ### [Locations](docs/sdks/locations/README.md)
 
-* [get](docs/sdks/locations/README.md#get) - Get all company locations
-* [create](docs/sdks/locations/README.md#create) - Create a company location
+* [get_minimum_wages](docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
 * [retrieve](docs/sdks/locations/README.md#retrieve) - Get a location
 * [update](docs/sdks/locations/README.md#update) - Update a location
-* [get_minimum_wages](docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
+* [get](docs/sdks/locations/README.md#get) - Get all company locations
+* [create](docs/sdks/locations/README.md#create) - Create a company location
+
+### [MemberPortalInvitations](docs/sdks/memberportalinvitations/README.md)
+
+* [post_v1_employees_employee_id_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#post_v1_employees_employee_id_member_portal_invitations) - Create an employee member portal invitation
+* [get_v1_employees_employee_id_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#get_v1_employees_employee_id_member_portal_invitations) - Get an employee member portal invitation
+* [delete_v1_employees_employee_id_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#delete_v1_employees_employee_id_member_portal_invitations) - Cancel an employee member portal invitation
+* [post_v1_contractors_contractor_uuid_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#post_v1_contractors_contractor_uuid_member_portal_invitations) - Create a contractor member portal invitation
+* [get_v1_contractors_contractor_uuid_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#get_v1_contractors_contractor_uuid_member_portal_invitations) - Get a contractor member portal invitation
+* [delete_v1_contractors_contractor_uuid_member_portal_invitations](docs/sdks/memberportalinvitations/README.md#delete_v1_contractors_contractor_uuid_member_portal_invitations) - Cancel a contractor member portal invitation
 
 ### [Notifications](docs/sdks/notifications/README.md)
 
-* [get_details](docs/sdks/notifications/README.md#get_details) - Get a notification's details
 * [get_company_notifications](docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
+* [get_details](docs/sdks/notifications/README.md#get_details) - Get a notification's details
 
 ### [PaymentConfigs](docs/sdks/paymentconfigssdk/README.md)
 
 * [get](docs/sdks/paymentconfigssdk/README.md#get) - Get a company's payment configs
 * [update](docs/sdks/paymentconfigssdk/README.md#update) - Update a company's payment configs
+
+### [PayrollCancellations](docs/sdks/payrollcancellations/README.md)
+
+* [post_v1_payroll_batches](docs/sdks/payrollcancellations/README.md#post_v1_payroll_batches) - Create a payroll cancellation batch
+* [get_v1_payroll_batches_payroll_batch_uuid](docs/sdks/payrollcancellations/README.md#get_v1_payroll_batches_payroll_batch_uuid) - Get a payroll cancellation batch
 
 ### [PayrollDigests](docs/sdks/payrolldigests/README.md)
 
@@ -629,38 +639,38 @@ with Gusto() as gusto:
 
 ### [Payrolls](docs/sdks/payrolls/README.md)
 
-* [list](docs/sdks/payrolls/README.md#list) - Get all payrolls for a company
-* [create_off_cycle](docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
+* [generate_printable_checks](docs/sdks/payrolls/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
+* [get_pay_stubs](docs/sdks/payrolls/README.md#get_pay_stubs) - Get an employee's pay stubs
+* [get_pay_stub](docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
+* [get_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
+* [patch_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
 * [get_approved_reversals](docs/sdks/payrolls/README.md#get_approved_reversals) - Get approved payroll reversals
 * [get](docs/sdks/payrolls/README.md#get) - Get a single payroll
 * [update](docs/sdks/payrolls/README.md#update) - Update a payroll by ID
 * [delete](docs/sdks/payrolls/README.md#delete) - Delete a payroll
-* [prepare](docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+* [list](docs/sdks/payrolls/README.md#list) - Get all payrolls for a company
+* [create_off_cycle](docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
 * [get_receipt](docs/sdks/payrolls/README.md#get_receipt) - Get a single payroll receipt
+* [cancel](docs/sdks/payrolls/README.md#cancel) - Cancel a payroll
+* [prepare](docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+* [calculate](docs/sdks/payrolls/README.md#calculate) - Calculate a payroll
 * [get_blockers](docs/sdks/payrolls/README.md#get_blockers) - Get all payroll blockers for a company
 * [skip](docs/sdks/payrolls/README.md#skip) - Skip a payroll
-* [calculate_gross_up](docs/sdks/payrolls/README.md#calculate_gross_up) - Calculate gross up for a payroll
-* [calculate](docs/sdks/payrolls/README.md#calculate) - Calculate a payroll
 * [submit](docs/sdks/payrolls/README.md#submit) - Submit payroll
-* [cancel](docs/sdks/payrolls/README.md#cancel) - Cancel a payroll
-* [get_pay_stub](docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
-* [get_pay_stubs](docs/sdks/payrolls/README.md#get_pay_stubs) - Get an employee's pay stubs
-* [generate_printable_checks](docs/sdks/payrolls/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
-* [get_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
-* [patch_v1_companies_company_id_payrolls_id_partner_disbursements](docs/sdks/payrolls/README.md#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
+* [calculate_gross_up](docs/sdks/payrolls/README.md#calculate_gross_up) - Calculate gross up for a payroll
 
 ### [PaySchedules](docs/sdks/payschedules/README.md)
 
+* [get_pay_periods](docs/sdks/payschedules/README.md#get_pay_periods) - Get pay periods for a company
+* [get_unprocessed_termination_periods](docs/sdks/payschedules/README.md#get_unprocessed_termination_periods) - Get termination pay periods for a company
 * [get_all](docs/sdks/payschedules/README.md#get_all) - Get the pay schedules for a company
 * [create](docs/sdks/payschedules/README.md#create) - Create a new pay schedule
 * [get_preview](docs/sdks/payschedules/README.md#get_preview) - Preview pay schedule dates
 * [get](docs/sdks/payschedules/README.md#get) - Get a pay schedule
 * [update](docs/sdks/payschedules/README.md#update) - Update a pay schedule
-* [get_pay_periods](docs/sdks/payschedules/README.md#get_pay_periods) - Get pay periods for a company
-* [get_unprocessed_termination_periods](docs/sdks/payschedules/README.md#get_unprocessed_termination_periods) - Get termination pay periods for a company
-* [get_assignments](docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
 * [preview_assignment](docs/sdks/payschedules/README.md#preview_assignment) - Preview pay schedule assignments for a company
 * [assign](docs/sdks/payschedules/README.md#assign) - Assign pay schedules for a company
+* [get_assignments](docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
 
 ### [PeopleBatches](docs/sdks/peoplebatches/README.md)
 
@@ -682,11 +692,17 @@ with Gusto() as gusto:
 
 ### [Reports](docs/sdks/reports/README.md)
 
+* [post_v1_bulk_reports](docs/sdks/reports/README.md#post_v1_bulk_reports) - Create a bulk report batch
+* [get_v1_bulk_reports_request_uuid](docs/sdks/reports/README.md#get_v1_bulk_reports_request_uuid) - Get a bulk report batch
+* [post_v1_companies_company_id_reports_employees_annual_fica_wage](docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 * [create_custom](docs/sdks/reports/README.md#create_custom) - Create a custom report
 * [post_payrolls_payroll_uuid_reports_general_ledger](docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
 * [get_reports_request_uuid](docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](docs/sdks/reports/README.md#get_template) - Get a report template
-* [post_v1_companies_company_id_reports_employees_annual_fica_wage](docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
+
+### [ReverseWireTransactions](docs/sdks/reversewiretransactions/README.md)
+
+* [get_reverse_wire_transactions](docs/sdks/reversewiretransactions/README.md#get_reverse_wire_transactions) - Get all reverse wire transactions for a company
 
 ### [SalaryEstimates](docs/sdks/salaryestimates/README.md)
 
@@ -704,11 +720,16 @@ with Gusto() as gusto:
 * [update](docs/sdks/signatories/README.md#update) - Update a signatory
 * [delete](docs/sdks/signatories/README.md#delete) - Delete a signatory
 
+### [TaxPayments](docs/sdks/taxpayments/README.md)
+
+* [get_tax_payments](docs/sdks/taxpayments/README.md#get_tax_payments) - Get all tax payments for a company
+* [get_tax_payment](docs/sdks/taxpayments/README.md#get_tax_payment) - Get a tax payment for a company
+
 ### [TaxRequirements](docs/sdks/taxrequirements/README.md)
 
+* [get_all](docs/sdks/taxrequirements/README.md#get_all) - Get all tax requirements for a company
 * [get](docs/sdks/taxrequirements/README.md#get) - Get tax requirements for a state
 * [update_state](docs/sdks/taxrequirements/README.md#update_state) - Update tax requirements for a state
-* [get_all](docs/sdks/taxrequirements/README.md#get_all) - Get all tax requirements for a company
 
 ### [TimeOffRequests](docs/sdks/timeoffrequests/README.md)
 
@@ -725,14 +746,14 @@ with Gusto() as gusto:
 ### [TimeOffPolicies](docs/sdks/timeoffpolicies/README.md)
 
 * [calculate_accruing_time_off_hours](docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
-* [get](docs/sdks/timeoffpolicies/README.md#get) - Get a time off policy
-* [update](docs/sdks/timeoffpolicies/README.md#update) - Update a time off policy
 * [get_all](docs/sdks/timeoffpolicies/README.md#get_all) - Get all time off policies for a company
 * [create](docs/sdks/timeoffpolicies/README.md#create) - Create a time off policy
+* [get](docs/sdks/timeoffpolicies/README.md#get) - Get a time off policy
+* [update](docs/sdks/timeoffpolicies/README.md#update) - Update a time off policy
+* [deactivate](docs/sdks/timeoffpolicies/README.md#deactivate) - Deactivate a time off policy
 * [add_employees](docs/sdks/timeoffpolicies/README.md#add_employees) - Add employees to a time off policy
 * [remove_employees](docs/sdks/timeoffpolicies/README.md#remove_employees) - Remove employees from a time off policy
 * [update_balance](docs/sdks/timeoffpolicies/README.md#update_balance) - Update employee time off balances
-* [deactivate](docs/sdks/timeoffpolicies/README.md#deactivate) - Deactivate a time off policy
 
 ### [Webhooks](docs/sdks/webhooks/README.md)
 
@@ -741,8 +762,8 @@ with Gusto() as gusto:
 * [get_subscription](docs/sdks/webhooks/README.md#get_subscription) - Get a webhook subscription
 * [update_subscription](docs/sdks/webhooks/README.md#update_subscription) - Update a webhook subscription
 * [delete_subscription](docs/sdks/webhooks/README.md#delete_subscription) - Delete a webhook subscription
-* [verify](docs/sdks/webhooks/README.md#verify) - Verify a webhook subscription
 * [request_verification_token](docs/sdks/webhooks/README.md#request_verification_token) - Request a verification token for a webhook subscription
+* [verify](docs/sdks/webhooks/README.md#verify) - Verify a webhook subscription
 * [get_v1_webhooks_health_check](docs/sdks/webhooks/README.md#get_v1_webhooks_health_check) - Get the webhooks health status
 
 ### [WireInRequests](docs/sdks/wireinrequests/README.md)
@@ -802,7 +823,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -823,7 +844,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -852,19 +873,13 @@ from gusto_embedded import Gusto, models
 import os
 
 
-with Gusto() as gusto:
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
     res = None
     try:
 
-        res = gusto.companies.create_partner_managed(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
-            system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-        ), user={
-            "first_name": "Marco",
-            "last_name": "Trantow",
-            "email": "Jewell_Greenholt72@hotmail.com",
-        }, company={
-            "name": "<value>",
-        }, x_gusto_api_version=gusto_embedded.PostV1PartnerManagedCompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+        res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
         # Handle response
         print(res)
@@ -879,8 +894,8 @@ with Gusto() as gusto:
         print(e.raw_response)
 
         # Depending on the method different errors may be thrown
-        if isinstance(e, models.UnprocessableEntityError1):
-            print(e.data.errors)  # List[gusto_embedded.EntityErrorObject]
+        if isinstance(e, models.NotFoundErrorObject):
+            print(e.data.errors)  # List[gusto_embedded.NotFoundErrorObjectErrors]
 ```
 
 ### Error Classes
@@ -888,7 +903,7 @@ with Gusto() as gusto:
 * [`GustoError`](./src/gusto_embedded/models/gustoerror.py): The base class for HTTP error responses.
   * [`NotFoundErrorObject`](./src/gusto_embedded/models/notfounderrorobject.py): Not Found     The requested resource does not exist. Make sure the provided ID/UUID is valid. *
 
-<details><summary>Less common errors (10)</summary>
+<details><summary>Less common errors (12)</summary>
 
 <br />
 
@@ -899,11 +914,13 @@ with Gusto() as gusto:
 
 
 **Inherit from [`GustoError`](./src/gusto_embedded/models/gustoerror.py)**:
-* [`UnprocessableEntityError1`](./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 159 of 299 methods.*
-* [`ConflictErrorObject`](./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 2 of 299 methods.*
-* [`PeopleBatchConflictError`](./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollDigestConflictError`](./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollBlockersError`](./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 299 methods.*
+* [`UnprocessableEntityError1`](./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 172 of 314 methods.*
+* [`ConflictErrorObject`](./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This may happen when the resource version provided does not match the current version — retrieve the latest version and retry — or when the request conflicts with another in-progress operation on the same resource. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `409`. Applicable to 3 of 314 methods.*
+* [`ForbiddenErrorObject`](./src/gusto_embedded/models/forbiddenerrorobject.py): Forbidden    The targeted company has been archived because its EIN was reassigned to a replacement company. Use the replacement company referenced in the error metadata. Status code `403`. Applicable to 1 of 314 methods.*
+* [`PayrollBatchConflictError`](./src/gusto_embedded/models/payrollbatchconflicterror.py): Error response when a payroll cancellation idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PayrollDigestConflictError`](./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PeopleBatchConflictError`](./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PayrollBlockersError`](./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 314 methods.*
 * [`ResponseValidationError`](./src/gusto_embedded/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -936,7 +953,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -957,7 +974,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -1044,6 +1061,20 @@ class CustomClient(AsyncHttpClient):
 
 s = Gusto(async_client=CustomClient(httpx.AsyncClient()))
 ```
+### httpx2 (Pydantic's httpx fork)
+
+[httpx2](https://httpx2.pydantic.dev/) is Pydantic's maintained fork of `httpx`. To run this SDK on httpx2, call `alias_httpx()` at your program's entry point, before importing the SDK, so every `import httpx` — including the ones inside the SDK — resolves to `httpx2`:
+```python
+import httpx2
+
+httpx2.alias_httpx()
+
+from gusto_embedded import Gusto
+
+s = Gusto()
+```
+
+An SDK can also be generated against httpx2 directly, so it depends on the fork instead of `httpx`, by setting `python.httpClientLibrary: httpx2` in `gen.yaml`.
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->
