@@ -23,7 +23,7 @@ from typing import Any, Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class OnboardingStatus(str, Enum):
+class ShowEmployeesOnboardingStatus(str, Enum):
     ONBOARDING_COMPLETED = "onboarding_completed"
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
     SELF_ONBOARDING_PENDING_INVITE = "self_onboarding_pending_invite"
@@ -34,7 +34,7 @@ class OnboardingStatus(str, Enum):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class OnboardingDocumentsConfigTypedDict(TypedDict):
+class ShowEmployeesOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -43,7 +43,7 @@ class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class OnboardingDocumentsConfig(BaseModel):
+class ShowEmployeesOnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -78,14 +78,14 @@ class OnboardingDocumentsConfig(BaseModel):
         return m
 
 
-class PaymentMethod(str, Enum):
+class ShowEmployeesPaymentMethod(str, Enum):
     r"""The employee's payment method"""
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
 
-class CurrentEmploymentStatus(str, Enum):
+class ShowEmployeesCurrentEmploymentStatus(str, Enum):
     FULL_TIME = "full_time"
     PART_TIME_UNDER_TWENTY_HOURS = "part_time_under_twenty_hours"
     PART_TIME_TWENTY_PLUS_HOURS = "part_time_twenty_plus_hours"
@@ -103,7 +103,7 @@ class ShowEmployeesStatus(str, Enum):
     CANCELLED = "cancelled"
 
 
-class MemberPortalInvitationStatusTypedDict(TypedDict):
+class ShowEmployeesMemberPortalInvitationStatusTypedDict(TypedDict):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: NotRequired[ShowEmployeesStatus]
@@ -116,7 +116,7 @@ class MemberPortalInvitationStatusTypedDict(TypedDict):
     r"""The date and time when the password reset was last resent."""
 
 
-class MemberPortalInvitationStatus(BaseModel):
+class ShowEmployeesMemberPortalInvitationStatus(BaseModel):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: Optional[ShowEmployeesStatus] = None
@@ -192,9 +192,11 @@ class ShowEmployeesTypedDict(TypedDict):
     r"""The work email address of the employee. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     onboarded: NotRequired[bool]
     r"""Whether the employee has completed onboarding."""
-    onboarding_status: NotRequired[Nullable[OnboardingStatus]]
+    onboarding_status: NotRequired[Nullable[ShowEmployeesOnboardingStatus]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[
+        ShowEmployeesOnboardingDocumentsConfigTypedDict
+    ]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -209,9 +211,11 @@ class ShowEmployeesTypedDict(TypedDict):
     r"""Deprecated. This field always returns an empty string."""
     phone: NotRequired[Nullable[str]]
     preferred_first_name: NotRequired[Nullable[str]]
-    payment_method: NotRequired[PaymentMethod]
+    payment_method: NotRequired[ShowEmployeesPaymentMethod]
     r"""The employee's payment method"""
-    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
+    current_employment_status: NotRequired[
+        Nullable[ShowEmployeesCurrentEmploymentStatus]
+    ]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
     historical: NotRequired[bool]
     employee_code: NotRequired[str]
@@ -226,7 +230,7 @@ class ShowEmployeesTypedDict(TypedDict):
     r"""The FLSA status for this compensation. Salaried ('Exempt') employees are paid a fixed salary every pay period. Salaried with overtime ('Salaried Nonexempt') employees are paid a fixed salary every pay period, and receive overtime pay when applicable. Hourly ('Nonexempt') employees are paid for the hours they work, and receive overtime pay when applicable. Commissioned employees ('Commission Only Exempt') earn wages based only on commission. Commissioned with overtime ('Commission Only Nonexempt') earn wages based on commission, and receive overtime pay when applicable. Owners ('Owner') are employees that own at least twenty percent of the company."""
     applicable_tax_ids: NotRequired[List[float]]
     member_portal_invitation_status: NotRequired[
-        Nullable[MemberPortalInvitationStatusTypedDict]
+        Nullable[ShowEmployeesMemberPortalInvitationStatusTypedDict]
     ]
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
     partner_portal_invitation_sent: NotRequired[Nullable[bool]]
@@ -279,10 +283,10 @@ class ShowEmployees(BaseModel):
     onboarded: Optional[bool] = None
     r"""Whether the employee has completed onboarding."""
 
-    onboarding_status: OptionalNullable[OnboardingStatus] = UNSET
+    onboarding_status: OptionalNullable[ShowEmployeesOnboardingStatus] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[ShowEmployeesOnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -308,10 +312,14 @@ class ShowEmployees(BaseModel):
 
     preferred_first_name: OptionalNullable[str] = UNSET
 
-    payment_method: Optional[PaymentMethod] = PaymentMethod.CHECK
+    payment_method: Optional[ShowEmployeesPaymentMethod] = (
+        ShowEmployeesPaymentMethod.CHECK
+    )
     r"""The employee's payment method"""
 
-    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[
+        ShowEmployeesCurrentEmploymentStatus
+    ] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
     historical: Optional[bool] = None
@@ -334,9 +342,9 @@ class ShowEmployees(BaseModel):
 
     applicable_tax_ids: Optional[List[float]] = None
 
-    member_portal_invitation_status: OptionalNullable[MemberPortalInvitationStatus] = (
-        UNSET
-    )
+    member_portal_invitation_status: OptionalNullable[
+        ShowEmployeesMemberPortalInvitationStatus
+    ] = UNSET
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     partner_portal_invitation_sent: OptionalNullable[bool] = UNSET

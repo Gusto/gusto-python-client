@@ -1,13 +1,14 @@
 # HomeAddress
 
+Residential address on file for tax withholding and compliance mail.
+
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `street_1`         | *Optional[str]*    | :heavy_minus_sign: | N/A                |
-| `street_2`         | *Optional[str]*    | :heavy_minus_sign: | N/A                |
-| `city`             | *Optional[str]*    | :heavy_minus_sign: | N/A                |
-| `state`            | *Optional[str]*    | :heavy_minus_sign: | N/A                |
-| `zip_code`         | *Optional[str]*    | :heavy_minus_sign: | N/A                |
-| `country`          | *Optional[str]*    | :heavy_minus_sign: | N/A                |
+| Field                                                   | Type                                                    | Required                                                | Description                                             | Example                                                 |
+| ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| `street_1`                                              | *str*                                                   | :heavy_check_mark:                                      | Street address line 1.                                  | 55 Mission St                                           |
+| `street_2`                                              | *OptionalNullable[str]*                                 | :heavy_minus_sign:                                      | Apartment, suite, unit, or building (optional).         | Floor 3                                                 |
+| `city`                                                  | *str*                                                   | :heavy_check_mark:                                      | City.                                                   | San Francisco                                           |
+| `state`                                                 | *str*                                                   | :heavy_check_mark:                                      | Two-letter U.S. state or territory postal abbreviation. | CA                                                      |
+| `zip_code`                                              | *str*                                                   | :heavy_check_mark:                                      | ZIP or ZIP+4.                                           | 94105                                                   |

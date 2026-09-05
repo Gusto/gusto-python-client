@@ -50,6 +50,8 @@ class GetV1CompaniesCompanyIDPaySchedulesPreviewRequestTypedDict(TypedDict):
     r"""An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies."""
     end_date: NotRequired[date]
     r"""End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today."""
+    pay_schedule_uuid: NotRequired[str]
+    r"""Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule."""
 
 
 class GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(BaseModel):
@@ -99,9 +101,17 @@ class GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(BaseModel):
     ] = None
     r"""End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today."""
 
+    pay_schedule_uuid: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["X-Gusto-API-Version", "day_1", "day_2", "end_date"])
+        optional_fields = set(
+            ["X-Gusto-API-Version", "day_1", "day_2", "end_date", "pay_schedule_uuid"]
+        )
         serialized = handler(self)
         m = {}
 

@@ -47,91 +47,91 @@ if TYPE_CHECKING:
 class GustoAppIntegration(BaseSDK):
     r"""Gusto API: Welcome to Gusto's Embedded Payroll API documentation!"""
 
-    introspection: "Introspection"
     companies: "Companies"
-    company_locations: "CompanyLocations"
-    locations: "Locations"
-    pay_schedules: "PaySchedules"
-    employees: "Employees"
-    departments: "Departments"
-    employee_employments: "EmployeeEmployments"
-    employee_addresses: "EmployeeAddresses"
+    company_benefits: "CompanyBenefits"
+    notifications: "Notifications"
     jobs_and_compensations: "JobsAndCompensations"
     jobs: "Jobs"
-    earning_types: "EarningTypes"
+    contractor_payments: "ContractorPayments"
     contractors: "Contractors"
-    webhooks: "Webhooks"
+    departments: "Departments"
+    introspection: "Introspection"
+    earning_types: "EarningTypes"
+    employee_benefits: "EmployeeBenefits"
+    employees: "Employees"
+    employee_employments: "EmployeeEmployments"
+    events: "Events"
+    garnishments: "Garnishments"
+    employee_addresses: "EmployeeAddresses"
+    locations: "Locations"
+    company_locations: "CompanyLocations"
+    pay_schedules: "PaySchedules"
+    time_tracking: "TimeTracking"
     payrolls: "Payrolls"
     time_off_policies: "TimeOffPolicies"
-    contractor_payments: "ContractorPayments"
-    reports: "Reports"
-    company_benefits: "CompanyBenefits"
-    employee_benefits: "EmployeeBenefits"
-    garnishments: "Garnishments"
-    events: "Events"
-    time_tracking: "TimeTracking"
-    notifications: "Notifications"
-    time_off_requests: "TimeOffRequests"
-    salary_estimates: "SalaryEstimates"
     reimbursements: "Reimbursements"
+    reports: "Reports"
+    salary_estimates: "SalaryEstimates"
+    time_off_requests: "TimeOffRequests"
+    webhooks: "Webhooks"
     _sub_sdk_map = {
-        "introspection": ("gusto_app_integration.introspection", "Introspection"),
         "companies": ("gusto_app_integration.companies", "Companies"),
-        "company_locations": (
-            "gusto_app_integration.companylocations",
-            "CompanyLocations",
+        "company_benefits": (
+            "gusto_app_integration.companybenefits",
+            "CompanyBenefits",
         ),
-        "locations": ("gusto_app_integration.locations", "Locations"),
-        "pay_schedules": ("gusto_app_integration.payschedules", "PaySchedules"),
-        "employees": ("gusto_app_integration.employees", "Employees"),
-        "departments": ("gusto_app_integration.departments", "Departments"),
-        "employee_employments": (
-            "gusto_app_integration.employeeemployments",
-            "EmployeeEmployments",
-        ),
-        "employee_addresses": (
-            "gusto_app_integration.employeeaddresses",
-            "EmployeeAddresses",
-        ),
+        "notifications": ("gusto_app_integration.notifications", "Notifications"),
         "jobs_and_compensations": (
             "gusto_app_integration.jobsandcompensations",
             "JobsAndCompensations",
         ),
         "jobs": ("gusto_app_integration.jobs", "Jobs"),
-        "earning_types": ("gusto_app_integration.earningtypes", "EarningTypes"),
+        "contractor_payments": (
+            "gusto_app_integration.contractorpayments",
+            "ContractorPayments",
+        ),
         "contractors": ("gusto_app_integration.contractors", "Contractors"),
-        "webhooks": ("gusto_app_integration.webhooks", "Webhooks"),
+        "departments": ("gusto_app_integration.departments", "Departments"),
+        "introspection": ("gusto_app_integration.introspection", "Introspection"),
+        "earning_types": ("gusto_app_integration.earningtypes", "EarningTypes"),
+        "employee_benefits": (
+            "gusto_app_integration.employeebenefits",
+            "EmployeeBenefits",
+        ),
+        "employees": ("gusto_app_integration.employees", "Employees"),
+        "employee_employments": (
+            "gusto_app_integration.employeeemployments",
+            "EmployeeEmployments",
+        ),
+        "events": ("gusto_app_integration.events", "Events"),
+        "garnishments": ("gusto_app_integration.garnishments", "Garnishments"),
+        "employee_addresses": (
+            "gusto_app_integration.employeeaddresses",
+            "EmployeeAddresses",
+        ),
+        "locations": ("gusto_app_integration.locations", "Locations"),
+        "company_locations": (
+            "gusto_app_integration.companylocations",
+            "CompanyLocations",
+        ),
+        "pay_schedules": ("gusto_app_integration.payschedules", "PaySchedules"),
+        "time_tracking": ("gusto_app_integration.time_tracking", "TimeTracking"),
         "payrolls": ("gusto_app_integration.payrolls", "Payrolls"),
         "time_off_policies": (
             "gusto_app_integration.timeoffpolicies",
             "TimeOffPolicies",
         ),
-        "contractor_payments": (
-            "gusto_app_integration.contractorpayments",
-            "ContractorPayments",
-        ),
+        "reimbursements": ("gusto_app_integration.reimbursements", "Reimbursements"),
         "reports": ("gusto_app_integration.reports", "Reports"),
-        "company_benefits": (
-            "gusto_app_integration.companybenefits",
-            "CompanyBenefits",
-        ),
-        "employee_benefits": (
-            "gusto_app_integration.employeebenefits",
-            "EmployeeBenefits",
-        ),
-        "garnishments": ("gusto_app_integration.garnishments", "Garnishments"),
-        "events": ("gusto_app_integration.events", "Events"),
-        "time_tracking": ("gusto_app_integration.time_tracking", "TimeTracking"),
-        "notifications": ("gusto_app_integration.notifications", "Notifications"),
-        "time_off_requests": (
-            "gusto_app_integration.time_off_requests",
-            "TimeOffRequests",
-        ),
         "salary_estimates": (
             "gusto_app_integration.salary_estimates",
             "SalaryEstimates",
         ),
-        "reimbursements": ("gusto_app_integration.reimbursements", "Reimbursements"),
+        "time_off_requests": (
+            "gusto_app_integration.time_off_requests",
+            "TimeOffRequests",
+        ),
+        "webhooks": ("gusto_app_integration.webhooks", "Webhooks"),
     }
 
     def __init__(

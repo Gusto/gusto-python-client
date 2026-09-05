@@ -112,6 +112,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -218,6 +223,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -333,6 +343,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -453,6 +468,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -523,8 +543,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -562,6 +582,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -627,8 +652,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -666,6 +691,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -729,8 +759,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -774,6 +804,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -842,8 +877,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             body=models.PutV1CompaniesRequestBody(
                 contractor_only=contractor_only,
             ),
@@ -887,6 +922,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -998,6 +1038,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1104,6 +1149,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1131,10 +1181,10 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion
         ] = models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        additional_steps: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1150,8 +1200,8 @@ class Companies(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1168,9 +1218,9 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             additional_steps=additional_steps,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1208,6 +1258,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1235,10 +1290,10 @@ class Companies(BaseSDK):
         self,
         *,
         company_uuid: str,
-        additional_steps: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion
         ] = models.GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        additional_steps: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1254,8 +1309,8 @@ class Companies(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_uuid: The UUID of the company
-        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param additional_steps: Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\".
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1272,9 +1327,9 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyOnboardingStatusRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             additional_steps=additional_steps,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1312,6 +1367,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1387,8 +1447,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -1426,6 +1486,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1506,8 +1571,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyFinishOnboardingRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -1545,6 +1610,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1554,6 +1624,244 @@ class Companies(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return unmarshal_json_response(models.CompanyOnboardingStatus, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def put_v1_partner_managed_companies_company_uuid_disassociate(
+        self,
+        *,
+        security: Union[
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity,
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurityTypedDict,
+        ],
+        company_uuid: str,
+        x_gusto_api_version: Optional[
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion
+        ] = models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PartnerManagedCompanyDisassociateResponse:
+        r"""Disassociate a partner managed company
+
+        Disassociate a company from your embedded payroll product, reversing an earlier association or migration. You can only disassociate a company that is currently associated with your application.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `partner_managed_companies:disassociate`
+
+        :param security:
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/partner_managed_companies/{company_uuid}/disassociate",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security,
+                models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity,
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-partner-managed-companies-company-uuid-disassociate",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.PartnerManagedCompanyDisassociateResponse, http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def put_v1_partner_managed_companies_company_uuid_disassociate_async(
+        self,
+        *,
+        security: Union[
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity,
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurityTypedDict,
+        ],
+        company_uuid: str,
+        x_gusto_api_version: Optional[
+            models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion
+        ] = models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PartnerManagedCompanyDisassociateResponse:
+        r"""Disassociate a partner managed company
+
+        Disassociate a company from your embedded payroll product, reversing an earlier association or migration. You can only disassociate a company that is currently associated with your application.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `partner_managed_companies:disassociate`
+
+        :param security:
+        :param company_uuid: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/partner_managed_companies/{company_uuid}/disassociate",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security,
+                models.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity,
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-partner-managed-companies-company-uuid-disassociate",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.PartnerManagedCompanyDisassociateResponse, http_res
+            )
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1624,8 +1932,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=utils.get_pydantic_model(
                 body, models.PartnerManagedCompanyMigrateRequest
             ),
@@ -1673,6 +1981,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1754,8 +2067,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDMigrateRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=utils.get_pydantic_model(
                 body, models.PartnerManagedCompanyMigrateRequest
             ),
@@ -1803,6 +2116,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1940,6 +2258,11 @@ class Companies(BaseSDK):
                 operation_id="post-v1-partner-managed-companies",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2070,6 +2393,11 @@ class Companies(BaseSDK):
                 operation_id="post-v1-partner-managed-companies",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2132,8 +2460,8 @@ class Companies(BaseSDK):
 
         request = (
             models.GetV1PartnerManagedCompaniesCompanyUUIDMigrationReadinessRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
             )
         )
 
@@ -2172,6 +2500,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2236,8 +2569,8 @@ class Companies(BaseSDK):
 
         request = (
             models.GetV1PartnerManagedCompaniesCompanyUUIDMigrationReadinessRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
             )
         )
 
@@ -2276,6 +2609,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2352,8 +2690,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                     email=email,
                     ip_address=ip_address,
@@ -2404,6 +2742,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2478,8 +2821,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDAcceptTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                     email=email,
                     ip_address=ip_address,
@@ -2530,6 +2873,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2599,8 +2947,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                     email=email,
                 ),
@@ -2649,6 +2997,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2718,8 +3071,8 @@ class Companies(BaseSDK):
 
         request = (
             models.PostPartnerManagedCompaniesCompanyUUIDRetrieveTermsOfServiceRequest(
-                company_uuid=company_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                company_uuid=company_uuid,
                 body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                     email=email,
                 ),
@@ -2768,6 +3121,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2831,8 +3189,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -2870,6 +3228,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2935,8 +3298,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -2974,6 +3337,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3043,8 +3411,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                 email=email,
             ),
@@ -3092,6 +3460,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3166,8 +3539,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyRetrieveTermsOfServiceRequest(
                 email=email,
             ),
@@ -3215,6 +3588,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3289,8 +3667,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                 email=email,
                 ip_address=ip_address,
@@ -3340,6 +3718,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3414,8 +3797,8 @@ class Companies(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1PartnerManagedCompaniesCompanyUUIDTermsOfServiceRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.PartnerManagedCompanyAcceptTermsOfServiceRequest(
                 email=email,
                 ip_address=ip_address,
@@ -3465,6 +3848,11 @@ class Companies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Companies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

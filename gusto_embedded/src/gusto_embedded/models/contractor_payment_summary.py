@@ -43,7 +43,7 @@ class Total(BaseModel):
         return m
 
 
-class ContractorPaymentSummaryContractorPaymentsTypedDict(TypedDict):
+class ContractorPaymentsModelTypedDict(TypedDict):
     contractor_uuid: NotRequired[float]
     r"""The UUID of the contractor."""
     reimbursement_total: NotRequired[str]
@@ -54,7 +54,7 @@ class ContractorPaymentSummaryContractorPaymentsTypedDict(TypedDict):
     r"""The contractor's payments within a given time period."""
 
 
-class ContractorPaymentSummaryContractorPayments(BaseModel):
+class ContractorPaymentsModel(BaseModel):
     contractor_uuid: Optional[float] = None
     r"""The UUID of the contractor."""
 
@@ -91,9 +91,7 @@ class ContractorPaymentSummaryTypedDict(TypedDict):
 
     total: NotRequired[TotalTypedDict]
     r"""The wage and reimbursement totals for all contractor payments within a given time period."""
-    contractor_payments: NotRequired[
-        List[ContractorPaymentSummaryContractorPaymentsTypedDict]
-    ]
+    contractor_payments: NotRequired[List[ContractorPaymentsModelTypedDict]]
     r"""The individual contractor payments, within a given time period, grouped by contractor."""
 
 
@@ -103,9 +101,7 @@ class ContractorPaymentSummary(BaseModel):
     total: Optional[Total] = None
     r"""The wage and reimbursement totals for all contractor payments within a given time period."""
 
-    contractor_payments: Optional[List[ContractorPaymentSummaryContractorPayments]] = (
-        None
-    )
+    contractor_payments: Optional[List[ContractorPaymentsModel]] = None
     r"""The individual contractor payments, within a given time period, grouped by contractor."""
 
     @model_serializer(mode="wrap")

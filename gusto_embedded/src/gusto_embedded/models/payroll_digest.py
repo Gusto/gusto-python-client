@@ -6,7 +6,7 @@ from gusto_embedded.types import BaseModel
 from typing_extensions import TypedDict
 
 
-class BatchAction(str, Enum):
+class PayrollDigestBatchAction(str, Enum):
     r"""The action being performed on the batch."""
 
     CREATE = "create"
@@ -28,7 +28,7 @@ class PayrollDigestTypedDict(TypedDict):
     r"""The unique identifier of the payroll digest batch."""
     idempotency_key: str
     r"""The idempotency key provided when creating the batch."""
-    batch_action: BatchAction
+    batch_action: PayrollDigestBatchAction
     r"""The action being performed on the batch."""
     status: PayrollDigestStatus
     r"""The lifecycle status of the batch request itself. Terminal values are `completed` (processing finished — inspect `results` and `exclusions` for per-company outcomes) and `failed` (request failed; can be retried). This is distinct from the per-company `status` returned inside `results[]` and `exclusions[]`."""
@@ -43,7 +43,7 @@ class PayrollDigest(BaseModel):
     idempotency_key: str
     r"""The idempotency key provided when creating the batch."""
 
-    batch_action: BatchAction
+    batch_action: PayrollDigestBatchAction
     r"""The action being performed on the batch."""
 
     status: PayrollDigestStatus

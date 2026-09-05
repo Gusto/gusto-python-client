@@ -8,10 +8,2206 @@ from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
 import httpx
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Payrolls(BaseSDK):
+    def generate_printable_checks(
+        self,
+        *,
+        payroll_uuid: str,
+        printing_format: models.PrintingFormat,
+        x_gusto_api_version: Optional[
+            models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion
+        ] = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        starting_check_number: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollCheck:
+        r"""Generate printable payroll checks (pdf)
+
+        This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
+
+        scope: `generated_documents:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_uuid: The UUID of the payroll
+        :param printing_format: The type of check stock being printed. Check the \"Types of check stock\" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param starting_check_number: The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
+            printable_payroll_checks_body=models.PrintablePayrollChecksBody(
+                printing_format=printing_format,
+                starting_check_number=starting_check_number,
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/payrolls/{payroll_uuid}/generated_documents/printable_payroll_checks",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.printable_payroll_checks_body,
+                False,
+                False,
+                "json",
+                models.PrintablePayrollChecksBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-payrolls-payroll_uuid-generated_documents-printable_payroll_checks",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollCheck, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def generate_printable_checks_async(
+        self,
+        *,
+        payroll_uuid: str,
+        printing_format: models.PrintingFormat,
+        x_gusto_api_version: Optional[
+            models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion
+        ] = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        starting_check_number: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollCheck:
+        r"""Generate printable payroll checks (pdf)
+
+        This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
+
+        scope: `generated_documents:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_uuid: The UUID of the payroll
+        :param printing_format: The type of check stock being printed. Check the \"Types of check stock\" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param starting_check_number: The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
+            printable_payroll_checks_body=models.PrintablePayrollChecksBody(
+                printing_format=printing_format,
+                starting_check_number=starting_check_number,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/payrolls/{payroll_uuid}/generated_documents/printable_payroll_checks",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.printable_payroll_checks_body,
+                False,
+                False,
+                "json",
+                models.PrintablePayrollChecksBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-payrolls-payroll_uuid-generated_documents-printable_payroll_checks",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollCheck, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_pay_stubs(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.EmployeePayStubsList]:
+        r"""Get an employee's pay stubs
+
+        Get an employee's pay stubs.
+
+        Results are returned in reverse chronological order (newest first).
+
+        scope: `pay_stubs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/employees/{employee_id}/pay_stubs",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-employees-employee_uuid-pay_stubs",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.EmployeePayStubsList], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_pay_stubs_async(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.EmployeePayStubsList]:
+        r"""Get an employee's pay stubs
+
+        Get an employee's pay stubs.
+
+        Results are returned in reverse chronological order (newest first).
+
+        scope: `pay_stubs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/employees/{employee_id}/pay_stubs",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-employees-employee_uuid-pay_stubs",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.EmployeePayStubsList], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_pay_stub(
+        self,
+        *,
+        payroll_id: str,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
+        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> httpx.Response:
+        r"""Get an employee pay stub (pdf)
+
+        Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
+
+        scope: `pay_stubs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_id: The UUID of the payroll
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_id=payroll_id,
+            employee_id=employee_id,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/payrolls/{payroll_id}/employees/{employee_id}/pay_stub",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/pdf",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            stream=True,
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/pdf"):
+            return http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            http_res_text = utils.stream_to_text(http_res)
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res, http_res_text
+            )
+            raise models.NotFoundErrorObject(response_data, http_res, http_res_text)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        http_res_text = utils.stream_to_text(http_res)
+        raise models.APIError("Unexpected response received", http_res, http_res_text)
+
+    async def get_pay_stub_async(
+        self,
+        *,
+        payroll_id: str,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
+        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> httpx.Response:
+        r"""Get an employee pay stub (pdf)
+
+        Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
+
+        scope: `pay_stubs:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_id: The UUID of the payroll
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_id=payroll_id,
+            employee_id=employee_id,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/payrolls/{payroll_id}/employees/{employee_id}/pay_stub",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/pdf",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            stream=True,
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/pdf"):
+            return http_res
+        if utils.match_response(http_res, "404", "application/json"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res, http_res_text
+            )
+            raise models.NotFoundErrorObject(response_data, http_res, http_res_text)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        http_res_text = await utils.stream_to_text_async(http_res)
+        raise models.APIError("Unexpected response received", http_res, http_res_text)
+
+    def get_v1_companies_company_id_payrolls_id_partner_disbursements(
+        self,
+        *,
+        company_id: str,
+        id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPartnerDisbursements:
+        r"""Get partner disbursements for a payroll
+
+        Get partner disbursements for a specific payroll.
+
+        scope: `partner_disbursements:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            id=id,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payrolls-id-partner_disbursements",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_companies_company_id_payrolls_id_partner_disbursements_async(
+        self,
+        *,
+        company_id: str,
+        id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPartnerDisbursements:
+        r"""Get partner disbursements for a payroll
+
+        Get partner disbursements for a specific payroll.
+
+        scope: `partner_disbursements:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            id=id,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payrolls-id-partner_disbursements",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def patch_v1_companies_company_id_payrolls_id_partner_disbursements(
+        self,
+        *,
+        company_id: str,
+        id: str,
+        disbursements: Union[
+            Iterable[
+                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
+            ],
+            Iterable[
+                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursementsTypedDict
+            ],
+        ],
+        x_gusto_api_version: Optional[
+            models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
+        ] = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPartnerDisbursements:
+        r"""Update partner disbursements for a payroll
+
+        Update partner disbursements for a specific payroll.
+
+        scope: `partner_disbursements:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param id: The UUID of the payroll
+        :param disbursements:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            id=id,
+            request_body=models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody(
+                disbursements=utils.get_pydantic_model(
+                    disbursements,
+                    List[
+                        models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
+                    ],
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="PATCH",
+            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body if request is not None else None,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody
+                ],
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="patch-v1-companies-company_id-payrolls-id-partner_disbursements",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def patch_v1_companies_company_id_payrolls_id_partner_disbursements_async(
+        self,
+        *,
+        company_id: str,
+        id: str,
+        disbursements: Union[
+            Iterable[
+                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
+            ],
+            Iterable[
+                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursementsTypedDict
+            ],
+        ],
+        x_gusto_api_version: Optional[
+            models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
+        ] = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPartnerDisbursements:
+        r"""Update partner disbursements for a payroll
+
+        Update partner disbursements for a specific payroll.
+
+        scope: `partner_disbursements:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param id: The UUID of the payroll
+        :param disbursements:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            id=id,
+            request_body=models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody(
+                disbursements=utils.get_pydantic_model(
+                    disbursements,
+                    List[
+                        models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
+                    ],
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PATCH",
+            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body if request is not None else None,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody
+                ],
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="patch-v1-companies-company_id-payrolls-id-partner_disbursements",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_approved_reversals(
+        self,
+        *,
+        company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.PayrollReversal]:
+        r"""Get approved payroll reversals
+
+        Returns all approved Payroll Reversals for a Company.
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/payroll_reversals",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payroll_reversals",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.PayrollReversal], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_approved_reversals_async(
+        self,
+        *,
+        company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> List[models.PayrollReversal]:
+        r"""Get approved payroll reversals
+
+        Returns all approved Payroll Reversals for a Company.
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            page=page,
+            per=per,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/payroll_reversals",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payroll_reversals",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.PayrollReversal], http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        include: Optional[
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+        ] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollShow:
+        r"""Get a single payroll
+
+        Returns a payroll. If payroll is calculated or processed, will return employee_compensations and totals.
+
+        Results are paginated, with a maximum page size of 100 employee_compensations.
+
+        Notes:
+        * Hour and dollar amounts are returned as string representations of numeric decimals.
+        * Hours are represented to the thousands place; dollar amounts are represented to the cent.
+        * Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts) or \"0.000\" (for hours ).
+        * When include parameter with benefits value is passed, employee_benefits:read scope is required to return benefits
+        * Benefits containing PHI are only visible with the `employee_benefits:read:phi` scope
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param include: Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
+            page=page,
+            per=per,
+            sort_by=sort_by,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payrolls-payroll_id",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollShow, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_async(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        include: Optional[
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+        ] = None,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollShow:
+        r"""Get a single payroll
+
+        Returns a payroll. If payroll is calculated or processed, will return employee_compensations and totals.
+
+        Results are paginated, with a maximum page size of 100 employee_compensations.
+
+        Notes:
+        * Hour and dollar amounts are returned as string representations of numeric decimals.
+        * Hours are represented to the thousands place; dollar amounts are represented to the cent.
+        * Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts) or \"0.000\" (for hours ).
+        * When include parameter with benefits value is passed, employee_benefits:read scope is required to return benefits
+        * Benefits containing PHI are only visible with the `employee_benefits:read:phi` scope
+
+        scope: `payrolls:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param include: Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`
+        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
+        :param per: Number of objects per page. For majority of endpoints will default to 25
+        :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
+            page=page,
+            per=per,
+            sort_by=sort_by,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-companies-company_id-payrolls-payroll_id",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollShow, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def update(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        employee_compensations: Union[
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
+        ],
+        x_gusto_api_version: Optional[
+            models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
+        skip_regular_deductions: Optional[bool] = None,
+        fixed_withholding_rate: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPrepared:
+        r"""Update a payroll by ID
+
+        This endpoint allows you to update information for one or more employees for a specific **unprocessed** payroll.  You can think of the **unprocessed**
+        payroll object as a template of fields that you can update.  You cannot modify the structure of the payroll object through this endpoint, only values
+        of the fields included in the payroll.  If you do not include specific employee compensations, fixed/hourly compensations, or deductions in your request body, they
+        will not be removed from the payroll. A maximum of 100 employee_compensations can be updated at a time. Only the employee compensation objects that were
+        inputted will be returned.
+
+        scope: `payrolls:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param employee_compensations:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
+        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
+        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1CompaniesCompanyIDPayrollsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            payroll_update=models.PayrollUpdate(
+                employee_compensations=utils.get_pydantic_model(
+                    employee_compensations,
+                    List[models.PayrollUpdateEmployeeCompensations],
+                ),
+                withholding_pay_period=withholding_pay_period,
+                skip_regular_deductions=skip_regular_deductions,
+                fixed_withholding_rate=fixed_withholding_rate,
+            ),
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.payroll_update, False, False, "json", models.PayrollUpdate
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-companies-company_id-payrolls",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPrepared, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def update_async(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        employee_compensations: Union[
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
+        ],
+        x_gusto_api_version: Optional[
+            models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
+        skip_regular_deductions: Optional[bool] = None,
+        fixed_withholding_rate: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.PayrollPrepared:
+        r"""Update a payroll by ID
+
+        This endpoint allows you to update information for one or more employees for a specific **unprocessed** payroll.  You can think of the **unprocessed**
+        payroll object as a template of fields that you can update.  You cannot modify the structure of the payroll object through this endpoint, only values
+        of the fields included in the payroll.  If you do not include specific employee compensations, fixed/hourly compensations, or deductions in your request body, they
+        will not be removed from the payroll. A maximum of 100 employee_compensations can be updated at a time. Only the employee compensation objects that were
+        inputted will be returned.
+
+        scope: `payrolls:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param employee_compensations:
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
+        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
+        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1CompaniesCompanyIDPayrollsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            payroll_update=models.PayrollUpdate(
+                employee_compensations=utils.get_pydantic_model(
+                    employee_compensations,
+                    List[models.PayrollUpdateEmployeeCompensations],
+                ),
+                withholding_pay_period=withholding_pay_period,
+                skip_regular_deductions=skip_regular_deductions,
+                fixed_withholding_rate=fixed_withholding_rate,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.payroll_update, False, False, "json", models.PayrollUpdate
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-companies-company_id-payrolls",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.PayrollPrepared, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def delete(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        async_: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Delete a payroll
+
+        This endpoint allows you to delete an **unprocessed** payroll.
+
+        By default the payroll and associated data is deleted synchronously. To request an asynchronous delete, use the `async=true` query parameter. In both cases validation of ability to delete will be performed and an Unprocessable Entity error will be returned if the payroll is not able to be deleted. A successful synchronous delete will return `204/No Content`. When a payroll has been enqueued for asynchronous deletion, `202/Accepted` will be returned.
+
+        scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param async_: When true, request an asynchronous delete of the payroll.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            async_=async_,
+        )
+
+        req = self._build_request(
+            method="DELETE",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="delete-v1-companies-company_id-payrolls",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, ["202", "204"], "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def delete_async(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
+        ] = models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        async_: Optional[bool] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Delete a payroll
+
+        This endpoint allows you to delete an **unprocessed** payroll.
+
+        By default the payroll and associated data is deleted synchronously. To request an asynchronous delete, use the `async=true` query parameter. In both cases validation of ability to delete will be performed and an Unprocessable Entity error will be returned if the payroll is not able to be deleted. A successful synchronous delete will return `204/No Content`. When a payroll has been enqueued for asynchronous deletion, `202/Accepted` will be returned.
+
+        scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param async_: When true, request an asynchronous delete of the payroll.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            async_=async_,
+        )
+
+        req = self._build_request_async(
+            method="DELETE",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="delete-v1-companies-company_id-payrolls",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, ["202", "204"], "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
     def list(
         self,
         *,
@@ -19,19 +2215,19 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         date_filter_by: Optional[models.DateFilterBy] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        sort_order: Optional[models.SortOrder] = None,
+        sort_order: Optional[models.QueryParamSortOrder] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -81,13 +2277,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -131,6 +2334,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -161,19 +2369,19 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         date_filter_by: Optional[models.DateFilterBy] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        sort_order: Optional[models.SortOrder] = None,
+        sort_order: Optional[models.QueryParamSortOrder] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -223,13 +2431,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -273,6 +2488,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -308,7 +2528,7 @@ class Payrolls(BaseSDK):
             models.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         pay_schedule_uuid: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         check_date: Optional[date] = None,
         withholding_pay_period: Optional[
             models.PostV1CompaniesCompanyIDPayrollsWithholdingPayPeriod
@@ -373,7 +2593,9 @@ class Payrolls(BaseSDK):
                 start_date=start_date,
                 end_date=end_date,
                 pay_schedule_uuid=pay_schedule_uuid,
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
                 check_date=check_date,
                 withholding_pay_period=withholding_pay_period,
                 skip_regular_deductions=skip_regular_deductions,
@@ -424,6 +2646,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -464,7 +2691,7 @@ class Payrolls(BaseSDK):
             models.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         pay_schedule_uuid: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         check_date: Optional[date] = None,
         withholding_pay_period: Optional[
             models.PostV1CompaniesCompanyIDPayrollsWithholdingPayPeriod
@@ -529,7 +2756,9 @@ class Payrolls(BaseSDK):
                 start_date=start_date,
                 end_date=end_date,
                 pay_schedule_uuid=pay_schedule_uuid,
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
                 check_date=check_date,
                 withholding_pay_period=withholding_pay_period,
                 skip_regular_deductions=skip_regular_deductions,
@@ -580,6 +2809,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -608,32 +2842,39 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def get_approved_reversals(
+    def get_receipt(
         self,
         *,
-        company_id: str,
+        payroll_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayrollReversal]:
-        r"""Get approved payroll reversals
+    ) -> models.PayrollReceipt:
+        r"""Get a single payroll receipt
 
-        Returns all approved Payroll Reversals for a Company.
+        Returns a payroll receipt.
+
+        Notes:
+        * Hour and dollar amounts are returned as string representations of numeric decimals.
+        * Dollar amounts are represented to the cent.
+        * If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts).
+        * Pagination is optional. Supplying `page` and/or `per` returns only the requested page of employee compensations and includes the `X-Page`, `X-Total-Count`, `X-Total-Pages`, and `X-Per-Page` response headers. Without either parameter, all employee compensations are returned without pagination headers.
+        * Maximum page size is 100 employee compensations per request.
 
         scope: `payrolls:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_id: The UUID of the company
+        :param payroll_uuid: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -649,16 +2890,16 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
-            company_id=company_id,
+        request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/companies/{company_id}/payroll_reversals",
+            path="/v1/payrolls/{payroll_uuid}/receipt",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -686,11 +2927,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payroll_reversals",
+                operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -699,7 +2945,7 @@ class Payrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayrollReversal], http_res)
+            return unmarshal_json_response(models.PayrollReceipt, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -714,32 +2960,39 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def get_approved_reversals_async(
+    async def get_receipt_async(
         self,
         *,
-        company_id: str,
+        payroll_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayrollReversal]:
-        r"""Get approved payroll reversals
+    ) -> models.PayrollReceipt:
+        r"""Get a single payroll receipt
 
-        Returns all approved Payroll Reversals for a Company.
+        Returns a payroll receipt.
+
+        Notes:
+        * Hour and dollar amounts are returned as string representations of numeric decimals.
+        * Dollar amounts are represented to the cent.
+        * If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts).
+        * Pagination is optional. Supplying `page` and/or `per` returns only the requested page of employee compensations and includes the `X-Page`, `X-Total-Count`, `X-Total-Pages`, and `X-Per-Page` response headers. Without either parameter, all employee compensations are returned without pagination headers.
+        * Maximum page size is 100 employee compensations per request.
 
         scope: `payrolls:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_id: The UUID of the company
+        :param payroll_uuid: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -755,16 +3008,16 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1CompaniesCompanyIDPayrollReversalsRequest(
-            company_id=company_id,
+        request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/companies/{company_id}/payroll_reversals",
+            path="/v1/payrolls/{payroll_uuid}/receipt",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -792,11 +3045,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payroll_reversals",
+                operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -805,7 +3063,7 @@ class Payrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayrollReversal], http_res)
+            return unmarshal_json_response(models.PayrollReceipt, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -820,49 +3078,33 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def get(
+    def cancel(
         self,
         *,
         company_id: str,
         payroll_id: str,
         x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
-        ] = None,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        sort_by: Optional[str] = None,
+            models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion
+        ] = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollShow:
-        r"""Get a single payroll
+    ) -> models.UnprocessedPayroll:
+        r"""Cancel a payroll
 
-        Returns a payroll. If payroll is calculated or processed, will return employee_compensations and totals.
+        Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
 
-        Results are paginated, with a maximum page size of 100 employee_compensations.
+        - `processed` is `true`
+        - Current time is earlier than 4pm PT on the `payroll_deadline`
 
-        Notes:
-        * Hour and dollar amounts are returned as string representations of numeric decimals.
-        * Hours are represented to the thousands place; dollar amounts are represented to the cent.
-        * Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts) or \"0.000\" (for hours ).
-        * When include parameter with benefits value is passed, employee_benefits:read scope is required to return benefits
-        * Benefits containing PHI are only visible with the `employee_benefits:read:phi` scope
-
-        scope: `payrolls:read`
+        scope: `payrolls:run`
 
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param payroll_id: The UUID of the payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param include: Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -878,285 +3120,25 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
-            company_id=company_id,
-            payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
-            page=page,
-            per=per,
-            sort_by=sort_by,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payrolls-payroll_id",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollShow, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def get_async(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
-        ] = None,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        sort_by: Optional[str] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollShow:
-        r"""Get a single payroll
-
-        Returns a payroll. If payroll is calculated or processed, will return employee_compensations and totals.
-
-        Results are paginated, with a maximum page size of 100 employee_compensations.
-
-        Notes:
-        * Hour and dollar amounts are returned as string representations of numeric decimals.
-        * Hours are represented to the thousands place; dollar amounts are represented to the cent.
-        * Every eligible compensation is returned for each employee. If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts) or \"0.000\" (for hours ).
-        * When include parameter with benefits value is passed, employee_benefits:read scope is required to return benefits
-        * Benefits containing PHI are only visible with the `employee_benefits:read:phi` scope
-
-        scope: `payrolls:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param include: Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
-            company_id=company_id,
-            payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
-            page=page,
-            per=per,
-            sort_by=sort_by,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payrolls-payroll_id",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollShow, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def update(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
-        ],
-        x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
-        skip_regular_deductions: Optional[bool] = None,
-        fixed_withholding_rate: Optional[bool] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPrepared:
-        r"""Update a payroll by ID
-
-        This endpoint allows you to update information for one or more employees for a specific **unprocessed** payroll.  You can think of the **unprocessed**
-        payroll object as a template of fields that you can update.  You cannot modify the structure of the payroll object through this endpoint, only values
-        of the fields included in the payroll.  If you do not include specific employee compensations, fixed/hourly compensations, or deductions in your request body, they
-        will not be removed from the payroll. A maximum of 100 employee_compensations can be updated at a time. Only the employee compensation objects that were
-        inputted will be returned.
-
-        scope: `payrolls:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param employee_compensations:
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
-        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
-        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutV1CompaniesCompanyIDPayrollsRequest(
+        request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            payroll_update=models.PayrollUpdate(
-                employee_compensations=utils.get_pydantic_model(
-                    employee_compensations,
-                    List[models.PayrollUpdateEmployeeCompensations],
-                ),
-                withholding_pay_period=withholding_pay_period,
-                skip_regular_deductions=skip_regular_deductions,
-                fixed_withholding_rate=fixed_withholding_rate,
-            ),
         )
 
         req = self._build_request(
             method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.payroll_update, False, False, "json", models.PayrollUpdate
-            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -1174,11 +3156,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls",
+                operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1187,7 +3174,7 @@ class Payrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPrepared, http_res)
+            return unmarshal_json_response(models.UnprocessedPayroll, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1207,45 +3194,33 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def update_async(
+    async def cancel_async(
         self,
         *,
         company_id: str,
         payroll_id: str,
-        employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
-        ],
         x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        withholding_pay_period: Optional[models.WithholdingPayPeriod] = None,
-        skip_regular_deductions: Optional[bool] = None,
-        fixed_withholding_rate: Optional[bool] = None,
+            models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion
+        ] = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPrepared:
-        r"""Update a payroll by ID
+    ) -> models.UnprocessedPayroll:
+        r"""Cancel a payroll
 
-        This endpoint allows you to update information for one or more employees for a specific **unprocessed** payroll.  You can think of the **unprocessed**
-        payroll object as a template of fields that you can update.  You cannot modify the structure of the payroll object through this endpoint, only values
-        of the fields included in the payroll.  If you do not include specific employee compensations, fixed/hourly compensations, or deductions in your request body, they
-        will not be removed from the payroll. A maximum of 100 employee_compensations can be updated at a time. Only the employee compensation objects that were
-        inputted will be returned.
+        Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
 
-        scope: `payrolls:write`
+        - `processed` is `true`
+        - Current time is earlier than 4pm PT on the `payroll_deadline`
+
+        scope: `payrolls:run`
 
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
         :param payroll_id: The UUID of the payroll
-        :param employee_compensations:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param withholding_pay_period: The payment schedule tax rate the payroll is based on. Only relevant for off-cycle payrolls.
-        :param skip_regular_deductions: Block regular deductions and contributions for this payroll. Only relevant for off-cycle payrolls.
-        :param fixed_withholding_rate: Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only relevant for off-cycle payrolls.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1261,37 +3236,25 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PutV1CompaniesCompanyIDPayrollsRequest(
+        request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            payroll_update=models.PayrollUpdate(
-                employee_compensations=utils.get_pydantic_model(
-                    employee_compensations,
-                    List[models.PayrollUpdateEmployeeCompensations],
-                ),
-                withholding_pay_period=withholding_pay_period,
-                skip_regular_deductions=skip_regular_deductions,
-                fixed_withholding_rate=fixed_withholding_rate,
-            ),
         )
 
         req = self._build_request_async(
             method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.payroll_update, False, False, "json", models.PayrollUpdate
-            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -1309,11 +3272,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls",
+                operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1322,7 +3290,7 @@ class Payrolls(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPrepared, http_res)
+            return unmarshal_json_response(models.UnprocessedPayroll, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1333,222 +3301,6 @@ class Payrolls(BaseSDK):
                 models.UnprocessableEntityError1Data, http_res
             )
             raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def delete(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        async_: Optional[bool] = None,
-        x_gusto_api_version: Optional[
-            models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
-        ] = models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Delete a payroll
-
-        This endpoint allows you to delete an **unprocessed** payroll.
-
-        By default the payroll and associated data is deleted synchronously. To request an asynchronous delete, use the `async=true` query parameter. In both cases validation of ability to delete will be performed and an Unprocessable Entity error will be returned if the payroll is not able to be deleted. A successful synchronous delete will return `204/No Content`. When a payroll has been enqueued for asynchronous deletion, `202/Accepted` will be returned.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param async_: When true, request an asynchronous delete of the payroll.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
-            payroll_id=payroll_id,
-            async_=async_,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="DELETE",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="delete-v1-companies-company_id-payrolls",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, ["202", "204"], "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def delete_async(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        async_: Optional[bool] = None,
-        x_gusto_api_version: Optional[
-            models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
-        ] = models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Delete a payroll
-
-        This endpoint allows you to delete an **unprocessed** payroll.
-
-        By default the payroll and associated data is deleted synchronously. To request an asynchronous delete, use the `async=true` query parameter. In both cases validation of ability to delete will be performed and an Unprocessable Entity error will be returned if the payroll is not able to be deleted. A successful synchronous delete will return `204/No Content`. When a payroll has been enqueued for asynchronous deletion, `202/Accepted` will be returned.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param async_: When true, request an asynchronous delete of the payroll.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.DeleteV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
-            payroll_id=payroll_id,
-            async_=async_,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="DELETE",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="delete-v1-companies-company_id-payrolls",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, ["202", "204"], "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -1569,7 +3321,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1577,7 +3329,7 @@ class Payrolls(BaseSDK):
     ) -> models.PayrollPrepared:
         r"""Prepare a payroll for update
 
-        Prepares an unprocessed payroll for update, including: adding or removing eligible employees from the payroll,
+        Prepares an unprocessed payroll for update, including: adding eligible employees to off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, and `Adhoc`),
         and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
 
         Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
@@ -1599,7 +3351,11 @@ class Payrolls(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
-        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
+        :param employee_uuids: The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+            **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+            **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1623,7 +3379,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -1671,6 +3429,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1710,7 +3473,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1718,7 +3481,7 @@ class Payrolls(BaseSDK):
     ) -> models.PayrollPrepared:
         r"""Prepare a payroll for update
 
-        Prepares an unprocessed payroll for update, including: adding or removing eligible employees from the payroll,
+        Prepares an unprocessed payroll for update, including: adding eligible employees to off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, and `Adhoc`),
         and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
 
         Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
@@ -1740,7 +3503,11 @@ class Payrolls(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
-        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
+        :param employee_uuids: The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+            **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+            **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1764,7 +3531,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -1812,6 +3581,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1840,32 +3614,33 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def get_receipt(
+    def calculate(
         self,
         *,
-        payroll_uuid: str,
+        company_id: str,
+        payroll_id: str,
         x_gusto_api_version: Optional[
-            models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion
-        ] = models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollReceipt:
-        r"""Get a single payroll receipt
+    ):
+        r"""Calculate a payroll
 
-        Returns a payroll receipt.
+        Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
 
-        Notes:
-        * Hour and dollar amounts are returned as string representations of numeric decimals.
-        * Dollar amounts are represented to the cent.
-        * If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts).
+        This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
 
-        scope: `payrolls:read`
+        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+        scope: `payrolls:run`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param payroll_uuid: The UUID of the payroll
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1882,14 +3657,15 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
-            payroll_uuid=payroll_uuid,
+        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
         )
 
         req = self._build_request(
-            method="GET",
-            path="/v1/payrolls/{payroll_uuid}/receipt",
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1917,11 +3693,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
+                operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1929,13 +3710,18 @@ class Payrolls(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollReceipt, http_res)
+        if utils.match_response(http_res, "202", "*"):
+            return
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -1945,32 +3731,33 @@ class Payrolls(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def get_receipt_async(
+    async def calculate_async(
         self,
         *,
-        payroll_uuid: str,
+        company_id: str,
+        payroll_id: str,
         x_gusto_api_version: Optional[
-            models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion
-        ] = models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollReceipt:
-        r"""Get a single payroll receipt
+    ):
+        r"""Calculate a payroll
 
-        Returns a payroll receipt.
+        Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
 
-        Notes:
-        * Hour and dollar amounts are returned as string representations of numeric decimals.
-        * Dollar amounts are represented to the cent.
-        * If no data has yet be inserted for a given field, it defaults to \"0.00\" (for fixed amounts).
+        This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
 
-        scope: `payrolls:read`
+        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+        scope: `payrolls:run`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param payroll_uuid: The UUID of the payroll
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -1987,14 +3774,15 @@ class Payrolls(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1PaymentReceiptsPayrollsPayrollUUIDRequest(
-            payroll_uuid=payroll_uuid,
+        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
         )
 
         req = self._build_request_async(
-            method="GET",
-            path="/v1/payrolls/{payroll_uuid}/receipt",
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -2022,11 +3810,16 @@ class Payrolls(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-payment-receipts-payrolls-payroll_uuid",
+                operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2034,13 +3827,18 @@ class Payrolls(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollReceipt, http_res)
+        if utils.match_response(http_res, "202", "*"):
+            return
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -2127,6 +3925,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2227,6 +4030,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2261,7 +4069,7 @@ class Payrolls(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         pay_schedule_uuid: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2307,7 +4115,9 @@ class Payrolls(BaseSDK):
                 start_date=start_date,
                 end_date=end_date,
                 pay_schedule_uuid=pay_schedule_uuid,
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -2353,6 +4163,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2367,6 +4182,11 @@ class Payrolls(BaseSDK):
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "409", "application/json"):
+            response_data = unmarshal_json_response(
+                models.ConflictErrorObjectData, http_res
+            )
+            raise models.ConflictErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
                 models.PayrollBlockersErrorData, http_res
@@ -2392,7 +4212,7 @@ class Payrolls(BaseSDK):
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         pay_schedule_uuid: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2438,7 +4258,9 @@ class Payrolls(BaseSDK):
                 start_date=start_date,
                 end_date=end_date,
                 pay_schedule_uuid=pay_schedule_uuid,
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -2484,6 +4306,155 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "202", "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "409", "application/json"):
+            response_data = unmarshal_json_response(
+                models.ConflictErrorObjectData, http_res
+            )
+            raise models.ConflictErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.PayrollBlockersErrorData, http_res
+            )
+            raise models.PayrollBlockersError(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def submit(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        submission_blockers: Optional[
+            Union[
+                Iterable[models.PayrollSubmissionBlockerRequestType],
+                Iterable[models.PayrollSubmissionBlockerRequestTypeTypedDict],
+            ]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Submit payroll
+
+        Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
+
+        You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
+
+        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+        scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param submission_blockers: An array of submission_blockers, each with a selected unblock option.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody(
+                submission_blockers=utils.get_pydantic_model(
+                    submission_blockers,
+                    Optional[List[models.PayrollSubmissionBlockerRequestType]],
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body if request is not None else None,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody
+                ],
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2500,9 +4471,148 @@ class Payrolls(BaseSDK):
             raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
-                models.PayrollBlockersErrorData, http_res
+                models.UnprocessableEntityError1Data, http_res
             )
-            raise models.PayrollBlockersError(response_data, http_res)
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def submit_async(
+        self,
+        *,
+        company_id: str,
+        payroll_id: str,
+        x_gusto_api_version: Optional[
+            models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion
+        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        submission_blockers: Optional[
+            Union[
+                Iterable[models.PayrollSubmissionBlockerRequestType],
+                Iterable[models.PayrollSubmissionBlockerRequestTypeTypedDict],
+            ]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ):
+        r"""Submit payroll
+
+        Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
+
+        You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
+
+        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+        scope: `payrolls:run`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_id: The UUID of the company
+        :param payroll_id: The UUID of the payroll
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param submission_blockers: An array of submission_blockers, each with a selected unblock option.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            payroll_id=payroll_id,
+            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody(
+                submission_blockers=utils.get_pydantic_model(
+                    submission_blockers,
+                    Optional[List[models.PayrollSubmissionBlockerRequestType]],
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.request_body if request is not None else None,
+                False,
+                True,
+                "json",
+                Optional[
+                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody
+                ],
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "202", "*"):
+            return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -2606,6 +4716,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2728,6 +4843,11 @@ class Payrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2737,1862 +4857,6 @@ class Payrolls(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
             return unmarshal_json_response(models.PayrollGrossUpResponse, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def calculate(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Calculate a payroll
-
-        Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
-
-        This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
-
-        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def calculate_async(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Calculate a payroll
-
-        Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
-
-        This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
-
-        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls-payroll_id-calculate",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def submit(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        submission_blockers: Optional[
-            Union[
-                List[models.PayrollSubmissionBlockerRequestType],
-                List[models.PayrollSubmissionBlockerRequestTypeTypedDict],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Submit payroll
-
-        Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
-
-        You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
-
-        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param submission_blockers: An array of submission_blockers, each with a selected unblock option.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody(
-                submission_blockers=utils.get_pydantic_model(
-                    submission_blockers,
-                    Optional[List[models.PayrollSubmissionBlockerRequestType]],
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[
-                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody
-                ],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def submit_async(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion
-        ] = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        submission_blockers: Optional[
-            Union[
-                List[models.PayrollSubmissionBlockerRequestType],
-                List[models.PayrollSubmissionBlockerRequestTypeTypedDict],
-            ]
-        ] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ):
-        r"""Submit payroll
-
-        Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
-
-        You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
-
-        If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param submission_blockers: An array of submission_blockers, each with a selected unblock option.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-            request_body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody(
-                submission_blockers=utils.get_pydantic_model(
-                    submission_blockers,
-                    Optional[List[models.PayrollSubmissionBlockerRequestType]],
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[
-                    models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitRequestBody
-                ],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-v1-companies-company_id-payrolls-payroll_id-submit",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "202", "*"):
-            return
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def cancel(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion
-        ] = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.UnprocessedPayroll:
-        r"""Cancel a payroll
-
-        Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
-
-        - `processed` is `true`
-        - Current time is earlier than 4pm PT on the `payroll_deadline`
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-        )
-
-        req = self._build_request(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.UnprocessedPayroll, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def cancel_async(
-        self,
-        *,
-        company_id: str,
-        payroll_id: str,
-        x_gusto_api_version: Optional[
-            models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion
-        ] = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.UnprocessedPayroll:
-        r"""Cancel a payroll
-
-        Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
-
-        - `processed` is `true`
-        - Current time is earlier than 4pm PT on the `payroll_deadline`
-
-        scope: `payrolls:run`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param payroll_id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            payroll_id=payroll_id,
-        )
-
-        req = self._build_request_async(
-            method="PUT",
-            path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="put-api-v1-companies-company_id-payrolls-payroll_id-cancel",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.UnprocessedPayroll, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def get_pay_stub(
-        self,
-        *,
-        payroll_id: str,
-        employee_id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
-        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> httpx.Response:
-        r"""Get an employee pay stub (pdf)
-
-        Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
-
-        scope: `pay_stubs:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_id: The UUID of the payroll
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_id=payroll_id,
-            employee_id=employee_id,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/payrolls/{payroll_id}/employees/{employee_id}/pay_stub",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/pdf",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            stream=True,
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/pdf"):
-            return http_res
-        if utils.match_response(http_res, "404", "application/json"):
-            http_res_text = utils.stream_to_text(http_res)
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res, http_res_text
-            )
-            raise models.NotFoundErrorObject(response_data, http_res, http_res_text)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        http_res_text = utils.stream_to_text(http_res)
-        raise models.APIError("Unexpected response received", http_res, http_res_text)
-
-    async def get_pay_stub_async(
-        self,
-        *,
-        payroll_id: str,
-        employee_id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion
-        ] = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> httpx.Response:
-        r"""Get an employee pay stub (pdf)
-
-        Get an employee's pay stub for the specified payroll. By default, an application/pdf response will be returned. No other content types are currently supported, but may be supported in the future.
-
-        scope: `pay_stubs:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_id: The UUID of the payroll
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_id=payroll_id,
-            employee_id=employee_id,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/payrolls/{payroll_id}/employees/{employee_id}/pay_stub",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/pdf",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-payrolls-payroll_uuid-employees-employee_uuid-pay_stub",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            stream=True,
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/pdf"):
-            return http_res
-        if utils.match_response(http_res, "404", "application/json"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res, http_res_text
-            )
-            raise models.NotFoundErrorObject(response_data, http_res, http_res_text)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        http_res_text = await utils.stream_to_text_async(http_res)
-        raise models.APIError("Unexpected response received", http_res, http_res_text)
-
-    def get_pay_stubs(
-        self,
-        *,
-        employee_id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeePayStubsList]:
-        r"""Get an employee's pay stubs
-
-        Get an employee's pay stubs.
-
-        Results are returned in reverse chronological order (newest first).
-
-        scope: `pay_stubs:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            employee_id=employee_id,
-            page=page,
-            per=per,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_id}/pay_stubs",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-employees-employee_uuid-pay_stubs",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.EmployeePayStubsList], http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def get_pay_stubs_async(
-        self,
-        *,
-        employee_id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.EmployeePayStubsList]:
-        r"""Get an employee's pay stubs
-
-        Get an employee's pay stubs.
-
-        Results are returned in reverse chronological order (newest first).
-
-        scope: `pay_stubs:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param employee_id: The UUID of the employee
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
-        :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1EmployeesEmployeeUUIDPayStubsRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            employee_id=employee_id,
-            page=page,
-            per=per,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_id}/pay_stubs",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-employees-employee_uuid-pay_stubs",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.EmployeePayStubsList], http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def generate_printable_checks(
-        self,
-        *,
-        payroll_uuid: str,
-        printing_format: models.PrintingFormat,
-        x_gusto_api_version: Optional[
-            models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion
-        ] = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        starting_check_number: Optional[int] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollCheck:
-        r"""Generate printable payroll checks (pdf)
-
-        This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
-
-        scope: `generated_documents:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_uuid: The UUID of the payroll
-        :param printing_format: The type of check stock being printed. Check the \"Types of check stock\" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param starting_check_number: The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_uuid=payroll_uuid,
-            printable_payroll_checks_body=models.PrintablePayrollChecksBody(
-                printing_format=printing_format,
-                starting_check_number=starting_check_number,
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/payrolls/{payroll_uuid}/generated_documents/printable_payroll_checks",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.printable_payroll_checks_body,
-                False,
-                False,
-                "json",
-                models.PrintablePayrollChecksBody,
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-v1-payrolls-payroll_uuid-generated_documents-printable_payroll_checks",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollCheck, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def generate_printable_checks_async(
-        self,
-        *,
-        payroll_uuid: str,
-        printing_format: models.PrintingFormat,
-        x_gusto_api_version: Optional[
-            models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion
-        ] = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        starting_check_number: Optional[int] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollCheck:
-        r"""Generate printable payroll checks (pdf)
-
-        This endpoint initiates the generation of employee checks for the payroll specified by payroll_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_payroll_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
-
-        scope: `generated_documents:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_uuid: The UUID of the payroll
-        :param printing_format: The type of check stock being printed. Check the \"Types of check stock\" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param starting_check_number: The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_uuid=payroll_uuid,
-            printable_payroll_checks_body=models.PrintablePayrollChecksBody(
-                printing_format=printing_format,
-                starting_check_number=starting_check_number,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/payrolls/{payroll_uuid}/generated_documents/printable_payroll_checks",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.printable_payroll_checks_body,
-                False,
-                False,
-                "json",
-                models.PrintablePayrollChecksBody,
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-v1-payrolls-payroll_uuid-generated_documents-printable_payroll_checks",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollCheck, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def get_v1_companies_company_id_payrolls_id_partner_disbursements(
-        self,
-        *,
-        company_id: str,
-        id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPartnerDisbursements:
-        r"""Get partner disbursements for a payroll
-
-        Get partner disbursements for a specific payroll.
-
-        scope: `partner_disbursements:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
-            company_id=company_id,
-            id=id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payrolls-id-partner_disbursements",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def get_v1_companies_company_id_payrolls_id_partner_disbursements_async(
-        self,
-        *,
-        company_id: str,
-        id: str,
-        x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPartnerDisbursements:
-        r"""Get partner disbursements for a payroll
-
-        Get partner disbursements for a specific payroll.
-
-        scope: `partner_disbursements:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param id: The UUID of the payroll
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
-            company_id=company_id,
-            id=id,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-payrolls-id-partner_disbursements",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def patch_v1_companies_company_id_payrolls_id_partner_disbursements(
-        self,
-        *,
-        company_id: str,
-        id: str,
-        disbursements: Union[
-            List[
-                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
-            ],
-            List[
-                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursementsTypedDict
-            ],
-        ],
-        x_gusto_api_version: Optional[
-            models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
-        ] = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPartnerDisbursements:
-        r"""Update partner disbursements for a payroll
-
-        Update partner disbursements for a specific payroll.
-
-        scope: `partner_disbursements:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param id: The UUID of the payroll
-        :param disbursements:
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
-            company_id=company_id,
-            id=id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody(
-                disbursements=utils.get_pydantic_model(
-                    disbursements,
-                    List[
-                        models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request(
-            method="PATCH",
-            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[
-                    models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody
-                ],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="patch-v1-companies-company_id-payrolls-id-partner_disbursements",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def patch_v1_companies_company_id_payrolls_id_partner_disbursements_async(
-        self,
-        *,
-        company_id: str,
-        id: str,
-        disbursements: Union[
-            List[
-                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
-            ],
-            List[
-                models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursementsTypedDict
-            ],
-        ],
-        x_gusto_api_version: Optional[
-            models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion
-        ] = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.PayrollPartnerDisbursements:
-        r"""Update partner disbursements for a payroll
-
-        Update partner disbursements for a specific payroll.
-
-        scope: `partner_disbursements:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: The UUID of the company
-        :param id: The UUID of the payroll
-        :param disbursements:
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequest(
-            company_id=company_id,
-            id=id,
-            x_gusto_api_version=x_gusto_api_version,
-            request_body=models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody(
-                disbursements=utils.get_pydantic_model(
-                    disbursements,
-                    List[
-                        models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsDisbursements
-                    ],
-                ),
-            ),
-        )
-
-        req = self._build_request_async(
-            method="PATCH",
-            path="/v1/companies/{company_id}/payrolls/{id}/partner_disbursements",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[
-                    models.PatchV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsRequestBody
-                ],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="patch-v1-companies-company_id-payrolls-id-partner_disbursements",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.PayrollPartnerDisbursements, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res

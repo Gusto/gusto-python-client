@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class NotificationStatus(str, Enum):
+class Status(str, Enum):
     r"""Represents the notification's status as managed by our system. It is updated based on observable system events and internal business logic, and does not reflect resolution steps taken outside our system. This field is read-only and cannot be modified via the API."""
 
     OPEN = "open"
@@ -80,7 +80,7 @@ class NotificationTypedDict(TypedDict):
     r"""The title of the notification. This highlights the actionable component of the notification."""
     message: str
     r"""The message of the notification. This provides additional context for the user and recommends a specific action to resolve the notification."""
-    status: NotificationStatus
+    status: Status
     r"""Represents the notification's status as managed by our system. It is updated based on observable system events and internal business logic, and does not reflect resolution steps taken outside our system. This field is read-only and cannot be modified via the API."""
     category: str
     r"""The notification's category."""
@@ -111,7 +111,7 @@ class Notification(BaseModel):
     message: str
     r"""The message of the notification. This provides additional context for the user and recommends a specific action to resolve the notification."""
 
-    status: NotificationStatus
+    status: Status
     r"""Represents the notification's status as managed by our system. It is updated based on observable system events and internal business logic, and does not reflect resolution steps taken outside our system. This field is read-only and cannot be modified via the API."""
 
     category: str

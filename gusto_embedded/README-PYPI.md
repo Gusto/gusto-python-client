@@ -244,7 +244,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -262,15 +262,9 @@ import os
 
 with Gusto() as gusto:
 
-    res = gusto.companies.create_partner_managed(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
+    res = gusto.companies.put_v1_partner_managed_companies_company_uuid_disassociate(security=gusto_embedded.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateSecurity(
         system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-    ), user={
-        "first_name": "Marco",
-        "last_name": "Trantow",
-        "email": "Jewell_Greenholt72@hotmail.com",
-    }, company={
-        "name": "<value>",
-    }, x_gusto_api_version=gusto_embedded.PostV1PartnerManagedCompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    ), company_uuid="<id>", x_gusto_api_version=gusto_embedded.PutV1PartnerManagedCompaniesCompanyUUIDDisassociateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -298,18 +292,19 @@ with Gusto() as gusto:
 
 ### [Companies](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md)
 
-* [create_partner_managed](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
+* [list_admins](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#list_admins) - Get all the admins at a company
+* [create_admin](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#create_admin) - Create an admin for the company
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get) - Get a company
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#update) - Update a company
+* [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
+* [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get_onboarding_status) - Get company onboarding status
+* [finish_onboarding](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
+* [put_v1_partner_managed_companies_company_uuid_disassociate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#put_v1_partner_managed_companies_company_uuid_disassociate) - Disassociate a partner managed company
 * [migrate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#migrate) - Migrate company to embedded payroll
+* [create_partner_managed](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#create_partner_managed) - Create a partner managed company
 * [get_v1_partner_managed_companies_company_uuid_migration_readiness](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get_v1_partner_managed_companies_company_uuid_migration_readiness) - Check company migration readiness
 * [accept_terms_of_service](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#accept_terms_of_service) - Accept terms of service for a company user
 * [retrieve_terms_of_service](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#retrieve_terms_of_service) - Retrieve terms of service status for a company user
-* [list_admins](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#list_admins) - Get all the admins at a company
-* [create_admin](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#create_admin) - Create an admin for the company
-* [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get_onboarding_status) - Get company onboarding status
-* [finish_onboarding](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#finish_onboarding) - Finish company onboarding
-* [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companies/README.md#get_custom_fields) - Get the custom fields of a company
 
 ### [Companies.Suspensions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/suspensions/README.md)
 
@@ -322,23 +317,23 @@ with Gusto() as gusto:
 
 ### [CompanyAttachments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyattachments/README.md)
 
-* [get_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyattachments/README.md#get_details) - Get Company Attachment Details
 * [get_list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyattachments/README.md#get_list) - Get List of Company Attachments
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyattachments/README.md#create) - Create Company Attachment and Upload File
+* [get_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyattachments/README.md#get_details) - Get Company Attachment Details
 
 ### [CompanyBenefits](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md)
 
+* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_all) - Get all supported benefits
+* [get_supported](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_supported) - Get a supported benefit
+* [get_requirements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by benefit type
 * [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#list) - Get benefits for a company
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#create) - Create a company benefit
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get) - Get a company benefit
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#update) - Update a company benefit
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#delete) - Delete a company benefit
-* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_all) - Get all supported benefits
-* [get_supported](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_supported) - Get a supported benefit
-* [get_summary](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
 * [get_employee_benefits](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_employee_benefits) - Get all employee benefits for a company benefit
 * [update_employee_benefits](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#update_employee_benefits) - Bulk update employee benefits for a company benefit
-* [get_requirements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_requirements) - Get benefit fields requirements by benefit type
+* [get_summary](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_summary) - Get company benefit summary by company benefit id.
 * [get_v1_company_benefits_company_benefit_id_contribution_exclusions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
 * [put_v1_company_benefits_company_benefit_id_contribution_exclusions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companybenefits/README.md#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
 
@@ -348,6 +343,18 @@ with Gusto() as gusto:
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyforms/README.md#get) - Get a company form
 * [get_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyforms/README.md#get_pdf) - Get a company form pdf
 * [sign](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/companyforms/README.md#sign) - Sign a company form
+
+### [ContractorPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md)
+
+* [get_v1_contractors_contractor_uuid_payments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get_v1_contractors_contractor_uuid_payments) - Get contractor payments
+* [get_v1_contractor_payments_contractor_payment_id_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
+* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
+* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
+* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
+* [get_receipt](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
+* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
 
 ### [ContractorDocuments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractordocuments/README.md)
 
@@ -365,12 +372,12 @@ with Gusto() as gusto:
 
 ### [ContractorPaymentGroups](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md)
 
+* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
+* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
 * [get_list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#get_list) - Get contractor payment groups for a company
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#create) - Create a contractor payment group
-* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#preview) - Preview a contractor payment group
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#get) - Get a contractor payment group
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#delete) - Cancel a contractor payment group
-* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#fund) - Fund a contractor payment group [DEMO]
 * [get_v1_contractor_payment_groups_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#get_v1_contractor_payment_groups_id_partner_disbursements) - Get partner disbursements for a contractor payment group
 * [patch_v1_contractor_payment_groups_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentgroups/README.md#patch_v1_contractor_payment_groups_id_partner_disbursements) - Update partner disbursements for a contractor payment group
 
@@ -384,26 +391,8 @@ with Gusto() as gusto:
 
 * [create_bank_account](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpaymentmethods/README.md#create_bank_account) - Create a contractor bank account
 
-### [ContractorPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md)
-
-* [get_receipt](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get_receipt) - Get a single contractor payment receipt
-* [fund](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#fund) - Fund a contractor payment [DEMO]
-* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#list) - Get contractor payments for a company
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#create) - Create a contractor payment
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get) - Get a single contractor payment
-* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#delete) - Cancel a contractor payment
-* [preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#preview) - Preview contractor payment debit date
-* [get_v1_contractor_payments_contractor_payment_id_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractorpayments/README.md#get_v1_contractor_payments_contractor_payment_id_pdf) - Get a contractor payment PDF
-
 ### [Contractors](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md)
 
-* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#list) - Get contractors of a company
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#create) - Create a contractor
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get) - Get a contractor
-* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#update) - Update a contractor
-* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#delete) - Delete a contractor
-* [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get_onboarding_status) - Get the contractor's onboarding status
-* [update_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
 * [get_address](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get_address) - Get a contractor address
 * [update_address](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#update_address) - Create or update a contractor's address
 * [get_v1_companies_company_id_contractors_payment_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
@@ -411,16 +400,23 @@ with Gusto() as gusto:
 * [delete_v1_contractors_contractor_uuid_rehire](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#delete_v1_contractors_contractor_uuid_rehire) - Cancel a pending contractor rehire
 * [post_v1_contractors_contractor_uuid_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#post_v1_contractors_contractor_uuid_termination) - Schedule a contractor termination
 * [delete_v1_contractors_contractor_uuid_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#delete_v1_contractors_contractor_uuid_termination) - Cancel a pending contractor termination
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get) - Get a contractor
+* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#update) - Update a contractor
+* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#delete) - Delete a contractor
+* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#list) - Get contractors of a company
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#create) - Create a contractor
+* [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#get_onboarding_status) - Get the contractor's onboarding status
+* [update_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/contractors/README.md#update_onboarding_status) - Change the contractor's onboarding status
 
 ### [Departments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md)
 
-* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#get_all) - Get all departments of a company
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#create) - Create a department
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#get) - Get a department
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#update) - Update a department
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#delete) - Delete a department
 * [add_people](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#add_people) - Add people to a department
 * [remove_people](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#remove_people) - Remove people from a department
+* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#get_all) - Get all departments of a company
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/departments/README.md#create) - Create a department
 
 ### [EarningTypes](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/earningtypes/README.md)
 
@@ -458,24 +454,24 @@ with Gusto() as gusto:
 
 ### [EmployeeEmployments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md)
 
-* [get_terminations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#get_terminations) - Get terminations for an employee
-* [create_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#create_termination) - Create an employee termination
-* [delete_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#delete_termination) - Delete an employee termination
-* [update_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
 * [get_rehire](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#get_rehire) - Get an employee rehire
 * [create_rehire](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#create_rehire) - Create an employee rehire
 * [rehire](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#rehire) - Update an employee rehire
 * [delete_rehire](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#delete_rehire) - Delete an employee rehire
 * [get_history](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#get_history) - Get employment history for an employee
+* [get_terminations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#get_terminations) - Get terminations for an employee
+* [create_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#create_termination) - Create an employee termination
+* [delete_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#delete_termination) - Delete an employee termination
+* [update_termination](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#update_termination) - Update an employee termination
 * [get_v1_terminations_employee_id](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeemployments/README.md#get_v1_terminations_employee_id) - Get an employee termination
 
 ### [EmployeeForms](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md)
 
-* [generate_w2](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#generate_w2) - Generate a W2 form [DEMO]
 * [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#list) - Get all employee forms
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#get) - Get an employee form
 * [get_pdf](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#get_pdf) - Get the employee form pdf
 * [sign](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#sign) - Sign an employee form
+* [generate_w2](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeeforms/README.md#generate_w2) - Generate a W2 form [DEMO]
 
 ### [EmployeePaymentMethod](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeepaymentmethodsdk/README.md)
 
@@ -491,18 +487,18 @@ with Gusto() as gusto:
 
 ### [Employees](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md)
 
-* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#list) - Get employees of a company
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#create) - Create an employee
+* [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
 * [get_v1_companies_company_id_employees_payment_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_v1_companies_company_id_employees_payment_details) - Get employee payment details for a company
-* [create_historical](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#create_historical) - Create a historical employee
+* [get_time_off_activities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get) - Get an employee
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#update) - Update an employee.
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#delete) - Delete an onboarding employee
-* [get_custom_fields](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_custom_fields) - Get an employee's custom fields
-* [update_onboarding_documents_config](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#update_onboarding_documents_config) - Update employee onboarding documents config
+* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#list) - Get employees of a company
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#create) - Create an employee
 * [get_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_onboarding_status) - Get the employee's onboarding status
 * [update_onboarding_status](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#update_onboarding_status) - Update the employee's onboarding status
-* [get_time_off_activities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#get_time_off_activities) - Get employee time off activities
+* [update_onboarding_documents_config](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#update_onboarding_documents_config) - Update employee onboarding documents config
+* [create_historical](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employees/README.md#create_historical) - Create a historical employee
 
 ### [EmployeeTaxSetup](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/employeetaxsetup/README.md)
 
@@ -519,13 +515,13 @@ with Gusto() as gusto:
 
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#get) - Get external payrolls for a company
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#create) - Create an external payroll for a company
+* [list_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#list_tax_liabilities) - Get tax liabilities
+* [update_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#update_tax_liabilities) - Update tax liabilities
+* [finalize_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 * [retrieve](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#retrieve) - Get an external payroll
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#update) - Update an external payroll
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#delete) - Delete an external payroll
 * [calculate_taxes](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#calculate_taxes) - Get tax suggestions for an external payroll
-* [list_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#list_tax_liabilities) - Get tax liabilities
-* [update_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#update_tax_liabilities) - Update tax liabilities
-* [finalize_tax_liabilities](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/externalpayrolls/README.md#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 
 ### [FederalTaxDetails](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/federaltaxdetailssdk/README.md)
 
@@ -540,9 +536,9 @@ with Gusto() as gusto:
 
 * [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#list) - Get garnishments for an employee
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#create) - Create a garnishment
+* [get_child_support_data](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#get_child_support_data) - Get child support garnishment data
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#get) - Get a garnishment
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#update) - Update a garnishment
-* [get_child_support_data](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/garnishments/README.md#get_child_support_data) - Get child support garnishment data
 
 ### [GeneratedDocuments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/generateddocuments/README.md)
 
@@ -584,8 +580,8 @@ with Gusto() as gusto:
 
 ### [Introspection](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/introspection/README.md)
 
-* [get_info](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/introspection/README.md#get_info) - Get info about the current access token
 * [oauth_access_token](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/introspection/README.md#oauth_access_token) - Create a System Access Token or Refresh an Access Token
+* [get_info](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/introspection/README.md#get_info) - Get info about the current access token
 
 ### [Invoices](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/invoices/README.md)
 
@@ -593,34 +589,48 @@ with Gusto() as gusto:
 
 ### [JobsAndCompensations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md)
 
-* [get_jobs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_jobs) - Get jobs for an employee
-* [create_job](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#create_job) - Create a job
-* [get_job](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_job) - Get a job
-* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#update) - Update a job
-* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#delete) - Delete an individual job
 * [get_compensations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_compensations) - Get compensations for a job
 * [create_compensation](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#create_compensation) - Create a compensation
 * [get_compensation](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_compensation) - Get a compensation
 * [update_compensation](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#update_compensation) - Update a compensation
 * [delete_compensation](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#delete_compensation) - Delete a compensation
+* [get_job](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_job) - Get a job
+* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#update) - Update a job
+* [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#delete) - Delete an individual job
+* [get_jobs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#get_jobs) - Get jobs for an employee
+* [create_job](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/jobsandcompensations/README.md#create_job) - Create a job
 
 ### [Locations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md)
 
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#get) - Get all company locations
-* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#create) - Create a company location
+* [get_minimum_wages](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
 * [retrieve](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#retrieve) - Get a location
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#update) - Update a location
-* [get_minimum_wages](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#get_minimum_wages) - Get minimum wages for a location
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#get) - Get all company locations
+* [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/locations/README.md#create) - Create a company location
+
+### [MemberPortalInvitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md)
+
+* [post_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#post_v1_employees_employee_id_member_portal_invitations) - Create an employee member portal invitation
+* [get_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#get_v1_employees_employee_id_member_portal_invitations) - Get an employee member portal invitation
+* [delete_v1_employees_employee_id_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#delete_v1_employees_employee_id_member_portal_invitations) - Cancel an employee member portal invitation
+* [post_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#post_v1_contractors_contractor_uuid_member_portal_invitations) - Create a contractor member portal invitation
+* [get_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#get_v1_contractors_contractor_uuid_member_portal_invitations) - Get a contractor member portal invitation
+* [delete_v1_contractors_contractor_uuid_member_portal_invitations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/memberportalinvitations/README.md#delete_v1_contractors_contractor_uuid_member_portal_invitations) - Cancel a contractor member portal invitation
 
 ### [Notifications](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/notifications/README.md)
 
-* [get_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/notifications/README.md#get_details) - Get a notification's details
 * [get_company_notifications](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/notifications/README.md#get_company_notifications) - Get notifications for company
+* [get_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/notifications/README.md#get_details) - Get a notification's details
 
 ### [PaymentConfigs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/paymentconfigssdk/README.md)
 
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/paymentconfigssdk/README.md#get) - Get a company's payment configs
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/paymentconfigssdk/README.md#update) - Update a company's payment configs
+
+### [PayrollCancellations](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrollcancellations/README.md)
+
+* [post_v1_payroll_batches](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrollcancellations/README.md#post_v1_payroll_batches) - Create a payroll cancellation batch
+* [get_v1_payroll_batches_payroll_batch_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrollcancellations/README.md#get_v1_payroll_batches_payroll_batch_uuid) - Get a payroll cancellation batch
 
 ### [PayrollDigests](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolldigests/README.md)
 
@@ -629,38 +639,38 @@ with Gusto() as gusto:
 
 ### [Payrolls](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md)
 
-* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#list) - Get all payrolls for a company
-* [create_off_cycle](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
+* [generate_printable_checks](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
+* [get_pay_stubs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_pay_stubs) - Get an employee's pay stubs
+* [get_pay_stub](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
+* [get_v1_companies_company_id_payrolls_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
+* [patch_v1_companies_company_id_payrolls_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
 * [get_approved_reversals](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_approved_reversals) - Get approved payroll reversals
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get) - Get a single payroll
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#update) - Update a payroll by ID
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#delete) - Delete a payroll
-* [prepare](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+* [list](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#list) - Get all payrolls for a company
+* [create_off_cycle](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#create_off_cycle) - Create an off-cycle payroll
 * [get_receipt](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_receipt) - Get a single payroll receipt
+* [cancel](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#cancel) - Cancel a payroll
+* [prepare](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
+* [calculate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#calculate) - Calculate a payroll
 * [get_blockers](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_blockers) - Get all payroll blockers for a company
 * [skip](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#skip) - Skip a payroll
-* [calculate_gross_up](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#calculate_gross_up) - Calculate gross up for a payroll
-* [calculate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#calculate) - Calculate a payroll
 * [submit](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#submit) - Submit payroll
-* [cancel](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#cancel) - Cancel a payroll
-* [get_pay_stub](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_pay_stub) - Get an employee pay stub (pdf)
-* [get_pay_stubs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_pay_stubs) - Get an employee's pay stubs
-* [generate_printable_checks](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#generate_printable_checks) - Generate printable payroll checks (pdf)
-* [get_v1_companies_company_id_payrolls_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
-* [patch_v1_companies_company_id_payrolls_id_partner_disbursements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
+* [calculate_gross_up](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payrolls/README.md#calculate_gross_up) - Calculate gross up for a payroll
 
 ### [PaySchedules](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md)
 
+* [get_pay_periods](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_pay_periods) - Get pay periods for a company
+* [get_unprocessed_termination_periods](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_unprocessed_termination_periods) - Get termination pay periods for a company
 * [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_all) - Get the pay schedules for a company
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#create) - Create a new pay schedule
 * [get_preview](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_preview) - Preview pay schedule dates
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get) - Get a pay schedule
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#update) - Update a pay schedule
-* [get_pay_periods](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_pay_periods) - Get pay periods for a company
-* [get_unprocessed_termination_periods](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_unprocessed_termination_periods) - Get termination pay periods for a company
-* [get_assignments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
 * [preview_assignment](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#preview_assignment) - Preview pay schedule assignments for a company
 * [assign](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#assign) - Assign pay schedules for a company
+* [get_assignments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/payschedules/README.md#get_assignments) - Get pay schedule assignments for a company
 
 ### [PeopleBatches](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/peoplebatches/README.md)
 
@@ -682,11 +692,17 @@ with Gusto() as gusto:
 
 ### [Reports](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md)
 
+* [post_v1_bulk_reports](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#post_v1_bulk_reports) - Create a bulk report batch
+* [get_v1_bulk_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#get_v1_bulk_reports_request_uuid) - Get a bulk report batch
+* [post_v1_companies_company_id_reports_employees_annual_fica_wage](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 * [create_custom](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#create_custom) - Create a custom report
 * [post_payrolls_payroll_uuid_reports_general_ledger](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
 * [get_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 * [get_template](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#get_template) - Get a report template
-* [post_v1_companies_company_id_reports_employees_annual_fica_wage](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
+
+### [ReverseWireTransactions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reversewiretransactions/README.md)
+
+* [get_reverse_wire_transactions](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/reversewiretransactions/README.md#get_reverse_wire_transactions) - Get all reverse wire transactions for a company
 
 ### [SalaryEstimates](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/salaryestimates/README.md)
 
@@ -704,11 +720,16 @@ with Gusto() as gusto:
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/signatories/README.md#update) - Update a signatory
 * [delete](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/signatories/README.md#delete) - Delete a signatory
 
+### [TaxPayments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxpayments/README.md)
+
+* [get_tax_payments](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxpayments/README.md#get_tax_payments) - Get all tax payments for a company
+* [get_tax_payment](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxpayments/README.md#get_tax_payment) - Get a tax payment for a company
+
 ### [TaxRequirements](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxrequirements/README.md)
 
+* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxrequirements/README.md#get_all) - Get all tax requirements for a company
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxrequirements/README.md#get) - Get tax requirements for a state
 * [update_state](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxrequirements/README.md#update_state) - Update tax requirements for a state
-* [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/taxrequirements/README.md#get_all) - Get all tax requirements for a company
 
 ### [TimeOffRequests](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffrequests/README.md)
 
@@ -725,14 +746,14 @@ with Gusto() as gusto:
 ### [TimeOffPolicies](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md)
 
 * [calculate_accruing_time_off_hours](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#calculate_accruing_time_off_hours) - Calculate accruing time off hours
-* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#get) - Get a time off policy
-* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#update) - Update a time off policy
 * [get_all](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#get_all) - Get all time off policies for a company
 * [create](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#create) - Create a time off policy
+* [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#get) - Get a time off policy
+* [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#update) - Update a time off policy
+* [deactivate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#deactivate) - Deactivate a time off policy
 * [add_employees](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#add_employees) - Add employees to a time off policy
 * [remove_employees](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#remove_employees) - Remove employees from a time off policy
 * [update_balance](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#update_balance) - Update employee time off balances
-* [deactivate](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/timeoffpolicies/README.md#deactivate) - Deactivate a time off policy
 
 ### [Webhooks](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md)
 
@@ -741,8 +762,8 @@ with Gusto() as gusto:
 * [get_subscription](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#get_subscription) - Get a webhook subscription
 * [update_subscription](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#update_subscription) - Update a webhook subscription
 * [delete_subscription](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#delete_subscription) - Delete a webhook subscription
-* [verify](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#verify) - Verify a webhook subscription
 * [request_verification_token](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#request_verification_token) - Request a verification token for a webhook subscription
+* [verify](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#verify) - Verify a webhook subscription
 * [get_v1_webhooks_health_check](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/webhooks/README.md#get_v1_webhooks_health_check) - Get the webhooks health status
 
 ### [WireInRequests](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/docs/sdks/wireinrequests/README.md)
@@ -802,7 +823,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         RetryConfig("backoff", BackoffStrategy(1, 50, 1.1, 100), False))
 
     # Handle response
@@ -823,7 +844,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -852,19 +873,13 @@ from gusto_embedded import Gusto, models
 import os
 
 
-with Gusto() as gusto:
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
     res = None
     try:
 
-        res = gusto.companies.create_partner_managed(security=gusto_embedded.PostV1PartnerManagedCompaniesSecurity(
-            system_access_auth=os.getenv("GUSTO_SYSTEM_ACCESS_AUTH", ""),
-        ), user={
-            "first_name": "Marco",
-            "last_name": "Trantow",
-            "email": "Jewell_Greenholt72@hotmail.com",
-        }, company={
-            "name": "<value>",
-        }, x_gusto_api_version=gusto_embedded.PostV1PartnerManagedCompaniesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+        res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
         # Handle response
         print(res)
@@ -879,8 +894,8 @@ with Gusto() as gusto:
         print(e.raw_response)
 
         # Depending on the method different errors may be thrown
-        if isinstance(e, models.UnprocessableEntityError1):
-            print(e.data.errors)  # List[gusto_embedded.EntityErrorObject]
+        if isinstance(e, models.NotFoundErrorObject):
+            print(e.data.errors)  # List[gusto_embedded.NotFoundErrorObjectErrors]
 ```
 
 ### Error Classes
@@ -888,7 +903,7 @@ with Gusto() as gusto:
 * [`GustoError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/gustoerror.py): The base class for HTTP error responses.
   * [`NotFoundErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/notfounderrorobject.py): Not Found     The requested resource does not exist. Make sure the provided ID/UUID is valid. *
 
-<details><summary>Less common errors (10)</summary>
+<details><summary>Less common errors (12)</summary>
 
 <br />
 
@@ -899,11 +914,13 @@ with Gusto() as gusto:
 
 
 **Inherit from [`GustoError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/gustoerror.py)**:
-* [`UnprocessableEntityError1`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 159 of 299 methods.*
-* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 2 of 299 methods.*
-* [`PeopleBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollDigestConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 299 methods.*
-* [`PayrollBlockersError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 299 methods.*
+* [`UnprocessableEntityError1`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/unprocessableentityerror1.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 172 of 314 methods.*
+* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/conflicterrorobject.py): Conflict    This may happen when the resource version provided does not match the current version — retrieve the latest version and retry — or when the request conflicts with another in-progress operation on the same resource. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `409`. Applicable to 3 of 314 methods.*
+* [`ForbiddenErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/forbiddenerrorobject.py): Forbidden    The targeted company has been archived because its EIN was reassigned to a replacement company. Use the replacement company referenced in the error metadata. Status code `403`. Applicable to 1 of 314 methods.*
+* [`PayrollBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/payrollbatchconflicterror.py): Error response when a payroll cancellation idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PayrollDigestConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/payrolldigestconflicterror.py): Error response when a payroll digest idempotency key has already been used by the same partner. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PeopleBatchConflictError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/peoplebatchconflicterror.py): Error response when a people batch idempotency key conflict occurs. Status code `409`. Applicable to 1 of 314 methods.*
+* [`PayrollBlockersError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/payrollblockerserror.py): Payroll Blockers Error  For detailed information, see the [Payroll Blockers guide](https://docs.gusto.com/embedded-payroll/docs/payroll-blockers). Status code `422`. Applicable to 1 of 314 methods.*
 * [`ResponseValidationError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_embedded/./src/gusto_embedded/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -936,7 +953,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -957,7 +974,7 @@ with Gusto(
     company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
 ) as gusto:
 
-    res = gusto.introspection.get_info(x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gusto.ach_transactions.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -1044,6 +1061,20 @@ class CustomClient(AsyncHttpClient):
 
 s = Gusto(async_client=CustomClient(httpx.AsyncClient()))
 ```
+### httpx2 (Pydantic's httpx fork)
+
+[httpx2](https://httpx2.pydantic.dev/) is Pydantic's maintained fork of `httpx`. To run this SDK on httpx2, call `alias_httpx()` at your program's entry point, before importing the SDK, so every `import httpx` — including the ones inside the SDK — resolves to `httpx2`:
+```python
+import httpx2
+
+httpx2.alias_httpx()
+
+from gusto_embedded import Gusto
+
+s = Gusto()
+```
+
+An SDK can also be generated against httpx2 directly, so it depends on the fork instead of `httpx`, by setting `python.httpClientLibrary: httpx2` in `gen.yaml`.
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->

@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Jobs(BaseSDK):
@@ -26,8 +26,8 @@ class Jobs(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -127,6 +127,11 @@ class Jobs(BaseSDK):
                 operation_id="post-v1-compensations-compensation_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -170,8 +175,8 @@ class Jobs(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -271,6 +276,11 @@ class Jobs(BaseSDK):
                 operation_id="post-v1-compensations-compensation_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

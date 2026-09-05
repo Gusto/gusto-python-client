@@ -15,7 +15,8 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class Columns(str, Enum):
+class CreateReportBodyColumns(str, Enum):
+    ADDITIONAL_EARNINGS = "additional_earnings"
     BANK_ACCOUNT_ACCOUNT_NUMBER = "bank_account_account_number"
     BANK_ACCOUNT_ROUTING_NUMBER = "bank_account_routing_number"
     BANK_ACCOUNT_TYPE = "bank_account_type"
@@ -45,6 +46,7 @@ class Columns(str, Enum):
     EMPLOYEE_MEDICARE_TAX = "employee_medicare_tax"
     EMPLOYEE_PHONE_NUMBER = "employee_phone_number"
     EMPLOYEE_SOCIAL_SECURITY_TAX = "employee_social_security_tax"
+    EMPLOYEE_STATE_INCOME_TAX = "employee_state_income_tax"
     EMPLOYEE_TAXES = "employee_taxes"
     EMPLOYEE_UUID = "employee_uuid"
     EMPLOYEE_WORK_EMAIL = "employee_work_email"
@@ -102,19 +104,27 @@ class Columns(str, Enum):
     WORK_ADDRESS_ZIP = "work_address_zip"
 
 
-class Groupings(str, Enum):
+class CreateReportBodyGroupings(str, Enum):
     PAYROLL = "payroll"
     EMPLOYEE = "employee"
     WORK_ADDRESS = "work_address"
     WORK_ADDRESS_STATE = "work_address_state"
 
 
-class FileType(str, Enum):
+class CreateReportBodyFileType(str, Enum):
     r"""The type of file to generate"""
 
     CSV = "csv"
     JSON = "json"
     PDF = "pdf"
+
+
+class CreateReportBodyDateFilterType(str, Enum):
+    r"""Which payroll date `start_date` and `end_date` filter against."""
+
+    PERIOD_END_DATE = "period_end_date"
+    PERIOD_START_DATE = "period_start_date"
+    CHECK_DATE = "check_date"
 
 
 class CreateReportBodyPaymentMethod(str, Enum):
@@ -124,7 +134,7 @@ class CreateReportBodyPaymentMethod(str, Enum):
     DIRECT_DEPOSIT = "direct_deposit"
 
 
-class EmploymentType(str, Enum):
+class CreateReportBodyEmploymentType(str, Enum):
     r"""Employee employment type to filter by"""
 
     EXEMPT = "exempt"
@@ -149,16 +159,18 @@ class CreateReportBodyEmploymentStatus(str, Enum):
 class CreateReportBodyTypedDict(TypedDict):
     r"""Request body for creating a custom report."""
 
-    columns: List[Columns]
+    columns: List[CreateReportBodyColumns]
     r"""Columns to include in the report"""
-    groupings: List[Groupings]
-    r"""How to group the report"""
-    file_type: FileType
+    file_type: CreateReportBodyFileType
     r"""The type of file to generate"""
+    groupings: NotRequired[List[CreateReportBodyGroupings]]
+    r"""Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested."""
     custom_name: NotRequired[str]
     r"""The title of the report"""
     with_totals: NotRequired[bool]
     r"""Whether to include subtotals and grand totals in the report"""
+    date_filter_type: NotRequired[CreateReportBodyDateFilterType]
+    r"""Which payroll date `start_date` and `end_date` filter against."""
     start_date: NotRequired[date]
     r"""Start date of data to filter by"""
     end_date: NotRequired[date]
@@ -169,7 +181,7 @@ class CreateReportBodyTypedDict(TypedDict):
     r"""Dismissed end date of employees to filter by"""
     payment_method: NotRequired[CreateReportBodyPaymentMethod]
     r"""Payment method to filter by"""
-    employment_type: NotRequired[EmploymentType]
+    employment_type: NotRequired[CreateReportBodyEmploymentType]
     r"""Employee employment type to filter by"""
     employment_status: NotRequired[CreateReportBodyEmploymentStatus]
     r"""Employee employment status to filter by"""
@@ -184,20 +196,25 @@ class CreateReportBodyTypedDict(TypedDict):
 class CreateReportBody(BaseModel):
     r"""Request body for creating a custom report."""
 
-    columns: List[Columns]
+    columns: List[CreateReportBodyColumns]
     r"""Columns to include in the report"""
 
-    groupings: List[Groupings]
-    r"""How to group the report"""
-
-    file_type: FileType
+    file_type: CreateReportBodyFileType
     r"""The type of file to generate"""
+
+    groupings: Optional[List[CreateReportBodyGroupings]] = None
+    r"""Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested."""
 
     custom_name: Optional[str] = None
     r"""The title of the report"""
 
     with_totals: Optional[bool] = False
     r"""Whether to include subtotals and grand totals in the report"""
+
+    date_filter_type: Optional[CreateReportBodyDateFilterType] = (
+        CreateReportBodyDateFilterType.PERIOD_END_DATE
+    )
+    r"""Which payroll date `start_date` and `end_date` filter against."""
 
     start_date: Optional[date] = None
     r"""Start date of data to filter by"""
@@ -214,7 +231,7 @@ class CreateReportBody(BaseModel):
     payment_method: Optional[CreateReportBodyPaymentMethod] = None
     r"""Payment method to filter by"""
 
-    employment_type: Optional[EmploymentType] = None
+    employment_type: Optional[CreateReportBodyEmploymentType] = None
     r"""Employee employment type to filter by"""
 
     employment_status: Optional[CreateReportBodyEmploymentStatus] = None
@@ -233,8 +250,10 @@ class CreateReportBody(BaseModel):
     def serialize_model(self, handler):
         optional_fields = set(
             [
+                "groupings",
                 "custom_name",
                 "with_totals",
+                "date_filter_type",
                 "start_date",
                 "end_date",
                 "dismissed_start_date",

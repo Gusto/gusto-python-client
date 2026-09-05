@@ -33,7 +33,7 @@ class ContractorPaymentGroupPreviewStatus(str, Enum):
     FUNDED = "Funded"
 
 
-class ContractorPaymentGroupPreviewTotalsTypedDict(TypedDict):
+class TotalsTypedDict(TypedDict):
     amount: NotRequired[str]
     r"""The total amount for the group of contractor payments."""
     debit_amount: NotRequired[str]
@@ -46,7 +46,7 @@ class ContractorPaymentGroupPreviewTotalsTypedDict(TypedDict):
     r"""The total check amount for the group of contractor payments."""
 
 
-class ContractorPaymentGroupPreviewTotals(BaseModel):
+class Totals(BaseModel):
     amount: Optional[str] = None
     r"""The total amount for the group of contractor payments."""
 
@@ -108,7 +108,7 @@ class ContractorPaymentGroupPreviewTypedDict(TypedDict):
     r"""List of submission blockers for the contractor payment group."""
     credit_blockers: NotRequired[List[PayrollCreditBlockerTypeTypedDict]]
     r"""List of credit blockers for the contractor payment group."""
-    totals: NotRequired[ContractorPaymentGroupPreviewTotalsTypedDict]
+    totals: NotRequired[TotalsTypedDict]
     contractor_payments: NotRequired[List[ContractorPaymentForGroupPreviewTypedDict]]
 
 
@@ -142,7 +142,7 @@ class ContractorPaymentGroupPreview(BaseModel):
     credit_blockers: Optional[List[PayrollCreditBlockerType]] = None
     r"""List of credit blockers for the contractor payment group."""
 
-    totals: Optional[ContractorPaymentGroupPreviewTotals] = None
+    totals: Optional[Totals] = None
 
     contractor_payments: Optional[List[ContractorPaymentForGroupPreview]] = None
 

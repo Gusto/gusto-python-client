@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Webhooks(BaseSDK):
@@ -90,6 +90,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscriptions",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -187,6 +192,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscriptions",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -212,7 +222,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -254,7 +264,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -299,6 +312,11 @@ class Webhooks(BaseSDK):
                 operation_id="post-v1-webhook-subscription",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -330,7 +348,7 @@ class Webhooks(BaseSDK):
             models.PostV1WebhookSubscriptionSecurityTypedDict,
         ],
         url: str,
-        subscription_types: List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+        subscription_types: Iterable[models.PostV1WebhookSubscriptionSubscriptionTypes],
         x_gusto_api_version: Optional[
             models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion
         ] = models.PostV1WebhookSubscriptionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -372,7 +390,10 @@ class Webhooks(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             request_body=models.PostV1WebhookSubscriptionRequestBody(
                 url=url,
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PostV1WebhookSubscriptionSubscriptionTypes],
+                ),
             ),
         )
 
@@ -417,6 +438,11 @@ class Webhooks(BaseSDK):
                 operation_id="post-v1-webhook-subscription",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -485,8 +511,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -523,6 +549,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -591,8 +622,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -629,6 +660,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -660,7 +696,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -699,10 +737,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -747,6 +788,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -783,7 +829,9 @@ class Webhooks(BaseSDK):
             models.PutV1WebhookSubscriptionUUIDSecurityTypedDict,
         ],
         webhook_subscription_uuid: str,
-        subscription_types: List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+        subscription_types: Iterable[
+            models.PutV1WebhookSubscriptionUUIDSubscriptionTypes
+        ],
         x_gusto_api_version: Optional[
             models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion
         ] = models.PutV1WebhookSubscriptionUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -822,10 +870,13 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1WebhookSubscriptionUUIDRequestBody(
-                subscription_types=subscription_types,
+                subscription_types=utils.unmarshal(
+                    subscription_types,
+                    List[models.PutV1WebhookSubscriptionUUIDSubscriptionTypes],
+                ),
             ),
         )
 
@@ -870,6 +921,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -943,8 +999,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request(
@@ -981,6 +1037,11 @@ class Webhooks(BaseSDK):
                 operation_id="delete-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1049,8 +1110,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
         )
 
         req = self._build_request_async(
@@ -1087,6 +1148,11 @@ class Webhooks(BaseSDK):
                 operation_id="delete-v1-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1096,6 +1162,232 @@ class Webhooks(BaseSDK):
         response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def request_verification_token(
+        self,
+        *,
+        security: Union[
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity,
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurityTypedDict,
+        ],
+        webhook_subscription_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.WebhookVerificationTokenResponse:
+        r"""Request a verification token for a webhook subscription
+
+        Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `webhook_subscriptions:read`
+
+        :param security:
+        :param webhook_subscription_uuid: The webhook subscription UUID.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-webhook-subscription-verification-token-uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.WebhookVerificationTokenResponse, http_res
+            )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def request_verification_token_async(
+        self,
+        *,
+        security: Union[
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity,
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurityTypedDict,
+        ],
+        webhook_subscription_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.WebhookVerificationTokenResponse:
+        r"""Request a verification token for a webhook subscription
+
+        Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `webhook_subscriptions:read`
+
+        :param security:
+        :param webhook_subscription_uuid: The webhook subscription UUID.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-webhook-subscription-verification-token-uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(
+                models.WebhookVerificationTokenResponse, http_res
+            )
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1159,8 +1451,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1207,6 +1499,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-verify-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1284,8 +1581,8 @@ class Webhooks(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1VerifyWebhookSubscriptionUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            webhook_subscription_uuid=webhook_subscription_uuid,
             request_body=models.PutV1VerifyWebhookSubscriptionUUIDRequestBody(
                 verification_token=verification_token,
             ),
@@ -1332,6 +1629,11 @@ class Webhooks(BaseSDK):
                 operation_id="put-v1-verify-webhook-subscription-uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1351,222 +1653,6 @@ class Webhooks(BaseSDK):
                 models.UnprocessableEntityError1Data, http_res
             )
             raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def request_verification_token(
-        self,
-        *,
-        security: Union[
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity,
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurityTypedDict,
-        ],
-        webhook_subscription_uuid: str,
-        x_gusto_api_version: Optional[
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion
-        ] = models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WebhookVerificationTokenResponse:
-        r"""Request a verification token for a webhook subscription
-
-        Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
-
-        📘 System Access Authentication
-
-        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
-
-        scope: `webhook_subscriptions:read`
-
-        :param security:
-        :param webhook_subscription_uuid: The webhook subscription UUID.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=utils.get_pydantic_model(
-                security, models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity
-            ),
-            allow_empty_value=None,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-webhook-subscription-verification-token-uuid",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(security, models.Security),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(
-                models.WebhookVerificationTokenResponse, http_res
-            )
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def request_verification_token_async(
-        self,
-        *,
-        security: Union[
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity,
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurityTypedDict,
-        ],
-        webhook_subscription_uuid: str,
-        x_gusto_api_version: Optional[
-            models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion
-        ] = models.GetV1WebhookSubscriptionVerificationTokenUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.WebhookVerificationTokenResponse:
-        r"""Request a verification token for a webhook subscription
-
-        Request that the webhook subscription `verification_token` be POSTed to the Subscription URL.
-
-        📘 System Access Authentication
-
-        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
-
-        scope: `webhook_subscriptions:read`
-
-        :param security:
-        :param webhook_subscription_uuid: The webhook subscription UUID.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1WebhookSubscriptionVerificationTokenUUIDRequest(
-            webhook_subscription_uuid=webhook_subscription_uuid,
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/webhook_subscriptions/{webhook_subscription_uuid}/request_verification_token",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=utils.get_pydantic_model(
-                security, models.GetV1WebhookSubscriptionVerificationTokenUUIDSecurity
-            ),
-            allow_empty_value=None,
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-webhook-subscription-verification-token-uuid",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(security, models.Security),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(
-                models.WebhookVerificationTokenResponse, http_res
-            )
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -1656,6 +1742,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhooks-health_check",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1753,6 +1844,11 @@ class Webhooks(BaseSDK):
                 operation_id="get-v1-webhooks-health_check",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Webhooks"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

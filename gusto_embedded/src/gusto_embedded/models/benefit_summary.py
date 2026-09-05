@@ -121,7 +121,7 @@ class PayrollBenefits(BaseModel):
         return m
 
 
-class BenefitSummaryEmployeesTypedDict(TypedDict):
+class EmployeesModelTypedDict(TypedDict):
     uuid: NotRequired[str]
     r"""The UUID of the employee"""
     company_benefit_deduction: NotRequired[str]
@@ -139,7 +139,7 @@ class BenefitSummaryEmployeesTypedDict(TypedDict):
     payroll_benefits: NotRequired[List[PayrollBenefitsTypedDict]]
 
 
-class BenefitSummaryEmployees(BaseModel):
+class EmployeesModel(BaseModel):
     uuid: Optional[str] = None
     r"""The UUID of the employee"""
 
@@ -202,7 +202,7 @@ class BenefitSummaryTypedDict(TypedDict):
     r"""The aggregate of employee deduction for all employees given the period of time and the specific company benefit."""
     company_benefit_contribution: NotRequired[str]
     r"""The aggregate of company contribution for all employees given the period of time and the specific company benefit."""
-    employees: NotRequired[List[BenefitSummaryEmployeesTypedDict]]
+    employees: NotRequired[List[EmployeesModelTypedDict]]
 
 
 class BenefitSummary(BaseModel):
@@ -221,7 +221,7 @@ class BenefitSummary(BaseModel):
     company_benefit_contribution: Optional[str] = None
     r"""The aggregate of company contribution for all employees given the period of time and the specific company benefit."""
 
-    employees: Optional[List[BenefitSummaryEmployees]] = None
+    employees: Optional[List[EmployeesModel]] = None
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
