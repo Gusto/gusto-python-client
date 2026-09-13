@@ -1,19 +1,19 @@
 # Type
 
+The contractor's type, either "Individual" or "Business". 
+
 ## Example Usage
 
 ```python
 from gusto_app_integration.models import Type
 
-value = Type.SINGLE
+value = Type.INDIVIDUAL
 ```
 
 
 ## Values
 
-| Name              | Value             |
-| ----------------- | ----------------- |
-| `SINGLE`          | single            |
-| `HOURLY_SALARIED` | hourly_salaried   |
-| `BY_EMPLOYEE`     | by_employee       |
-| `BY_DEPARTMENT`   | by_department     |
+| Name         | Value        |
+| ------------ | ------------ |
+| `INDIVIDUAL` | Individual   |
+| `BUSINESS`   | Business     |

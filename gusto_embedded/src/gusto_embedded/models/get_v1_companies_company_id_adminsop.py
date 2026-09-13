@@ -15,7 +15,7 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion(str, Enum):
+class HeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
@@ -24,9 +24,7 @@ class GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion(str, Enum):
 class GetV1CompaniesCompanyIDAdminsRequestTypedDict(TypedDict):
     company_id: str
     r"""The UUID of the company"""
-    x_gusto_api_version: NotRequired[
-        GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion
-    ]
+    x_gusto_api_version: NotRequired[HeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
@@ -41,10 +39,10 @@ class GetV1CompaniesCompanyIDAdminsRequest(BaseModel):
     r"""The UUID of the company"""
 
     x_gusto_api_version: Annotated[
-        Optional[GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion],
+        Optional[HeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    ] = HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     page: Annotated[

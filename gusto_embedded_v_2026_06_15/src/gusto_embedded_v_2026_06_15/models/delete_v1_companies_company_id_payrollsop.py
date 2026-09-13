@@ -26,12 +26,12 @@ class DeleteV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
     r"""The UUID of the company"""
     payroll_id: str
     r"""The UUID of the payroll"""
-    async_: NotRequired[bool]
-    r"""When true, request an asynchronous delete of the payroll."""
     x_gusto_api_version: NotRequired[
         DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
     ]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    async_: NotRequired[bool]
+    r"""When true, request an asynchronous delete of the payroll."""
 
 
 class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
@@ -45,13 +45,6 @@ class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     ]
     r"""The UUID of the payroll"""
 
-    async_: Annotated[
-        Optional[bool],
-        pydantic.Field(alias="async"),
-        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
-    ] = None
-    r"""When true, request an asynchronous delete of the payroll."""
-
     x_gusto_api_version: Annotated[
         Optional[DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
@@ -59,9 +52,16 @@ class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     ] = DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
+    async_: Annotated[
+        Optional[bool],
+        pydantic.Field(alias="async"),
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""When true, request an asynchronous delete of the payroll."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["async", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "async"])
         serialized = handler(self)
         m = {}
 

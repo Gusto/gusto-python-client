@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class HolidayPayPolicies(BaseSDK):
@@ -89,6 +89,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -191,6 +196,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -313,6 +323,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -438,6 +453,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -568,6 +588,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -698,6 +723,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -803,6 +833,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -908,6 +943,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -942,8 +982,10 @@ class HolidayPayPolicies(BaseSDK):
         company_uuid: str,
         version: str,
         employees: Union[
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict],
+            Iterable[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
+            Iterable[
+                models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddHeaderXGustoAPIVersion
@@ -1034,6 +1076,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1068,8 +1115,10 @@ class HolidayPayPolicies(BaseSDK):
         company_uuid: str,
         version: str,
         employees: Union[
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict],
+            Iterable[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployees],
+            Iterable[
+                models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddEmployeesTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyUUIDHolidayPayPolicyAddHeaderXGustoAPIVersion
@@ -1160,6 +1209,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1194,8 +1248,8 @@ class HolidayPayPolicies(BaseSDK):
         company_uuid: str,
         version: str,
         employees: Union[
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
-            List[
+            Iterable[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
+            Iterable[
                 models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployeesTypedDict
             ],
         ],
@@ -1290,6 +1344,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1324,8 +1383,8 @@ class HolidayPayPolicies(BaseSDK):
         company_uuid: str,
         version: str,
         employees: Union[
-            List[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
-            List[
+            Iterable[models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployees],
+            Iterable[
                 models.PutV1CompaniesCompanyUUIDHolidayPayPolicyRemoveEmployeesTypedDict
             ],
         ],
@@ -1420,6 +1479,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1530,6 +1594,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1640,6 +1709,11 @@ class HolidayPayPolicies(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Holiday Pay Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

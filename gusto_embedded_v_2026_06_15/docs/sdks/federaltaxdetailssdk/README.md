@@ -109,6 +109,7 @@ with Gusto(
 
 | Error Type                       | Status Code                      | Content Type                     |
 | -------------------------------- | -------------------------------- | -------------------------------- |
+| models.ForbiddenErrorObject      | 403                              | application/json                 |
 | models.NotFoundErrorObject       | 404                              | application/json                 |
 | models.UnprocessableEntityError1 | 409, 422                         | application/json                 |
 | models.APIError                  | 4XX, 5XX                         | \*/\*                            |

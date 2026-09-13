@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Payrolls(BaseSDK):
@@ -20,7 +20,7 @@ class Payrolls(BaseSDK):
             models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -70,10 +70,17 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
             page=page,
             per=per,
             sort_by=sort_by,
@@ -112,6 +119,11 @@ class Payrolls(BaseSDK):
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -144,7 +156,7 @@ class Payrolls(BaseSDK):
             models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -194,10 +206,17 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             payroll_id=payroll_id,
-            x_gusto_api_version=x_gusto_api_version,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[
+                        models.GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude
+                    ]
+                ],
+            ),
             page=page,
             per=per,
             sort_by=sort_by,
@@ -236,6 +255,11 @@ class Payrolls(BaseSDK):
                 operation_id="get-v1-companies-company_id-payrolls-payroll_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -265,8 +289,8 @@ class Payrolls(BaseSDK):
         company_id: str,
         payroll_id: str,
         employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
@@ -364,6 +388,11 @@ class Payrolls(BaseSDK):
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -398,8 +427,8 @@ class Payrolls(BaseSDK):
         company_id: str,
         payroll_id: str,
         employee_compensations: Union[
-            List[models.PayrollUpdateEmployeeCompensations],
-            List[models.PayrollUpdateEmployeeCompensationsTypedDict],
+            Iterable[models.PayrollUpdateEmployeeCompensations],
+            Iterable[models.PayrollUpdateEmployeeCompensationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
@@ -497,6 +526,11 @@ class Payrolls(BaseSDK):
                 operation_id="put-v1-companies-company_id-payrolls",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -532,12 +566,12 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
@@ -594,13 +628,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -642,6 +683,11 @@ class Payrolls(BaseSDK):
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -672,12 +718,12 @@ class Payrolls(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        processing_statuses: Optional[List[models.ProcessingStatuses]] = None,
-        payroll_types: Optional[List[models.QueryParamPayrollTypes]] = None,
+        processing_statuses: Optional[Iterable[models.ProcessingStatuses]] = None,
+        payroll_types: Optional[Iterable[models.QueryParamPayrollTypes]] = None,
         processed: Optional[bool] = None,
         include_off_cycle: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]
         ] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
@@ -734,13 +780,20 @@ class Payrolls(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDPayrollsRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
-            processing_statuses=processing_statuses,
-            payroll_types=payroll_types,
+            company_id=company_id,
+            processing_statuses=utils.unmarshal(
+                processing_statuses, Optional[List[models.ProcessingStatuses]]
+            ),
+            payroll_types=utils.unmarshal(
+                payroll_types, Optional[List[models.QueryParamPayrollTypes]]
+            ),
             processed=processed,
             include_off_cycle=include_off_cycle,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1CompaniesCompanyIDPayrollsQueryParamInclude]],
+            ),
             start_date=start_date,
             end_date=end_date,
             date_filter_by=date_filter_by,
@@ -782,6 +835,11 @@ class Payrolls(BaseSDK):
                 operation_id="get-v1-companies-company_id-payrolls",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -816,7 +874,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -824,7 +882,7 @@ class Payrolls(BaseSDK):
     ) -> models.PayrollPrepared:
         r"""Prepare a payroll for update
 
-        Prepares an unprocessed payroll for update, including: adding or removing eligible employees from the payroll,
+        Prepares an unprocessed payroll for update, including: adding eligible employees to off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, and `Adhoc`),
         and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
 
         Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
@@ -846,7 +904,11 @@ class Payrolls(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
-        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
+        :param employee_uuids: The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+            **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+            **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -870,7 +932,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -916,6 +980,11 @@ class Payrolls(BaseSDK):
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -955,7 +1024,7 @@ class Payrolls(BaseSDK):
         page: Optional[int] = None,
         per: Optional[int] = None,
         sort_by: Optional[str] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -963,7 +1032,7 @@ class Payrolls(BaseSDK):
     ) -> models.PayrollPrepared:
         r"""Prepare a payroll for update
 
-        Prepares an unprocessed payroll for update, including: adding or removing eligible employees from the payroll,
+        Prepares an unprocessed payroll for update, including: adding eligible employees to off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, and `Adhoc`),
         and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
 
         Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
@@ -985,7 +1054,11 @@ class Payrolls(BaseSDK):
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param sort_by: Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.
-        :param employee_uuids: An array of employee UUIDs. If passed, only those employees payroll items will be prepared.
+        :param employee_uuids: The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+            **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+            **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1009,7 +1082,9 @@ class Payrolls(BaseSDK):
             per=per,
             sort_by=sort_by,
             body=models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(
-                employee_uuids=employee_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
             ),
         )
 
@@ -1055,6 +1130,11 @@ class Payrolls(BaseSDK):
                 operation_id="put-v1-companies-company_id-payrolls-payroll_id-prepare",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

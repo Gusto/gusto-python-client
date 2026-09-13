@@ -7,56 +7,34 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Employees(BaseSDK):
-    def list(
+    def get_custom_fields(
         self,
         *,
-        company_id: str,
+        employee_id: str,
         x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        location_uuid: Optional[str] = None,
-        payroll_uuid: Optional[str] = None,
-        search_term: Optional[str] = None,
-        sort_by: Optional[str] = None,
-        include: Optional[List[models.Include]] = None,
-        onboarded: Optional[bool] = None,
-        onboarded_active: Optional[bool] = None,
-        terminated: Optional[bool] = None,
-        terminated_today: Optional[bool] = None,
-        uuids: Optional[List[str]] = None,
+            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ShowEmployees]:
-        r"""Get employees of a company
+    ) -> models.EmployeeCustomFieldList:
+        r"""Get an employee's custom fields
 
-        Get all of the employees, onboarding, active and terminated, for a given company.
-
-        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+        Returns a list of the employee's custom fields.
 
         scope: `employees:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_id: The UUID of the company
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param location_uuid: Filter employees by a specific primary work location
-        :param payroll_uuid: Filter employees by a specific payroll
-        :param search_term: A string to search for in the object's names
-        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
-        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
-        :param onboarded: Filters employees by those who have completed onboarding
-        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
-        :param terminated: Filters employees by those who have been or are scheduled to be terminated
-        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
-        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -74,26 +52,16 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1CompaniesCompanyIDEmployeesRequest(
+        request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            location_uuid=location_uuid,
-            payroll_uuid=payroll_uuid,
-            search_term=search_term,
-            sort_by=sort_by,
-            include=include,
-            onboarded=onboarded,
-            onboarded_active=onboarded_active,
-            terminated=terminated,
-            terminated_today=terminated_today,
-            uuids=uuids,
+            employee_id=employee_id,
             page=page,
             per=per,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/companies/{company_id}/employees",
+            path="/v1/employees/{employee_id}/custom_fields",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -121,11 +89,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-employees",
+                operation_id="get-v1-employees-employee_id-custom_fields",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -134,7 +107,7 @@ class Employees(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.ShowEmployees], http_res)
+            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -149,52 +122,30 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def list_async(
+    async def get_custom_fields_async(
         self,
         *,
-        company_id: str,
+        employee_id: str,
         x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        location_uuid: Optional[str] = None,
-        payroll_uuid: Optional[str] = None,
-        search_term: Optional[str] = None,
-        sort_by: Optional[str] = None,
-        include: Optional[List[models.Include]] = None,
-        onboarded: Optional[bool] = None,
-        onboarded_active: Optional[bool] = None,
-        terminated: Optional[bool] = None,
-        terminated_today: Optional[bool] = None,
-        uuids: Optional[List[str]] = None,
+            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
+        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         page: Optional[int] = None,
         per: Optional[int] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.ShowEmployees]:
-        r"""Get employees of a company
+    ) -> models.EmployeeCustomFieldList:
+        r"""Get an employee's custom fields
 
-        Get all of the employees, onboarding, active and terminated, for a given company.
-
-        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+        Returns a list of the employee's custom fields.
 
         scope: `employees:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_id: The UUID of the company
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param location_uuid: Filter employees by a specific primary work location
-        :param payroll_uuid: Filter employees by a specific payroll
-        :param search_term: A string to search for in the object's names
-        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
-        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
-        :param onboarded: Filters employees by those who have completed onboarding
-        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
-        :param terminated: Filters employees by those who have been or are scheduled to be terminated
-        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
-        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param retries: Override the default retry configuration for this method
@@ -212,26 +163,16 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1CompaniesCompanyIDEmployeesRequest(
+        request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            location_uuid=location_uuid,
-            payroll_uuid=payroll_uuid,
-            search_term=search_term,
-            sort_by=sort_by,
-            include=include,
-            onboarded=onboarded,
-            onboarded_active=onboarded_active,
-            terminated=terminated,
-            terminated_today=terminated_today,
-            uuids=uuids,
+            employee_id=employee_id,
             page=page,
             per=per,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/companies/{company_id}/employees",
+            path="/v1/employees/{employee_id}/custom_fields",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -259,11 +200,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-companies-company_id-employees",
+                operation_id="get-v1-employees-employee_id-custom_fields",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -272,294 +218,12 @@ class Employees(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.ShowEmployees], http_res)
+            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def create(
-        self,
-        *,
-        company_id: str,
-        first_name: str,
-        last_name: str,
-        x_gusto_api_version: Optional[
-            models.PostV1EmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        middle_initial: Optional[str] = None,
-        email: OptionalNullable[str] = UNSET,
-        work_email: Optional[str] = None,
-        date_of_birth: Optional[date] = None,
-        ssn: Optional[str] = None,
-        preferred_first_name: Optional[str] = None,
-        self_onboarding: Optional[bool] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Employee:
-        r"""Create an employee
-
-        Create an employee.
-
-        scope: `employees:manage`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: Company ID
-        :param first_name:
-        :param last_name:
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial:
-        :param email: The employee's personal email address. Required if self_onboarding is true.
-        :param work_email: The employee's work email address.
-        :param date_of_birth:
-        :param ssn:
-        :param preferred_first_name:
-        :param self_onboarding: If true, employee is expected to self-onboard. If false, payroll admin is expected to enter in the employee's onboarding information
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1EmployeesRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            request_body=models.PostV1EmployeesRequestBody(
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                email=email,
-                work_email=work_email,
-                date_of_birth=date_of_birth,
-                ssn=ssn,
-                preferred_first_name=preferred_first_name,
-                self_onboarding=self_onboarding,
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/companies/{company_id}/employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[models.PostV1EmployeesRequestBody],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-v1-employees",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.Employee, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def create_async(
-        self,
-        *,
-        company_id: str,
-        first_name: str,
-        last_name: str,
-        x_gusto_api_version: Optional[
-            models.PostV1EmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        middle_initial: Optional[str] = None,
-        email: OptionalNullable[str] = UNSET,
-        work_email: Optional[str] = None,
-        date_of_birth: Optional[date] = None,
-        ssn: Optional[str] = None,
-        preferred_first_name: Optional[str] = None,
-        self_onboarding: Optional[bool] = None,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Employee:
-        r"""Create an employee
-
-        Create an employee.
-
-        scope: `employees:manage`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_id: Company ID
-        :param first_name:
-        :param last_name:
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial:
-        :param email: The employee's personal email address. Required if self_onboarding is true.
-        :param work_email: The employee's work email address.
-        :param date_of_birth:
-        :param ssn:
-        :param preferred_first_name:
-        :param self_onboarding: If true, employee is expected to self-onboard. If false, payroll admin is expected to enter in the employee's onboarding information
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostV1EmployeesRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_id=company_id,
-            request_body=models.PostV1EmployeesRequestBody(
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                email=email,
-                work_email=work_email,
-                date_of_birth=date_of_birth,
-                ssn=ssn,
-                preferred_first_name=preferred_first_name,
-                self_onboarding=self_onboarding,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/companies/{company_id}/employees",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.request_body if request is not None else None,
-                False,
-                True,
-                "json",
-                Optional[models.PostV1EmployeesRequestBody],
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-v1-employees",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.Employee, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -665,6 +329,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -791,6 +460,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -821,63 +495,30 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def create_historical(
+    def get_time_off_activities(
         self,
         *,
-        company_uuid: str,
-        first_name: str,
-        last_name: str,
-        date_of_birth: date,
-        ssn: str,
-        work_address: Union[models.WorkAddress, models.WorkAddressTypedDict],
-        home_address: Union[
-            models.HistoricalEmployeeBodyHomeAddress,
-            models.HistoricalEmployeeBodyHomeAddressTypedDict,
-        ],
-        termination: Union[
-            models.HistoricalEmployeeBodyTermination,
-            models.HistoricalEmployeeBodyTerminationTypedDict,
-        ],
-        job: Union[
-            models.HistoricalEmployeeBodyJob, models.HistoricalEmployeeBodyJobTypedDict
-        ],
+        employee_uuid: str,
+        time_off_type: str,
         x_gusto_api_version: Optional[
-            models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        middle_initial: Optional[str] = None,
-        preferred_first_name: Optional[str] = None,
-        email: Optional[str] = None,
-        employee_state_taxes: Optional[
-            Union[models.EmployeeStateTaxes, models.EmployeeStateTaxesTypedDict]
-        ] = None,
+            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
+        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Employee:
-        r"""Create a historical employee
+    ) -> List[models.TimeOffActivity]:
+        r"""Get employee time off activities
 
-        Create a historical employee, an employee that was previously dismissed from the company in the current year.
+        Get employee time off activities.
 
-        scope: `employees:manage`
+        scope: `employee_time_off_activities:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_uuid: The UUID of the company that will employ this historical record.
-        :param first_name: Legal first name as it appears on government-issued identification.
-        :param last_name: Legal last name as it appears on government-issued identification.
-        :param date_of_birth: Date of birth (YYYY-MM-DD).
-        :param ssn: Nine-digit U.S. Social Security number **without** dashes or spaces. Must pass Gusto/SSA validation in production; use a valid test SSN in sandbox environments.
-
-        :param work_address: Primary work location for this historical employment row.
-        :param home_address: Residential address on file for tax withholding and compliance mail.
-        :param termination: End of the historical employment period.
-        :param job: Hire date for the historical job used to build employments and filings.
+        :param employee_uuid: The UUID of the employee
+        :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial: Single middle initial, if any.
-        :param preferred_first_name: Preferred given name for display; omit when the same as legal first name.
-        :param email: Optional. When provided, stored on the employee record for notifications and profile.
-        :param employee_state_taxes: Workers' compensation fields for Washington (WA) or Wyoming (WY) when the work address is in those states; omit when not applicable.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -893,51 +534,25 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PostV1HistoricalEmployeesRequest(
+        request = models.GetVersionEmployeesTimeOffActivitiesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            historical_employee_body=models.HistoricalEmployeeBody(
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                preferred_first_name=preferred_first_name,
-                date_of_birth=date_of_birth,
-                ssn=ssn,
-                work_address=utils.get_pydantic_model(work_address, models.WorkAddress),
-                home_address=utils.get_pydantic_model(
-                    home_address, models.HistoricalEmployeeBodyHomeAddress
-                ),
-                termination=utils.get_pydantic_model(
-                    termination, models.HistoricalEmployeeBodyTermination
-                ),
-                email=email,
-                job=utils.get_pydantic_model(job, models.HistoricalEmployeeBodyJob),
-                employee_state_taxes=utils.get_pydantic_model(
-                    employee_state_taxes, Optional[models.EmployeeStateTaxes]
-                ),
-            ),
+            employee_uuid=employee_uuid,
+            time_off_type=time_off_type,
         )
 
         req = self._build_request(
-            method="POST",
-            path="/v1/companies/{company_uuid}/historical_employees",
+            method="GET",
+            path="/v1/employees/{employee_uuid}/time_off_activities",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.historical_employee_body,
-                False,
-                False,
-                "json",
-                models.HistoricalEmployeeBody,
-            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -955,11 +570,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="post-v1-historical_employees",
+                operation_id="get-version-employees-time_off_activities",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -967,8 +587,8 @@ class Employees(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -988,63 +608,30 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def create_historical_async(
+    async def get_time_off_activities_async(
         self,
         *,
-        company_uuid: str,
-        first_name: str,
-        last_name: str,
-        date_of_birth: date,
-        ssn: str,
-        work_address: Union[models.WorkAddress, models.WorkAddressTypedDict],
-        home_address: Union[
-            models.HistoricalEmployeeBodyHomeAddress,
-            models.HistoricalEmployeeBodyHomeAddressTypedDict,
-        ],
-        termination: Union[
-            models.HistoricalEmployeeBodyTermination,
-            models.HistoricalEmployeeBodyTerminationTypedDict,
-        ],
-        job: Union[
-            models.HistoricalEmployeeBodyJob, models.HistoricalEmployeeBodyJobTypedDict
-        ],
+        employee_uuid: str,
+        time_off_type: str,
         x_gusto_api_version: Optional[
-            models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion
-        ] = models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        middle_initial: Optional[str] = None,
-        preferred_first_name: Optional[str] = None,
-        email: Optional[str] = None,
-        employee_state_taxes: Optional[
-            Union[models.EmployeeStateTaxes, models.EmployeeStateTaxesTypedDict]
-        ] = None,
+            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
+        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Employee:
-        r"""Create a historical employee
+    ) -> List[models.TimeOffActivity]:
+        r"""Get employee time off activities
 
-        Create a historical employee, an employee that was previously dismissed from the company in the current year.
+        Get employee time off activities.
 
-        scope: `employees:manage`
+        scope: `employee_time_off_activities:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param company_uuid: The UUID of the company that will employ this historical record.
-        :param first_name: Legal first name as it appears on government-issued identification.
-        :param last_name: Legal last name as it appears on government-issued identification.
-        :param date_of_birth: Date of birth (YYYY-MM-DD).
-        :param ssn: Nine-digit U.S. Social Security number **without** dashes or spaces. Must pass Gusto/SSA validation in production; use a valid test SSN in sandbox environments.
-
-        :param work_address: Primary work location for this historical employment row.
-        :param home_address: Residential address on file for tax withholding and compliance mail.
-        :param termination: End of the historical employment period.
-        :param job: Hire date for the historical job used to build employments and filings.
+        :param employee_uuid: The UUID of the employee
+        :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param middle_initial: Single middle initial, if any.
-        :param preferred_first_name: Preferred given name for display; omit when the same as legal first name.
-        :param email: Optional. When provided, stored on the employee record for notifications and profile.
-        :param employee_state_taxes: Workers' compensation fields for Washington (WA) or Wyoming (WY) when the work address is in those states; omit when not applicable.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1060,51 +647,25 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PostV1HistoricalEmployeesRequest(
+        request = models.GetVersionEmployeesTimeOffActivitiesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            historical_employee_body=models.HistoricalEmployeeBody(
-                first_name=first_name,
-                middle_initial=middle_initial,
-                last_name=last_name,
-                preferred_first_name=preferred_first_name,
-                date_of_birth=date_of_birth,
-                ssn=ssn,
-                work_address=utils.get_pydantic_model(work_address, models.WorkAddress),
-                home_address=utils.get_pydantic_model(
-                    home_address, models.HistoricalEmployeeBodyHomeAddress
-                ),
-                termination=utils.get_pydantic_model(
-                    termination, models.HistoricalEmployeeBodyTermination
-                ),
-                email=email,
-                job=utils.get_pydantic_model(job, models.HistoricalEmployeeBodyJob),
-                employee_state_taxes=utils.get_pydantic_model(
-                    employee_state_taxes, Optional[models.EmployeeStateTaxes]
-                ),
-            ),
+            employee_uuid=employee_uuid,
+            time_off_type=time_off_type,
         )
 
         req = self._build_request_async(
-            method="POST",
-            path="/v1/companies/{company_uuid}/historical_employees",
+            method="GET",
+            path="/v1/employees/{employee_uuid}/time_off_activities",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=True,
+            request_body_required=False,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.historical_employee_body,
-                False,
-                False,
-                "json",
-                models.HistoricalEmployeeBody,
-            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -1122,11 +683,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="post-v1-historical_employees",
+                operation_id="get-version-employees-time_off_activities",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1134,8 +700,8 @@ class Employees(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.Employee, http_res)
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1162,7 +728,7 @@ class Employees(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        include: Optional[List[models.QueryParamInclude]] = None,
+        include: Optional[Iterable[models.GetV1EmployeesQueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1199,7 +765,9 @@ class Employees(BaseSDK):
         request = models.GetV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
-            include=include,
+            include=utils.unmarshal(
+                include, Optional[List[models.GetV1EmployeesQueryParamInclude]]
+            ),
         )
 
         req = self._build_request(
@@ -1237,6 +805,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1267,7 +840,7 @@ class Employees(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetV1EmployeesHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        include: Optional[List[models.QueryParamInclude]] = None,
+        include: Optional[Iterable[models.GetV1EmployeesQueryParamInclude]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1304,7 +877,9 @@ class Employees(BaseSDK):
         request = models.GetV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
-            include=include,
+            include=utils.unmarshal(
+                include, Optional[List[models.GetV1EmployeesQueryParamInclude]]
+            ),
         )
 
         req = self._build_request_async(
@@ -1342,6 +917,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1481,6 +1061,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1625,6 +1210,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1732,6 +1322,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1839,6 +1434,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1867,32 +1467,56 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def get_custom_fields(
+    def list(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        location_uuid: Optional[str] = None,
+        payroll_uuid: Optional[str] = None,
+        search_term: Optional[str] = None,
+        sort_by: Optional[str] = None,
+        include: Optional[
+            Iterable[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+        ] = None,
+        onboarded: Optional[bool] = None,
+        onboarded_active: Optional[bool] = None,
+        terminated: Optional[bool] = None,
+        terminated_today: Optional[bool] = None,
+        uuids: Optional[Iterable[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeCustomFieldList:
-        r"""Get an employee's custom fields
+    ) -> List[models.ShowEmployees]:
+        r"""Get employees of a company
 
-        Returns a list of the employee's custom fields.
+        Get all of the employees, onboarding, active and terminated, for a given company.
+
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
 
         scope: `employees:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_id: The UUID of the employee
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param location_uuid: Filter employees by a specific primary work location
+        :param payroll_uuid: Filter employees by a specific payroll
+        :param search_term: A string to search for in the object's names
+        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
+        :param onboarded: Filters employees by those who have completed onboarding
+        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
+        :param terminated: Filters employees by those who have been or are scheduled to be terminated
+        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
+        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1908,16 +1532,31 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
-            employee_id=employee_id,
+        request = models.GetV1CompaniesCompanyIDEmployeesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            location_uuid=location_uuid,
+            payroll_uuid=payroll_uuid,
+            search_term=search_term,
+            sort_by=sort_by,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+                ],
+            ),
+            onboarded=onboarded,
+            onboarded_active=onboarded_active,
+            terminated=terminated,
+            terminated_today=terminated_today,
+            uuids=utils.unmarshal(uuids, Optional[List[str]]),
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/employees/{employee_id}/custom_fields",
+            path="/v1/companies/{company_id}/employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -1945,11 +1584,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-employees-employee_id-custom_fields",
+                operation_id="get-v1-companies-company_id-employees",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1958,7 +1602,7 @@ class Employees(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
+            return unmarshal_json_response(List[models.ShowEmployees], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -1973,32 +1617,56 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def get_custom_fields_async(
+    async def list_async(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        location_uuid: Optional[str] = None,
+        payroll_uuid: Optional[str] = None,
+        search_term: Optional[str] = None,
+        sort_by: Optional[str] = None,
+        include: Optional[
+            Iterable[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+        ] = None,
+        onboarded: Optional[bool] = None,
+        onboarded_active: Optional[bool] = None,
+        terminated: Optional[bool] = None,
+        terminated_today: Optional[bool] = None,
+        uuids: Optional[Iterable[str]] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
-        ] = models.GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeCustomFieldList:
-        r"""Get an employee's custom fields
+    ) -> List[models.ShowEmployees]:
+        r"""Get employees of a company
 
-        Returns a list of the employee's custom fields.
+        Get all of the employees, onboarding, active and terminated, for a given company.
+
+        Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
 
         scope: `employees:read`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_id: The UUID of the employee
+        :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param location_uuid: Filter employees by a specific primary work location
+        :param payroll_uuid: Filter employees by a specific payroll
+        :param search_term: A string to search for in the object's names
+        :param sort_by: Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending.
+        :param include: Include the requested attribute(s) in each employee response. Multiple options are comma separated.
+        :param onboarded: Filters employees by those who have completed onboarding
+        :param onboarded_active: Filters employees who are ready to work (onboarded AND active today)
+        :param terminated: Filters employees by those who have been or are scheduled to be terminated
+        :param terminated_today: Filters employees by those who have been terminated and whose termination is in effect today (excludes active and scheduled to be terminated)
+        :param uuids: Optional subset of employees to fetch.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2014,16 +1682,31 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetV1EmployeesEmployeeIDCustomFieldsRequest(
-            employee_id=employee_id,
+        request = models.GetV1CompaniesCompanyIDEmployeesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
+            location_uuid=location_uuid,
+            payroll_uuid=payroll_uuid,
+            search_term=search_term,
+            sort_by=sort_by,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyIDEmployeesQueryParamInclude]
+                ],
+            ),
+            onboarded=onboarded,
+            onboarded_active=onboarded_active,
+            terminated=terminated,
+            terminated_today=terminated_today,
+            uuids=utils.unmarshal(uuids, Optional[List[str]]),
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/employees/{employee_id}/custom_fields",
+            path="/v1/companies/{company_id}/employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -2051,11 +1734,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-v1-employees-employee_id-custom_fields",
+                operation_id="get-v1-companies-company_id-employees",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2064,7 +1752,7 @@ class Employees(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.EmployeeCustomFieldList, http_res)
+            return unmarshal_json_response(List[models.ShowEmployees], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -2079,36 +1767,46 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def update_onboarding_documents_config(
+    def create(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        first_name: str,
+        last_name: str,
         x_gusto_api_version: Optional[
-            models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion
-        ] = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        i9_document: Optional[bool] = False,
+            models.PostV1EmployeesHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        middle_initial: Optional[str] = None,
+        email: OptionalNullable[str] = UNSET,
+        work_email: Optional[str] = None,
+        date_of_birth: Optional[date] = None,
+        ssn: Optional[str] = None,
+        preferred_first_name: Optional[str] = None,
+        self_onboarding: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeOnboardingDocument:
-        r"""Update employee onboarding documents config
+    ) -> models.Employee:
+        r"""Create an employee
 
-        Indicate whether to include the Form I-9 for an employee during the onboarding process.
-        If included, the employee will be prompted to complete Form I-9 as part of their onboarding.
-
-        ## Related guides
-        - [Employee onboarding](doc:employee-onboarding)
+        Create an employee.
 
         scope: `employees:manage`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_id: The UUID of the employee
+        :param company_id: Company ID
+        :param first_name:
+        :param last_name:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param i9_document: Whether to include Form I-9 for this employee during onboarding.
-            When true, the employee will be prompted to complete Form I-9 as part of their onboarding.
-
+        :param middle_initial:
+        :param email: The employee's personal email address. Required if self_onboarding is true.
+        :param work_email: The employee's work email address.
+        :param date_of_birth:
+        :param ssn:
+        :param preferred_first_name:
+        :param self_onboarding: If true, employee is expected to self-onboard. If false, payroll admin is expected to enter in the employee's onboarding information
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2124,17 +1822,25 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
+        request = models.PostV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            employee_id=employee_id,
-            employee_onboarding_documents_config_request=models.EmployeeOnboardingDocumentsConfigRequest(
-                i9_document=i9_document,
+            company_id=company_id,
+            request_body=models.PostV1EmployeesRequestBody(
+                first_name=first_name,
+                middle_initial=middle_initial,
+                last_name=last_name,
+                email=email,
+                work_email=work_email,
+                date_of_birth=date_of_birth,
+                ssn=ssn,
+                preferred_first_name=preferred_first_name,
+                self_onboarding=self_onboarding,
             ),
         )
 
         req = self._build_request(
-            method="PUT",
-            path="/v1/employees/{employee_id}/onboarding_documents_config",
+            method="POST",
+            path="/v1/companies/{company_id}/employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -2146,13 +1852,11 @@ class Employees(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.employee_onboarding_documents_config_request
-                if request is not None
-                else None,
+                request.request_body if request is not None else None,
                 False,
                 True,
                 "json",
-                Optional[models.EmployeeOnboardingDocumentsConfigRequest],
+                Optional[models.PostV1EmployeesRequestBody],
             ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
@@ -2171,11 +1875,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="put-v1-employees-employee_id-onboarding_documents_config",
+                operation_id="post-v1-employees",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2183,13 +1892,18 @@ class Employees(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.EmployeeOnboardingDocument, http_res)
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Employee, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -2199,36 +1913,46 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def update_onboarding_documents_config_async(
+    async def create_async(
         self,
         *,
-        employee_id: str,
+        company_id: str,
+        first_name: str,
+        last_name: str,
         x_gusto_api_version: Optional[
-            models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion
-        ] = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        i9_document: Optional[bool] = False,
+            models.PostV1EmployeesHeaderXGustoAPIVersion
+        ] = models.PostV1EmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        middle_initial: Optional[str] = None,
+        email: OptionalNullable[str] = UNSET,
+        work_email: Optional[str] = None,
+        date_of_birth: Optional[date] = None,
+        ssn: Optional[str] = None,
+        preferred_first_name: Optional[str] = None,
+        self_onboarding: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.EmployeeOnboardingDocument:
-        r"""Update employee onboarding documents config
+    ) -> models.Employee:
+        r"""Create an employee
 
-        Indicate whether to include the Form I-9 for an employee during the onboarding process.
-        If included, the employee will be prompted to complete Form I-9 as part of their onboarding.
-
-        ## Related guides
-        - [Employee onboarding](doc:employee-onboarding)
+        Create an employee.
 
         scope: `employees:manage`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_id: The UUID of the employee
+        :param company_id: Company ID
+        :param first_name:
+        :param last_name:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param i9_document: Whether to include Form I-9 for this employee during onboarding.
-            When true, the employee will be prompted to complete Form I-9 as part of their onboarding.
-
+        :param middle_initial:
+        :param email: The employee's personal email address. Required if self_onboarding is true.
+        :param work_email: The employee's work email address.
+        :param date_of_birth:
+        :param ssn:
+        :param preferred_first_name:
+        :param self_onboarding: If true, employee is expected to self-onboard. If false, payroll admin is expected to enter in the employee's onboarding information
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2244,17 +1968,25 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
+        request = models.PostV1EmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            employee_id=employee_id,
-            employee_onboarding_documents_config_request=models.EmployeeOnboardingDocumentsConfigRequest(
-                i9_document=i9_document,
+            company_id=company_id,
+            request_body=models.PostV1EmployeesRequestBody(
+                first_name=first_name,
+                middle_initial=middle_initial,
+                last_name=last_name,
+                email=email,
+                work_email=work_email,
+                date_of_birth=date_of_birth,
+                ssn=ssn,
+                preferred_first_name=preferred_first_name,
+                self_onboarding=self_onboarding,
             ),
         )
 
         req = self._build_request_async(
-            method="PUT",
-            path="/v1/employees/{employee_id}/onboarding_documents_config",
+            method="POST",
+            path="/v1/companies/{company_id}/employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -2266,13 +1998,11 @@ class Employees(BaseSDK):
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.employee_onboarding_documents_config_request
-                if request is not None
-                else None,
+                request.request_body if request is not None else None,
                 False,
                 True,
                 "json",
-                Optional[models.EmployeeOnboardingDocumentsConfigRequest],
+                Optional[models.PostV1EmployeesRequestBody],
             ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
@@ -2291,11 +2021,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="put-v1-employees-employee_id-onboarding_documents_config",
+                operation_id="post-v1-employees",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2303,13 +2038,18 @@ class Employees(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.EmployeeOnboardingDocument, http_res)
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Employee, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -2433,6 +2173,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2570,6 +2315,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2691,6 +2441,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2817,6 +2572,11 @@ class Employees(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2845,30 +2605,36 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def get_time_off_activities(
+    def update_onboarding_documents_config(
         self,
         *,
-        employee_uuid: str,
-        time_off_type: str,
+        employee_id: str,
         x_gusto_api_version: Optional[
-            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
-        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        i9_document: Optional[bool] = False,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.TimeOffActivity]:
-        r"""Get employee time off activities
+    ) -> models.EmployeeOnboardingDocument:
+        r"""Update employee onboarding documents config
 
-        Get employee time off activities.
+        Indicate whether to include the Form I-9 for an employee during the onboarding process.
+        If included, the employee will be prompted to complete Form I-9 as part of their onboarding.
 
-        scope: `employee_time_off_activities:read`
+        ## Related guides
+        - [Employee onboarding](doc:employee-onboarding)
+
+        scope: `employees:manage`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_uuid: The UUID of the employee
-        :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
+        :param employee_id: The UUID of the employee
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param i9_document: Whether to include Form I-9 for this employee during onboarding.
+            When true, the employee will be prompted to complete Form I-9 as part of their onboarding.
+
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2884,15 +2650,17 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetVersionEmployeesTimeOffActivitiesRequest(
+        request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
             x_gusto_api_version=x_gusto_api_version,
-            employee_uuid=employee_uuid,
-            time_off_type=time_off_type,
+            employee_id=employee_id,
+            employee_onboarding_documents_config_request=models.EmployeeOnboardingDocumentsConfigRequest(
+                i9_document=i9_document,
+            ),
         )
 
         req = self._build_request(
-            method="GET",
-            path="/v1/employees/{employee_uuid}/time_off_activities",
+            method="PUT",
+            path="/v1/employees/{employee_id}/onboarding_documents_config",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -2903,6 +2671,15 @@ class Employees(BaseSDK):
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.employee_onboarding_documents_config_request
+                if request is not None
+                else None,
+                False,
+                True,
+                "json",
+                Optional[models.EmployeeOnboardingDocumentsConfigRequest],
+            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -2920,11 +2697,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-version-employees-time_off_activities",
+                operation_id="put-v1-employees-employee_id-onboarding_documents_config",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2933,7 +2715,294 @@ class Employees(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
+            return unmarshal_json_response(models.EmployeeOnboardingDocument, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def update_onboarding_documents_config_async(
+        self,
+        *,
+        employee_id: str,
+        x_gusto_api_version: Optional[
+            models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion
+        ] = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        i9_document: Optional[bool] = False,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.EmployeeOnboardingDocument:
+        r"""Update employee onboarding documents config
+
+        Indicate whether to include the Form I-9 for an employee during the onboarding process.
+        If included, the employee will be prompted to complete Form I-9 as part of their onboarding.
+
+        ## Related guides
+        - [Employee onboarding](doc:employee-onboarding)
+
+        scope: `employees:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param i9_document: Whether to include Form I-9 for this employee during onboarding.
+            When true, the employee will be prompted to complete Form I-9 as part of their onboarding.
+
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PutV1EmployeesEmployeeIDOnboardingDocumentsConfigRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
+            employee_onboarding_documents_config_request=models.EmployeeOnboardingDocumentsConfigRequest(
+                i9_document=i9_document,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="PUT",
+            path="/v1/employees/{employee_id}/onboarding_documents_config",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.employee_onboarding_documents_config_request
+                if request is not None
+                else None,
+                False,
+                True,
+                "json",
+                Optional[models.EmployeeOnboardingDocumentsConfigRequest],
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="put-v1-employees-employee_id-onboarding_documents_config",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.EmployeeOnboardingDocument, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def create_historical(
+        self,
+        *,
+        company_uuid: str,
+        first_name: str,
+        last_name: str,
+        date_of_birth: date,
+        ssn: str,
+        work_address: Union[models.WorkAddress, models.WorkAddressTypedDict],
+        home_address: Union[models.HomeAddress, models.HomeAddressTypedDict],
+        termination: Union[
+            models.HistoricalEmployeeBodyTermination,
+            models.HistoricalEmployeeBodyTerminationTypedDict,
+        ],
+        job: Union[
+            models.HistoricalEmployeeBodyJob, models.HistoricalEmployeeBodyJobTypedDict
+        ],
+        x_gusto_api_version: Optional[
+            models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion
+        ] = models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        middle_initial: Optional[str] = None,
+        preferred_first_name: Optional[str] = None,
+        email: Optional[str] = None,
+        employee_state_taxes: Optional[
+            Union[models.EmployeeStateTaxes, models.EmployeeStateTaxesTypedDict]
+        ] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Employee:
+        r"""Create a historical employee
+
+        Create a historical employee, an employee that was previously dismissed from the company in the current year.
+
+        scope: `employees:manage`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company that will employ this historical record.
+        :param first_name: Legal first name as it appears on government-issued identification.
+        :param last_name: Legal last name as it appears on government-issued identification.
+        :param date_of_birth: Date of birth (YYYY-MM-DD).
+        :param ssn: Nine-digit U.S. Social Security number **without** dashes or spaces. Must pass Gusto/SSA validation in production; use a valid test SSN in sandbox environments.
+
+        :param work_address: Primary work location for this historical employment row.
+        :param home_address: Residential address on file for tax withholding and compliance mail.
+        :param termination: End of the historical employment period.
+        :param job: Hire date for the historical job used to build employments and filings.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param middle_initial: Single middle initial, if any.
+        :param preferred_first_name: Preferred given name for display; omit when the same as legal first name.
+        :param email: Optional. When provided, stored on the employee record for notifications and profile.
+        :param employee_state_taxes: Workers' compensation fields for Washington (WA) or Wyoming (WY) when the work address is in those states; omit when not applicable.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1HistoricalEmployeesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            historical_employee_body=models.HistoricalEmployeeBody(
+                first_name=first_name,
+                middle_initial=middle_initial,
+                last_name=last_name,
+                preferred_first_name=preferred_first_name,
+                date_of_birth=date_of_birth,
+                ssn=ssn,
+                work_address=utils.get_pydantic_model(work_address, models.WorkAddress),
+                home_address=utils.get_pydantic_model(home_address, models.HomeAddress),
+                termination=utils.get_pydantic_model(
+                    termination, models.HistoricalEmployeeBodyTermination
+                ),
+                email=email,
+                job=utils.get_pydantic_model(job, models.HistoricalEmployeeBodyJob),
+                employee_state_taxes=utils.get_pydantic_model(
+                    employee_state_taxes, Optional[models.EmployeeStateTaxes]
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/companies/{company_uuid}/historical_employees",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.historical_employee_body,
+                False,
+                False,
+                "json",
+                models.HistoricalEmployeeBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-historical_employees",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Employee, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -2953,30 +3022,60 @@ class Employees(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def get_time_off_activities_async(
+    async def create_historical_async(
         self,
         *,
-        employee_uuid: str,
-        time_off_type: str,
+        company_uuid: str,
+        first_name: str,
+        last_name: str,
+        date_of_birth: date,
+        ssn: str,
+        work_address: Union[models.WorkAddress, models.WorkAddressTypedDict],
+        home_address: Union[models.HomeAddress, models.HomeAddressTypedDict],
+        termination: Union[
+            models.HistoricalEmployeeBodyTermination,
+            models.HistoricalEmployeeBodyTerminationTypedDict,
+        ],
+        job: Union[
+            models.HistoricalEmployeeBodyJob, models.HistoricalEmployeeBodyJobTypedDict
+        ],
         x_gusto_api_version: Optional[
-            models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion
-        ] = models.GetVersionEmployeesTimeOffActivitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion
+        ] = models.PostV1HistoricalEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        middle_initial: Optional[str] = None,
+        preferred_first_name: Optional[str] = None,
+        email: Optional[str] = None,
+        employee_state_taxes: Optional[
+            Union[models.EmployeeStateTaxes, models.EmployeeStateTaxesTypedDict]
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.TimeOffActivity]:
-        r"""Get employee time off activities
+    ) -> models.Employee:
+        r"""Create a historical employee
 
-        Get employee time off activities.
+        Create a historical employee, an employee that was previously dismissed from the company in the current year.
 
-        scope: `employee_time_off_activities:read`
+        scope: `employees:manage`
 
         If set, this operation will use `company_access_auth` from the global security.
 
-        :param employee_uuid: The UUID of the employee
-        :param time_off_type: The time off type name you want to query data for. ex: 'sick' or 'vacation'
+        :param company_uuid: The UUID of the company that will employ this historical record.
+        :param first_name: Legal first name as it appears on government-issued identification.
+        :param last_name: Legal last name as it appears on government-issued identification.
+        :param date_of_birth: Date of birth (YYYY-MM-DD).
+        :param ssn: Nine-digit U.S. Social Security number **without** dashes or spaces. Must pass Gusto/SSA validation in production; use a valid test SSN in sandbox environments.
+
+        :param work_address: Primary work location for this historical employment row.
+        :param home_address: Residential address on file for tax withholding and compliance mail.
+        :param termination: End of the historical employment period.
+        :param job: Hire date for the historical job used to build employments and filings.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param middle_initial: Single middle initial, if any.
+        :param preferred_first_name: Preferred given name for display; omit when the same as legal first name.
+        :param email: Optional. When provided, stored on the employee record for notifications and profile.
+        :param employee_state_taxes: Workers' compensation fields for Washington (WA) or Wyoming (WY) when the work address is in those states; omit when not applicable.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2992,25 +3091,49 @@ class Employees(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetVersionEmployeesTimeOffActivitiesRequest(
+        request = models.PostV1HistoricalEmployeesRequest(
             x_gusto_api_version=x_gusto_api_version,
-            employee_uuid=employee_uuid,
-            time_off_type=time_off_type,
+            company_uuid=company_uuid,
+            historical_employee_body=models.HistoricalEmployeeBody(
+                first_name=first_name,
+                middle_initial=middle_initial,
+                last_name=last_name,
+                preferred_first_name=preferred_first_name,
+                date_of_birth=date_of_birth,
+                ssn=ssn,
+                work_address=utils.get_pydantic_model(work_address, models.WorkAddress),
+                home_address=utils.get_pydantic_model(home_address, models.HomeAddress),
+                termination=utils.get_pydantic_model(
+                    termination, models.HistoricalEmployeeBodyTermination
+                ),
+                email=email,
+                job=utils.get_pydantic_model(job, models.HistoricalEmployeeBodyJob),
+                employee_state_taxes=utils.get_pydantic_model(
+                    employee_state_taxes, Optional[models.EmployeeStateTaxes]
+                ),
+            ),
         )
 
         req = self._build_request_async(
-            method="GET",
-            path="/v1/employees/{employee_uuid}/time_off_activities",
+            method="POST",
+            path="/v1/companies/{company_uuid}/historical_employees",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
-            request_body_required=False,
+            request_body_required=True,
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.historical_employee_body,
+                False,
+                False,
+                "json",
+                models.HistoricalEmployeeBody,
+            ),
             allow_empty_value=None,
             allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
@@ -3028,11 +3151,16 @@ class Employees(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-version-employees-time_off_activities",
+                operation_id="post-v1-historical_employees",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employees"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3040,8 +3168,8 @@ class Employees(BaseSDK):
         )
 
         response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.TimeOffActivity], http_res)
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.Employee, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res

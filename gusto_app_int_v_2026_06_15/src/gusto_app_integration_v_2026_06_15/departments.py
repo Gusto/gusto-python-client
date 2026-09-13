@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Departments(BaseSDK):
@@ -49,8 +49,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
         )
 
         req = self._build_request(
@@ -86,6 +86,11 @@ class Departments(BaseSDK):
                 operation_id="get-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -147,8 +152,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
         )
 
         req = self._build_request_async(
@@ -184,6 +189,11 @@ class Departments(BaseSDK):
                 operation_id="get-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -249,8 +259,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutDepartmentsRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentUpdateRequestBody(
                 version=version,
                 title=title,
@@ -293,6 +303,11 @@ class Departments(BaseSDK):
                 operation_id="put-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -368,8 +383,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutDepartmentsRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentUpdateRequestBody(
                 version=version,
                 title=title,
@@ -412,6 +427,11 @@ class Departments(BaseSDK):
                 operation_id="put-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -483,8 +503,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
         )
 
         req = self._build_request(
@@ -520,6 +540,11 @@ class Departments(BaseSDK):
                 operation_id="delete-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -586,8 +611,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
         )
 
         req = self._build_request_async(
@@ -623,6 +648,11 @@ class Departments(BaseSDK):
                 operation_id="delete-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -661,14 +691,14 @@ class Departments(BaseSDK):
         ] = models.PutAddPeopleToDepartmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         employees: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyEmployees],
-                List[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyEmployees],
+                Iterable[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
             ]
         ] = None,
         contractors: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyContractors],
-                List[models.DepartmentPeopleRequestBodyContractorsTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyContractors],
+                Iterable[models.DepartmentPeopleRequestBodyContractorsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -705,8 +735,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAddPeopleToDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentPeopleRequestBody(
                 version=version,
                 employees=utils.get_pydantic_model(
@@ -756,6 +786,11 @@ class Departments(BaseSDK):
                 operation_id="put-add-people-to-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -794,14 +829,14 @@ class Departments(BaseSDK):
         ] = models.PutAddPeopleToDepartmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         employees: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyEmployees],
-                List[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyEmployees],
+                Iterable[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
             ]
         ] = None,
         contractors: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyContractors],
-                List[models.DepartmentPeopleRequestBodyContractorsTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyContractors],
+                Iterable[models.DepartmentPeopleRequestBodyContractorsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -838,8 +873,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutAddPeopleToDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentPeopleRequestBody(
                 version=version,
                 employees=utils.get_pydantic_model(
@@ -889,6 +924,11 @@ class Departments(BaseSDK):
                 operation_id="put-add-people-to-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -927,14 +967,14 @@ class Departments(BaseSDK):
         ] = models.PutRemovePeopleFromDepartmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         employees: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyEmployees],
-                List[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyEmployees],
+                Iterable[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
             ]
         ] = None,
         contractors: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyContractors],
-                List[models.DepartmentPeopleRequestBodyContractorsTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyContractors],
+                Iterable[models.DepartmentPeopleRequestBodyContractorsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -971,8 +1011,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutRemovePeopleFromDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentPeopleRequestBody(
                 version=version,
                 employees=utils.get_pydantic_model(
@@ -1022,6 +1062,11 @@ class Departments(BaseSDK):
                 operation_id="put-remove-people-from-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1060,14 +1105,14 @@ class Departments(BaseSDK):
         ] = models.PutRemovePeopleFromDepartmentHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         employees: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyEmployees],
-                List[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyEmployees],
+                Iterable[models.DepartmentPeopleRequestBodyEmployeesTypedDict],
             ]
         ] = None,
         contractors: Optional[
             Union[
-                List[models.DepartmentPeopleRequestBodyContractors],
-                List[models.DepartmentPeopleRequestBodyContractorsTypedDict],
+                Iterable[models.DepartmentPeopleRequestBodyContractors],
+                Iterable[models.DepartmentPeopleRequestBodyContractorsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1104,8 +1149,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutRemovePeopleFromDepartmentRequest(
-            department_uuid=department_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            department_uuid=department_uuid,
             body=models.DepartmentPeopleRequestBody(
                 version=version,
                 employees=utils.get_pydantic_model(
@@ -1155,6 +1200,11 @@ class Departments(BaseSDK):
                 operation_id="put-remove-people-from-department",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1221,8 +1271,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesDepartmentsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -1258,6 +1308,11 @@ class Departments(BaseSDK):
                 operation_id="get-companies-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1319,8 +1374,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetCompaniesDepartmentsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -1356,6 +1411,11 @@ class Departments(BaseSDK):
                 operation_id="get-companies-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1419,8 +1479,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostDepartmentsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.DepartmentCreateRequestBody(
                 title=title,
             ),
@@ -1462,6 +1522,11 @@ class Departments(BaseSDK):
                 operation_id="post-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1530,8 +1595,8 @@ class Departments(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostDepartmentsRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             body=models.DepartmentCreateRequestBody(
                 title=title,
             ),
@@ -1573,6 +1638,11 @@ class Departments(BaseSDK):
                 operation_id="post-departments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Departments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

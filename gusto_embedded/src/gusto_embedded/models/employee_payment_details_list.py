@@ -21,12 +21,12 @@ class EmployeePaymentDetailsListPaymentMethod(str, Enum):
     CHECK = "Check"
 
 
-class SplitBy(str, Enum):
+class EmployeePaymentDetailsListSplitBy(str, Enum):
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
 
 
-class SplitsTypedDict(TypedDict):
+class EmployeePaymentDetailsListSplitsTypedDict(TypedDict):
     bank_account_uuid: NotRequired[str]
     r"""The UUID of the bank account."""
     name: NotRequired[str]
@@ -45,7 +45,7 @@ class SplitsTypedDict(TypedDict):
     r"""If `split_by` is 'Amount', this is in cents (e.g., 500 for $5.00) and exactly one account must have a `split_amount` of `null` to capture the remainder. If `split_by` is 'Percentage', this is the percentage value (e.g., 60 for 60%)."""
 
 
-class Splits(BaseModel):
+class EmployeePaymentDetailsListSplits(BaseModel):
     bank_account_uuid: Optional[str] = None
     r"""The UUID of the bank account."""
 
@@ -116,9 +116,9 @@ class EmployeePaymentDetailsListTypedDict(TypedDict):
     r"""The last name of the employee."""
     payment_method: NotRequired[EmployeePaymentDetailsListPaymentMethod]
     r"""The type of payment method."""
-    split_by: NotRequired[Nullable[SplitBy]]
+    split_by: NotRequired[Nullable[EmployeePaymentDetailsListSplitBy]]
     r"""How the payment is split. This field is applicable when `payment_method` is \"Direct Deposit\". If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, the last split amount must be `null` to capture the remainder."""
-    splits: NotRequired[Nullable[List[SplitsTypedDict]]]
+    splits: NotRequired[Nullable[List[EmployeePaymentDetailsListSplitsTypedDict]]]
     r"""An array of payment splits. This field is applicable when `payment_method` is \"Direct Deposit\"."""
 
 
@@ -135,10 +135,10 @@ class EmployeePaymentDetailsList(BaseModel):
     payment_method: Optional[EmployeePaymentDetailsListPaymentMethod] = None
     r"""The type of payment method."""
 
-    split_by: OptionalNullable[SplitBy] = UNSET
+    split_by: OptionalNullable[EmployeePaymentDetailsListSplitBy] = UNSET
     r"""How the payment is split. This field is applicable when `payment_method` is \"Direct Deposit\". If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, the last split amount must be `null` to capture the remainder."""
 
-    splits: OptionalNullable[List[Splits]] = UNSET
+    splits: OptionalNullable[List[EmployeePaymentDetailsListSplits]] = UNSET
     r"""An array of payment splits. This field is applicable when `payment_method` is \"Direct Deposit\"."""
 
     @model_serializer(mode="wrap")

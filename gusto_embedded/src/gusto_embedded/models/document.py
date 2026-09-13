@@ -14,7 +14,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class RecipientType(str, Enum):
+class DocumentRecipientType(str, Enum):
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
 
     COMPANY = "Company"
@@ -149,7 +149,7 @@ class DocumentTypedDict(TypedDict):
     r"""The title of the document"""
     name: NotRequired[str]
     r"""The type identifier of the document"""
-    recipient_type: NotRequired[RecipientType]
+    recipient_type: NotRequired[DocumentRecipientType]
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
     recipient_uuid: NotRequired[str]
     r"""Unique identifier for the recipient associated with the document"""
@@ -181,7 +181,7 @@ class Document(BaseModel):
     name: Optional[str] = None
     r"""The type identifier of the document"""
 
-    recipient_type: Optional[RecipientType] = None
+    recipient_type: Optional[DocumentRecipientType] = None
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
 
     recipient_uuid: Optional[str] = None

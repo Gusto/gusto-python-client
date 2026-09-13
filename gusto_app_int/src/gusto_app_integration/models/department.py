@@ -7,11 +7,11 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class EmployeesModelTypedDict(TypedDict):
+class DepartmentEmployeesTypedDict(TypedDict):
     uuid: NotRequired[str]
 
 
-class EmployeesModel(BaseModel):
+class DepartmentEmployees(BaseModel):
     uuid: Optional[str] = None
 
     @model_serializer(mode="wrap")
@@ -64,7 +64,7 @@ class DepartmentTypedDict(TypedDict):
     r"""The UUID of the company"""
     title: NotRequired[str]
     r"""Name of the department"""
-    employees: NotRequired[List[EmployeesModelTypedDict]]
+    employees: NotRequired[List[DepartmentEmployeesTypedDict]]
     r"""Array of employees assigned to the department."""
     contractors: NotRequired[List[ContractorsModelTypedDict]]
     r"""Array of contractors assigned to the department."""
@@ -83,7 +83,7 @@ class Department(BaseModel):
     title: Optional[str] = None
     r"""Name of the department"""
 
-    employees: Optional[List[EmployeesModel]] = None
+    employees: Optional[List[DepartmentEmployees]] = None
     r"""Array of employees assigned to the department."""
 
     contractors: Optional[List[ContractorsModel]] = None
