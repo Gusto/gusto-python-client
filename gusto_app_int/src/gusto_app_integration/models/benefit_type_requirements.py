@@ -113,7 +113,7 @@ class BenefitTypeRequirementsDefaultValue(BaseModel):
         return m
 
 
-class BenefitTypeRequirementsContributionTypedDict(TypedDict):
+class ContributionTypedDict(TypedDict):
     r"""An object representing the type and value of the company contribution."""
 
     required: NotRequired[bool]
@@ -122,7 +122,7 @@ class BenefitTypeRequirementsContributionTypedDict(TypedDict):
     choices: NotRequired[Nullable[List[str]]]
 
 
-class BenefitTypeRequirementsContribution(BaseModel):
+class Contribution(BaseModel):
     r"""An object representing the type and value of the company contribution."""
 
     required: Optional[bool] = None
@@ -626,7 +626,7 @@ class CoverageAmount(BaseModel):
 class BenefitTypeRequirementsTypedDict(TypedDict):
     employee_deduction: NotRequired[EmployeeDeductionTypedDict]
     r"""The amount to be deducted, per pay period, from the employee's pay."""
-    contribution: NotRequired[BenefitTypeRequirementsContributionTypedDict]
+    contribution: NotRequired[ContributionTypedDict]
     r"""An object representing the type and value of the company contribution."""
     deduct_as_percentage: NotRequired[DeductAsPercentageTypedDict]
     r"""Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll."""
@@ -648,7 +648,7 @@ class BenefitTypeRequirements(BaseModel):
     employee_deduction: Optional[EmployeeDeduction] = None
     r"""The amount to be deducted, per pay period, from the employee's pay."""
 
-    contribution: Optional[BenefitTypeRequirementsContribution] = None
+    contribution: Optional[Contribution] = None
     r"""An object representing the type and value of the company contribution."""
 
     deduct_as_percentage: Optional[DeductAsPercentage] = None

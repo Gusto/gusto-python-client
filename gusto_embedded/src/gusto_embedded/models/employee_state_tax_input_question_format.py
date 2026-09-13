@@ -19,14 +19,14 @@ EmployeeStateTaxInputQuestionFormatValue = TypeAliasType(
 r"""An allowed value to answer the question"""
 
 
-class OptionsTypedDict(TypedDict):
+class EmployeeStateTaxInputQuestionFormatOptionsTypedDict(TypedDict):
     label: str
     r"""A display label that corresponds to the answer value"""
     value: NotRequired[EmployeeStateTaxInputQuestionFormatValueTypedDict]
     r"""An allowed value to answer the question"""
 
 
-class Options(BaseModel):
+class EmployeeStateTaxInputQuestionFormatOptions(BaseModel):
     label: str
     r"""A display label that corresponds to the answer value"""
 
@@ -53,7 +53,7 @@ class Options(BaseModel):
 class EmployeeStateTaxInputQuestionFormatTypedDict(TypedDict):
     type: str
     r"""Describes the type of question - Text, Number, Select, Currency, Date"""
-    options: NotRequired[List[OptionsTypedDict]]
+    options: NotRequired[List[EmployeeStateTaxInputQuestionFormatOptionsTypedDict]]
     r"""For \"Select\" type questions, the allowed values and display labels."""
 
 
@@ -61,7 +61,7 @@ class EmployeeStateTaxInputQuestionFormat(BaseModel):
     type: str
     r"""Describes the type of question - Text, Number, Select, Currency, Date"""
 
-    options: Optional[List[Options]] = None
+    options: Optional[List[EmployeeStateTaxInputQuestionFormatOptions]] = None
     r"""For \"Select\" type questions, the allowed values and display labels."""
 
     @model_serializer(mode="wrap")

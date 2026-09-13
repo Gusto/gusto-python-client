@@ -15,6 +15,12 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
+class GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion(str, Enum):
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15 = "2026-06-15"
+
+
 class GetV1EmployeesEmployeeIDJobsQueryParamInclude(str, Enum):
     r"""Available options:
     - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
@@ -24,15 +30,11 @@ class GetV1EmployeesEmployeeIDJobsQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
 
 
-class GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion(str, Enum):
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
-    TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15 = "2026-06-15"
-
-
 class GetV1EmployeesEmployeeIDJobsRequestTypedDict(TypedDict):
     employee_id: str
     r"""The UUID of the employee"""
+    x_gusto_api_version: NotRequired[GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
@@ -42,8 +44,6 @@ class GetV1EmployeesEmployeeIDJobsRequestTypedDict(TypedDict):
     - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
     """
-    x_gusto_api_version: NotRequired[GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1EmployeesEmployeeIDJobsRequest(BaseModel):
@@ -51,6 +51,13 @@ class GetV1EmployeesEmployeeIDJobsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the employee"""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     page: Annotated[
         Optional[int],
@@ -73,16 +80,9 @@ class GetV1EmployeesEmployeeIDJobsRequest(BaseModel):
 
     """
 
-    x_gusto_api_version: Annotated[
-        Optional[GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["page", "per", "include", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "page", "per", "include"])
         serialized = handler(self)
         m = {}
 

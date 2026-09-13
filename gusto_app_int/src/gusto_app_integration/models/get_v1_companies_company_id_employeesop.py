@@ -21,7 +21,7 @@ class GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class Include(str, Enum):
+class GetV1CompaniesCompanyIDEmployeesQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
     ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
@@ -45,7 +45,7 @@ class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
     r"""A string to search for in the object's names"""
     sort_by: NotRequired[str]
     r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
-    include: NotRequired[List[Include]]
+    include: NotRequired[List[GetV1CompaniesCompanyIDEmployeesQueryParamInclude]]
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
     onboarded: NotRequired[bool]
     r"""Filters employees by those who have completed onboarding"""
@@ -101,7 +101,7 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
     r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
 
     include: Annotated[
-        Optional[List[Include]],
+        Optional[List[GetV1CompaniesCompanyIDEmployeesQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""

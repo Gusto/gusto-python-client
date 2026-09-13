@@ -28,6 +28,8 @@ class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsPaymentMethod(str, Enu
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
+    HISTORICAL_PAYMENT = "Historical Payment"
+    CORRECTION_PAYMENT = "Correction Payment"
 
 
 class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsPaymentStatus(str, Enum):

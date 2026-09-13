@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class JobsAndCompensations(BaseSDK):
@@ -105,6 +105,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -221,6 +226,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -259,8 +269,8 @@ class JobsAndCompensations(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -362,6 +372,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -405,8 +420,8 @@ class JobsAndCompensations(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsRequestBodyMinimumWages],
-                List[models.CompensationsRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsRequestBodyMinimumWages],
+                Iterable[models.CompensationsRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -508,6 +523,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -613,6 +633,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -713,6 +738,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -752,8 +782,8 @@ class JobsAndCompensations(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsUpdateRequestBodyMinimumWages],
-                List[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsUpdateRequestBodyMinimumWages],
+                Iterable[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -857,6 +887,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -901,8 +936,8 @@ class JobsAndCompensations(BaseSDK):
         adjust_for_minimum_wage: Optional[bool] = None,
         minimum_wages: Optional[
             Union[
-                List[models.CompensationsUpdateRequestBodyMinimumWages],
-                List[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
+                Iterable[models.CompensationsUpdateRequestBodyMinimumWages],
+                Iterable[models.CompensationsUpdateRequestBodyMinimumWagesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1006,6 +1041,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1114,6 +1154,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1222,6 +1267,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1254,10 +1304,10 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         job_id: str,
-        include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         x_gusto_api_version: Optional[
             models.GetV1JobsJobIDHeaderXGustoAPIVersion
         ] = models.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1276,10 +1326,10 @@ class JobsAndCompensations(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param include: Available options:
             - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1296,9 +1346,9 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             job_id=job_id,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1336,6 +1386,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1363,10 +1418,10 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         job_id: str,
-        include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         x_gusto_api_version: Optional[
             models.GetV1JobsJobIDHeaderXGustoAPIVersion
         ] = models.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        include: Optional[models.GetV1JobsJobIDQueryParamInclude] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1385,10 +1440,10 @@ class JobsAndCompensations(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param job_id: The UUID of the job
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param include: Available options:
             - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1405,9 +1460,9 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1JobsJobIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             job_id=job_id,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1445,6 +1500,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1518,8 +1578,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1JobsJobIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
+            job_id=job_id,
             body=models.JobsUpdateRequestBody(
                 version=version,
                 title=title,
@@ -1568,6 +1628,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1646,8 +1711,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1JobsJobIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
+            job_id=job_id,
             body=models.JobsUpdateRequestBody(
                 version=version,
                 title=title,
@@ -1696,6 +1761,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1762,8 +1832,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1JobsJobIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
+            job_id=job_id,
         )
 
         req = self._build_request(
@@ -1801,6 +1871,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1867,8 +1942,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1JobsJobIDRequest(
-            job_id=job_id,
             x_gusto_api_version=x_gusto_api_version,
+            job_id=job_id,
         )
 
         req = self._build_request_async(
@@ -1906,6 +1981,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1938,12 +2018,12 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1961,12 +2041,12 @@ class JobsAndCompensations(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param include: Available options:
             - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1983,11 +2063,11 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDJobsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             page=page,
             per=per,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -2025,6 +2105,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2052,12 +2137,12 @@ class JobsAndCompensations(BaseSDK):
         self,
         *,
         employee_id: str,
-        page: Optional[int] = None,
-        per: Optional[int] = None,
-        include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         x_gusto_api_version: Optional[
             models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion
         ] = models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        page: Optional[int] = None,
+        per: Optional[int] = None,
+        include: Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -2075,12 +2160,12 @@ class JobsAndCompensations(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
         :param include: Available options:
             - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -2097,11 +2182,11 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDJobsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_id=employee_id,
             page=page,
             per=per,
             include=include,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -2139,6 +2224,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2210,8 +2300,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDJobsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.JobsCreateRequestBody(
                 title=title,
                 hire_date=hire_date,
@@ -2259,6 +2349,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2335,8 +2430,8 @@ class JobsAndCompensations(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDJobsRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.JobsCreateRequestBody(
                 title=title,
                 hire_date=hire_date,
@@ -2384,6 +2479,11 @@ class JobsAndCompensations(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Jobs and Compensations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

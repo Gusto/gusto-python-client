@@ -20,7 +20,7 @@ class PayrollUnprocessedEmployeeCompensationsTypePaymentMethod(str, Enum):
     HISTORICAL = "Historical"
 
 
-class FixedCompensationsTypedDict(TypedDict):
+class PayrollUnprocessedEmployeeCompensationsTypeFixedCompensationsTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the compensation. This also serves as the unique, immutable identifier for this compensation."""
     amount: NotRequired[str]
@@ -29,7 +29,7 @@ class FixedCompensationsTypedDict(TypedDict):
     r"""The UUID of the job for the compensation."""
 
 
-class FixedCompensations(BaseModel):
+class PayrollUnprocessedEmployeeCompensationsTypeFixedCompensations(BaseModel):
     name: Optional[str] = None
     r"""The name of the compensation. This also serves as the unique, immutable identifier for this compensation."""
 
@@ -56,7 +56,9 @@ class FixedCompensations(BaseModel):
         return m
 
 
-class HourlyCompensationsTypedDict(TypedDict):
+class PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensationsTypedDict(
+    TypedDict
+):
     name: NotRequired[str]
     r"""The name of the compensation. This also serves as the unique, immutable identifier for this compensation."""
     hours: NotRequired[str]
@@ -71,7 +73,7 @@ class HourlyCompensationsTypedDict(TypedDict):
     r"""The FLSA Status of the employee's primary job compensation"""
 
 
-class HourlyCompensations(BaseModel):
+class PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensations(BaseModel):
     name: Optional[str] = None
     r"""The name of the compensation. This also serves as the unique, immutable identifier for this compensation."""
 
@@ -161,7 +163,7 @@ class PayrollUnprocessedEmployeeCompensationsTypePaidTimeOff(BaseModel):
         return m
 
 
-class ReimbursementsModelTypedDict(TypedDict):
+class PayrollUnprocessedEmployeeCompensationsTypeReimbursementsTypedDict(TypedDict):
     amount: str
     r"""The dollar amount of the reimbursement for the pay period."""
     description: Nullable[str]
@@ -172,7 +174,7 @@ class ReimbursementsModelTypedDict(TypedDict):
     r"""Whether the reimbursement is recurring. This field is only available for unprocessed payrolls."""
 
 
-class ReimbursementsModel(BaseModel):
+class PayrollUnprocessedEmployeeCompensationsTypeReimbursements(BaseModel):
     amount: str
     r"""The dollar amount of the reimbursement for the pay period."""
 
@@ -189,6 +191,185 @@ class ReimbursementsModel(BaseModel):
     def serialize_model(self, handler):
         optional_fields = set(["uuid", "recurring"])
         nullable_fields = set(["description", "uuid"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeOverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeAmountType(str, Enum):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeFederalTypedDict(TypedDict):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: NotRequired[PayrollUnprocessedEmployeeCompensationsTypeOverrideType]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[PayrollUnprocessedEmployeeCompensationsTypeAmountType]
+    r"""How to interpret the amount."""
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeFederal(BaseModel):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: Optional[PayrollUnprocessedEmployeeCompensationsTypeOverrideType] = (
+        None
+    )
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[PayrollUnprocessedEmployeeCompensationsTypeAmountType] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["override_type", "amount", "amount_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsOverrideType(
+    str, Enum
+):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsAmountType(
+    str, Enum
+):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeStateTypedDict(TypedDict):
+    employee_state_field_uuid: NotRequired[str]
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+    override_type: NotRequired[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsOverrideType
+    ]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsAmountType
+    ]
+    r"""How to interpret the amount."""
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeState(BaseModel):
+    employee_state_field_uuid: Optional[str] = None
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+
+    override_type: Optional[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsOverrideType
+    ] = None
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsAmountType
+    ] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["employee_state_field_uuid", "override_type", "amount", "amount_type"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsTypedDict(TypedDict):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: NotRequired[
+        Nullable[PayrollUnprocessedEmployeeCompensationsTypeFederalTypedDict]
+    ]
+    r"""Federal one-time custom withholding override applied to this payroll."""
+    state: NotRequired[List[PayrollUnprocessedEmployeeCompensationsTypeStateTypedDict]]
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+
+class PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdings(BaseModel):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: OptionalNullable[PayrollUnprocessedEmployeeCompensationsTypeFederal] = (
+        UNSET
+    )
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    state: Optional[List[PayrollUnprocessedEmployeeCompensationsTypeState]] = None
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["federal", "state"])
+        nullable_fields = set(["federal"])
         serialized = handler(self)
         m = {}
 
@@ -234,16 +415,30 @@ class PayrollUnprocessedEmployeeCompensationsTypeTypedDict(TypedDict):
     r"""The employee's compensation payment method. Is *only* `Historical` when retrieving external payrolls initially run outside of Gusto, then put into Gusto."""
     memo: NotRequired[Nullable[str]]
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
-    fixed_compensations: NotRequired[List[FixedCompensationsTypedDict]]
+    fixed_compensations: NotRequired[
+        List[PayrollUnprocessedEmployeeCompensationsTypeFixedCompensationsTypedDict]
+    ]
     r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
-    hourly_compensations: NotRequired[List[HourlyCompensationsTypedDict]]
+    hourly_compensations: NotRequired[
+        List[PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensationsTypedDict]
+    ]
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
     paid_time_off: NotRequired[
         List[PayrollUnprocessedEmployeeCompensationsTypePaidTimeOffTypedDict]
     ]
     r"""An array of all paid time off the employee is eligible for this pay period."""
-    reimbursements: NotRequired[List[ReimbursementsModelTypedDict]]
+    reimbursements: NotRequired[
+        List[PayrollUnprocessedEmployeeCompensationsTypeReimbursementsTypedDict]
+    ]
     r"""An array of reimbursements for the employee."""
+    custom_withholdings: NotRequired[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdingsTypedDict
+    ]
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
     version: NotRequired[Any]
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
 
@@ -281,10 +476,14 @@ class PayrollUnprocessedEmployeeCompensationsType(BaseModel):
     memo: OptionalNullable[str] = UNSET
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
 
-    fixed_compensations: Optional[List[FixedCompensations]] = None
+    fixed_compensations: Optional[
+        List[PayrollUnprocessedEmployeeCompensationsTypeFixedCompensations]
+    ] = None
     r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
 
-    hourly_compensations: Optional[List[HourlyCompensations]] = None
+    hourly_compensations: Optional[
+        List[PayrollUnprocessedEmployeeCompensationsTypeHourlyCompensations]
+    ] = None
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
 
     paid_time_off: Optional[
@@ -292,8 +491,19 @@ class PayrollUnprocessedEmployeeCompensationsType(BaseModel):
     ] = None
     r"""An array of all paid time off the employee is eligible for this pay period."""
 
-    reimbursements: Optional[List[ReimbursementsModel]] = None
+    reimbursements: Optional[
+        List[PayrollUnprocessedEmployeeCompensationsTypeReimbursements]
+    ] = None
     r"""An array of reimbursements for the employee."""
+
+    custom_withholdings: Optional[
+        PayrollUnprocessedEmployeeCompensationsTypeCustomWithholdings
+    ] = None
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
 
     version: Optional[Any] = None
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/api-fundamentals#optimistic-version-control) for information on how to use this field."""
@@ -316,6 +526,7 @@ class PayrollUnprocessedEmployeeCompensationsType(BaseModel):
                 "hourly_compensations",
                 "paid_time_off",
                 "reimbursements",
+                "custom_withholdings",
                 "version",
             ]
         )
