@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional
 
 
 class Contractors(BaseSDK):
@@ -90,6 +90,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -190,6 +195,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -317,6 +327,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -449,6 +464,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -481,11 +501,11 @@ class Contractors(BaseSDK):
         self,
         *,
         company_id: str,
-        contractor_uuid: Optional[str] = None,
-        contractor_payment_group_uuid: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -524,9 +544,9 @@ class Contractors(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
         :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -543,10 +563,10 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             contractor_uuid=contractor_uuid,
             contractor_payment_group_uuid=contractor_payment_group_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -584,6 +604,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -613,11 +638,11 @@ class Contractors(BaseSDK):
         self,
         *,
         company_id: str,
-        contractor_uuid: Optional[str] = None,
-        contractor_payment_group_uuid: Optional[str] = None,
         x_gusto_api_version: Optional[
             models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
         ] = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        contractor_uuid: Optional[str] = None,
+        contractor_payment_group_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -656,9 +681,9 @@ class Contractors(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company. This identifies the company whose contractor payment details you want to retrieve.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param contractor_uuid: Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor.
         :param contractor_payment_group_uuid: Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -675,10 +700,10 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             contractor_uuid=contractor_uuid,
             contractor_payment_group_uuid=contractor_payment_group_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -716,6 +741,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -765,7 +795,8 @@ class Contractors(BaseSDK):
         2. The contractor must not already have an upcoming employment
 
         ## Related webhooks
-        - `contractor.reactivated`: Fires when the contractor becomes active again (on or after start_date)
+        - `contractor.reactivated`: Fires when the rehire is recorded
+        - `contractor.reactivation_effective`: Fires when the rehire takes effect (on start_date)
 
         scope: `contractors:write`
 
@@ -790,8 +821,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDRehireRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
             body=models.PostV1ContractorsContractorUUIDRehireRequestBody(
                 start_date=start_date,
             ),
@@ -807,7 +838,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
@@ -839,15 +870,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -880,7 +922,8 @@ class Contractors(BaseSDK):
         2. The contractor must not already have an upcoming employment
 
         ## Related webhooks
-        - `contractor.reactivated`: Fires when the contractor becomes active again (on or after start_date)
+        - `contractor.reactivated`: Fires when the rehire is recorded
+        - `contractor.reactivation_effective`: Fires when the rehire takes effect (on start_date)
 
         scope: `contractors:write`
 
@@ -905,8 +948,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDRehireRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
             body=models.PostV1ContractorsContractorUUIDRehireRequestBody(
                 start_date=start_date,
             ),
@@ -922,7 +965,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
@@ -954,15 +997,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -994,7 +1048,7 @@ class Contractors(BaseSDK):
         - The contractor must have a pending rehire (upcoming employment)
 
         ## Related webhooks
-        - `contractor.deactivated`: Fires when the contractor returns to inactive state after cancellation
+        - `contractor.reactivation_cancelled`: Fires when the pending rehire is cancelled
 
         scope: `contractors:write`
 
@@ -1018,8 +1072,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDRehireRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
         )
 
         req = self._build_request(
@@ -1032,7 +1086,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             allow_empty_value=None,
@@ -1057,15 +1111,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1097,7 +1162,7 @@ class Contractors(BaseSDK):
         - The contractor must have a pending rehire (upcoming employment)
 
         ## Related webhooks
-        - `contractor.deactivated`: Fires when the contractor returns to inactive state after cancellation
+        - `contractor.reactivation_cancelled`: Fires when the pending rehire is cancelled
 
         scope: `contractors:write`
 
@@ -1121,8 +1186,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDRehireRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
         )
 
         req = self._build_request_async(
@@ -1135,7 +1200,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             allow_empty_value=None,
@@ -1160,15 +1225,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1201,7 +1277,8 @@ class Contractors(BaseSDK):
         2. The contractor must have a current employment
 
         ## Related webhooks
-        - `contractor.deactivated`: Fires when the contractor becomes inactive (on or after end_date)
+        - `contractor.deactivated`: Fires when the dismissal is recorded
+        - `contractor.deactivation_effective`: Fires when the dismissal takes effect (the day after end_date)
 
         scope: `contractors:write`
 
@@ -1226,8 +1303,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDTerminationRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
             body=models.PostV1ContractorsContractorUUIDTerminationRequestBody(
                 end_date=end_date,
             ),
@@ -1243,7 +1320,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
@@ -1275,15 +1352,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1316,7 +1404,8 @@ class Contractors(BaseSDK):
         2. The contractor must have a current employment
 
         ## Related webhooks
-        - `contractor.deactivated`: Fires when the contractor becomes inactive (on or after end_date)
+        - `contractor.deactivated`: Fires when the dismissal is recorded
+        - `contractor.deactivation_effective`: Fires when the dismissal takes effect (the day after end_date)
 
         scope: `contractors:write`
 
@@ -1341,8 +1430,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1ContractorsContractorUUIDTerminationRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
             body=models.PostV1ContractorsContractorUUIDTerminationRequestBody(
                 end_date=end_date,
             ),
@@ -1358,7 +1447,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             get_serialized_body=lambda: utils.serialize_request_body(
@@ -1390,15 +1479,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1430,7 +1530,7 @@ class Contractors(BaseSDK):
         - The contractor must have a pending dismissal (scheduled or within the grace period)
 
         ## Related webhooks
-        - `contractor.reactivated`: Fires when the contractor becomes active again after cancellation
+        - `contractor.deactivation_cancelled`: Fires when the pending dismissal is cancelled
 
         scope: `contractors:write`
 
@@ -1454,8 +1554,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDTerminationRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
         )
 
         req = self._build_request(
@@ -1468,7 +1568,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             allow_empty_value=None,
@@ -1493,15 +1593,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = utils.stream_to_text(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1533,7 +1644,7 @@ class Contractors(BaseSDK):
         - The contractor must have a pending dismissal (scheduled or within the grace period)
 
         ## Related webhooks
-        - `contractor.reactivated`: Fires when the contractor becomes active again after cancellation
+        - `contractor.deactivation_cancelled`: Fires when the pending dismissal is cancelled
 
         scope: `contractors:write`
 
@@ -1557,8 +1668,8 @@ class Contractors(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorsContractorUUIDTerminationRequest(
-            contractor_uuid=contractor_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_uuid=contractor_uuid,
         )
 
         req = self._build_request_async(
@@ -1571,7 +1682,7 @@ class Contractors(BaseSDK):
             request_has_path_params=True,
             request_has_query_params=True,
             user_agent_header="user-agent",
-            accept_header_value="*/*",
+            accept_header_value="application/json",
             http_headers=http_headers,
             security=self.sdk_configuration.security,
             allow_empty_value=None,
@@ -1596,15 +1707,26 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
             retry_config=retry_config,
         )
 
+        response_data: Any = None
         if utils.match_response(http_res, "204", "*"):
             return
-        if utils.match_response(http_res, ["422", "4XX"], "*"):
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
         if utils.match_response(http_res, "5XX", "*"):
@@ -1621,7 +1743,7 @@ class Contractors(BaseSDK):
             models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion
         ] = models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1ContractorsContractorUUIDQueryParamInclude]
+            Iterable[models.GetV1ContractorsContractorUUIDQueryParamInclude]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1657,7 +1779,10 @@ class Contractors(BaseSDK):
         request = models.GetV1ContractorsContractorUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             contractor_uuid=contractor_uuid,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1ContractorsContractorUUIDQueryParamInclude]],
+            ),
         )
 
         req = self._build_request(
@@ -1695,6 +1820,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1726,7 +1856,7 @@ class Contractors(BaseSDK):
             models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion
         ] = models.GetV1ContractorsContractorUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         include: Optional[
-            List[models.GetV1ContractorsContractorUUIDQueryParamInclude]
+            Iterable[models.GetV1ContractorsContractorUUIDQueryParamInclude]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1762,7 +1892,10 @@ class Contractors(BaseSDK):
         request = models.GetV1ContractorsContractorUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             contractor_uuid=contractor_uuid,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[List[models.GetV1ContractorsContractorUUIDQueryParamInclude]],
+            ),
         )
 
         req = self._build_request_async(
@@ -1800,6 +1933,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1839,6 +1977,7 @@ class Contractors(BaseSDK):
         hourly_rate: Optional[str] = None,
         self_onboarding: Optional[bool] = False,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -1878,6 +2017,7 @@ class Contractors(BaseSDK):
             Self-onboarding is recommended so that contractors receive Gusto accounts.
             If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
+        :param work_email: The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing).
         :param first_name: The contractor’s first name.
             This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
         :param last_name: The contractor’s last name.
@@ -1921,6 +2061,7 @@ class Contractors(BaseSDK):
                 hourly_rate=hourly_rate,
                 self_onboarding=self_onboarding,
                 email=email,
+                work_email=work_email,
                 first_name=first_name,
                 last_name=last_name,
                 middle_initial=middle_initial,
@@ -1971,6 +2112,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2015,6 +2161,7 @@ class Contractors(BaseSDK):
         hourly_rate: Optional[str] = None,
         self_onboarding: Optional[bool] = False,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -2054,6 +2201,7 @@ class Contractors(BaseSDK):
             Self-onboarding is recommended so that contractors receive Gusto accounts.
             If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
+        :param work_email: The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing).
         :param first_name: The contractor’s first name.
             This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
         :param last_name: The contractor’s last name.
@@ -2097,6 +2245,7 @@ class Contractors(BaseSDK):
                 hourly_rate=hourly_rate,
                 self_onboarding=self_onboarding,
                 email=email,
+                work_email=work_email,
                 first_name=first_name,
                 last_name=last_name,
                 middle_initial=middle_initial,
@@ -2147,6 +2296,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2252,6 +2406,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2357,6 +2516,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2399,7 +2563,7 @@ class Contractors(BaseSDK):
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -2451,7 +2615,12 @@ class Contractors(BaseSDK):
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+                ],
+            ),
             page=page,
             per=per,
         )
@@ -2491,6 +2660,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2528,7 +2702,7 @@ class Contractors(BaseSDK):
         terminated: Optional[bool] = None,
         terminated_today: Optional[bool] = None,
         include: Optional[
-            List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+            Iterable[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
         ] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
@@ -2580,7 +2754,12 @@ class Contractors(BaseSDK):
             onboarded_active=onboarded_active,
             terminated=terminated,
             terminated_today=terminated_today,
-            include=include,
+            include=utils.unmarshal(
+                include,
+                Optional[
+                    List[models.GetV1CompaniesCompanyUUIDContractorsQueryParamInclude]
+                ],
+            ),
             page=page,
             per=per,
         )
@@ -2620,6 +2799,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2658,6 +2842,7 @@ class Contractors(BaseSDK):
         hourly_rate: Optional[str] = None,
         self_onboarding: Optional[bool] = False,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -2692,6 +2877,7 @@ class Contractors(BaseSDK):
             Self-onboarding is recommended so that contractors receive Gusto accounts.
             If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
+        :param work_email: The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing).
         :param first_name: The contractor’s first name.
             This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
         :param last_name: The contractor’s last name.
@@ -2734,6 +2920,7 @@ class Contractors(BaseSDK):
                 hourly_rate=hourly_rate,
                 self_onboarding=self_onboarding,
                 email=email,
+                work_email=work_email,
                 first_name=first_name,
                 last_name=last_name,
                 middle_initial=middle_initial,
@@ -2784,6 +2971,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2827,6 +3019,7 @@ class Contractors(BaseSDK):
         hourly_rate: Optional[str] = None,
         self_onboarding: Optional[bool] = False,
         email: Optional[str] = None,
+        work_email: Optional[str] = None,
         first_name: Optional[str] = None,
         last_name: Optional[str] = None,
         middle_initial: Optional[str] = None,
@@ -2861,6 +3054,7 @@ class Contractors(BaseSDK):
             Self-onboarding is recommended so that contractors receive Gusto accounts.
             If self_onboarding is true, then email is required.
         :param email: The contractor’s email address.
+        :param work_email: The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing).
         :param first_name: The contractor’s first name.
             This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
         :param last_name: The contractor’s last name.
@@ -2903,6 +3097,7 @@ class Contractors(BaseSDK):
                 hourly_rate=hourly_rate,
                 self_onboarding=self_onboarding,
                 email=email,
+                work_email=work_email,
                 first_name=first_name,
                 last_name=last_name,
                 middle_initial=middle_initial,
@@ -2953,6 +3148,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3089,6 +3289,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3220,6 +3425,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3342,6 +3552,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -3469,6 +3684,11 @@ class Contractors(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractors"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

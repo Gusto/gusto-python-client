@@ -7,4 +7,4 @@
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `name`             | *str*              | :heavy_check_mark: | N/A                |
 | `employer`         | *bool*             | :heavy_check_mark: | N/A                |
-| `amount`           | *float*            | :heavy_check_mark: | N/A                |
+| `amount`           | *str*              | :heavy_check_mark: | N/A                |

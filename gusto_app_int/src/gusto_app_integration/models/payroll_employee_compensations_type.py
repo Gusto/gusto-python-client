@@ -211,6 +211,171 @@ class ReimbursementsModel(BaseModel):
         return m
 
 
+class OverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollEmployeeCompensationsTypeAmountType(str, Enum):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class FederalTypedDict(TypedDict):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: NotRequired[OverrideType]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[PayrollEmployeeCompensationsTypeAmountType]
+    r"""How to interpret the amount."""
+
+
+class Federal(BaseModel):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: Optional[OverrideType] = None
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[PayrollEmployeeCompensationsTypeAmountType] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["override_type", "amount", "amount_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollEmployeeCompensationsTypeOverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollEmployeeCompensationsTypeCustomWithholdingsAmountType(str, Enum):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class StateTypedDict(TypedDict):
+    employee_state_field_uuid: NotRequired[str]
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+    override_type: NotRequired[PayrollEmployeeCompensationsTypeOverrideType]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[
+        PayrollEmployeeCompensationsTypeCustomWithholdingsAmountType
+    ]
+    r"""How to interpret the amount."""
+
+
+class State(BaseModel):
+    employee_state_field_uuid: Optional[str] = None
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+
+    override_type: Optional[PayrollEmployeeCompensationsTypeOverrideType] = None
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[
+        PayrollEmployeeCompensationsTypeCustomWithholdingsAmountType
+    ] = None
+    r"""How to interpret the amount."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["employee_state_field_uuid", "override_type", "amount", "amount_type"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class CustomWithholdingsTypedDict(TypedDict):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: NotRequired[Nullable[FederalTypedDict]]
+    r"""Federal one-time custom withholding override applied to this payroll."""
+    state: NotRequired[List[StateTypedDict]]
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+
+class CustomWithholdings(BaseModel):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: OptionalNullable[Federal] = UNSET
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    state: Optional[List[State]] = None
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["federal", "state"])
+        nullable_fields = set(["federal"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
+
+
 class AmountType(str, Enum):
     r"""The amount type of the deduction for the pay period. Only present for unprocessed payrolls."""
 
@@ -297,6 +462,12 @@ class PayrollEmployeeCompensationsTypeTypedDict(TypedDict):
     r"""An array of all paid time off the employee is eligible for this pay period."""
     reimbursements: NotRequired[List[ReimbursementsModelTypedDict]]
     r"""An array of reimbursements for the employee."""
+    custom_withholdings: NotRequired[CustomWithholdingsTypedDict]
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
     version: NotRequired[Any]
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
     deductions: NotRequired[List[DeductionsTypedDict]]
@@ -348,6 +519,13 @@ class PayrollEmployeeCompensationsType(BaseModel):
     reimbursements: Optional[List[ReimbursementsModel]] = None
     r"""An array of reimbursements for the employee."""
 
+    custom_withholdings: Optional[CustomWithholdings] = None
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
     version: Optional[Any] = None
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
 
@@ -372,6 +550,7 @@ class PayrollEmployeeCompensationsType(BaseModel):
                 "hourly_compensations",
                 "paid_time_off",
                 "reimbursements",
+                "custom_withholdings",
                 "version",
                 "deductions",
             ]

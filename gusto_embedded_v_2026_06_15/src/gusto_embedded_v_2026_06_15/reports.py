@@ -9,10 +9,474 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Reports(BaseSDK):
+    def post_v1_bulk_reports(
+        self,
+        *,
+        security: Union[
+            models.PostV1BulkReportsSecurity, models.PostV1BulkReportsSecurityTypedDict
+        ],
+        batch: Union[
+            Iterable[models.BulkReportItem], Iterable[models.BulkReportItemTypedDict]
+        ],
+        x_gusto_api_version: Optional[
+            models.PostV1BulkReportsHeaderXGustoAPIVersion
+        ] = models.PostV1BulkReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreateBulkReport:
+        r"""Create a bulk report batch
+
+        Triggers asynchronous generation of up to 25 reports across companies the partner is mapped to. Each `batch` item is a `custom_report` (same parameters as [create a custom report](https://docs.gusto.com/embedded-payroll/reference/post-companies-company_uuid-reports)) or a `general_ledger` report (same parameters as [create a general ledger report](https://docs.gusto.com/embedded-payroll/reference/post-payrolls-payroll_uuid-reports-general_ledger)), keyed by `company_uuid` and `report_type`. Items are validated synchronously; if any is invalid, the entire batch is rejected.
+
+        Poll the [bulk report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-v1-bulk_reports-request_uuid) with the returned `uuid` for status and the report URL, which is valid for 10 minutes.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `company_reports:write`
+
+        :param security:
+        :param batch: One report per item. Up to 25 items per batch, across any combination of companies the partner is mapped to.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1BulkReportsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            body=models.BulkReportBody(
+                batch=utils.get_pydantic_model(batch, List[models.BulkReportItem]),
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/bulk_reports",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.PostV1BulkReportsSecurity
+            ),
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.body, False, False, "json", models.BulkReportBody
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-bulk_reports",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.CreateBulkReport, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def post_v1_bulk_reports_async(
+        self,
+        *,
+        security: Union[
+            models.PostV1BulkReportsSecurity, models.PostV1BulkReportsSecurityTypedDict
+        ],
+        batch: Union[
+            Iterable[models.BulkReportItem], Iterable[models.BulkReportItemTypedDict]
+        ],
+        x_gusto_api_version: Optional[
+            models.PostV1BulkReportsHeaderXGustoAPIVersion
+        ] = models.PostV1BulkReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreateBulkReport:
+        r"""Create a bulk report batch
+
+        Triggers asynchronous generation of up to 25 reports across companies the partner is mapped to. Each `batch` item is a `custom_report` (same parameters as [create a custom report](https://docs.gusto.com/embedded-payroll/reference/post-companies-company_uuid-reports)) or a `general_ledger` report (same parameters as [create a general ledger report](https://docs.gusto.com/embedded-payroll/reference/post-payrolls-payroll_uuid-reports-general_ledger)), keyed by `company_uuid` and `report_type`. Items are validated synchronously; if any is invalid, the entire batch is rejected.
+
+        Poll the [bulk report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-v1-bulk_reports-request_uuid) with the returned `uuid` for status and the report URL, which is valid for 10 minutes.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `company_reports:write`
+
+        :param security:
+        :param batch: One report per item. Up to 25 items per batch, across any combination of companies the partner is mapped to.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostV1BulkReportsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            body=models.BulkReportBody(
+                batch=utils.get_pydantic_model(batch, List[models.BulkReportItem]),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/bulk_reports",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.PostV1BulkReportsSecurity
+            ),
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.body, False, False, "json", models.BulkReportBody
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-v1-bulk_reports",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.CreateBulkReport, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_v1_bulk_reports_request_uuid(
+        self,
+        *,
+        security: Union[
+            models.GetV1BulkReportsRequestUUIDSecurity,
+            models.GetV1BulkReportsRequestUUIDSecurityTypedDict,
+        ],
+        request_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.BulkReport:
+        r"""Get a bulk report batch
+
+        Get a bulk report batch's status and results given the `request_uuid`. While in progress, only batch metadata is returned; once complete, it also includes a signed `report_url` (a zip of all generated reports, valid for 10 minutes) and a per-company breakdown.
+
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `company_reports:read`
+
+        :param security:
+        :param request_uuid: The UUID of the bulk report batch.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1BulkReportsRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            request_uuid=request_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/bulk_reports/{request_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.GetV1BulkReportsRequestUUIDSecurity
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-bulk_reports-request_uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.BulkReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_v1_bulk_reports_request_uuid_async(
+        self,
+        *,
+        security: Union[
+            models.GetV1BulkReportsRequestUUIDSecurity,
+            models.GetV1BulkReportsRequestUUIDSecurityTypedDict,
+        ],
+        request_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.BulkReport:
+        r"""Get a bulk report batch
+
+        Get a bulk report batch's status and results given the `request_uuid`. While in progress, only batch metadata is returned; once complete, it also includes a signed `report_url` (a zip of all generated reports, valid for 10 minutes) and a per-company breakdown.
+
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+        scope: `company_reports:read`
+
+        :param security:
+        :param request_uuid: The UUID of the bulk report batch.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1BulkReportsRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            request_uuid=request_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/bulk_reports/{request_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=utils.get_pydantic_model(
+                security, models.GetV1BulkReportsRequestUUIDSecurity
+            ),
+            allow_empty_value=None,
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-bulk_reports-request_uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.BulkReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
     def post_v1_companies_company_id_reports_employees_annual_fica_wage(
         self,
         *,
@@ -109,6 +573,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -235,6 +704,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -269,24 +743,27 @@ class Reports(BaseSDK):
         self,
         *,
         company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
-        file_type: models.FileType,
+        columns: Iterable[models.CreateReportBodyColumns],
+        file_type: models.CreateReportBodyFileType,
         x_gusto_api_version: Optional[
             models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
         ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        groupings: Optional[Iterable[models.CreateReportBodyGroupings]] = None,
         custom_name: Optional[str] = None,
         with_totals: Optional[bool] = False,
+        date_filter_type: Optional[
+            models.CreateReportBodyDateFilterType
+        ] = models.CreateReportBodyDateFilterType.PERIOD_END_DATE,
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
         dismissed_start_date: Optional[date] = None,
         dismissed_end_date: Optional[date] = None,
         payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
-        employment_type: Optional[models.EmploymentType] = None,
+        employment_type: Optional[models.CreateReportBodyEmploymentType] = None,
         employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -302,11 +779,12 @@ class Reports(BaseSDK):
 
         :param company_uuid: The UUID of the company
         :param columns: Columns to include in the report
-        :param groupings: How to group the report
         :param file_type: The type of file to generate
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param groupings: Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested.
         :param custom_name: The title of the report
         :param with_totals: Whether to include subtotals and grand totals in the report
+        :param date_filter_type: Which payroll date `start_date` and `end_date` filter against.
         :param start_date: Start date of data to filter by
         :param end_date: End date of data to filter by
         :param dismissed_start_date: Dismissed start date of employees to filter by
@@ -336,11 +814,14 @@ class Reports(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
+                columns=utils.unmarshal(columns, List[models.CreateReportBodyColumns]),
+                groupings=utils.unmarshal(
+                    groupings, Optional[List[models.CreateReportBodyGroupings]]
+                ),
                 custom_name=custom_name,
                 file_type=file_type,
                 with_totals=with_totals,
+                date_filter_type=date_filter_type,
                 start_date=start_date,
                 end_date=end_date,
                 dismissed_start_date=dismissed_start_date,
@@ -348,9 +829,13 @@ class Reports(BaseSDK):
                 payment_method=payment_method,
                 employment_type=employment_type,
                 employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
             ),
         )
 
@@ -392,6 +877,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -424,24 +914,27 @@ class Reports(BaseSDK):
         self,
         *,
         company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
-        file_type: models.FileType,
+        columns: Iterable[models.CreateReportBodyColumns],
+        file_type: models.CreateReportBodyFileType,
         x_gusto_api_version: Optional[
             models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
         ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        groupings: Optional[Iterable[models.CreateReportBodyGroupings]] = None,
         custom_name: Optional[str] = None,
         with_totals: Optional[bool] = False,
+        date_filter_type: Optional[
+            models.CreateReportBodyDateFilterType
+        ] = models.CreateReportBodyDateFilterType.PERIOD_END_DATE,
         start_date: Optional[date] = None,
         end_date: Optional[date] = None,
         dismissed_start_date: Optional[date] = None,
         dismissed_end_date: Optional[date] = None,
         payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
-        employment_type: Optional[models.EmploymentType] = None,
+        employment_type: Optional[models.CreateReportBodyEmploymentType] = None,
         employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -457,11 +950,12 @@ class Reports(BaseSDK):
 
         :param company_uuid: The UUID of the company
         :param columns: Columns to include in the report
-        :param groupings: How to group the report
         :param file_type: The type of file to generate
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param groupings: Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested.
         :param custom_name: The title of the report
         :param with_totals: Whether to include subtotals and grand totals in the report
+        :param date_filter_type: Which payroll date `start_date` and `end_date` filter against.
         :param start_date: Start date of data to filter by
         :param end_date: End date of data to filter by
         :param dismissed_start_date: Dismissed start date of employees to filter by
@@ -491,11 +985,14 @@ class Reports(BaseSDK):
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
+                columns=utils.unmarshal(columns, List[models.CreateReportBodyColumns]),
+                groupings=utils.unmarshal(
+                    groupings, Optional[List[models.CreateReportBodyGroupings]]
+                ),
                 custom_name=custom_name,
                 file_type=file_type,
                 with_totals=with_totals,
+                date_filter_type=date_filter_type,
                 start_date=start_date,
                 end_date=end_date,
                 dismissed_start_date=dismissed_start_date,
@@ -503,9 +1000,13 @@ class Reports(BaseSDK):
                 payment_method=payment_method,
                 employment_type=employment_type,
                 employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
             ),
         )
 
@@ -547,6 +1048,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -579,7 +1085,7 @@ class Reports(BaseSDK):
         self,
         *,
         payroll_uuid: str,
-        aggregation: models.Aggregation,
+        aggregation: models.GeneralLedgerReportBodyAggregation,
         x_gusto_api_version: Optional[
             models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
         ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -665,6 +1171,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -697,7 +1208,7 @@ class Reports(BaseSDK):
         self,
         *,
         payroll_uuid: str,
-        aggregation: models.Aggregation,
+        aggregation: models.GeneralLedgerReportBodyAggregation,
         x_gusto_api_version: Optional[
             models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
         ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
@@ -783,6 +1294,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -890,6 +1406,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -992,6 +1513,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1095,6 +1621,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1203,6 +1734,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

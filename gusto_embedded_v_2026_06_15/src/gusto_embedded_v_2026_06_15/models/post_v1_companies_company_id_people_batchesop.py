@@ -419,7 +419,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesBankAccounts(BaseModel):
         return m
 
 
-class BatchTypedDict(TypedDict):
+class PostV1CompaniesCompanyIDPeopleBatchesBatchTypedDict(TypedDict):
     entity_type: PostV1CompaniesCompanyIDPeopleBatchesEntityType
     r"""The type of entity to create"""
     person: PersonTypedDict
@@ -443,7 +443,7 @@ class BatchTypedDict(TypedDict):
     """
 
 
-class Batch(BaseModel):
+class PostV1CompaniesCompanyIDPeopleBatchesBatch(BaseModel):
     entity_type: PostV1CompaniesCompanyIDPeopleBatchesEntityType
     r"""The type of entity to create"""
 
@@ -502,7 +502,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesRequestBodyTypedDict(TypedDict):
     r"""A unique identifier to ensure idempotency of the batch request"""
     batch_action: PostV1CompaniesCompanyIDPeopleBatchesBatchAction
     r"""The action to perform on the batch"""
-    batch: List[BatchTypedDict]
+    batch: List[PostV1CompaniesCompanyIDPeopleBatchesBatchTypedDict]
     r"""Array of people to create"""
 
 
@@ -513,7 +513,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesRequestBody(BaseModel):
     batch_action: PostV1CompaniesCompanyIDPeopleBatchesBatchAction
     r"""The action to perform on the batch"""
 
-    batch: List[Batch]
+    batch: List[PostV1CompaniesCompanyIDPeopleBatchesBatch]
     r"""Array of people to create"""
 
 

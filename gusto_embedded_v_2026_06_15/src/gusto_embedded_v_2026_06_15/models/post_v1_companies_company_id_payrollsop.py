@@ -3,13 +3,7 @@
 from __future__ import annotations
 from datetime import date
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import (
-    BaseModel,
-    Nullable,
-    OptionalNullable,
-    UNSET,
-    UNSET_SENTINEL,
-)
+from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -61,8 +55,8 @@ class PostV1CompaniesCompanyIDPayrollsRequestBodyTypedDict(TypedDict):
     r"""Pay period end date."""
     pay_schedule_uuid: NotRequired[str]
     r"""A pay schedule is required for transition from old pay schedule payroll to identify the matching transition pay period."""
-    employee_uuids: NotRequired[Nullable[List[str]]]
-    r"""A list of employee uuids to include on the payroll."""
+    employee_uuids: NotRequired[List[str]]
+    r"""A list of employee UUIDs to include on the payroll. At least one UUID is required for non-termination off-cycle payrolls."""
     check_date: NotRequired[date]
     r"""Payment date."""
     withholding_pay_period: NotRequired[
@@ -93,8 +87,8 @@ class PostV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
     pay_schedule_uuid: Optional[str] = None
     r"""A pay schedule is required for transition from old pay schedule payroll to identify the matching transition pay period."""
 
-    employee_uuids: OptionalNullable[List[str]] = UNSET
-    r"""A list of employee uuids to include on the payroll."""
+    employee_uuids: Optional[List[str]] = None
+    r"""A list of employee UUIDs to include on the payroll. At least one UUID is required for non-termination off-cycle payrolls."""
 
     check_date: Optional[date] = None
     r"""Payment date."""
@@ -126,24 +120,15 @@ class PostV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
                 "is_check_only_payroll",
             ]
         )
-        nullable_fields = set(["employee_uuids"])
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
             k = f.alias or n
             val = serialized.get(k, serialized.get(n))
-            is_nullable_and_explicitly_set = (
-                k in nullable_fields
-                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
-            )
 
             if val != UNSET_SENTINEL:
-                if (
-                    val is not None
-                    or k not in optional_fields
-                    or is_nullable_and_explicitly_set
-                ):
+                if val is not None or k not in optional_fields:
                     m[k] = val
 
         return m
