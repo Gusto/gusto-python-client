@@ -21,7 +21,7 @@ class GetV1EmployeesHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class QueryParamInclude(str, Enum):
+class GetV1EmployeesQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
     ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
@@ -35,7 +35,7 @@ class GetV1EmployeesRequestTypedDict(TypedDict):
     r"""The UUID of the employee"""
     x_gusto_api_version: NotRequired[GetV1EmployeesHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-    include: NotRequired[List[QueryParamInclude]]
+    include: NotRequired[List[GetV1EmployeesQueryParamInclude]]
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
 
@@ -53,7 +53,7 @@ class GetV1EmployeesRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     include: Annotated[
-        Optional[List[QueryParamInclude]],
+        Optional[List[GetV1EmployeesQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""

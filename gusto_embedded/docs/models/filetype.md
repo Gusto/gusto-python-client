@@ -1,6 +1,6 @@
 # FileType
 
-The type of file to generate
+The type of file to generate.
 
 ## Example Usage
 

@@ -4,19 +4,148 @@
 
 ### Available Operations
 
+* [list_supported](#list_supported) - Get all supported benefits
+* [get](#get) - Get a supported benefit
+* [get_requirements](#get_requirements) - Get benefit fields requirements by benefit type
 * [list](#list) - Get benefits for a company
 * [create](#create) - Create a company benefit
 * [get_by_id](#get_by_id) - Get a company benefit
 * [update](#update) - Update a company benefit
 * [delete](#delete) - Delete a company benefit
-* [list_supported](#list_supported) - Get all supported benefits
-* [get](#get) - Get a supported benefit
-* [get_summary](#get_summary) - Get company benefit summary by company benefit id.
 * [get_employee_benefits](#get_employee_benefits) - Get all employee benefits for a company benefit
 * [bulk_update_employee_benefits](#bulk_update_employee_benefits) - Bulk update employee benefits for a company benefit
-* [get_requirements](#get_requirements) - Get benefit fields requirements by benefit type
+* [get_summary](#get_summary) - Get company benefit summary by company benefit id.
 * [get_v1_company_benefits_company_benefit_id_contribution_exclusions](#get_v1_company_benefits_company_benefit_id_contribution_exclusions) - Get contribution exclusions for a company benefit
 * [put_v1_company_benefits_company_benefit_id_contribution_exclusions](#put_v1_company_benefits_company_benefit_id_contribution_exclusions) - Update contribution exclusions for a company benefit
+
+## list_supported
+
+Returns all benefits supported by Gusto. The benefit object in Gusto contains high level information about a particular benefit type and its tax considerations. When companies choose to offer a benefit, they are creating a Company Benefit object associated with a particular benefit.
+
+scope: `benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-benefits" method="get" path="/v1/benefits" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.company_benefits.list_supported(x_gusto_api_version=gusto_app_integration.HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.HeaderXGustoAPIVersion]](../../models/headerxgustoapiversion.md)                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.SupportedBenefit]](../../models/.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get
+
+Returns a benefit supported by Gusto. The benefit object in Gusto contains high level information about a particular benefit type and its tax considerations. When companies choose to offer a benefit, they are creating a Company Benefit object associated with a particular benefit.
+
+scope: `benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefit_id" method="get" path="/v1/benefits/{benefit_id}" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.company_benefits.get(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsBenefitIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `benefit_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The benefit type in Gusto.                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsBenefitIDHeaderXGustoAPIVersion]](../../models/getv1benefitsbenefitidheaderxgustoapiversion.md)                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.SupportedBenefit](../../models/supportedbenefit.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
+## get_requirements
+
+Returns the field requirements for a given benefit type.
+
+scope: `benefits:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefits_id-requirements" method="get" path="/v1/benefits/{benefit_id}/requirements" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.company_benefits.get_requirements(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsBenefitsIDRequirementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `benefit_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The benefit type in Gusto.                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsBenefitsIDRequirementsHeaderXGustoAPIVersion]](../../models/getv1benefitsbenefitsidrequirementsheaderxgustoapiversion.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.BenefitTypeRequirements](../../models/benefittyperequirements.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## list
 
@@ -160,7 +289,7 @@ with GustoAppIntegration(
 | `company_benefit_id`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company benefit                                                                                                                                                                                              |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyBenefitsCompanyBenefitIDHeaderXGustoAPIVersion]](../../models/getv1companybenefitscompanybenefitidheaderxgustoapiversion.md)                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `with_employee_benefits`                                                                                                                                                                                                     | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Whether to return employee benefits associated with the benefit                                                                                                                                                              |
-| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude]](../../models/getv1companybenefitscompanybenefitidqueryparaminclude.md)                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.                                                          |
+| `include`                                                                                                                                                                                                                    | [Optional[models.Include]](../../models/include.md)                                                                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.                                                          |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -275,140 +404,6 @@ with GustoAppIntegration(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## list_supported
-
-Returns all benefits supported by Gusto. The benefit object in Gusto contains high level information about a particular benefit type and its tax considerations. When companies choose to offer a benefit, they are creating a Company Benefit object associated with a particular benefit.
-
-scope: `benefits:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-benefits" method="get" path="/v1/benefits" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.company_benefits.list_supported(x_gusto_api_version=gusto_app_integration.GetV1BenefitsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsHeaderXGustoAPIVersion]](../../models/getv1benefitsheaderxgustoapiversion.md)                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.SupportedBenefit]](../../models/.md)**
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
-
-## get
-
-Returns a benefit supported by Gusto. The benefit object in Gusto contains high level information about a particular benefit type and its tax considerations. When companies choose to offer a benefit, they are creating a Company Benefit object associated with a particular benefit.
-
-scope: `benefits:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefit_id" method="get" path="/v1/benefits/{benefit_id}" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.company_benefits.get(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsBenefitIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `benefit_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The benefit type in Gusto.                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsBenefitIDHeaderXGustoAPIVersion]](../../models/getv1benefitsbenefitidheaderxgustoapiversion.md)                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.SupportedBenefit](../../models/supportedbenefit.md)**
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |
-
-## get_summary
-
-Returns summary benefit data for the requested company benefit id.
-
-Benefits containing PHI are only visible to applications with the `company_benefits:read:phi` scope.
-
-scope: `company_benefits:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-benefits-company_benefit_id-summary" method="get" path="/v1/company_benefits/{company_benefit_id}/summary" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.company_benefits.get_summary(company_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsCompanyBenefitIDSummaryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, start_date="2022-01-01", end_date="2022-12-31")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_benefit_id`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company benefit                                                                                                                                                                                              |                                                                                                                                                                                                                              |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsCompanyBenefitIDSummaryHeaderXGustoAPIVersion]](../../models/getv1benefitscompanybenefitidsummaryheaderxgustoapiversion.md)                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
-| `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The start date for which to retrieve company benefit summary                                                                                                                                                                 | 2022-01-01                                                                                                                                                                                                                   |
-| `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The end date for which to retrieve company benefit summary. If left empty, defaults to today's date.                                                                                                                         | 2022-12-31                                                                                                                                                                                                                   |
-| `detailed`                                                                                                                                                                                                                   | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Display employee payroll item summary                                                                                                                                                                                        |                                                                                                                                                                                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
-
-### Response
-
-**[models.BenefitSummary](../../models/benefitsummary.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
 ## get_employee_benefits
 
 Employee benefits represent an employee enrolled in a particular company benefit. It includes information specific to that employee's enrollment.
@@ -446,7 +441,7 @@ with GustoAppIntegration(
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsHeaderXGustoAPIVersion]](../../models/getv1companybenefitscompanybenefitidemployeebenefitsheaderxgustoapiversion.md)                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
-| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude]](../../models/getv1companybenefitscompanybenefitidemployeebenefitsqueryparaminclude.md)                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.                                                                                          |
+| `include`                                                                                                                                                                                                                    | [Optional[models.QueryParamInclude]](../../models/queryparaminclude.md)                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.                                                                                          |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -516,15 +511,17 @@ with GustoAppIntegration(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_requirements
+## get_summary
 
-Returns the field requirements for a given benefit type.
+Returns summary benefit data for the requested company benefit id.
 
-scope: `benefits:read`
+Benefits containing PHI are only visible to applications with the `company_benefits:read:phi` scope.
+
+scope: `company_benefits:read`
 
 ### Example Usage
 
-<!-- UsageSnippet language="python" operationID="get-v1-benefits-benefits_id-requirements" method="get" path="/v1/benefits/{benefit_id}/requirements" -->
+<!-- UsageSnippet language="python" operationID="get-v1-benefits-company_benefit_id-summary" method="get" path="/v1/company_benefits/{company_benefit_id}/summary" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
@@ -534,7 +531,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.company_benefits.get_requirements(benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsBenefitsIDRequirementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gai_client.company_benefits.get_summary(company_benefit_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1BenefitsCompanyBenefitIDSummaryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, start_date="2022-01-01", end_date="2022-12-31")
 
     # Handle response
     print(res)
@@ -543,15 +540,18 @@ with GustoAppIntegration(
 
 ### Parameters
 
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `benefit_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The benefit type in Gusto.                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsBenefitsIDRequirementsHeaderXGustoAPIVersion]](../../models/getv1benefitsbenefitsidrequirementsheaderxgustoapiversion.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_benefit_id`                                                                                                                                                                                                         | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company benefit                                                                                                                                                                                              |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1BenefitsCompanyBenefitIDSummaryHeaderXGustoAPIVersion]](../../models/getv1benefitscompanybenefitidsummaryheaderxgustoapiversion.md)                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The start date for which to retrieve company benefit summary                                                                                                                                                                 | 2022-01-01                                                                                                                                                                                                                   |
+| `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The end date for which to retrieve company benefit summary. If left empty, defaults to today's date.                                                                                                                         | 2022-12-31                                                                                                                                                                                                                   |
+| `detailed`                                                                                                                                                                                                                   | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Display employee payroll item summary                                                                                                                                                                                        |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
 
-**[models.BenefitTypeRequirements](../../models/benefittyperequirements.md)**
+**[models.BenefitSummary](../../models/benefitsummary.md)**
 
 ### Errors
 

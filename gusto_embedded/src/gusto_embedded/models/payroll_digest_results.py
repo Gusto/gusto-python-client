@@ -38,14 +38,14 @@ class PayrollDigestResultsResultsStatus(str, Enum):
     FAILED = "failed"
 
 
-class BlockersTypedDict(TypedDict):
+class PayrollDigestResultsBlockersTypedDict(TypedDict):
     type: NotRequired[str]
     r"""A machine-readable blocker key (e.g. `missing_bank_account`)."""
     description: NotRequired[str]
     r"""Human-readable description of the blocker."""
 
 
-class Blockers(BaseModel):
+class PayrollDigestResultsBlockers(BaseModel):
     type: Optional[str] = None
     r"""A machine-readable blocker key (e.g. `missing_bank_account`)."""
 
@@ -296,7 +296,7 @@ class PayrollDigestResultsResultsTypedDict(TypedDict):
     r"""The legal/display name of the company."""
     status: NotRequired[PayrollDigestResultsResultsStatus]
     r"""The status of this company's digest computation."""
-    blockers: NotRequired[List[BlockersTypedDict]]
+    blockers: NotRequired[List[PayrollDigestResultsBlockersTypedDict]]
     r"""Reasons the company cannot currently run payroll. Applies to every payroll in this company's `payrolls` array — blockers are evaluated at the company level, not per payroll. Empty when there are no blockers."""
     payrolls: NotRequired[List[PayrollsModelTypedDict]]
     r"""Payrolls for this company within the digest date window (7 days past, 30–60 days future). May be empty."""
@@ -318,7 +318,7 @@ class PayrollDigestResultsResults(BaseModel):
     status: Optional[PayrollDigestResultsResultsStatus] = None
     r"""The status of this company's digest computation."""
 
-    blockers: Optional[List[Blockers]] = None
+    blockers: Optional[List[PayrollDigestResultsBlockers]] = None
     r"""Reasons the company cannot currently run payroll. Applies to every payroll in this company's `payrolls` array — blockers are evaluated at the company level, not per payroll. Empty when there are no blockers."""
 
     payrolls: Optional[List[PayrollsModel]] = None

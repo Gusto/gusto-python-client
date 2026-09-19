@@ -5,8 +5,8 @@
 ### Available Operations
 
 * [calculate_accruing_time_off_hours](#calculate_accruing_time_off_hours) - Calculate accruing time off hours
-* [get_v1_time_off_policies_time_off_policy_uuid](#get_v1_time_off_policies_time_off_policy_uuid) - Get a time off policy
 * [get_v1_companies_company_uuid_time_off_policies](#get_v1_companies_company_uuid_time_off_policies) - Get all time off policies for a company
+* [get_v1_time_off_policies_time_off_policy_uuid](#get_v1_time_off_policies_time_off_policy_uuid) - Get a time off policy
 * [put_v1_time_off_policies_time_off_policy_uuid_add_employees](#put_v1_time_off_policies_time_off_policy_uuid_add_employees) - Add employees to a time off policy
 
 ## calculate_accruing_time_off_hours
@@ -69,50 +69,6 @@ with GustoAppIntegration(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_v1_time_off_policies_time_off_policy_uuid
-
-Get a time off policy
-
-scope: `time_off_policies:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-time_off_policies-time_off_policy_uuid" method="get" path="/v1/time_off_policies/{time_off_policy_uuid}" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.time_off_policies.get_v1_time_off_policies_time_off_policy_uuid(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_app_integration.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `time_off_policy_uuid`                                                                                                                                                                                                       | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the time off policy                                                                                                                                                                                              |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion]](../../models/getv1timeoffpoliciestimeoffpolicyuuidheaderxgustoapiversion.md)                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.TimeOffPolicy](../../models/timeoffpolicy.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
 ## get_v1_companies_company_uuid_time_off_policies
 
 Get all time off policies for a company
@@ -149,6 +105,50 @@ with GustoAppIntegration(
 ### Response
 
 **[List[models.TimeOffPolicy]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## get_v1_time_off_policies_time_off_policy_uuid
+
+Get a time off policy
+
+scope: `time_off_policies:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-time_off_policies-time_off_policy_uuid" method="get" path="/v1/time_off_policies/{time_off_policy_uuid}" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.time_off_policies.get_v1_time_off_policies_time_off_policy_uuid(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_app_integration.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `time_off_policy_uuid`                                                                                                                                                                                                       | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the time off policy                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion]](../../models/getv1timeoffpoliciestimeoffpolicyuuidheaderxgustoapiversion.md)                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.TimeOffPolicy](../../models/timeoffpolicy.md)**
 
 ### Errors
 
