@@ -47,7 +47,7 @@ class PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict(TypedDict):
     priority: NotRequired[int]
     r"""Order of priority for each payment split; priority 1 is the first account paid. Must be unique and sequential."""
     split_amount: NotRequired[Nullable[float]]
-    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
+    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. Amount must be less than or equal to 2147483647. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodSplits(BaseModel):
@@ -61,7 +61,7 @@ class PutV1EmployeesEmployeeIDPaymentMethodSplits(BaseModel):
     r"""Order of priority for each payment split; priority 1 is the first account paid. Must be unique and sequential."""
 
     split_amount: OptionalNullable[float] = UNSET
-    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
+    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. Amount must be less than or equal to 2147483647. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):

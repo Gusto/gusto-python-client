@@ -7,62 +7,42 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class Reports(BaseSDK):
-    def create_custom(
+    def post_v1_bulk_reports(
         self,
         *,
-        company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
-        file_type: models.FileType,
+        security: Union[
+            models.PostV1BulkReportsSecurity, models.PostV1BulkReportsSecurityTypedDict
+        ],
+        batch: Union[
+            Iterable[models.BulkReportItem], Iterable[models.BulkReportItemTypedDict]
+        ],
         x_gusto_api_version: Optional[
-            models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
-        ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        custom_name: Optional[str] = None,
-        with_totals: Optional[bool] = False,
-        start_date: Optional[date] = None,
-        end_date: Optional[date] = None,
-        dismissed_start_date: Optional[date] = None,
-        dismissed_end_date: Optional[date] = None,
-        payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
-        employment_type: Optional[models.EmploymentType] = None,
-        employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+            models.PostV1BulkReportsHeaderXGustoAPIVersion
+        ] = models.PostV1BulkReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CreateReport:
-        r"""Create a custom report
+    ) -> models.CreateBulkReport:
+        r"""Create a bulk report batch
 
-        Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid). This URL is valid for 10 minutes.
+        Triggers asynchronous generation of up to 25 reports across companies the partner is mapped to. Each `batch` item is a `custom_report` (same parameters as [create a custom report](https://docs.gusto.com/embedded-payroll/reference/post-companies-company_uuid-reports)) or a `general_ledger` report (same parameters as [create a general ledger report](https://docs.gusto.com/embedded-payroll/reference/post-payrolls-payroll_uuid-reports-general_ledger)), keyed by `company_uuid` and `report_type`. Items are validated synchronously; if any is invalid, the entire batch is rejected.
+
+        Poll the [bulk report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-v1-bulk_reports-request_uuid) with the returned `uuid` for status and the report URL, which is valid for 10 minutes.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
 
         scope: `company_reports:write`
 
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_uuid: The UUID of the company
-        :param columns: Columns to include in the report
-        :param groupings: How to group the report
-        :param file_type: The type of file to generate
+        :param security:
+        :param batch: One report per item. Up to 25 items per batch, across any combination of companies the partner is mapped to.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param custom_name: The title of the report
-        :param with_totals: Whether to include subtotals and grand totals in the report
-        :param start_date: Start date of data to filter by
-        :param end_date: End date of data to filter by
-        :param dismissed_start_date: Dismissed start date of employees to filter by
-        :param dismissed_end_date: Dismissed end date of employees to filter by
-        :param payment_method: Payment method to filter by
-        :param employment_type: Employee employment type to filter by
-        :param employment_status: Employee employment status to filter by
-        :param employee_uuids: Employees to filter by
-        :param department_uuids: Departments to filter by
-        :param work_address_uuids: Work addresses to filter by
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -78,50 +58,32 @@ class Reports(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PostCompaniesCompanyUUIDReportsRequest(
+        request = models.PostV1BulkReportsRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            create_report_body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
-                custom_name=custom_name,
-                file_type=file_type,
-                with_totals=with_totals,
-                start_date=start_date,
-                end_date=end_date,
-                dismissed_start_date=dismissed_start_date,
-                dismissed_end_date=dismissed_end_date,
-                payment_method=payment_method,
-                employment_type=employment_type,
-                employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+            bulk_report_body=models.BulkReportBody(
+                batch=utils.get_pydantic_model(batch, List[models.BulkReportItem]),
             ),
         )
 
         req = self._build_request(
             method="POST",
-            path="/v1/companies/{company_uuid}/reports",
+            path="/v1/bulk_reports",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=True,
+            request_has_path_params=False,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
-            security=self.sdk_configuration.security,
+            security=utils.get_pydantic_model(
+                security, models.PostV1BulkReportsSecurity
+            ),
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.create_report_body,
-                False,
-                False,
-                "json",
-                models.CreateReportBody,
+                request.bulk_report_body, False, False, "json", models.BulkReportBody
             ),
             allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -137,11 +99,14 @@ class Reports(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="post-companies-company_uuid-reports",
+                operation_id="post-v1-bulk_reports",
                 oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -150,12 +115,7 @@ class Reports(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.CreateReport, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
+            return unmarshal_json_response(models.CreateBulkReport, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
                 models.UnprocessableEntityError1Data, http_res
@@ -170,58 +130,38 @@ class Reports(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def create_custom_async(
+    async def post_v1_bulk_reports_async(
         self,
         *,
-        company_uuid: str,
-        columns: List[models.Columns],
-        groupings: List[models.Groupings],
-        file_type: models.FileType,
+        security: Union[
+            models.PostV1BulkReportsSecurity, models.PostV1BulkReportsSecurityTypedDict
+        ],
+        batch: Union[
+            Iterable[models.BulkReportItem], Iterable[models.BulkReportItemTypedDict]
+        ],
         x_gusto_api_version: Optional[
-            models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
-        ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        custom_name: Optional[str] = None,
-        with_totals: Optional[bool] = False,
-        start_date: Optional[date] = None,
-        end_date: Optional[date] = None,
-        dismissed_start_date: Optional[date] = None,
-        dismissed_end_date: Optional[date] = None,
-        payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
-        employment_type: Optional[models.EmploymentType] = None,
-        employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
-        employee_uuids: OptionalNullable[List[str]] = UNSET,
-        department_uuids: Optional[List[str]] = None,
-        work_address_uuids: Optional[List[str]] = None,
+            models.PostV1BulkReportsHeaderXGustoAPIVersion
+        ] = models.PostV1BulkReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.CreateReport:
-        r"""Create a custom report
+    ) -> models.CreateBulkReport:
+        r"""Create a bulk report batch
 
-        Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid). This URL is valid for 10 minutes.
+        Triggers asynchronous generation of up to 25 reports across companies the partner is mapped to. Each `batch` item is a `custom_report` (same parameters as [create a custom report](https://docs.gusto.com/embedded-payroll/reference/post-companies-company_uuid-reports)) or a `general_ledger` report (same parameters as [create a general ledger report](https://docs.gusto.com/embedded-payroll/reference/post-payrolls-payroll_uuid-reports-general_ledger)), keyed by `company_uuid` and `report_type`. Items are validated synchronously; if any is invalid, the entire batch is rejected.
+
+        Poll the [bulk report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-v1-bulk_reports-request_uuid) with the returned `uuid` for status and the report URL, which is valid for 10 minutes.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
 
         scope: `company_reports:write`
 
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_uuid: The UUID of the company
-        :param columns: Columns to include in the report
-        :param groupings: How to group the report
-        :param file_type: The type of file to generate
+        :param security:
+        :param batch: One report per item. Up to 25 items per batch, across any combination of companies the partner is mapped to.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param custom_name: The title of the report
-        :param with_totals: Whether to include subtotals and grand totals in the report
-        :param start_date: Start date of data to filter by
-        :param end_date: End date of data to filter by
-        :param dismissed_start_date: Dismissed start date of employees to filter by
-        :param dismissed_end_date: Dismissed end date of employees to filter by
-        :param payment_method: Payment method to filter by
-        :param employment_type: Employee employment type to filter by
-        :param employment_status: Employee employment status to filter by
-        :param employee_uuids: Employees to filter by
-        :param department_uuids: Departments to filter by
-        :param work_address_uuids: Work addresses to filter by
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -237,50 +177,32 @@ class Reports(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.PostCompaniesCompanyUUIDReportsRequest(
+        request = models.PostV1BulkReportsRequest(
             x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            create_report_body=models.CreateReportBody(
-                columns=columns,
-                groupings=groupings,
-                custom_name=custom_name,
-                file_type=file_type,
-                with_totals=with_totals,
-                start_date=start_date,
-                end_date=end_date,
-                dismissed_start_date=dismissed_start_date,
-                dismissed_end_date=dismissed_end_date,
-                payment_method=payment_method,
-                employment_type=employment_type,
-                employment_status=employment_status,
-                employee_uuids=employee_uuids,
-                department_uuids=department_uuids,
-                work_address_uuids=work_address_uuids,
+            bulk_report_body=models.BulkReportBody(
+                batch=utils.get_pydantic_model(batch, List[models.BulkReportItem]),
             ),
         )
 
         req = self._build_request_async(
             method="POST",
-            path="/v1/companies/{company_uuid}/reports",
+            path="/v1/bulk_reports",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
             request_body_required=True,
-            request_has_path_params=True,
+            request_has_path_params=False,
             request_has_query_params=True,
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
-            security=self.sdk_configuration.security,
+            security=utils.get_pydantic_model(
+                security, models.PostV1BulkReportsSecurity
+            ),
             get_serialized_body=lambda: utils.serialize_request_body(
-                request.create_report_body,
-                False,
-                False,
-                "json",
-                models.CreateReportBody,
+                request.bulk_report_body, False, False, "json", models.BulkReportBody
             ),
             allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -296,11 +218,14 @@ class Reports(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="post-companies-company_uuid-reports",
+                operation_id="post-v1-bulk_reports",
                 oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -309,12 +234,7 @@ class Reports(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "201", "application/json"):
-            return unmarshal_json_response(models.CreateReport, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
+            return unmarshal_json_response(models.CreateBulkReport, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
                 models.UnprocessableEntityError1Data, http_res
@@ -329,273 +249,36 @@ class Reports(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    def post_payrolls_payroll_uuid_reports_general_ledger(
+    def get_v1_bulk_reports_request_uuid(
         self,
         *,
-        payroll_uuid: str,
-        aggregation: models.Aggregation,
-        x_gusto_api_version: Optional[
-            models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
-        ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        integration_type: OptionalNullable[models.IntegrationType] = UNSET,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GeneralLedgerReport:
-        r"""Create a general ledger report
-
-        Create a general ledger report for a payroll. The report can be aggregated by different dimensions such as job or department.
-
-        Use the `request_uuid` in the response with the [report GET endpoint](../reference/get-reports-request_uuid) to poll for the status and report URL upon completion. The retrieved report will be generated in a JSON format.
-
-        scope: `company_reports:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_uuid: The UUID of the payroll
-        :param aggregation: The breakdown of the report. Use 'default' for no split.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param integration_type: The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostPayrollsPayrollUUIDReportsGeneralLedgerRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_uuid=payroll_uuid,
-            general_ledger_report_body=models.GeneralLedgerReportBody(
-                aggregation=aggregation,
-                integration_type=integration_type,
-            ),
-        )
-
-        req = self._build_request(
-            method="POST",
-            path="/v1/payrolls/{payroll_uuid}/reports/general_ledger",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.general_ledger_report_body,
-                False,
-                False,
-                "json",
-                models.GeneralLedgerReportBody,
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-payrolls-payroll_uuid-reports-general_ledger",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.GeneralLedgerReport, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def post_payrolls_payroll_uuid_reports_general_ledger_async(
-        self,
-        *,
-        payroll_uuid: str,
-        aggregation: models.Aggregation,
-        x_gusto_api_version: Optional[
-            models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
-        ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        integration_type: OptionalNullable[models.IntegrationType] = UNSET,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.GeneralLedgerReport:
-        r"""Create a general ledger report
-
-        Create a general ledger report for a payroll. The report can be aggregated by different dimensions such as job or department.
-
-        Use the `request_uuid` in the response with the [report GET endpoint](../reference/get-reports-request_uuid) to poll for the status and report URL upon completion. The retrieved report will be generated in a JSON format.
-
-        scope: `company_reports:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param payroll_uuid: The UUID of the payroll
-        :param aggregation: The breakdown of the report. Use 'default' for no split.
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param integration_type: The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.PostPayrollsPayrollUUIDReportsGeneralLedgerRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            payroll_uuid=payroll_uuid,
-            general_ledger_report_body=models.GeneralLedgerReportBody(
-                aggregation=aggregation,
-                integration_type=integration_type,
-            ),
-        )
-
-        req = self._build_request_async(
-            method="POST",
-            path="/v1/payrolls/{payroll_uuid}/reports/general_ledger",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=True,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            get_serialized_body=lambda: utils.serialize_request_body(
-                request.general_ledger_report_body,
-                False,
-                False,
-                "json",
-                models.GeneralLedgerReportBody,
-            ),
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="post-payrolls-payroll_uuid-reports-general_ledger",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.GeneralLedgerReport, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def get_reports_request_uuid(
-        self,
-        *,
+        security: Union[
+            models.GetV1BulkReportsRequestUUIDSecurity,
+            models.GetV1BulkReportsRequestUUIDSecurityTypedDict,
+        ],
         request_uuid: str,
         x_gusto_api_version: Optional[
-            models.GetReportsRequestUUIDHeaderXGustoAPIVersion
-        ] = models.GetReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Report:
-        r"""Get a report
+    ) -> models.BulkReport:
+        r"""Get a bulk report batch
 
-        Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+        Get a bulk report batch's status and results given the `request_uuid`. While in progress, only batch metadata is returned; once complete, it also includes a signed `report_url` (a zip of all generated reports, valid for 10 minutes) and a per-company breakdown.
 
-        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
 
         scope: `company_reports:read`
 
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param security:
+        :param request_uuid: The UUID of the bulk report batch.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -612,14 +295,14 @@ class Reports(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetReportsRequestUUIDRequest(
+        request = models.GetV1BulkReportsRequestUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             request_uuid=request_uuid,
         )
 
         req = self._build_request(
             method="GET",
-            path="/v1/reports/{request_uuid}",
+            path="/v1/bulk_reports/{request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -629,9 +312,10 @@ class Reports(BaseSDK):
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
-            security=self.sdk_configuration.security,
+            security=utils.get_pydantic_model(
+                security, models.GetV1BulkReportsRequestUUIDSecurity
+            ),
             allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -647,11 +331,14 @@ class Reports(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-reports-request_uuid",
+                operation_id="get-v1-bulk_reports-request_uuid",
                 oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -660,7 +347,7 @@ class Reports(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.Report, http_res)
+            return unmarshal_json_response(models.BulkReport, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -675,29 +362,36 @@ class Reports(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
-    async def get_reports_request_uuid_async(
+    async def get_v1_bulk_reports_request_uuid_async(
         self,
         *,
+        security: Union[
+            models.GetV1BulkReportsRequestUUIDSecurity,
+            models.GetV1BulkReportsRequestUUIDSecurityTypedDict,
+        ],
         request_uuid: str,
         x_gusto_api_version: Optional[
-            models.GetReportsRequestUUIDHeaderXGustoAPIVersion
-        ] = models.GetReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+            models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetV1BulkReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.Report:
-        r"""Get a report
+    ) -> models.BulkReport:
+        r"""Get a bulk report batch
 
-        Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+        Get a bulk report batch's status and results given the `request_uuid`. While in progress, only batch metadata is returned; once complete, it also includes a signed `report_url` (a zip of all generated reports, valid for 10 minutes) and a per-company breakdown.
 
-        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope.
+
+        📘 System Access Authentication
+
+        This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
 
         scope: `company_reports:read`
 
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param security:
+        :param request_uuid: The UUID of the bulk report batch.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
@@ -714,14 +408,14 @@ class Reports(BaseSDK):
         else:
             base_url = self._get_url(base_url, url_variables)
 
-        request = models.GetReportsRequestUUIDRequest(
+        request = models.GetV1BulkReportsRequestUUIDRequest(
             x_gusto_api_version=x_gusto_api_version,
             request_uuid=request_uuid,
         )
 
         req = self._build_request_async(
             method="GET",
-            path="/v1/reports/{request_uuid}",
+            path="/v1/bulk_reports/{request_uuid}",
             base_url=base_url,
             url_variables=url_variables,
             request=request,
@@ -731,9 +425,10 @@ class Reports(BaseSDK):
             user_agent_header="user-agent",
             accept_header_value="application/json",
             http_headers=http_headers,
-            security=self.sdk_configuration.security,
+            security=utils.get_pydantic_model(
+                security, models.GetV1BulkReportsRequestUUIDSecurity
+            ),
             allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
             timeout_ms=timeout_ms,
         )
 
@@ -749,11 +444,14 @@ class Reports(BaseSDK):
             hook_ctx=HookContext(
                 config=self.sdk_configuration,
                 base_url=base_url or "",
-                operation_id="get-reports-request_uuid",
+                operation_id="get-v1-bulk_reports-request_uuid",
                 oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
+                security_source=get_security_from_env(security, models.Security),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -762,228 +460,12 @@ class Reports(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.Report, http_res)
+            return unmarshal_json_response(models.BulkReport, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def get_template(
-        self,
-        *,
-        company_uuid: str,
-        report_type: str,
-        x_gusto_api_version: Optional[
-            models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion
-        ] = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ReportTemplate:
-        r"""Get a report template
-
-        Get a company's report template. The only supported report type is `payroll_journal`. The resulting columns and groupings from this endpoint can be used as a guidance to create the report using the POST create report endpoint.
-
-        scope: `company_reports:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_uuid: The UUID of the company
-        :param report_type: The report type
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            report_type=report_type,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/companies/{company_uuid}/report_templates/{report_type}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-companies-company_uuid-report-templates-report_type",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ReportTemplate, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def get_template_async(
-        self,
-        *,
-        company_uuid: str,
-        report_type: str,
-        x_gusto_api_version: Optional[
-            models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion
-        ] = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ReportTemplate:
-        r"""Get a report template
-
-        Get a company's report template. The only supported report type is `payroll_journal`. The resulting columns and groupings from this endpoint can be used as a guidance to create the report using the POST create report endpoint.
-
-        scope: `company_reports:write`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param company_uuid: The UUID of the company
-        :param report_type: The report type
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest(
-            x_gusto_api_version=x_gusto_api_version,
-            company_uuid=company_uuid,
-            report_type=report_type,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/companies/{company_uuid}/report_templates/{report_type}",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=True,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-companies-company_uuid-report-templates-report_type",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        response_data: Any = None
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ReportTemplate, http_res)
-        if utils.match_response(http_res, "404", "application/json"):
-            response_data = unmarshal_json_response(
-                models.NotFoundErrorObjectData, http_res
-            )
-            raise models.NotFoundErrorObject(response_data, http_res)
-        if utils.match_response(http_res, "422", "application/json"):
-            response_data = unmarshal_json_response(
-                models.UnprocessableEntityError1Data, http_res
-            )
-            raise models.UnprocessableEntityError1(response_data, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -1089,6 +571,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1215,6 +702,11 @@ class Reports(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1226,6 +718,1050 @@ class Reports(BaseSDK):
             return unmarshal_json_response(
                 models.EmployeesAnnualFicaWageReportAcceptance, http_res
             )
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def create_custom(
+        self,
+        *,
+        company_uuid: str,
+        columns: Iterable[models.CreateReportBodyColumns],
+        file_type: models.CreateReportBodyFileType,
+        x_gusto_api_version: Optional[
+            models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        groupings: Optional[Iterable[models.CreateReportBodyGroupings]] = None,
+        custom_name: Optional[str] = None,
+        with_totals: Optional[bool] = False,
+        date_filter_type: Optional[
+            models.CreateReportBodyDateFilterType
+        ] = models.CreateReportBodyDateFilterType.PERIOD_END_DATE,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
+        dismissed_start_date: Optional[date] = None,
+        dismissed_end_date: Optional[date] = None,
+        payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
+        employment_type: Optional[models.CreateReportBodyEmploymentType] = None,
+        employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreateReport:
+        r"""Create a custom report
+
+        Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid). This URL is valid for 10 minutes.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param columns: Columns to include in the report
+        :param file_type: The type of file to generate
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param groupings: Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested.
+        :param custom_name: The title of the report
+        :param with_totals: Whether to include subtotals and grand totals in the report
+        :param date_filter_type: Which payroll date `start_date` and `end_date` filter against.
+        :param start_date: Start date of data to filter by
+        :param end_date: End date of data to filter by
+        :param dismissed_start_date: Dismissed start date of employees to filter by
+        :param dismissed_end_date: Dismissed end date of employees to filter by
+        :param payment_method: Payment method to filter by
+        :param employment_type: Employee employment type to filter by
+        :param employment_status: Employee employment status to filter by
+        :param employee_uuids: Employees to filter by
+        :param department_uuids: Departments to filter by
+        :param work_address_uuids: Work addresses to filter by
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostCompaniesCompanyUUIDReportsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            create_report_body=models.CreateReportBody(
+                columns=utils.unmarshal(columns, List[models.CreateReportBodyColumns]),
+                groupings=utils.unmarshal(
+                    groupings, Optional[List[models.CreateReportBodyGroupings]]
+                ),
+                custom_name=custom_name,
+                file_type=file_type,
+                with_totals=with_totals,
+                date_filter_type=date_filter_type,
+                start_date=start_date,
+                end_date=end_date,
+                dismissed_start_date=dismissed_start_date,
+                dismissed_end_date=dismissed_end_date,
+                payment_method=payment_method,
+                employment_type=employment_type,
+                employment_status=employment_status,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/companies/{company_uuid}/reports",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.create_report_body,
+                False,
+                False,
+                "json",
+                models.CreateReportBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-companies-company_uuid-reports",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.CreateReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def create_custom_async(
+        self,
+        *,
+        company_uuid: str,
+        columns: Iterable[models.CreateReportBodyColumns],
+        file_type: models.CreateReportBodyFileType,
+        x_gusto_api_version: Optional[
+            models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDReportsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        groupings: Optional[Iterable[models.CreateReportBodyGroupings]] = None,
+        custom_name: Optional[str] = None,
+        with_totals: Optional[bool] = False,
+        date_filter_type: Optional[
+            models.CreateReportBodyDateFilterType
+        ] = models.CreateReportBodyDateFilterType.PERIOD_END_DATE,
+        start_date: Optional[date] = None,
+        end_date: Optional[date] = None,
+        dismissed_start_date: Optional[date] = None,
+        dismissed_end_date: Optional[date] = None,
+        payment_method: Optional[models.CreateReportBodyPaymentMethod] = None,
+        employment_type: Optional[models.CreateReportBodyEmploymentType] = None,
+        employment_status: Optional[models.CreateReportBodyEmploymentStatus] = None,
+        employee_uuids: OptionalNullable[Iterable[str]] = UNSET,
+        department_uuids: Optional[Iterable[str]] = None,
+        work_address_uuids: Optional[Iterable[str]] = None,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.CreateReport:
+        r"""Create a custom report
+
+        Create a custom report for a company. This endpoint initiates creating a custom report with custom columns, groupings, and filters. The `request_uuid` in the response can then be used to poll for the status and report URL upon completion using the [report GET endpoint](https://docs.gusto.com/embedded-payroll/reference/get-reports-request_uuid). This URL is valid for 10 minutes.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param columns: Columns to include in the report
+        :param file_type: The type of file to generate
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param groupings: Optional. How to group the report. If omitted, sensible defaults are derived from the `columns` requested.
+        :param custom_name: The title of the report
+        :param with_totals: Whether to include subtotals and grand totals in the report
+        :param date_filter_type: Which payroll date `start_date` and `end_date` filter against.
+        :param start_date: Start date of data to filter by
+        :param end_date: End date of data to filter by
+        :param dismissed_start_date: Dismissed start date of employees to filter by
+        :param dismissed_end_date: Dismissed end date of employees to filter by
+        :param payment_method: Payment method to filter by
+        :param employment_type: Employee employment type to filter by
+        :param employment_status: Employee employment status to filter by
+        :param employee_uuids: Employees to filter by
+        :param department_uuids: Departments to filter by
+        :param work_address_uuids: Work addresses to filter by
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostCompaniesCompanyUUIDReportsRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            create_report_body=models.CreateReportBody(
+                columns=utils.unmarshal(columns, List[models.CreateReportBodyColumns]),
+                groupings=utils.unmarshal(
+                    groupings, Optional[List[models.CreateReportBodyGroupings]]
+                ),
+                custom_name=custom_name,
+                file_type=file_type,
+                with_totals=with_totals,
+                date_filter_type=date_filter_type,
+                start_date=start_date,
+                end_date=end_date,
+                dismissed_start_date=dismissed_start_date,
+                dismissed_end_date=dismissed_end_date,
+                payment_method=payment_method,
+                employment_type=employment_type,
+                employment_status=employment_status,
+                employee_uuids=utils.unmarshal(
+                    employee_uuids, OptionalNullable[List[str]]
+                ),
+                department_uuids=utils.unmarshal(department_uuids, Optional[List[str]]),
+                work_address_uuids=utils.unmarshal(
+                    work_address_uuids, Optional[List[str]]
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/companies/{company_uuid}/reports",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.create_report_body,
+                False,
+                False,
+                "json",
+                models.CreateReportBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-companies-company_uuid-reports",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "201", "application/json"):
+            return unmarshal_json_response(models.CreateReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def post_payrolls_payroll_uuid_reports_general_ledger(
+        self,
+        *,
+        payroll_uuid: str,
+        aggregation: models.GeneralLedgerReportBodyAggregation,
+        x_gusto_api_version: Optional[
+            models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
+        ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        integration_type: OptionalNullable[models.IntegrationType] = UNSET,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GeneralLedgerReport:
+        r"""Create a general ledger report
+
+        Create a general ledger report for a payroll. The report can be aggregated by different dimensions such as job or department.
+
+        Use the `request_uuid` in the response with the [report GET endpoint](../reference/get-reports-request_uuid) to poll for the status and report URL upon completion. The retrieved report will be generated in a JSON format.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_uuid: The UUID of the payroll
+        :param aggregation: The breakdown of the report. Use 'default' for no split.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param integration_type: The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostPayrollsPayrollUUIDReportsGeneralLedgerRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
+            general_ledger_report_body=models.GeneralLedgerReportBody(
+                aggregation=aggregation,
+                integration_type=integration_type,
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/payrolls/{payroll_uuid}/reports/general_ledger",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.general_ledger_report_body,
+                False,
+                False,
+                "json",
+                models.GeneralLedgerReportBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-payrolls-payroll_uuid-reports-general_ledger",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.GeneralLedgerReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def post_payrolls_payroll_uuid_reports_general_ledger_async(
+        self,
+        *,
+        payroll_uuid: str,
+        aggregation: models.GeneralLedgerReportBodyAggregation,
+        x_gusto_api_version: Optional[
+            models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion
+        ] = models.PostPayrollsPayrollUUIDReportsGeneralLedgerHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        integration_type: OptionalNullable[models.IntegrationType] = UNSET,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.GeneralLedgerReport:
+        r"""Create a general ledger report
+
+        Create a general ledger report for a payroll. The report can be aggregated by different dimensions such as job or department.
+
+        Use the `request_uuid` in the response with the [report GET endpoint](../reference/get-reports-request_uuid) to poll for the status and report URL upon completion. The retrieved report will be generated in a JSON format.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param payroll_uuid: The UUID of the payroll
+        :param aggregation: The breakdown of the report. Use 'default' for no split.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param integration_type: The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostPayrollsPayrollUUIDReportsGeneralLedgerRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            payroll_uuid=payroll_uuid,
+            general_ledger_report_body=models.GeneralLedgerReportBody(
+                aggregation=aggregation,
+                integration_type=integration_type,
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/payrolls/{payroll_uuid}/reports/general_ledger",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.general_ledger_report_body,
+                False,
+                False,
+                "json",
+                models.GeneralLedgerReportBody,
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-payrolls-payroll_uuid-reports-general_ledger",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.GeneralLedgerReport, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_reports_request_uuid(
+        self,
+        *,
+        request_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Report:
+        r"""Get a report
+
+        Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope
+
+        scope: `company_reports:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetReportsRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            request_uuid=request_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/reports/{request_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-reports-request_uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.Report, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_reports_request_uuid_async(
+        self,
+        *,
+        request_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetReportsRequestUUIDHeaderXGustoAPIVersion
+        ] = models.GetReportsRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.Report:
+        r"""Get a report
+
+        Get a company's report given the `request_uuid`. The response will include the report request's status and, if complete, the report URL.
+
+        Reports containing PHI are inaccessible with `company_reports:read:tier_2_only` data scope
+
+        scope: `company_reports:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param request_uuid: The UUID of the request to generate a document. Generate document endpoints return request_uuids to be used with the GET generated document endpoint.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetReportsRequestUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            request_uuid=request_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/reports/{request_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-reports-request_uuid",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.Report, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_template(
+        self,
+        *,
+        company_uuid: str,
+        report_type: str,
+        x_gusto_api_version: Optional[
+            models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.ReportTemplate:
+        r"""Get a report template
+
+        Get a company's report template. The only supported report type is `payroll_journal`. The resulting columns and groupings from this endpoint can be used as a guidance to create the report using the POST create report endpoint.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param report_type: The report type
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            report_type=report_type,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/companies/{company_uuid}/report_templates/{report_type}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-companies-company_uuid-report-templates-report_type",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.ReportTemplate, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityError1Data, http_res
+            )
+            raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_template_async(
+        self,
+        *,
+        company_uuid: str,
+        report_type: str,
+        x_gusto_api_version: Optional[
+            models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion
+        ] = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.ReportTemplate:
+        r"""Get a report template
+
+        Get a company's report template. The only supported report type is `payroll_journal`. The resulting columns and groupings from this endpoint can be used as a guidance to create the report using the POST create report endpoint.
+
+        scope: `company_reports:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param report_type: The report type
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetCompaniesCompanyUUIDReportTemplatesReportTypeRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            report_type=report_type,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/companies/{company_uuid}/report_templates/{report_type}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-companies-company_uuid-report-templates-report_type",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Reports"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.ReportTemplate, http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res

@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class SalaryEstimates(BaseSDK):
@@ -17,8 +17,10 @@ class SalaryEstimates(BaseSDK):
         employee_id: str,
         zip_code: str,
         occupations: Union[
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict],
+            Iterable[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
+            Iterable[
+                models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion
@@ -117,6 +119,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="post-v1-employees-employee_id-salary_estimates",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -151,8 +158,10 @@ class SalaryEstimates(BaseSDK):
         employee_id: str,
         zip_code: str,
         occupations: Union[
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
-            List[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict],
+            Iterable[models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupations],
+            Iterable[
+                models.PostV1EmployeesEmployeeIDSalaryEstimatesOccupationsTypedDict
+            ],
         ],
         x_gusto_api_version: Optional[
             models.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion
@@ -251,6 +260,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="post-v1-employees-employee_id-salary_estimates",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -354,6 +368,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="get-v1-salary_estimates-id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -452,6 +471,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="get-v1-salary_estimates-id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -481,8 +505,8 @@ class SalaryEstimates(BaseSDK):
         uuid: str,
         zip_code: str,
         occupations: Union[
-            List[models.PutV1SalaryEstimatesIDOccupations],
-            List[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
+            Iterable[models.PutV1SalaryEstimatesIDOccupations],
+            Iterable[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion
@@ -575,6 +599,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="put-v1-salary_estimates-id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -609,8 +638,8 @@ class SalaryEstimates(BaseSDK):
         uuid: str,
         zip_code: str,
         occupations: Union[
-            List[models.PutV1SalaryEstimatesIDOccupations],
-            List[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
+            Iterable[models.PutV1SalaryEstimatesIDOccupations],
+            Iterable[models.PutV1SalaryEstimatesIDOccupationsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion
@@ -703,6 +732,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="put-v1-salary_estimates-id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -820,6 +854,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="post-v1-salary_estimates-uuid-accept",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -937,6 +976,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="post-v1-salary_estimates-uuid-accept",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1050,6 +1094,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="get-v1-salary_estimates-occupations",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1158,6 +1207,11 @@ class SalaryEstimates(BaseSDK):
                 operation_id="get-v1-salary_estimates-occupations",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Salary Estimates"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

@@ -26,15 +26,25 @@ class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion(
 class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBodyTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the custom earning type."""
+    category: NotRequired[str]
+    r"""The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+    included_in_overtime_pay: NotRequired[bool]
+    r"""Whether earnings of this type are included in overtime pay calculations. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
 
 
 class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBody(BaseModel):
     name: Optional[str] = None
     r"""The name of the custom earning type."""
 
+    category: Optional[str] = None
+    r"""The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+
+    included_in_overtime_pay: Optional[bool] = None
+    r"""Whether earnings of this type are included in overtime pay calculations. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["name"])
+        optional_fields = set(["name", "category", "included_in_overtime_pay"])
         serialized = handler(self)
         m = {}
 

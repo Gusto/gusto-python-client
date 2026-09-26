@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class ExternalPayrolls(BaseSDK):
@@ -96,6 +96,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -202,6 +207,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -316,6 +326,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -435,6 +450,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -540,6 +560,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -642,6 +667,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -672,7 +702,8 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         liability_selections: Union[
-            List[models.LiabilitySelections], List[models.LiabilitySelectionsTypedDict]
+            Iterable[models.LiabilitySelections],
+            Iterable[models.LiabilitySelectionsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1TaxLiabilitiesHeaderXGustoAPIVersion
@@ -756,6 +787,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -786,7 +822,8 @@ class ExternalPayrolls(BaseSDK):
         *,
         company_uuid: str,
         liability_selections: Union[
-            List[models.LiabilitySelections], List[models.LiabilitySelectionsTypedDict]
+            Iterable[models.LiabilitySelections],
+            Iterable[models.LiabilitySelectionsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1TaxLiabilitiesHeaderXGustoAPIVersion
@@ -870,6 +907,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -975,6 +1017,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1083,6 +1130,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1191,6 +1243,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1294,6 +1351,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1323,8 +1385,8 @@ class ExternalPayrolls(BaseSDK):
         company_uuid: str,
         external_payroll_id: str,
         external_payroll_items: Union[
-            List[models.ExternalPayrollUpdateRequestExternalPayrollItems],
-            List[models.ExternalPayrollUpdateRequestExternalPayrollItemsTypedDict],
+            Iterable[models.ExternalPayrollUpdateRequestExternalPayrollItems],
+            Iterable[models.ExternalPayrollUpdateRequestExternalPayrollItemsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1ExternalPayrollHeaderXGustoAPIVersion
@@ -1414,6 +1476,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1448,8 +1515,8 @@ class ExternalPayrolls(BaseSDK):
         company_uuid: str,
         external_payroll_id: str,
         external_payroll_items: Union[
-            List[models.ExternalPayrollUpdateRequestExternalPayrollItems],
-            List[models.ExternalPayrollUpdateRequestExternalPayrollItemsTypedDict],
+            Iterable[models.ExternalPayrollUpdateRequestExternalPayrollItems],
+            Iterable[models.ExternalPayrollUpdateRequestExternalPayrollItemsTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PutV1ExternalPayrollHeaderXGustoAPIVersion
@@ -1539,6 +1606,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1647,6 +1719,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1755,6 +1832,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1863,6 +1945,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1973,6 +2060,11 @@ class ExternalPayrolls(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["External Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

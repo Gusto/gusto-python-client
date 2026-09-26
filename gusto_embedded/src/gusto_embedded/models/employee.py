@@ -32,7 +32,7 @@ class EmployeeOnboardingStatus1(str, Enum):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
+class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -41,7 +41,7 @@ class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class EmployeeOnboardingDocumentsConfig(BaseModel):
+class OnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -83,7 +83,7 @@ class EmployeePaymentMethod1(str, Enum):
     CHECK = "Check"
 
 
-class EmployeeCurrentEmploymentStatus(str, Enum):
+class CurrentEmploymentStatus(str, Enum):
     FULL_TIME = "full_time"
     PART_TIME_UNDER_TWENTY_HOURS = "part_time_under_twenty_hours"
     PART_TIME_TWENTY_PLUS_HOURS = "part_time_twenty_plus_hours"
@@ -192,7 +192,7 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee has completed onboarding."""
     onboarding_status: NotRequired[Nullable[EmployeeOnboardingStatus1]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[EmployeeOnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -209,7 +209,7 @@ class EmployeeTypedDict(TypedDict):
     preferred_first_name: NotRequired[Nullable[str]]
     payment_method: NotRequired[EmployeePaymentMethod1]
     r"""The employee's payment method"""
-    current_employment_status: NotRequired[Nullable[EmployeeCurrentEmploymentStatus]]
+    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
     historical: NotRequired[bool]
     employee_code: NotRequired[str]
@@ -273,7 +273,7 @@ class Employee(BaseModel):
     onboarding_status: OptionalNullable[EmployeeOnboardingStatus1] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[EmployeeOnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -302,7 +302,7 @@ class Employee(BaseModel):
     payment_method: Optional[EmployeePaymentMethod1] = EmployeePaymentMethod1.CHECK
     r"""The employee's payment method"""
 
-    current_employment_status: OptionalNullable[EmployeeCurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
     historical: Optional[bool] = None

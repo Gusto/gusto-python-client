@@ -11,6 +11,7 @@ from gusto_embedded.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
+from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -28,6 +29,18 @@ class Frequency(str, Enum):
     EVERY_OTHER_WEEK = "Every other week"
     TWICE_PER_MONTH = "Twice per month"
     MONTHLY = "Monthly"
+
+
+class WorkweekStartDay(str, Enum):
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations."""
+
+    SUNDAY = "Sunday"
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
 
 
 class PayScheduleCreateRequestTypedDict(TypedDict):
@@ -59,6 +72,7 @@ class PayScheduleCreateRequestTypedDict(TypedDict):
     When null or omitted, the system generates a description from the pay frequency and pay days (e.g. \"every 1st and 15th of the month\" for twice-monthly, \"every 11th of the month\" for monthly, \"every Friday\" for weekly). The response returns this generated value in `custom_name` when no custom name was set. When provided, the value you set is stored and returned.
 
     """
+    workweek_start_day: NotRequired[WorkweekStartDay]
 
 
 class PayScheduleCreateRequest(BaseModel):
@@ -96,9 +110,11 @@ class PayScheduleCreateRequest(BaseModel):
 
     """
 
+    workweek_start_day: Optional[WorkweekStartDay] = None
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["day_1", "day_2", "custom_name"])
+        optional_fields = set(["day_1", "day_2", "custom_name", "workweek_start_day"])
         nullable_fields = set(["day_1", "day_2", "custom_name"])
         serialized = handler(self)
         m = {}
