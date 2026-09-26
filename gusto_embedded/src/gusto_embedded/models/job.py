@@ -34,8 +34,8 @@ class JobTypedDict(TypedDict):
     r"""The current compensation rate of the job."""
     payment_unit: NotRequired[Nullable[str]]
     r"""The payment unit of the current compensation for the job."""
-    current_compensation_uuid: NotRequired[str]
-    r"""The UUID of the current compensation of the job."""
+    current_compensation_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the current compensation of the job. Null when the job has no current compensation."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee owns at least 2% of the company."""
     state_wc_covered: NotRequired[Nullable[bool]]
@@ -76,8 +76,8 @@ class Job(BaseModel):
     payment_unit: OptionalNullable[str] = UNSET
     r"""The payment unit of the current compensation for the job."""
 
-    current_compensation_uuid: Optional[str] = None
-    r"""The UUID of the current compensation of the job."""
+    current_compensation_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the current compensation of the job. Null when the job has no current compensation."""
 
     two_percent_shareholder: Optional[bool] = None
     r"""Whether the employee owns at least 2% of the company."""
@@ -117,7 +117,13 @@ class Job(BaseModel):
             ]
         )
         nullable_fields = set(
-            ["title", "payment_unit", "state_wc_covered", "state_wc_class_code"]
+            [
+                "title",
+                "payment_unit",
+                "current_compensation_uuid",
+                "state_wc_covered",
+                "state_wc_class_code",
+            ]
         )
         null_default_fields = set(["title"])
         serialized = handler(self)

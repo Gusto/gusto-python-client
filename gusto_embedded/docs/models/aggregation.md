@@ -1,6 +1,6 @@
 # Aggregation
 
-The breakdown of the report. Use 'default' for no split.
+The breakdown of the report. Use `default` for no split.
 
 ## Example Usage
 

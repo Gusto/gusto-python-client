@@ -48,7 +48,7 @@ class ContractorPaymentReceiptPaymentMethod(str, Enum):
     CORRECTION_PAYMENT = "Correction Payment"
 
 
-class ContractorPaymentsModelTypedDict(TypedDict):
+class ContractorPaymentReceiptContractorPaymentsTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
     r"""The UUID of the contractor."""
     contractor_first_name: NotRequired[str]
@@ -72,7 +72,7 @@ class ContractorPaymentsModelTypedDict(TypedDict):
     r"""The reimbursement amount in the payment."""
 
 
-class ContractorPaymentsModel(BaseModel):
+class ContractorPaymentReceiptContractorPayments(BaseModel):
     contractor_uuid: Optional[str] = None
     r"""The UUID of the contractor."""
 
@@ -132,7 +132,7 @@ class ContractorPaymentsModel(BaseModel):
         return m
 
 
-class ContractorPaymentReceiptLicenseeTypedDict(TypedDict):
+class LicenseeTypedDict(TypedDict):
     r"""The licensed payroll processor"""
 
     name: NotRequired[str]
@@ -149,7 +149,7 @@ class ContractorPaymentReceiptLicenseeTypedDict(TypedDict):
     r"""Always the fixed string \"4157778888\" """
 
 
-class ContractorPaymentReceiptLicensee(BaseModel):
+class Licensee(BaseModel):
     r"""The licensed payroll processor"""
 
     name: Optional[str] = None
@@ -210,9 +210,11 @@ class ContractorPaymentReceiptTypedDict(TypedDict):
     r"""URL for information related to right to liability of licensee. Always the fixed string \"https://gusto.com/about/licenses\" """
     totals: NotRequired[ContractorPaymentReceiptTotalsTypedDict]
     r"""The subtotals for the contractor payment."""
-    contractor_payments: NotRequired[List[ContractorPaymentsModelTypedDict]]
+    contractor_payments: NotRequired[
+        List[ContractorPaymentReceiptContractorPaymentsTypedDict]
+    ]
     r"""An array of contractor payments for this contractor payment."""
-    licensee: NotRequired[ContractorPaymentReceiptLicenseeTypedDict]
+    licensee: NotRequired[LicenseeTypedDict]
     r"""The licensed payroll processor"""
 
 
@@ -247,10 +249,12 @@ class ContractorPaymentReceipt(BaseModel):
     totals: Optional[ContractorPaymentReceiptTotals] = None
     r"""The subtotals for the contractor payment."""
 
-    contractor_payments: Optional[List[ContractorPaymentsModel]] = None
+    contractor_payments: Optional[List[ContractorPaymentReceiptContractorPayments]] = (
+        None
+    )
     r"""An array of contractor payments for this contractor payment."""
 
-    licensee: Optional[ContractorPaymentReceiptLicensee] = None
+    licensee: Optional[Licensee] = None
     r"""The licensed payroll processor"""
 
     @model_serializer(mode="wrap")

@@ -10,23 +10,23 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class XGustoAPIVersion(str, Enum):
+class GetV1TokenInfoHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
 class GetV1TokenInfoRequestTypedDict(TypedDict):
-    x_gusto_api_version: NotRequired[XGustoAPIVersion]
+    x_gusto_api_version: NotRequired[GetV1TokenInfoHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1TokenInfoRequest(BaseModel):
     x_gusto_api_version: Annotated[
-        Optional[XGustoAPIVersion],
+        Optional[GetV1TokenInfoHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    ] = GetV1TokenInfoHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")

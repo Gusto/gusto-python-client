@@ -50,6 +50,8 @@ class ContractorCreateRequestBodyTypedDict(TypedDict):
     """
     email: NotRequired[str]
     r"""The contractor’s email address."""
+    work_email: NotRequired[str]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     first_name: NotRequired[str]
     r"""The contractor’s first name.
     This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
@@ -115,6 +117,9 @@ class ContractorCreateRequestBody(BaseModel):
     email: Optional[str] = None
     r"""The contractor’s email address."""
 
+    work_email: Optional[str] = None
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     first_name: Optional[str] = None
     r"""The contractor’s first name.
     This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
@@ -165,6 +170,7 @@ class ContractorCreateRequestBody(BaseModel):
                 "hourly_rate",
                 "self_onboarding",
                 "email",
+                "work_email",
                 "first_name",
                 "last_name",
                 "middle_initial",

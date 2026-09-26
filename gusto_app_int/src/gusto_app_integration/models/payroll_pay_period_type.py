@@ -9,24 +9,23 @@ from gusto_app_integration.types import (
     UNSET_SENTINEL,
 )
 from pydantic import model_serializer
-from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
 class PayrollPayPeriodTypeTypedDict(TypedDict):
-    start_date: NotRequired[str]
+    start_date: NotRequired[Nullable[str]]
     r"""The start date, inclusive, of the pay period."""
-    end_date: NotRequired[str]
+    end_date: NotRequired[Nullable[str]]
     r"""The start date, inclusive, of the pay period."""
     pay_schedule_uuid: NotRequired[Nullable[str]]
     r"""The UUID of the pay schedule for the payroll."""
 
 
 class PayrollPayPeriodType(BaseModel):
-    start_date: Optional[str] = None
+    start_date: OptionalNullable[str] = UNSET
     r"""The start date, inclusive, of the pay period."""
 
-    end_date: Optional[str] = None
+    end_date: OptionalNullable[str] = UNSET
     r"""The start date, inclusive, of the pay period."""
 
     pay_schedule_uuid: OptionalNullable[str] = UNSET
@@ -35,7 +34,7 @@ class PayrollPayPeriodType(BaseModel):
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(["start_date", "end_date", "pay_schedule_uuid"])
-        nullable_fields = set(["pay_schedule_uuid"])
+        nullable_fields = set(["start_date", "end_date", "pay_schedule_uuid"])
         serialized = handler(self)
         m = {}
 

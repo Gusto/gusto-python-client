@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class I9Verification(BaseSDK):
@@ -92,6 +92,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -197,6 +202,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -364,6 +374,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -536,6 +551,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -644,6 +664,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -749,6 +774,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -854,6 +884,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -959,6 +994,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -988,7 +1028,9 @@ class I9Verification(BaseSDK):
         self,
         *,
         employee_id: str,
-        documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
+        documents: Union[
+            Iterable[models.Documents], Iterable[models.DocumentsTypedDict]
+        ],
         x_gusto_api_version: Optional[
             models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
         ] = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -1082,6 +1124,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1116,7 +1163,9 @@ class I9Verification(BaseSDK):
         self,
         *,
         employee_id: str,
-        documents: Union[List[models.Documents], List[models.DocumentsTypedDict]],
+        documents: Union[
+            Iterable[models.Documents], Iterable[models.DocumentsTypedDict]
+        ],
         x_gusto_api_version: Optional[
             models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion
         ] = models.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
@@ -1210,6 +1259,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1325,6 +1379,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1438,6 +1497,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1582,6 +1646,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1726,6 +1795,11 @@ class I9Verification(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["I-9 Verification"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

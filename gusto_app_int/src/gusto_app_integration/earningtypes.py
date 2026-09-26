@@ -90,6 +90,11 @@ class EarningTypes(BaseSDK):
                 operation_id="get-v1-companies-company_id-earning_types",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -194,6 +199,11 @@ class EarningTypes(BaseSDK):
                 operation_id="get-v1-companies-company_id-earning_types",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -225,6 +235,8 @@ class EarningTypes(BaseSDK):
             models.PostV1CompaniesCompanyIDEarningTypesHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDEarningTypesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         name: Optional[str] = "Gym Membership",
+        category: Optional[models.PostV1CompaniesCompanyIDEarningTypesCategory] = None,
+        included_in_overtime_pay: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -243,6 +255,8 @@ class EarningTypes(BaseSDK):
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param name: The name of the custom earning type.
+        :param category: The earning type category. Only settable when the company has access to categorized custom bonus earning types.
+        :param included_in_overtime_pay: Whether earnings of this type are included when calculating an employee's regular rate of pay for overtime purposes. Only settable when `category` is `Other`.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -263,6 +277,8 @@ class EarningTypes(BaseSDK):
             company_id=company_id,
             request_body=models.PostV1CompaniesCompanyIDEarningTypesRequestBody(
                 name=name,
+                category=category,
+                included_in_overtime_pay=included_in_overtime_pay,
             ),
         )
 
@@ -306,6 +322,11 @@ class EarningTypes(BaseSDK):
                 operation_id="post-v1-companies-company_id-earning_types",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -342,6 +363,8 @@ class EarningTypes(BaseSDK):
             models.PostV1CompaniesCompanyIDEarningTypesHeaderXGustoAPIVersion
         ] = models.PostV1CompaniesCompanyIDEarningTypesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         name: Optional[str] = "Gym Membership",
+        category: Optional[models.PostV1CompaniesCompanyIDEarningTypesCategory] = None,
+        included_in_overtime_pay: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -360,6 +383,8 @@ class EarningTypes(BaseSDK):
         :param company_id: The UUID of the company
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param name: The name of the custom earning type.
+        :param category: The earning type category. Only settable when the company has access to categorized custom bonus earning types.
+        :param included_in_overtime_pay: Whether earnings of this type are included when calculating an employee's regular rate of pay for overtime purposes. Only settable when `category` is `Other`.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -380,6 +405,8 @@ class EarningTypes(BaseSDK):
             company_id=company_id,
             request_body=models.PostV1CompaniesCompanyIDEarningTypesRequestBody(
                 name=name,
+                category=category,
+                included_in_overtime_pay=included_in_overtime_pay,
             ),
         )
 
@@ -423,6 +450,11 @@ class EarningTypes(BaseSDK):
                 operation_id="post-v1-companies-company_id-earning_types",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -460,6 +492,8 @@ class EarningTypes(BaseSDK):
             models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion
         ] = models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         name: Optional[str] = None,
+        category: Optional[str] = None,
+        included_in_overtime_pay: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -477,6 +511,8 @@ class EarningTypes(BaseSDK):
         :param earning_type_uuid: The UUID of the earning type
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param name: The name of the custom earning type.
+        :param category: The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed.
+        :param included_in_overtime_pay: Whether earnings of this type are included in overtime pay calculations. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -498,6 +534,8 @@ class EarningTypes(BaseSDK):
             earning_type_uuid=earning_type_uuid,
             request_body=models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBody(
                 name=name,
+                category=category,
+                included_in_overtime_pay=included_in_overtime_pay,
             ),
         )
 
@@ -541,6 +579,11 @@ class EarningTypes(BaseSDK):
                 operation_id="put-v1-companies-company_id-earning_types-earning_type_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -578,6 +621,8 @@ class EarningTypes(BaseSDK):
             models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion
         ] = models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         name: Optional[str] = None,
+        category: Optional[str] = None,
+        included_in_overtime_pay: Optional[bool] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -595,6 +640,8 @@ class EarningTypes(BaseSDK):
         :param earning_type_uuid: The UUID of the earning type
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param name: The name of the custom earning type.
+        :param category: The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed.
+        :param included_in_overtime_pay: Whether earnings of this type are included in overtime pay calculations. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -616,6 +663,8 @@ class EarningTypes(BaseSDK):
             earning_type_uuid=earning_type_uuid,
             request_body=models.PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBody(
                 name=name,
+                category=category,
+                included_in_overtime_pay=included_in_overtime_pay,
             ),
         )
 
@@ -659,6 +708,11 @@ class EarningTypes(BaseSDK):
                 operation_id="put-v1-companies-company_id-earning_types-earning_type_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -765,6 +819,11 @@ class EarningTypes(BaseSDK):
                 operation_id="delete-v1-companies-company_id-earning_types-earning_type_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -866,6 +925,11 @@ class EarningTypes(BaseSDK):
                 operation_id="delete-v1-companies-company_id-earning_types-earning_type_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Earning Types"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

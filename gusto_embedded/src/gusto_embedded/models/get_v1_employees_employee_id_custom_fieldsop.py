@@ -24,14 +24,14 @@ class GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion(str, Enum):
 class GetV1EmployeesEmployeeIDCustomFieldsRequestTypedDict(TypedDict):
     employee_id: str
     r"""The UUID of the employee"""
-    page: NotRequired[int]
-    r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
-    per: NotRequired[int]
-    r"""Number of objects per page. For majority of endpoints will default to 25"""
     x_gusto_api_version: NotRequired[
         GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion
     ]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    page: NotRequired[int]
+    r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
+    per: NotRequired[int]
+    r"""Number of objects per page. For majority of endpoints will default to 25"""
 
 
 class GetV1EmployeesEmployeeIDCustomFieldsRequest(BaseModel):
@@ -39,6 +39,13 @@ class GetV1EmployeesEmployeeIDCustomFieldsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the employee"""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     page: Annotated[
         Optional[int],
@@ -52,16 +59,9 @@ class GetV1EmployeesEmployeeIDCustomFieldsRequest(BaseModel):
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
-    x_gusto_api_version: Annotated[
-        Optional[GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1EmployeesEmployeeIDCustomFieldsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["page", "per", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "page", "per"])
         serialized = handler(self)
         m = {}
 

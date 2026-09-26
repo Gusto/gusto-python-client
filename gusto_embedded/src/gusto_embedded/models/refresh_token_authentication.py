@@ -32,7 +32,7 @@ class RefreshTokenAuthentication(BaseModel):
     token_type: Optional[str] = "Bearer"
     r"""The literal string 'Bearer'"""
 
-    expires_in: Optional[float] = 7200
+    expires_in: Optional[float] = 7200.0
     r"""The TTL of this token. After this amount of time, you must hit the refresh token endpoint to continue making authenticated requests."""
 
     refresh_token: Optional[str] = None
