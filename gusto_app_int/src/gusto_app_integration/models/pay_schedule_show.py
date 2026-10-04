@@ -7,6 +7,7 @@ from .pay_schedule_auto_payroll_enablement_blocker import (
 )
 from .pay_schedule_frequency import PayScheduleFrequency
 from datetime import date
+from enum import Enum
 from gusto_app_integration.types import (
     BaseModel,
     Nullable,
@@ -17,6 +18,16 @@ from gusto_app_integration.types import (
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
+
+
+class PayScheduleWorkweekStartDay(str, Enum):
+    SUNDAY = "Sunday"
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
 
 
 class PayScheduleShowTypedDict(TypedDict):
@@ -79,6 +90,10 @@ class PayScheduleShowTypedDict(TypedDict):
         Nullable[List[PayScheduleAutoPayrollEnablementBlockerTypedDict]]
     ]
     r"""List of blockers preventing automatic payroll from being enabled. If automatic payroll is already enabled, this field is null."""
+    workweek_start_day: NotRequired[Nullable[PayScheduleWorkweekStartDay]]
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations. Null when no workweek start day has been configured (e.g. legacy pay schedules).
+
+    """
 
 
 class PayScheduleShow(BaseModel):
@@ -154,6 +169,11 @@ class PayScheduleShow(BaseModel):
     ] = UNSET
     r"""List of blockers preventing automatic payroll from being enabled. If automatic payroll is already enabled, this field is null."""
 
+    workweek_start_day: OptionalNullable[PayScheduleWorkweekStartDay] = UNSET
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations. Null when no workweek start day has been configured (e.g. legacy pay schedules).
+
+    """
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
@@ -169,10 +189,17 @@ class PayScheduleShow(BaseModel):
                 "auto_payroll",
                 "active",
                 "auto_payroll_enablement_blockers",
+                "workweek_start_day",
             ]
         )
         nullable_fields = set(
-            ["day_1", "day_2", "name", "auto_payroll_enablement_blockers"]
+            [
+                "day_1",
+                "day_2",
+                "name",
+                "auto_payroll_enablement_blockers",
+                "workweek_start_day",
+            ]
         )
         serialized = handler(self)
         m = {}

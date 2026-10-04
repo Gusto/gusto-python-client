@@ -1,13 +1,13 @@
 # PaymentMethod
 
+Payment method to filter by.
+
 ## Example Usage
 
 ```python
 from gusto_embedded_v_2026_06_15.models import PaymentMethod
 
-value = PaymentMethod.DIRECT_DEPOSIT
-
-# Open enum: unrecognized values are captured as UnrecognizedStr
+value = PaymentMethod.CHECK
 ```
 
 
@@ -15,5 +15,5 @@ value = PaymentMethod.DIRECT_DEPOSIT
 
 | Name             | Value            |
 | ---------------- | ---------------- |
-| `DIRECT_DEPOSIT` | Direct Deposit   |
-| `CHECK`          | Check            |
+| `CHECK`          | check            |
+| `DIRECT_DEPOSIT` | direct_deposit   |

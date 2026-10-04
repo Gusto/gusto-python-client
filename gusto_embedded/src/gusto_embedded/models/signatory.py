@@ -21,7 +21,7 @@ class IdentityVerificationStatus(str, Enum):
     SKIPPED = "Skipped"
 
 
-class HomeAddressTypedDict(TypedDict):
+class SignatoryHomeAddressTypedDict(TypedDict):
     street_1: NotRequired[str]
     street_2: NotRequired[str]
     city: NotRequired[str]
@@ -30,7 +30,7 @@ class HomeAddressTypedDict(TypedDict):
     country: NotRequired[str]
 
 
-class HomeAddress(BaseModel):
+class SignatoryHomeAddress(BaseModel):
     street_1: Optional[str] = None
 
     street_2: Optional[str] = None
@@ -87,7 +87,7 @@ class SignatoryTypedDict(TypedDict):
     | Skipped | Signatory cannot sign Form 8655 until the form is manually uploaded as wet-signed |
     | null | Identity verification process has not been completed |
     """
-    home_address: NotRequired[Nullable[HomeAddressTypedDict]]
+    home_address: NotRequired[Nullable[SignatoryHomeAddressTypedDict]]
 
 
 class Signatory(BaseModel):
@@ -126,7 +126,7 @@ class Signatory(BaseModel):
     | null | Identity verification process has not been completed |
     """
 
-    home_address: OptionalNullable[HomeAddress] = UNSET
+    home_address: OptionalNullable[SignatoryHomeAddress] = UNSET
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
@@ -179,6 +179,6 @@ class Signatory(BaseModel):
 
 
 try:
-    HomeAddress.model_rebuild()
+    SignatoryHomeAddress.model_rebuild()
 except NameError:
     pass

@@ -14,7 +14,7 @@ from typing import List, Optional, Union
 from typing_extensions import NotRequired, TypeAliasType, TypedDict
 
 
-class TaxRequirementMetadataType(str, Enum):
+class Type(str, Enum):
     r"""Describes the type of requirement - each type may have additional metadata properties to describe possible values, formats, etc.
 
     - `text`: free-text input, no additional requirements
@@ -50,7 +50,7 @@ TaxRequirementMetadataValue = TypeAliasType(
 r"""The actual value to be submitted"""
 
 
-class TaxRequirementMetadataOptionsTypedDict(TypedDict):
+class OptionsTypedDict(TypedDict):
     label: str
     r"""A customer facing label for the answer"""
     value: TaxRequirementMetadataValueTypedDict
@@ -59,7 +59,7 @@ class TaxRequirementMetadataOptionsTypedDict(TypedDict):
     r"""A less verbose label that may sometimes be available"""
 
 
-class TaxRequirementMetadataOptions(BaseModel):
+class Options(BaseModel):
     label: str
     r"""A customer facing label for the answer"""
 
@@ -106,7 +106,7 @@ class RateType(str, Enum):
     CURRENCY_PER_HOUR = "currency_per_hour"
 
 
-class TaxRequirementMetadataValidationType(str, Enum):
+class TaxRequirementMetadataType(str, Enum):
     r"""Describes the type of tax_rate validation rule"""
 
     ONE_OF = "one_of"
@@ -116,7 +116,7 @@ class TaxRequirementMetadataValidationType(str, Enum):
 class ValidationTypedDict(TypedDict):
     r"""[for `tax_rate`] Describes the validation required for the tax rate"""
 
-    type: TaxRequirementMetadataValidationType
+    type: TaxRequirementMetadataType
     r"""Describes the type of tax_rate validation rule"""
     min: NotRequired[str]
     r"""[for `min_max`] The inclusive lower bound of the tax rate"""
@@ -132,7 +132,7 @@ class ValidationTypedDict(TypedDict):
 class Validation(BaseModel):
     r"""[for `tax_rate`] Describes the validation required for the tax rate"""
 
-    type: TaxRequirementMetadataValidationType
+    type: TaxRequirementMetadataType
     r"""Describes the type of tax_rate validation rule"""
 
     min: Optional[str] = None
@@ -165,7 +165,7 @@ class Validation(BaseModel):
 
 
 class TaxRequirementMetadataTypedDict(TypedDict):
-    type: TaxRequirementMetadataType
+    type: Type
     r"""Describes the type of requirement - each type may have additional metadata properties to describe possible values, formats, etc.
 
     - `text`: free-text input, no additional requirements
@@ -178,7 +178,7 @@ class TaxRequirementMetadataTypedDict(TypedDict):
     - `workers_compensation_rate`: A decimal value representing a percentage, see `risk_class_code`, `risk_class_description`, and `rate_type`
 
     """
-    options: NotRequired[List[TaxRequirementMetadataOptionsTypedDict]]
+    options: NotRequired[List[OptionsTypedDict]]
     r"""[for `select` or `radio`] An array of objects describing the possible values."""
     risk_class_code: NotRequired[str]
     r"""[for `workers_compensation_rate`] The industry risk class code for the rate being requested"""
@@ -212,7 +212,7 @@ class TaxRequirementMetadataTypedDict(TypedDict):
 
 
 class TaxRequirementMetadata(BaseModel):
-    type: TaxRequirementMetadataType
+    type: Type
     r"""Describes the type of requirement - each type may have additional metadata properties to describe possible values, formats, etc.
 
     - `text`: free-text input, no additional requirements
@@ -226,7 +226,7 @@ class TaxRequirementMetadata(BaseModel):
 
     """
 
-    options: Optional[List[TaxRequirementMetadataOptions]] = None
+    options: Optional[List[Options]] = None
     r"""[for `select` or `radio`] An array of objects describing the possible values."""
 
     risk_class_code: Optional[str] = None
