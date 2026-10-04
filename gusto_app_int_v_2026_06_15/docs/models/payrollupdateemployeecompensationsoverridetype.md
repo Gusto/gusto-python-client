@@ -1,0 +1,18 @@
+# PayrollUpdateEmployeeCompensationsOverrideType
+
+Override mode. Only `one_time` is currently supported.
+
+## Example Usage
+
+```python
+from gusto_app_integration_v_2026_06_15.models import PayrollUpdateEmployeeCompensationsOverrideType
+
+value = PayrollUpdateEmployeeCompensationsOverrideType.ONE_TIME
+```
+
+
+## Values
+
+| Name       | Value      |
+| ---------- | ---------- |
+| `ONE_TIME` | one_time   |

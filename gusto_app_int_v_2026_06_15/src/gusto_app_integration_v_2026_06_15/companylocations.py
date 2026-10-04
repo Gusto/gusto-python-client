@@ -96,6 +96,11 @@ class CompanyLocations(BaseSDK):
                 operation_id="get-v1-companies-company_id-locations",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Locations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -204,6 +209,11 @@ class CompanyLocations(BaseSDK):
                 operation_id="get-v1-companies-company_id-locations",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Locations"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

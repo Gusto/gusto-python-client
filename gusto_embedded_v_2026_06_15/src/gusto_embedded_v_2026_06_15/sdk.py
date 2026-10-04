@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from gusto_embedded_v_2026_06_15.companyattachments import CompanyAttachments
     from gusto_embedded_v_2026_06_15.companybenefits import CompanyBenefits
     from gusto_embedded_v_2026_06_15.companyforms import CompanyForms
+    from gusto_embedded_v_2026_06_15.contractor_payments import ContractorPayments
     from gusto_embedded_v_2026_06_15.contractordocuments import ContractorDocuments
     from gusto_embedded_v_2026_06_15.contractorforms import ContractorForms
     from gusto_embedded_v_2026_06_15.contractorpaymentgroups import (
@@ -33,7 +34,6 @@ if TYPE_CHECKING:
     from gusto_embedded_v_2026_06_15.contractorpaymentmethods import (
         ContractorPaymentMethods,
     )
-    from gusto_embedded_v_2026_06_15.contractorpayments import ContractorPayments
     from gusto_embedded_v_2026_06_15.contractors import Contractors
     from gusto_embedded_v_2026_06_15.departments import Departments
     from gusto_embedded_v_2026_06_15.earningtypes import EarningTypes
@@ -64,8 +64,12 @@ if TYPE_CHECKING:
     from gusto_embedded_v_2026_06_15.invoices import Invoices
     from gusto_embedded_v_2026_06_15.jobsandcompensations import JobsAndCompensations
     from gusto_embedded_v_2026_06_15.locations import Locations
+    from gusto_embedded_v_2026_06_15.member_portal_invitations import (
+        MemberPortalInvitations,
+    )
     from gusto_embedded_v_2026_06_15.notifications import Notifications
     from gusto_embedded_v_2026_06_15.paymentconfigs_sdk import PaymentConfigsSDK
+    from gusto_embedded_v_2026_06_15.payroll_cancellations import PayrollCancellations
     from gusto_embedded_v_2026_06_15.payroll_digests import PayrollDigests
     from gusto_embedded_v_2026_06_15.payrolls import Payrolls
     from gusto_embedded_v_2026_06_15.payschedules import PaySchedules
@@ -73,8 +77,12 @@ if TYPE_CHECKING:
     from gusto_embedded_v_2026_06_15.recoverycases import RecoveryCases
     from gusto_embedded_v_2026_06_15.reimbursements import Reimbursements
     from gusto_embedded_v_2026_06_15.reports import Reports
+    from gusto_embedded_v_2026_06_15.reverse_wire_transactions import (
+        ReverseWireTransactions,
+    )
     from gusto_embedded_v_2026_06_15.salary_estimates import SalaryEstimates
     from gusto_embedded_v_2026_06_15.signatories import Signatories
+    from gusto_embedded_v_2026_06_15.tax_payments import TaxPayments
     from gusto_embedded_v_2026_06_15.taxrequirements import TaxRequirements
     from gusto_embedded_v_2026_06_15.time_off_requests import TimeOffRequests
     from gusto_embedded_v_2026_06_15.timeoffpolicies import TimeOffPolicies
@@ -88,6 +96,7 @@ class Gusto(BaseSDK):
     ach_transactions: "AchTransactions"
     companies: "Companies"
     company_benefits: "CompanyBenefits"
+    reports: "Reports"
     company_attachments: "CompanyAttachments"
     company_attachment: "CompanyAttachmentSDK"
     bank_accounts: "BankAccounts"
@@ -114,7 +123,6 @@ class Gusto(BaseSDK):
     employee_tax_setup: "EmployeeTaxSetup"
     employee_forms: "EmployeeForms"
     employee_employments: "EmployeeEmployments"
-    reports: "Reports"
     events: "Events"
     external_payrolls: "ExternalPayrolls"
     flows: "Flows"
@@ -128,18 +136,22 @@ class Gusto(BaseSDK):
     information_requests: "InformationRequests"
     invoices: "Invoices"
     locations: "Locations"
+    member_portal_invitations: "MemberPortalInvitations"
     pay_schedules: "PaySchedules"
+    payroll_cancellations: "PayrollCancellations"
+    payroll_digests: "PayrollDigests"
     time_off_policies: "TimeOffPolicies"
     people_batches: "PeopleBatches"
     recovery_cases: "RecoveryCases"
     reimbursements: "Reimbursements"
+    reverse_wire_transactions: "ReverseWireTransactions"
     salary_estimates: "SalaryEstimates"
     signatories: "Signatories"
+    tax_payments: "TaxPayments"
     time_off_requests: "TimeOffRequests"
     introspection: "Introspection"
     webhooks: "Webhooks"
     wire_in_requests: "WireInRequests"
-    payroll_digests: "PayrollDigests"
     _sub_sdk_map = {
         "ach_transactions": (
             "gusto_embedded_v_2026_06_15.achtransactions",
@@ -150,6 +162,7 @@ class Gusto(BaseSDK):
             "gusto_embedded_v_2026_06_15.companybenefits",
             "CompanyBenefits",
         ),
+        "reports": ("gusto_embedded_v_2026_06_15.reports", "Reports"),
         "company_attachments": (
             "gusto_embedded_v_2026_06_15.companyattachments",
             "CompanyAttachments",
@@ -199,7 +212,7 @@ class Gusto(BaseSDK):
             "ContractorPaymentGroups",
         ),
         "contractor_payments": (
-            "gusto_embedded_v_2026_06_15.contractorpayments",
+            "gusto_embedded_v_2026_06_15.contractor_payments",
             "ContractorPayments",
         ),
         "departments": ("gusto_embedded_v_2026_06_15.departments", "Departments"),
@@ -233,7 +246,6 @@ class Gusto(BaseSDK):
             "gusto_embedded_v_2026_06_15.employeeemployments",
             "EmployeeEmployments",
         ),
-        "reports": ("gusto_embedded_v_2026_06_15.reports", "Reports"),
         "events": ("gusto_embedded_v_2026_06_15.events", "Events"),
         "external_payrolls": (
             "gusto_embedded_v_2026_06_15.externalpayrolls",
@@ -268,7 +280,19 @@ class Gusto(BaseSDK):
         ),
         "invoices": ("gusto_embedded_v_2026_06_15.invoices", "Invoices"),
         "locations": ("gusto_embedded_v_2026_06_15.locations", "Locations"),
+        "member_portal_invitations": (
+            "gusto_embedded_v_2026_06_15.member_portal_invitations",
+            "MemberPortalInvitations",
+        ),
         "pay_schedules": ("gusto_embedded_v_2026_06_15.payschedules", "PaySchedules"),
+        "payroll_cancellations": (
+            "gusto_embedded_v_2026_06_15.payroll_cancellations",
+            "PayrollCancellations",
+        ),
+        "payroll_digests": (
+            "gusto_embedded_v_2026_06_15.payroll_digests",
+            "PayrollDigests",
+        ),
         "time_off_policies": (
             "gusto_embedded_v_2026_06_15.timeoffpolicies",
             "TimeOffPolicies",
@@ -285,11 +309,16 @@ class Gusto(BaseSDK):
             "gusto_embedded_v_2026_06_15.reimbursements",
             "Reimbursements",
         ),
+        "reverse_wire_transactions": (
+            "gusto_embedded_v_2026_06_15.reverse_wire_transactions",
+            "ReverseWireTransactions",
+        ),
         "salary_estimates": (
             "gusto_embedded_v_2026_06_15.salary_estimates",
             "SalaryEstimates",
         ),
         "signatories": ("gusto_embedded_v_2026_06_15.signatories", "Signatories"),
+        "tax_payments": ("gusto_embedded_v_2026_06_15.tax_payments", "TaxPayments"),
         "time_off_requests": (
             "gusto_embedded_v_2026_06_15.time_off_requests",
             "TimeOffRequests",
@@ -299,10 +328,6 @@ class Gusto(BaseSDK):
         "wire_in_requests": (
             "gusto_embedded_v_2026_06_15.wireinrequests",
             "WireInRequests",
-        ),
-        "payroll_digests": (
-            "gusto_embedded_v_2026_06_15.payroll_digests",
-            "PayrollDigests",
         ),
     }
 
