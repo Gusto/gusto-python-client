@@ -110,6 +110,11 @@ class TimeOffRequests(BaseSDK):
                 operation_id="get-v1-companies-company_id-time_off_requests",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Requests"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -226,6 +231,11 @@ class TimeOffRequests(BaseSDK):
                 operation_id="get-v1-companies-company_id-time_off_requests",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Requests"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

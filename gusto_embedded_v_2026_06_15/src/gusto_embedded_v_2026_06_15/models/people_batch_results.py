@@ -98,7 +98,7 @@ class PeopleBatchResultsErrors(BaseModel):
         return m
 
 
-class ResultsTypedDict(TypedDict):
+class PeopleBatchResultsResultsTypedDict(TypedDict):
     external_id: NotRequired[str]
     r"""The external ID provided in the batch request."""
     role: NotRequired[Role]
@@ -115,7 +115,7 @@ class ResultsTypedDict(TypedDict):
     r"""Errors encountered while processing this batch item."""
 
 
-class Results(BaseModel):
+class PeopleBatchResultsResults(BaseModel):
     external_id: Optional[str] = None
     r"""The external ID provided in the batch request."""
 
@@ -174,7 +174,7 @@ class Results(BaseModel):
         return m
 
 
-class ExclusionsTypedDict(TypedDict):
+class PeopleBatchResultsExclusionsTypedDict(TypedDict):
     external_id: NotRequired[str]
     r"""The external ID of the excluded item(s)."""
     category: NotRequired[str]
@@ -185,7 +185,7 @@ class ExclusionsTypedDict(TypedDict):
     r"""Number of items affected by this exclusion."""
 
 
-class Exclusions(BaseModel):
+class PeopleBatchResultsExclusions(BaseModel):
     external_id: Optional[str] = None
     r"""The external ID of the excluded item(s)."""
 
@@ -234,9 +234,9 @@ class PeopleBatchResultsTypedDict(TypedDict):
     r"""The number of items successfully processed."""
     excluded_items: NotRequired[int]
     r"""The number of items excluded from processing."""
-    results: NotRequired[List[ResultsTypedDict]]
+    results: NotRequired[List[PeopleBatchResultsResultsTypedDict]]
     r"""The results for each batch item."""
-    exclusions: NotRequired[Nullable[List[ExclusionsTypedDict]]]
+    exclusions: NotRequired[Nullable[List[PeopleBatchResultsExclusionsTypedDict]]]
     r"""Items excluded from processing due to validation errors."""
 
 
@@ -267,10 +267,10 @@ class PeopleBatchResults(BaseModel):
     excluded_items: Optional[int] = None
     r"""The number of items excluded from processing."""
 
-    results: Optional[List[Results]] = None
+    results: Optional[List[PeopleBatchResultsResults]] = None
     r"""The results for each batch item."""
 
-    exclusions: OptionalNullable[List[Exclusions]] = UNSET
+    exclusions: OptionalNullable[List[PeopleBatchResultsExclusions]] = UNSET
     r"""Items excluded from processing due to validation errors."""
 
     @field_serializer("status")

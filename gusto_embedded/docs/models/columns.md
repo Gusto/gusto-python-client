@@ -5,7 +5,7 @@
 ```python
 from gusto_embedded.models import Columns
 
-value = Columns.BANK_ACCOUNT_ACCOUNT_NUMBER
+value = Columns.ADDITIONAL_EARNINGS
 ```
 
 
@@ -13,6 +13,7 @@ value = Columns.BANK_ACCOUNT_ACCOUNT_NUMBER
 
 | Name                                   | Value                                  |
 | -------------------------------------- | -------------------------------------- |
+| `ADDITIONAL_EARNINGS`                  | additional_earnings                    |
 | `BANK_ACCOUNT_ACCOUNT_NUMBER`          | bank_account_account_number            |
 | `BANK_ACCOUNT_ROUTING_NUMBER`          | bank_account_routing_number            |
 | `BANK_ACCOUNT_TYPE`                    | bank_account_type                      |
@@ -42,6 +43,7 @@ value = Columns.BANK_ACCOUNT_ACCOUNT_NUMBER
 | `EMPLOYEE_MEDICARE_TAX`                | employee_medicare_tax                  |
 | `EMPLOYEE_PHONE_NUMBER`                | employee_phone_number                  |
 | `EMPLOYEE_SOCIAL_SECURITY_TAX`         | employee_social_security_tax           |
+| `EMPLOYEE_STATE_INCOME_TAX`            | employee_state_income_tax              |
 | `EMPLOYEE_TAXES`                       | employee_taxes                         |
 | `EMPLOYEE_UUID`                        | employee_uuid                          |
 | `EMPLOYEE_WORK_EMAIL`                  | employee_work_email                    |

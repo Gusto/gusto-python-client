@@ -8,7 +8,7 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class TotalsTypedDict(TypedDict):
+class PayrollReceiptTotalsTypedDict(TypedDict):
     r"""The subtotals for the payroll."""
 
     company_debit: NotRequired[str]
@@ -23,7 +23,7 @@ class TotalsTypedDict(TypedDict):
     r"""The total tax debit for the payroll."""
 
 
-class Totals(BaseModel):
+class PayrollReceiptTotals(BaseModel):
     r"""The subtotals for the payroll."""
 
     company_debit: Optional[str] = None
@@ -182,7 +182,7 @@ class PayrollReceiptEmployeeCompensations(BaseModel):
         return m
 
 
-class LicenseeTypedDict(TypedDict):
+class PayrollReceiptLicenseeTypedDict(TypedDict):
     r"""The licensed payroll processor"""
 
     name: NotRequired[str]
@@ -199,7 +199,7 @@ class LicenseeTypedDict(TypedDict):
     r"""Always the fixed string \"4157778888\" """
 
 
-class Licensee(BaseModel):
+class PayrollReceiptLicensee(BaseModel):
     r"""The licensed payroll processor"""
 
     name: Optional[str] = None
@@ -258,7 +258,7 @@ class PayrollReceiptTypedDict(TypedDict):
     r"""URL for the license information for the licensed payroll processor. Always the fixed string \"https://gusto.com/about/licenses\" """
     right_to_refund: NotRequired[str]
     liability_of_licensee: NotRequired[str]
-    totals: NotRequired[TotalsTypedDict]
+    totals: NotRequired[PayrollReceiptTotalsTypedDict]
     r"""The subtotals for the payroll."""
     taxes: NotRequired[List[TaxesTypedDict]]
     r"""An array of totaled employer and employee taxes for the pay period."""
@@ -266,7 +266,7 @@ class PayrollReceiptTypedDict(TypedDict):
         List[PayrollReceiptEmployeeCompensationsTypedDict]
     ]
     r"""An array of employee compensations and withholdings for this payroll"""
-    licensee: NotRequired[LicenseeTypedDict]
+    licensee: NotRequired[PayrollReceiptLicenseeTypedDict]
     r"""The licensed payroll processor"""
 
 
@@ -299,7 +299,7 @@ class PayrollReceipt(BaseModel):
 
     liability_of_licensee: Optional[str] = None
 
-    totals: Optional[Totals] = None
+    totals: Optional[PayrollReceiptTotals] = None
     r"""The subtotals for the payroll."""
 
     taxes: Optional[List[Taxes]] = None
@@ -308,7 +308,7 @@ class PayrollReceipt(BaseModel):
     employee_compensations: Optional[List[PayrollReceiptEmployeeCompensations]] = None
     r"""An array of employee compensations and withholdings for this payroll"""
 
-    licensee: Optional[Licensee] = None
+    licensee: Optional[PayrollReceiptLicensee] = None
     r"""The licensed payroll processor"""
 
     @model_serializer(mode="wrap")

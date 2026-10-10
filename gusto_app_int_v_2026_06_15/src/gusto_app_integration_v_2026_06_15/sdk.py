@@ -56,15 +56,14 @@ class GustoAppIntegration(BaseSDK):
     notifications: "Notifications"
     jobs_and_compensations: "JobsAndCompensations"
     jobs: "Jobs"
-    contractors: "Contractors"
     contractor_payments: "ContractorPayments"
+    contractors: "Contractors"
     departments: "Departments"
     introspection: "Introspection"
     earning_types: "EarningTypes"
     employee_benefits: "EmployeeBenefits"
     employees: "Employees"
     employee_employments: "EmployeeEmployments"
-    reports: "Reports"
     events: "Events"
     garnishments: "Garnishments"
     employee_addresses: "EmployeeAddresses"
@@ -75,6 +74,7 @@ class GustoAppIntegration(BaseSDK):
     payrolls: "Payrolls"
     time_off_policies: "TimeOffPolicies"
     reimbursements: "Reimbursements"
+    reports: "Reports"
     salary_estimates: "SalaryEstimates"
     time_off_requests: "TimeOffRequests"
     webhooks: "Webhooks"
@@ -93,13 +93,13 @@ class GustoAppIntegration(BaseSDK):
             "JobsAndCompensations",
         ),
         "jobs": ("gusto_app_integration_v_2026_06_15.jobs", "Jobs"),
-        "contractors": (
-            "gusto_app_integration_v_2026_06_15.contractors",
-            "Contractors",
-        ),
         "contractor_payments": (
             "gusto_app_integration_v_2026_06_15.contractorpayments",
             "ContractorPayments",
+        ),
+        "contractors": (
+            "gusto_app_integration_v_2026_06_15.contractors",
+            "Contractors",
         ),
         "departments": (
             "gusto_app_integration_v_2026_06_15.departments",
@@ -122,7 +122,6 @@ class GustoAppIntegration(BaseSDK):
             "gusto_app_integration_v_2026_06_15.employeeemployments",
             "EmployeeEmployments",
         ),
-        "reports": ("gusto_app_integration_v_2026_06_15.reports", "Reports"),
         "events": ("gusto_app_integration_v_2026_06_15.events", "Events"),
         "garnishments": (
             "gusto_app_integration_v_2026_06_15.garnishments",
@@ -154,6 +153,7 @@ class GustoAppIntegration(BaseSDK):
             "gusto_app_integration_v_2026_06_15.reimbursements",
             "Reimbursements",
         ),
+        "reports": ("gusto_app_integration_v_2026_06_15.reports", "Reports"),
         "salary_estimates": (
             "gusto_app_integration_v_2026_06_15.salary_estimates",
             "SalaryEstimates",

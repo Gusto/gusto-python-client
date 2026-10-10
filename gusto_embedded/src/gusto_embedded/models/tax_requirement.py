@@ -82,6 +82,16 @@ class TaxRequirementTypedDict(TypedDict):
     metadata: NotRequired[TaxRequirementMetadataTypedDict]
     editable: NotRequired[bool]
     r"""Whether the value of this requirement can be updated"""
+    payroll_blocking: NotRequired[bool]
+    r"""Whether this requirement, when blank, would block payroll processing for the company in this state.
+    Stable across changes to the field's value: a `payroll_blocking: true` field reports `true` whether
+    currently empty or populated.
+
+    """
+    default_value_applied: NotRequired[bool]
+    r"""Whether the current `value` is a default rather than an explicitly set one.
+
+    """
 
 
 class TaxRequirement(BaseModel):
@@ -105,6 +115,18 @@ class TaxRequirement(BaseModel):
     editable: Optional[bool] = None
     r"""Whether the value of this requirement can be updated"""
 
+    payroll_blocking: Optional[bool] = None
+    r"""Whether this requirement, when blank, would block payroll processing for the company in this state.
+    Stable across changes to the field's value: a `payroll_blocking: true` field reports `true` whether
+    currently empty or populated.
+
+    """
+
+    default_value_applied: Optional[bool] = None
+    r"""Whether the current `value` is a default rather than an explicitly set one.
+
+    """
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
@@ -116,6 +138,8 @@ class TaxRequirement(BaseModel):
                 "value",
                 "metadata",
                 "editable",
+                "payroll_blocking",
+                "default_value_applied",
             ]
         )
         nullable_fields = set(["description", "value"])

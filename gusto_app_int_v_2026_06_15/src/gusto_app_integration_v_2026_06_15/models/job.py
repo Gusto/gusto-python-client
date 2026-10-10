@@ -34,8 +34,8 @@ class JobTypedDict(TypedDict):
     r"""The employee's pay rate for this job (e.g., hourly wage or annual salary). This is sensitive compensation data and requires the `compensations:read` scope."""
     payment_unit: NotRequired[Nullable[str]]
     r"""How the employee is paid for this job (e.g., Hour, Week, Month, Year, Paycheck). This is sensitive compensation data and requires the `compensations:read` scope."""
-    current_compensation_uuid: NotRequired[str]
-    r"""The UUID of the current active compensation record for this job. Requires the `compensations:read` scope."""
+    current_compensation_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the current active compensation record for this job. Null when the job has no current compensation. Requires the `compensations:read` scope."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee owns at least 2% of the company."""
     state_wc_covered: NotRequired[Nullable[bool]]
@@ -77,8 +77,8 @@ class Job(BaseModel):
     payment_unit: OptionalNullable[str] = UNSET
     r"""How the employee is paid for this job (e.g., Hour, Week, Month, Year, Paycheck). This is sensitive compensation data and requires the `compensations:read` scope."""
 
-    current_compensation_uuid: Optional[str] = None
-    r"""The UUID of the current active compensation record for this job. Requires the `compensations:read` scope."""
+    current_compensation_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the current active compensation record for this job. Null when the job has no current compensation. Requires the `compensations:read` scope."""
 
     two_percent_shareholder: Optional[bool] = None
     r"""Whether the employee owns at least 2% of the company."""
@@ -119,7 +119,13 @@ class Job(BaseModel):
             ]
         )
         nullable_fields = set(
-            ["title", "payment_unit", "state_wc_covered", "state_wc_class_code"]
+            [
+                "title",
+                "payment_unit",
+                "current_compensation_uuid",
+                "state_wc_covered",
+                "state_wc_class_code",
+            ]
         )
         null_default_fields = set(["title"])
         serialized = handler(self)

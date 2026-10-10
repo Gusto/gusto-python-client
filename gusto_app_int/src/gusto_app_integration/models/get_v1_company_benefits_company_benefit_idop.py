@@ -21,7 +21,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude(str, Enum):
+class Include(str, Enum):
     r"""Available options:
     - all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -38,7 +38,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDRequestTypedDict(TypedDict):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     with_employee_benefits: NotRequired[bool]
     r"""Whether to return employee benefits associated with the benefit"""
-    include: NotRequired[GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude]
+    include: NotRequired[Include]
     r"""Available options:
     - all_benefits: If with_employee_benefits=true, include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -64,7 +64,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDRequest(BaseModel):
     r"""Whether to return employee benefits associated with the benefit"""
 
     include: Annotated[
-        Optional[GetV1CompanyBenefitsCompanyBenefitIDQueryParamInclude],
+        Optional[Include],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Available options:

@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class ContractorPaymentGroups(BaseSDK):
@@ -18,10 +18,10 @@ class ContractorPaymentGroups(BaseSDK):
         *,
         company_id: str,
         contractor_payments: Union[
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewContractorPayments
             ],
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewContractorPaymentsTypedDict
             ],
         ],
@@ -119,6 +119,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -154,10 +159,10 @@ class ContractorPaymentGroups(BaseSDK):
         *,
         company_id: str,
         contractor_payments: Union[
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewContractorPayments
             ],
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewContractorPaymentsTypedDict
             ],
         ],
@@ -255,6 +260,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -327,8 +337,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         request = (
             models.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundRequest(
-                contractor_payment_group_uuid=contractor_payment_group_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                contractor_payment_group_uuid=contractor_payment_group_uuid,
             )
         )
 
@@ -367,6 +377,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -437,8 +452,8 @@ class ContractorPaymentGroups(BaseSDK):
 
         request = (
             models.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundRequest(
-                contractor_payment_group_uuid=contractor_payment_group_uuid,
                 x_gusto_api_version=x_gusto_api_version,
+                contractor_payment_group_uuid=contractor_payment_group_uuid,
             )
         )
 
@@ -477,6 +492,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -509,13 +529,13 @@ class ContractorPaymentGroups(BaseSDK):
         self,
         *,
         company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -530,11 +550,11 @@ class ContractorPaymentGroups(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param start_date: The time period for which to retrieve contractor payment groups. Defaults to 6 months ago.
         :param end_date: The time period for which to retrieve contractor payment groups. Defaults to today's date.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -551,12 +571,12 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             start_date=start_date,
             end_date=end_date,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -594,6 +614,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -623,13 +648,13 @@ class ContractorPaymentGroups(BaseSDK):
         self,
         *,
         company_id: str,
+        x_gusto_api_version: Optional[
+            models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
+        ] = models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
         page: Optional[int] = None,
         per: Optional[int] = None,
-        x_gusto_api_version: Optional[
-            models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
-        ] = models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -644,11 +669,11 @@ class ContractorPaymentGroups(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param start_date: The time period for which to retrieve contractor payment groups. Defaults to 6 months ago.
         :param end_date: The time period for which to retrieve contractor payment groups. Defaults to today's date.
         :param page: The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.
         :param per: Number of objects per page. For majority of endpoints will default to 25
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -665,12 +690,12 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_id=company_id,
             start_date=start_date,
             end_date=end_date,
             page=page,
             per=per,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -708,6 +733,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -740,10 +770,10 @@ class ContractorPaymentGroups(BaseSDK):
         check_date: date,
         creation_token: str,
         contractor_payments: Union[
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsContractorPayments
             ],
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsContractorPaymentsTypedDict
             ],
         ],
@@ -752,8 +782,8 @@ class ContractorPaymentGroups(BaseSDK):
         ] = models.PostV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         submission_blockers: Optional[
             Union[
-                List[models.SubmissionBlockers],
-                List[models.SubmissionBlockersTypedDict],
+                Iterable[models.SubmissionBlockers],
+                Iterable[models.SubmissionBlockersTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -850,6 +880,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -885,10 +920,10 @@ class ContractorPaymentGroups(BaseSDK):
         check_date: date,
         creation_token: str,
         contractor_payments: Union[
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsContractorPayments
             ],
-            List[
+            Iterable[
                 models.PostV1CompaniesCompanyIDContractorPaymentGroupsContractorPaymentsTypedDict
             ],
         ],
@@ -897,8 +932,8 @@ class ContractorPaymentGroups(BaseSDK):
         ] = models.PostV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         submission_blockers: Optional[
             Union[
-                List[models.SubmissionBlockers],
-                List[models.SubmissionBlockersTypedDict],
+                Iterable[models.SubmissionBlockers],
+                Iterable[models.SubmissionBlockersTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -995,6 +1030,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1061,8 +1101,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
-            contractor_payment_group_uuid=contractor_payment_group_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
         )
 
         req = self._build_request(
@@ -1100,6 +1140,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1161,8 +1206,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
-            contractor_payment_group_uuid=contractor_payment_group_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
         )
 
         req = self._build_request_async(
@@ -1200,6 +1245,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1261,8 +1311,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
-            contractor_payment_group_uuid=contractor_payment_group_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
         )
 
         req = self._build_request(
@@ -1300,6 +1350,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1366,8 +1421,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDRequest(
-            contractor_payment_group_uuid=contractor_payment_group_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            contractor_payment_group_uuid=contractor_payment_group_uuid,
         )
 
         req = self._build_request_async(
@@ -1405,6 +1460,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1471,8 +1531,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsIDPartnerDisbursementsRequest(
-            id=id,
             x_gusto_api_version=x_gusto_api_version,
+            id=id,
         )
 
         req = self._build_request(
@@ -1510,6 +1570,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1573,8 +1638,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1ContractorPaymentGroupsIDPartnerDisbursementsRequest(
-            id=id,
             x_gusto_api_version=x_gusto_api_version,
+            id=id,
         )
 
         req = self._build_request_async(
@@ -1612,6 +1677,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1642,10 +1712,10 @@ class ContractorPaymentGroups(BaseSDK):
         *,
         id: str,
         disbursements: Union[
-            List[
+            Iterable[
                 models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsDisbursements
             ],
-            List[
+            Iterable[
                 models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsDisbursementsTypedDict
             ],
         ],
@@ -1684,8 +1754,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsRequest(
-            id=id,
             x_gusto_api_version=x_gusto_api_version,
+            id=id,
             body=models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsRequestBody(
                 disbursements=utils.get_pydantic_model(
                     disbursements,
@@ -1740,6 +1810,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1775,10 +1850,10 @@ class ContractorPaymentGroups(BaseSDK):
         *,
         id: str,
         disbursements: Union[
-            List[
+            Iterable[
                 models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsDisbursements
             ],
-            List[
+            Iterable[
                 models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsDisbursementsTypedDict
             ],
         ],
@@ -1817,8 +1892,8 @@ class ContractorPaymentGroups(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsRequest(
-            id=id,
             x_gusto_api_version=x_gusto_api_version,
+            id=id,
             body=models.PatchV1ContractorPaymentGroupsIDPartnerDisbursementsRequestBody(
                 disbursements=utils.get_pydantic_model(
                     disbursements,
@@ -1873,6 +1948,11 @@ class ContractorPaymentGroups(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Contractor Payment Groups"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
