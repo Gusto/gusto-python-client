@@ -36,7 +36,7 @@ from .payroll_submission_blocker_type import (
 )
 from .payroll_taxes_type import PayrollTaxesType, PayrollTaxesTypeTypedDict
 from .payroll_totals_type import PayrollTotalsType, PayrollTotalsTypeTypedDict
-from datetime import datetime
+from datetime import date, datetime
 from enum import Enum
 from gusto_app_integration_v_2026_06_15 import models, utils
 from gusto_app_integration_v_2026_06_15.types import (
@@ -82,6 +82,42 @@ class PayrollShowPaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
     HISTORICAL = "Historical"
 
 
+class PayrollShowEmployeeCompensationsBreakdownsTypedDict(TypedDict):
+    start_date: NotRequired[date]
+    r"""The start date of the workweek."""
+    end_date: NotRequired[date]
+    r"""The end date of the workweek."""
+    amount: NotRequired[str]
+    r"""The dollar amount for this workweek."""
+
+
+class PayrollShowEmployeeCompensationsBreakdowns(BaseModel):
+    start_date: Optional[date] = None
+    r"""The start date of the workweek."""
+
+    end_date: Optional[date] = None
+    r"""The end date of the workweek."""
+
+    amount: Optional[str] = None
+    r"""The dollar amount for this workweek."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["start_date", "end_date", "amount"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
 class PayrollShowFixedCompensationsTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the compensation. This also serves as the unique, immutable identifier for this compensation."""
@@ -89,6 +125,11 @@ class PayrollShowFixedCompensationsTypedDict(TypedDict):
     r"""The amount of the compensation for the pay period."""
     job_uuid: NotRequired[str]
     r"""The UUID of the job for the compensation."""
+    breakdowns: NotRequired[List[PayrollShowEmployeeCompensationsBreakdownsTypedDict]]
+    r"""Per-workweek amounts for this compensation, one entry per workweek
+    overlapping the pay period.
+
+    """
 
 
 class PayrollShowFixedCompensations(BaseModel):
@@ -101,9 +142,51 @@ class PayrollShowFixedCompensations(BaseModel):
     job_uuid: Optional[str] = None
     r"""The UUID of the job for the compensation."""
 
+    breakdowns: Optional[List[PayrollShowEmployeeCompensationsBreakdowns]] = None
+    r"""Per-workweek amounts for this compensation, one entry per workweek
+    overlapping the pay period.
+
+    """
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["name", "amount", "job_uuid"])
+        optional_fields = set(["name", "amount", "job_uuid", "breakdowns"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollShowBreakdownsTypedDict(TypedDict):
+    start_date: NotRequired[date]
+    r"""The start date of the workweek."""
+    end_date: NotRequired[date]
+    r"""The end date of the workweek."""
+    hours: NotRequired[str]
+    r"""The number of hours worked during this workweek."""
+
+
+class PayrollShowBreakdowns(BaseModel):
+    start_date: Optional[date] = None
+    r"""The start date of the workweek."""
+
+    end_date: Optional[date] = None
+    r"""The end date of the workweek."""
+
+    hours: Optional[str] = None
+    r"""The number of hours worked during this workweek."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["start_date", "end_date", "hours"])
         serialized = handler(self)
         m = {}
 
@@ -131,6 +214,11 @@ class PayrollShowHourlyCompensationsTypedDict(TypedDict):
     r"""The amount multiplied by the base rate to calculate total compensation per hour worked."""
     flsa_status: NotRequired[str]
     r"""The FLSA Status of the employee's primary job compensation"""
+    breakdowns: NotRequired[List[PayrollShowBreakdownsTypedDict]]
+    r"""Per-workweek hours for this compensation, one entry per workweek
+    overlapping the pay period.
+
+    """
 
 
 class PayrollShowHourlyCompensations(BaseModel):
@@ -152,6 +240,12 @@ class PayrollShowHourlyCompensations(BaseModel):
     flsa_status: Optional[str] = None
     r"""The FLSA Status of the employee's primary job compensation"""
 
+    breakdowns: Optional[List[PayrollShowBreakdowns]] = None
+    r"""Per-workweek hours for this compensation, one entry per workweek
+    overlapping the pay period.
+
+    """
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
@@ -162,6 +256,7 @@ class PayrollShowHourlyCompensations(BaseModel):
                 "job_uuid",
                 "compensation_multiplier",
                 "flsa_status",
+                "breakdowns",
             ]
         )
         serialized = handler(self)
@@ -280,6 +375,197 @@ class PayrollShowReimbursements(BaseModel):
         return m
 
 
+class PayrollShowEmployeeCompensationsOverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollShowEmployeeCompensationsAmountType(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class PayrollShowFederalTypedDict(TypedDict):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: NotRequired[PayrollShowEmployeeCompensationsOverrideType]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[PayrollShowEmployeeCompensationsAmountType]
+    r"""How to interpret the amount."""
+
+
+class PayrollShowFederal(BaseModel):
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    override_type: Optional[PayrollShowEmployeeCompensationsOverrideType] = None
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[PayrollShowEmployeeCompensationsAmountType] = None
+    r"""How to interpret the amount."""
+
+    @field_serializer("amount_type")
+    def serialize_amount_type(self, value):
+        if isinstance(value, str):
+            try:
+                return models.PayrollShowEmployeeCompensationsAmountType(value)
+            except ValueError:
+                return value
+        return value
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["override_type", "amount", "amount_type"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollShowOverrideType(str, Enum):
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    ONE_TIME = "one_time"
+
+
+class PayrollShowEmployeeCompensationsCustomWithholdingsAmountType(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
+    r"""How to interpret the amount."""
+
+    FIXED = "fixed"
+    PERCENT = "percent"
+
+
+class PayrollShowStateTypedDict(TypedDict):
+    employee_state_field_uuid: NotRequired[str]
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+    override_type: NotRequired[PayrollShowOverrideType]
+    r"""Override mode. Only `one_time` is currently exposed."""
+    amount: NotRequired[str]
+    r"""The amount that was withheld for this payroll."""
+    amount_type: NotRequired[
+        PayrollShowEmployeeCompensationsCustomWithholdingsAmountType
+    ]
+    r"""How to interpret the amount."""
+
+
+class PayrollShowState(BaseModel):
+    employee_state_field_uuid: Optional[str] = None
+    r"""The UUID of the EmployeeStateField this withholding applies to."""
+
+    override_type: Optional[PayrollShowOverrideType] = None
+    r"""Override mode. Only `one_time` is currently exposed."""
+
+    amount: Optional[str] = None
+    r"""The amount that was withheld for this payroll."""
+
+    amount_type: Optional[
+        PayrollShowEmployeeCompensationsCustomWithholdingsAmountType
+    ] = None
+    r"""How to interpret the amount."""
+
+    @field_serializer("amount_type")
+    def serialize_amount_type(self, value):
+        if isinstance(value, str):
+            try:
+                return (
+                    models.PayrollShowEmployeeCompensationsCustomWithholdingsAmountType(
+                        value
+                    )
+                )
+            except ValueError:
+                return value
+        return value
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(
+            ["employee_state_field_uuid", "override_type", "amount", "amount_type"]
+        )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayrollShowCustomWithholdingsTypedDict(TypedDict):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: NotRequired[Nullable[PayrollShowFederalTypedDict]]
+    r"""Federal one-time custom withholding override applied to this payroll."""
+    state: NotRequired[List[PayrollShowStateTypedDict]]
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+
+class PayrollShowCustomWithholdings(BaseModel):
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
+
+    federal: OptionalNullable[PayrollShowFederal] = UNSET
+    r"""Federal one-time custom withholding override applied to this payroll."""
+
+    state: Optional[List[PayrollShowState]] = None
+    r"""State one-time custom withholding overrides applied to this payroll, one entry per state field."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["federal", "state"])
+        nullable_fields = set(["federal"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+            is_nullable_and_explicitly_set = (
+                k in nullable_fields
+                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
+            )
+
+            if val != UNSET_SENTINEL:
+                if (
+                    val is not None
+                    or k not in optional_fields
+                    or is_nullable_and_explicitly_set
+                ):
+                    m[k] = val
+
+        return m
+
+
 class PayrollShowAmountType(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The amount type of the deduction for the pay period. Only present for unprocessed payrolls."""
 
@@ -290,7 +576,7 @@ class PayrollShowAmountType(str, Enum, metaclass=utils.OpenEnumMeta):
 class PayrollShowDeductionsTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the deduction."""
-    amount: NotRequired[float]
+    amount: NotRequired[str]
     r"""The amount of the deduction for the pay period."""
     amount_type: NotRequired[PayrollShowAmountType]
     r"""The amount type of the deduction for the pay period. Only present for unprocessed payrolls."""
@@ -304,7 +590,7 @@ class PayrollShowDeductions(BaseModel):
     name: Optional[str] = None
     r"""The name of the deduction."""
 
-    amount: Optional[float] = None
+    amount: Optional[str] = None
     r"""The amount of the deduction for the pay period."""
 
     amount_type: Optional[PayrollShowAmountType] = None
@@ -347,7 +633,7 @@ class PayrollShowDeductions(BaseModel):
 class TaxesTypedDict(TypedDict):
     name: str
     employer: bool
-    amount: float
+    amount: str
 
 
 class Taxes(BaseModel):
@@ -355,22 +641,22 @@ class Taxes(BaseModel):
 
     employer: bool
 
-    amount: float
+    amount: str
 
 
 class BenefitsTypedDict(TypedDict):
     name: NotRequired[str]
-    employee_deduction: NotRequired[float]
-    company_contribution: NotRequired[float]
+    employee_deduction: NotRequired[str]
+    company_contribution: NotRequired[str]
     imputed: NotRequired[bool]
 
 
 class Benefits(BaseModel):
     name: Optional[str] = None
 
-    employee_deduction: Optional[float] = None
+    employee_deduction: Optional[str] = None
 
-    company_contribution: Optional[float] = None
+    company_contribution: Optional[str] = None
 
     imputed: Optional[bool] = None
 
@@ -379,6 +665,37 @@ class Benefits(BaseModel):
         optional_fields = set(
             ["name", "employee_deduction", "company_contribution", "imputed"]
         )
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
+class PayAdjustmentsTypedDict(TypedDict):
+    name: NotRequired[str]
+    r"""The name of the pay adjustment."""
+    amount: NotRequired[str]
+    r"""The dollar amount of the adjustment."""
+
+
+class PayAdjustments(BaseModel):
+    name: Optional[str] = None
+    r"""The name of the pay adjustment."""
+
+    amount: Optional[str] = None
+    r"""The dollar amount of the adjustment."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["name", "amount"])
         serialized = handler(self)
         m = {}
 
@@ -405,7 +722,7 @@ class EmployeeCompensationsTypedDict(TypedDict):
     last_name: NotRequired[Nullable[str]]
     r"""The last name of the employee. Requires `employees:read` scope."""
     gross_pay: NotRequired[Nullable[str]]
-    r"""The employee's gross pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income. This value is only available for processed payrolls."""
+    r"""The employee's gross pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income."""
     net_pay: NotRequired[Nullable[str]]
     r"""The employee's net pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to gross_pay - employee taxes - employee deductions or garnishments - cash tips. This value is only available for processed payrolls."""
     check_amount: NotRequired[Nullable[str]]
@@ -415,13 +732,19 @@ class EmployeeCompensationsTypedDict(TypedDict):
     memo: NotRequired[Nullable[str]]
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
     fixed_compensations: NotRequired[List[PayrollShowFixedCompensationsTypedDict]]
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
     hourly_compensations: NotRequired[List[PayrollShowHourlyCompensationsTypedDict]]
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
     paid_time_off: NotRequired[List[PayrollShowPaidTimeOffTypedDict]]
     r"""An array of all paid time off the employee is eligible for this pay period."""
     reimbursements: NotRequired[List[PayrollShowReimbursementsTypedDict]]
     r"""An array of reimbursements for the employee."""
+    custom_withholdings: NotRequired[PayrollShowCustomWithholdingsTypedDict]
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
     version: NotRequired[Any]
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
     deductions: NotRequired[List[PayrollShowDeductionsTypedDict]]
@@ -430,6 +753,12 @@ class EmployeeCompensationsTypedDict(TypedDict):
     r"""An array of employer and employee taxes for the pay period. Only included for processed or calculated payrolls when `taxes` is present in the `include` parameter."""
     benefits: NotRequired[List[BenefitsTypedDict]]
     r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
+    pay_adjustments: NotRequired[List[PayAdjustmentsTypedDict]]
+    r"""Adjustments applied when calculating the employee's regular rate of pay for
+    overtime purposes (e.g. a discretionary bonus allocated across workweeks),
+    on calculated or processed payrolls.
+
+    """
 
 
 class EmployeeCompensations(BaseModel):
@@ -454,7 +783,7 @@ class EmployeeCompensations(BaseModel):
     r"""The last name of the employee. Requires `employees:read` scope."""
 
     gross_pay: OptionalNullable[str] = UNSET
-    r"""The employee's gross pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income. This value is only available for processed payrolls."""
+    r"""The employee's gross pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to regular wages + cash tips + payroll tips + any other additional earnings, excluding imputed income."""
 
     net_pay: OptionalNullable[str] = UNSET
     r"""The employee's net pay (as a string-formatted decimal, e.g. \"1234.56\"), equal to gross_pay - employee taxes - employee deductions or garnishments - cash tips. This value is only available for processed payrolls."""
@@ -469,7 +798,7 @@ class EmployeeCompensations(BaseModel):
     r"""Custom text that will be printed as a personal note to the employee on a paystub."""
 
     fixed_compensations: Optional[List[PayrollShowFixedCompensations]] = None
-    r"""An array of fixed compensations for the employee. Fixed compensations include tips, bonuses, and one time reimbursements. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
+    r"""An array of fixed compensations for the employee. Fixed compensations include tips and bonuses. On regular payrolls, reimbursements are sent via the dedicated `reimbursements` array instead. Off-cycle payrolls continue to include reimbursements in `fixed_compensations`. If this payroll has been processed, only fixed compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active fixed compensations are returned."""
 
     hourly_compensations: Optional[List[PayrollShowHourlyCompensations]] = None
     r"""An array of hourly compensations for the employee. Hourly compensations include regular, overtime, and double overtime hours. If this payroll has been processed, only hourly compensations with a value greater than 0.00 are returned. For an unprocessed payroll, all active hourly compensations are returned."""
@@ -479,6 +808,13 @@ class EmployeeCompensations(BaseModel):
 
     reimbursements: Optional[List[PayrollShowReimbursements]] = None
     r"""An array of reimbursements for the employee."""
+
+    custom_withholdings: Optional[PayrollShowCustomWithholdings] = None
+    r"""The one-time custom withholding overrides applied to this payroll for this employee.
+    `federal` is null when no federal one-time override is set; `state` is an empty
+    array when no state one-time overrides are set.
+
+    """
 
     version: Optional[Any] = None
     r"""The current version of this employee compensation. This field is only available for prepared payrolls. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field."""
@@ -491,6 +827,13 @@ class EmployeeCompensations(BaseModel):
 
     benefits: Optional[List[Benefits]] = None
     r"""An array of employee benefits for the pay period. Benefits are only included for processed payroll when the include parameter is present."""
+
+    pay_adjustments: Optional[List[PayAdjustments]] = None
+    r"""Adjustments applied when calculating the employee's regular rate of pay for
+    overtime purposes (e.g. a discretionary bonus allocated across workweeks),
+    on calculated or processed payrolls.
+
+    """
 
     @property
     def additional_properties(self):
@@ -527,10 +870,12 @@ class EmployeeCompensations(BaseModel):
                 "hourly_compensations",
                 "paid_time_off",
                 "reimbursements",
+                "custom_withholdings",
                 "version",
                 "deductions",
                 "taxes",
                 "benefits",
+                "pay_adjustments",
             ]
         )
         nullable_fields = set(
@@ -794,6 +1139,37 @@ class PayrollShow(BaseModel):
         return m
 
 
+class WorkweeksTypedDict(TypedDict):
+    start_date: NotRequired[date]
+    r"""The start date of the workweek."""
+    end_date: NotRequired[date]
+    r"""The end date of the workweek."""
+
+
+class Workweeks(BaseModel):
+    start_date: Optional[date] = None
+    r"""The start date of the workweek."""
+
+    end_date: Optional[date] = None
+    r"""The end date of the workweek."""
+
+    @model_serializer(mode="wrap")
+    def serialize_model(self, handler):
+        optional_fields = set(["start_date", "end_date"])
+        serialized = handler(self)
+        m = {}
+
+        for n, f in type(self).model_fields.items():
+            k = f.alias or n
+            val = serialized.get(k, serialized.get(n))
+
+            if val != UNSET_SENTINEL:
+                if val is not None or k not in optional_fields:
+                    m[k] = val
+
+        return m
+
+
 class PayrollPreparedTypedDict(TypedDict):
     r"""The response from preparing a payroll for update. Contains refreshed employee compensations, updated payroll dates, and version information needed for subsequent payroll updates."""
 
@@ -830,6 +1206,12 @@ class PayrollPreparedTypedDict(TypedDict):
     fixed_withholding_rate: NotRequired[Nullable[bool]]
     r"""Enable taxes to be withheld at the IRS's required rate of 22% for federal income taxes. State income taxes will be taxed at the state's supplemental tax rate. Otherwise, we'll sum the entirety of the employee's wages and withhold taxes on the entire amount at the rate for regular wages. Only included for off-cycle payrolls."""
     pay_period: NotRequired[PayrollPayPeriodTypeTypedDict]
+    workweeks: NotRequired[Nullable[List[WorkweeksTypedDict]]]
+    r"""The workweeks overlapping this payroll's pay period, one entry per workweek.
+    Null when workweek boundaries can't be determined for this payroll (e.g. some
+    off-cycle payrolls without a defined payment period).
+
+    """
     payroll_status_meta: NotRequired[PayrollPayrollStatusMetaTypeTypedDict]
     r"""Information about the payroll's status and expected dates"""
     employee_compensations: NotRequired[List[PayrollEmployeeCompensationsTypeTypedDict]]
@@ -898,6 +1280,13 @@ class PayrollPrepared(BaseModel):
 
     pay_period: Optional[PayrollPayPeriodType] = None
 
+    workweeks: OptionalNullable[List[Workweeks]] = UNSET
+    r"""The workweeks overlapping this payroll's pay period, one entry per workweek.
+    Null when workweek boundaries can't be determined for this payroll (e.g. some
+    off-cycle payrolls without a defined payment period).
+
+    """
+
     payroll_status_meta: Optional[PayrollPayrollStatusMetaType] = None
     r"""Information about the payroll's status and expected dates"""
 
@@ -955,6 +1344,7 @@ class PayrollPrepared(BaseModel):
                 "skip_regular_deductions",
                 "fixed_withholding_rate",
                 "pay_period",
+                "workweeks",
                 "payroll_status_meta",
                 "employee_compensations",
                 "payment_speed_changed",
@@ -972,6 +1362,7 @@ class PayrollPrepared(BaseModel):
                 "withholding_pay_period",
                 "skip_regular_deductions",
                 "fixed_withholding_rate",
+                "workweeks",
                 "processing_request",
                 "partner_owned_disbursement",
             ]

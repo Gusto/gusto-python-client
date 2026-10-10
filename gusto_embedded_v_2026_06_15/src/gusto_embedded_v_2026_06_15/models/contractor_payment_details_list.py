@@ -15,7 +15,9 @@ from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class PaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
+class ContractorPaymentDetailsListPaymentMethod(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
@@ -100,7 +102,7 @@ class Splits(BaseModel):
 
 class ContractorPaymentDetailsListTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
-    payment_method: NotRequired[PaymentMethod]
+    payment_method: NotRequired[ContractorPaymentDetailsListPaymentMethod]
     first_name: NotRequired[str]
     last_name: NotRequired[str]
     split_by: NotRequired[Nullable[SplitBy]]
@@ -111,7 +113,7 @@ class ContractorPaymentDetailsListTypedDict(TypedDict):
 class ContractorPaymentDetailsList(BaseModel):
     contractor_uuid: Optional[str] = None
 
-    payment_method: Optional[PaymentMethod] = None
+    payment_method: Optional[ContractorPaymentDetailsListPaymentMethod] = None
 
     first_name: Optional[str] = None
 
@@ -126,7 +128,7 @@ class ContractorPaymentDetailsList(BaseModel):
     def serialize_payment_method(self, value):
         if isinstance(value, str):
             try:
-                return models.PaymentMethod(value)
+                return models.ContractorPaymentDetailsListPaymentMethod(value)
             except ValueError:
                 return value
         return value

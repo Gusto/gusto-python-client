@@ -4,261 +4,16 @@
 
 ### Available Operations
 
-* [get_jobs](#get_jobs) - Get jobs for an employee
-* [create_job](#create_job) - Create a job
-* [get_job](#get_job) - Get a job
-* [update](#update) - Update a job
-* [delete](#delete) - Delete an individual job
 * [get_compensations](#get_compensations) - Get compensations for a job
 * [create_compensation](#create_compensation) - Create a compensation
 * [get_compensation](#get_compensation) - Get a compensation
 * [update_compensation](#update_compensation) - Update a compensation
 * [delete_compensation](#delete_compensation) - Delete a compensation
-
-## get_jobs
-
-Get all of the jobs that an employee holds.
-Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
-
-Compensation data in the response requires the `compensations:read` scope.
-
-scope: `jobs:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-jobs" method="get" path="/v1/employees/{employee_id}/jobs" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
-| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
-| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude]](../../models/getv1employeesemployeeidjobsqueryparaminclude.md)                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>                                                                             |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeidjobsheaderxgustoapiversion.md)                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.Job]](../../models/.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## create_job
-
-Create a job.
-
-scope: `jobs:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-jobs" method="post" path="/v1/employees/{employee_id}/jobs" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21", x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                                          | Type                                                                                                                                                                                                                                               | Required                                                                                                                                                                                                                                           | Description                                                                                                                                                                                                                                        | Example                                                                                                                                                                                                                                            |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                                      | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The UUID of the employee                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                    |
-| `title`                                                                                                                                                                                                                                            | *Nullable[str]*                                                                                                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                                                 | The job title.                                                                                                                                                                                                                                     | Regional Manager                                                                                                                                                                                                                                   |
-| `hire_date`                                                                                                                                                                                                                                        | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The date when the employee was hired or rehired for the job.                                                                                                                                                                                       | 2020-12-21                                                                                                                                                                                                                                         |
-| `x_gusto_api_version`                                                                                                                                                                                                                              | [Optional[models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]](../../models/postv1employeesemployeeidjobsheaderxgustoapiversion.md)                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                                                 | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                       |                                                                                                                                                                                                                                                    |
-| `two_percent_shareholder`                                                                                                                                                                                                                          | *Optional[bool]*                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether the employee owns at least 2% of the company.                                                                                                                                                                                              |                                                                                                                                                                                                                                                    |
-| `state_wc_covered`                                                                                                                                                                                                                                 | *OptionalNullable[bool]*                                                                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).                                                                                                                                                   |                                                                                                                                                                                                                                                    |
-| `state_wc_class_code`                                                                                                                                                                                                                              | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more. |                                                                                                                                                                                                                                                    |
-| `retries`                                                                                                                                                                                                                                          | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Configuration to override the default retry behavior of the client.                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
-
-### Response
-
-**[models.Job](../../models/job.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## get_job
-
-Get a job.
-
-Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
-
-Compensation data in the response requires the `compensations:read` scope.
-
-scope: `jobs:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id" method="get" path="/v1/jobs/{job_id}" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.jobs_and_compensations.get_job(job_id="<id>", x_gusto_api_version=gusto_embedded.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `job_id`                                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the job                                                                                                                                                                                                          |
-| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1JobsJobIDQueryParamInclude]](../../models/getv1jobsjobidqueryparaminclude.md)                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>                                                                             |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1JobsJobIDHeaderXGustoAPIVersion]](../../models/getv1jobsjobidheaderxgustoapiversion.md)                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.Job](../../models/job.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## update
-
-Update a job.
-
-scope: `jobs:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-jobs-job_id" method="put" path="/v1/jobs/{job_id}" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.jobs_and_compensations.update(job_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, title="Regional Manager", hire_date="2020-12-21")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                                          | Type                                                                                                                                                                                                                                               | Required                                                                                                                                                                                                                                           | Description                                                                                                                                                                                                                                        | Example                                                                                                                                                                                                                                            |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `job_id`                                                                                                                                                                                                                                           | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The UUID of the job                                                                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
-| `version`                                                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                  | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                                              | [Optional[models.PutV1JobsJobIDHeaderXGustoAPIVersion]](../../models/putv1jobsjobidheaderxgustoapiversion.md)                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                                 | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                       |                                                                                                                                                                                                                                                    |
-| `title`                                                                                                                                                                                                                                            | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The job title.                                                                                                                                                                                                                                     | Regional Manager                                                                                                                                                                                                                                   |
-| `hire_date`                                                                                                                                                                                                                                        | *Optional[str]*                                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                 | The date when the employee was hired or rehired for the job.                                                                                                                                                                                       | 2020-12-21                                                                                                                                                                                                                                         |
-| `two_percent_shareholder`                                                                                                                                                                                                                          | *Optional[bool]*                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether the employee owns at least 2% of the company.                                                                                                                                                                                              |                                                                                                                                                                                                                                                    |
-| `state_wc_covered`                                                                                                                                                                                                                                 | *OptionalNullable[bool]*                                                                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).                                                                                                                                                   |                                                                                                                                                                                                                                                    |
-| `state_wc_class_code`                                                                                                                                                                                                                              | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more. |                                                                                                                                                                                                                                                    |
-| `retries`                                                                                                                                                                                                                                          | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Configuration to override the default retry behavior of the client.                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
-
-### Response
-
-**[models.Job](../../models/job.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## delete
-
-Deletes a specific job that an employee holds.
-
-scope: `jobs:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="delete-v1-jobs-job_id" method="delete" path="/v1/jobs/{job_id}" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.jobs_and_compensations.delete(job_id="<id>", x_gusto_api_version=gusto_embedded.DeleteV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `job_id`                                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the job                                                                                                                                                                                                          |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1JobsJobIDHeaderXGustoAPIVersion]](../../models/deletev1jobsjobidheaderxgustoapiversion.md)                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+* [get_job](#get_job) - Get a job
+* [update](#update) - Update a job
+* [delete](#delete) - Delete an individual job
+* [get_jobs](#get_jobs) - Get jobs for an employee
+* [create_job](#create_job) - Create a job
 
 ## get_compensations
 
@@ -510,6 +265,251 @@ with Gusto(
 | `compensation_id`                                                                                                                                                                                                            | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the compensation                                                                                                                                                                                                 |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1CompensationsCompensationIDHeaderXGustoAPIVersion]](../../models/deletev1compensationscompensationidheaderxgustoapiversion.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## get_job
+
+Get a job.
+
+Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+Compensation data in the response requires the `compensations:read` scope.
+
+scope: `jobs:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-jobs-job_id" method="get" path="/v1/jobs/{job_id}" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.jobs_and_compensations.get_job(job_id="<id>", x_gusto_api_version=gusto_embedded.GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `job_id`                                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the job                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1JobsJobIDHeaderXGustoAPIVersion]](../../models/getv1jobsjobidheaderxgustoapiversion.md)                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1JobsJobIDQueryParamInclude]](../../models/getv1jobsjobidqueryparaminclude.md)                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>                                                                             |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.Job](../../models/job.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## update
+
+Update a job.
+
+scope: `jobs:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-jobs-job_id" method="put" path="/v1/jobs/{job_id}" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.jobs_and_compensations.update(job_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, title="Regional Manager", hire_date="2020-12-21")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                                          | Type                                                                                                                                                                                                                                               | Required                                                                                                                                                                                                                                           | Description                                                                                                                                                                                                                                        | Example                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `job_id`                                                                                                                                                                                                                                           | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The UUID of the job                                                                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
+| `version`                                                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.                                                                                  | 56d00c178bc7393b2a206ed6a86afcb4                                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                                              | [Optional[models.PutV1JobsJobIDHeaderXGustoAPIVersion]](../../models/putv1jobsjobidheaderxgustoapiversion.md)                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                                 | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                       |                                                                                                                                                                                                                                                    |
+| `title`                                                                                                                                                                                                                                            | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The job title.                                                                                                                                                                                                                                     | Regional Manager                                                                                                                                                                                                                                   |
+| `hire_date`                                                                                                                                                                                                                                        | *Optional[str]*                                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                 | The date when the employee was hired or rehired for the job.                                                                                                                                                                                       | 2020-12-21                                                                                                                                                                                                                                         |
+| `two_percent_shareholder`                                                                                                                                                                                                                          | *Optional[bool]*                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether the employee owns at least 2% of the company.                                                                                                                                                                                              |                                                                                                                                                                                                                                                    |
+| `state_wc_covered`                                                                                                                                                                                                                                 | *OptionalNullable[bool]*                                                                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).                                                                                                                                                   |                                                                                                                                                                                                                                                    |
+| `state_wc_class_code`                                                                                                                                                                                                                              | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more. |                                                                                                                                                                                                                                                    |
+| `retries`                                                                                                                                                                                                                                          | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Configuration to override the default retry behavior of the client.                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
+
+### Response
+
+**[models.Job](../../models/job.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## delete
+
+Deletes a specific job that an employee holds.
+
+scope: `jobs:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="delete-v1-jobs-job_id" method="delete" path="/v1/jobs/{job_id}" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.jobs_and_compensations.delete(job_id="<id>", x_gusto_api_version=gusto_embedded.DeleteV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `job_id`                                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the job                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1JobsJobIDHeaderXGustoAPIVersion]](../../models/deletev1jobsjobidheaderxgustoapiversion.md)                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## get_jobs
+
+Get all of the jobs that an employee holds.
+Note: Compensation data (pay rate, payment unit, and related fields) represents sensitive employee pay information. When retrieving employee job data, these fields (`rate`, `payment_unit`, `current_compensation_uuid`, `compensations`) are only returned when the `compensations:read` scope is included. This allows you to access employee and job metadata without exposing pay rates.
+
+Compensation data in the response requires the `compensations:read` scope.
+
+scope: `jobs:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-employees-employee_id-jobs" method="get" path="/v1/employees/{employee_id}/jobs" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.jobs_and_compensations.get_jobs(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]](../../models/getv1employeesemployeeidjobsheaderxgustoapiversion.md)                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
+| `include`                                                                                                                                                                                                                    | [Optional[models.GetV1EmployeesEmployeeIDJobsQueryParamInclude]](../../models/getv1employeesemployeeidjobsqueryparaminclude.md)                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Available options:<br/>- all_compensations: Include all effective dated compensations for each job instead of only the current compensation<br/>                                                                             |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.Job]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## create_job
+
+Create a job.
+
+scope: `jobs:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-employees-employee_id-jobs" method="post" path="/v1/employees/{employee_id}/jobs" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.jobs_and_compensations.create_job(employee_id="<id>", title="Regional Manager", hire_date="2020-12-21", x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                                          | Type                                                                                                                                                                                                                                               | Required                                                                                                                                                                                                                                           | Description                                                                                                                                                                                                                                        | Example                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                                      | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The UUID of the employee                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                    |
+| `title`                                                                                                                                                                                                                                            | *Nullable[str]*                                                                                                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                                                 | The job title.                                                                                                                                                                                                                                     | Regional Manager                                                                                                                                                                                                                                   |
+| `hire_date`                                                                                                                                                                                                                                        | *str*                                                                                                                                                                                                                                              | :heavy_check_mark:                                                                                                                                                                                                                                 | The date when the employee was hired or rehired for the job.                                                                                                                                                                                       | 2020-12-21                                                                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                                              | [Optional[models.PostV1EmployeesEmployeeIDJobsHeaderXGustoAPIVersion]](../../models/postv1employeesemployeeidjobsheaderxgustoapiversion.md)                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                                                 | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                       |                                                                                                                                                                                                                                                    |
+| `two_percent_shareholder`                                                                                                                                                                                                                          | *Optional[bool]*                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether the employee owns at least 2% of the company.                                                                                                                                                                                              |                                                                                                                                                                                                                                                    |
+| `state_wc_covered`                                                                                                                                                                                                                                 | *OptionalNullable[bool]*                                                                                                                                                                                                                           | :heavy_minus_sign:                                                                                                                                                                                                                                 | Whether this job is eligible for workers' compensation coverage in the state of Washington (WA).                                                                                                                                                   |                                                                                                                                                                                                                                                    |
+| `state_wc_class_code`                                                                                                                                                                                                                              | *OptionalNullable[str]*                                                                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                                                 | The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more. |                                                                                                                                                                                                                                                    |
+| `retries`                                                                                                                                                                                                                                          | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                 | Configuration to override the default retry behavior of the client.                                                                                                                                                                                |                                                                                                                                                                                                                                                    |
+
+### Response
+
+**[models.Job](../../models/job.md)**
 
 ### Errors
 

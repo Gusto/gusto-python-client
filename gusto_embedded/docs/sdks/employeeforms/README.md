@@ -4,62 +4,11 @@
 
 ### Available Operations
 
-* [generate_w2](#generate_w2) - Generate a W2 form [DEMO]
 * [list](#list) - Get all employee forms
 * [get](#get) - Get an employee form
 * [get_pdf](#get_pdf) - Get the employee form pdf
 * [sign](#sign) - Sign an employee form
-
-## generate_w2
-
-> 🚧 Demo action
->
-> This action is only available in the Demo environment
-
-Generates a W2 document for testing purposes.
-
-scope: `employees:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_w2" method="post" path="/v1/sandbox/generate_w2" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.PostV1SandboxGenerateW2HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The employee UUID.                                                                                                                                                                                                           |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1SandboxGenerateW2HeaderXGustoAPIVersion]](../../models/postv1sandboxgeneratew2headerxgustoapiversion.md)                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `year`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Must be equal to or more recent than 2015. If not specified, defaults to the previous year.<br/>                                                                                                                             |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.Form](../../models/form.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+* [generate_w2](#generate_w2) - Generate a W2 form [DEMO]
 
 ## list
 
@@ -275,6 +224,57 @@ with Gusto(
 | `preparer4_zip`                                                                                                                                                                                                                                                                  | *Optional[str]*                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                               | N/A                                                                                                                                                                                                                                                                              |
 | `preparer4_agree`                                                                                                                                                                                                                                                                | *Optional[str]*                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Whether 4th preparer agrees to sign electronically                                                                                                                                                                                                                               |
 | `retries`                                                                                                                                                                                                                                                                        | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                               | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                              |
+
+### Response
+
+**[models.Form](../../models/form.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## generate_w2
+
+> 🚧 Demo action
+>
+> This action is only available in the Demo environment
+
+Generates a W2 document for testing purposes.
+
+scope: `employees:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-sandbox-generate_w2" method="post" path="/v1/sandbox/generate_w2" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.employee_forms.generate_w2(employee_id="<id>", x_gusto_api_version=gusto_embedded.PostV1SandboxGenerateW2HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `employee_id`                                                                                                                                                                                                                | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The employee UUID.                                                                                                                                                                                                           |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1SandboxGenerateW2HeaderXGustoAPIVersion]](../../models/postv1sandboxgeneratew2headerxgustoapiversion.md)                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `year`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Must be equal to or more recent than 2015. If not specified, defaults to the previous year.<br/>                                                                                                                             |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
 
