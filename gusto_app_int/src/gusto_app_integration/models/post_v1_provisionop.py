@@ -5,7 +5,7 @@ from .provision_create_request_body import (
     ProvisionCreateRequestBody,
     ProvisionCreateRequestBodyTypedDict,
 )
-from .versionheader import VersionHeader
+from enum import Enum
 from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
 from gusto_app_integration.utils import (
     FieldMetadata,
@@ -37,9 +37,15 @@ class PostV1ProvisionSecurity(BaseModel):
     ]
 
 
+class PostV1ProvisionHeaderXGustoAPIVersion(str, Enum):
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
+
+
 class PostV1ProvisionRequestTypedDict(TypedDict):
     provision_create_request_body: ProvisionCreateRequestBodyTypedDict
-    x_gusto_api_version: NotRequired[VersionHeader]
+    x_gusto_api_version: NotRequired[PostV1ProvisionHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -50,10 +56,10 @@ class PostV1ProvisionRequest(BaseModel):
     ]
 
     x_gusto_api_version: Annotated[
-        Optional[VersionHeader],
+        Optional[PostV1ProvisionHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    ] = PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")

@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class InformationRequests(BaseSDK):
@@ -90,6 +90,11 @@ class InformationRequests(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Information Requests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -193,6 +198,11 @@ class InformationRequests(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Information Requests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -222,8 +232,8 @@ class InformationRequests(BaseSDK):
         information_request_uuid: str,
         required_questions: Optional[
             Union[
-                List[models.SubmitInformationRequestRequiredQuestions],
-                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+                Iterable[models.SubmitInformationRequestRequiredQuestions],
+                Iterable[models.SubmitInformationRequestRequiredQuestionsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -307,6 +317,8 @@ class InformationRequests(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Information Requests"],
+                extensions={"x-gusto-integration-type": ["embedded"]},
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -336,8 +348,8 @@ class InformationRequests(BaseSDK):
         information_request_uuid: str,
         required_questions: Optional[
             Union[
-                List[models.SubmitInformationRequestRequiredQuestions],
-                List[models.SubmitInformationRequestRequiredQuestionsTypedDict],
+                Iterable[models.SubmitInformationRequestRequiredQuestions],
+                Iterable[models.SubmitInformationRequestRequiredQuestionsTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -421,6 +433,8 @@ class InformationRequests(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Information Requests"],
+                extensions={"x-gusto-integration-type": ["embedded"]},
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

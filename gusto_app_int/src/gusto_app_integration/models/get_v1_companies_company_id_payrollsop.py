@@ -46,7 +46,7 @@ class DateFilterBy(str, Enum):
     CHECK_DATE = "check_date"
 
 
-class SortOrder(str, Enum):
+class QueryParamSortOrder(str, Enum):
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     ASC = "asc"
@@ -80,7 +80,7 @@ class GetV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    sort_order: NotRequired[SortOrder]
+    sort_order: NotRequired[QueryParamSortOrder]
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
 
@@ -158,7 +158,7 @@ class GetV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
     sort_order: Annotated[
-        Optional[SortOrder],
+        Optional[QueryParamSortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""

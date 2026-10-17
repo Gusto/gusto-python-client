@@ -30,7 +30,7 @@ class ContractorPaymentForGroupPreviewStatus(str, Enum):
     UNFUNDED = "Unfunded"
 
 
-class ContractorPaymentForGroupPreviewWageType(str, Enum):
+class WageType(str, Enum):
     r"""The wage type for the payment."""
 
     HOURLY = "Hourly"
@@ -60,7 +60,7 @@ class ContractorPaymentForGroupPreviewTypedDict(TypedDict):
     r"""Determine if the contractor payment can be cancelled."""
     wage: NotRequired[str]
     r"""The fixed wage of the payment, regardless of hours worked."""
-    wage_type: NotRequired[ContractorPaymentForGroupPreviewWageType]
+    wage_type: NotRequired[WageType]
     r"""The wage type for the payment."""
     wage_total: NotRequired[str]
     r"""(hours * hourly_rate) + wage + bonus"""
@@ -99,7 +99,7 @@ class ContractorPaymentForGroupPreview(BaseModel):
     wage: Optional[str] = None
     r"""The fixed wage of the payment, regardless of hours worked."""
 
-    wage_type: Optional[ContractorPaymentForGroupPreviewWageType] = None
+    wage_type: Optional[WageType] = None
     r"""The wage type for the payment."""
 
     wage_total: Optional[str] = None

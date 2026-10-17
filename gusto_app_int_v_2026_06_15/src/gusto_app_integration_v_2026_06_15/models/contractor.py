@@ -257,6 +257,8 @@ class ContractorTypedDict(TypedDict):
     r"""Whether company's Employer Identification Number (EIN) is present"""
     email: NotRequired[Nullable[str]]
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     start_date: NotRequired[str]
     r"""The contractor's start date."""
     address: NotRequired[Nullable[AddressTypedDict]]
@@ -340,6 +342,9 @@ class Contractor(BaseModel):
 
     email: OptionalNullable[str] = UNSET
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
+
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
 
     start_date: Optional[str] = None
     r"""The contractor's start date."""
@@ -451,6 +456,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "start_date",
                 "address",
                 "hourly_rate",
@@ -480,6 +486,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "address",
                 "file_new_hire_report",
                 "work_state",

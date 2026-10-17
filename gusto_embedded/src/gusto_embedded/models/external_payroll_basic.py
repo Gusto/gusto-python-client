@@ -8,7 +8,7 @@ from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class Status(str, Enum):
+class ExternalPayrollBasicStatus(str, Enum):
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
     UNPROCESSED = "unprocessed"
@@ -28,7 +28,7 @@ class ExternalPayrollBasicTypedDict(TypedDict):
     r"""External payroll's pay period start date."""
     payment_period_end_date: NotRequired[str]
     r"""External payroll's pay period end date."""
-    status: NotRequired[Status]
+    status: NotRequired[ExternalPayrollBasicStatus]
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
 
@@ -50,7 +50,7 @@ class ExternalPayrollBasic(BaseModel):
     payment_period_end_date: Optional[str] = None
     r"""External payroll's pay period end date."""
 
-    status: Optional[Status] = None
+    status: Optional[ExternalPayrollBasicStatus] = None
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
     @model_serializer(mode="wrap")

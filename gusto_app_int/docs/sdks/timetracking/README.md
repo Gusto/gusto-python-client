@@ -4,13 +4,118 @@
 
 ### Available Operations
 
+* [post_companies_company_uuid_time_tracking_payroll_syncs](#post_companies_company_uuid_time_tracking_payroll_syncs) - Create a payroll sync
+* [get_time_tracking_payroll_syncs_payroll_sync_uuid](#get_time_tracking_payroll_syncs_payroll_sync_uuid) - Get a payroll sync
 * [get_companies_company_uuid_time_tracking_time_sheets](#get_companies_company_uuid_time_tracking_time_sheets) - Get all time sheets for a company
 * [post_companies_company_uuid_time_tracking_time_sheets](#post_companies_company_uuid_time_tracking_time_sheets) - Create a time sheet
 * [get_time_tracking_time_sheets_time_sheet_uuid](#get_time_tracking_time_sheets_time_sheet_uuid) - Get a time sheet
 * [put_time_tracking_time_sheets_time_sheet_uuid](#put_time_tracking_time_sheets_time_sheet_uuid) - Update a time sheet
 * [delete_time_tracking_time_sheets_time_sheet_uuid](#delete_time_tracking_time_sheets_time_sheet_uuid) - Delete a time sheet
-* [post_companies_company_uuid_time_tracking_payroll_syncs](#post_companies_company_uuid_time_tracking_payroll_syncs) - Create a payroll sync
-* [get_time_tracking_payroll_syncs_payroll_sync_uuid](#get_time_tracking_payroll_syncs_payroll_sync_uuid) - Get a payroll sync
+
+## post_companies_company_uuid_time_tracking_payroll_syncs
+
+Initiate a payroll sync for a company.
+
+A payroll sync takes approved time sheet data and syncs it to the company's payroll.
+
+### Asynchronous processing
+This endpoint triggers an asynchronous operation — the response will return immediately with a status of `pending` while the sync processes in the background.
+
+**To track completion:**
+
+Subscribe (via [POST /v1/webhook_subscriptions](ref:post-v1-webhook-subscription)) to `PayrollSync` webhook events
+
+scope: `payroll_syncs:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-companies-company_uuid-time_tracking-payroll_syncs" method="post" path="/v1/companies/{company_id}/time_tracking/payroll_syncs" -->
+```python
+from datetime import date
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.time_tracking.post_companies_company_uuid_time_tracking_payroll_syncs(company_id="<id>", kind=gusto_app_integration.Kind.REGULAR, pay_schedule_uuid="123e4567-e89b-12d3-a456-426614174000", pay_period_start_date=date.fromisoformat("2025-01-01"), pay_period_end_date=date.fromisoformat("2025-01-15"), x_gusto_api_version=gusto_app_integration.PostCompaniesCompanyUUIDTimeTrackingPayrollSyncsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
+| `kind`                                                                                                                                                                                                                       | [models.Kind](../../models/kind.md)                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | The kind of payroll sync.<br/>- `regular`: A regular payroll sync<br/>                                                                                                                                                       | regular                                                                                                                                                                                                                      |
+| `pay_schedule_uuid`                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | Unique identifier of the pay schedule to sync time sheets for.                                                                                                                                                               | 123e4567-e89b-12d3-a456-426614174000                                                                                                                                                                                         |
+| `pay_period_start_date`                                                                                                                                                                                                      | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                           | The start date of the pay period per ISO 8601 format.                                                                                                                                                                        | 2025-01-01                                                                                                                                                                                                                   |
+| `pay_period_end_date`                                                                                                                                                                                                        | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                           | The end date of the pay period per ISO 8601 format.                                                                                                                                                                          | 2025-01-15                                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostCompaniesCompanyUUIDTimeTrackingPayrollSyncsHeaderXGustoAPIVersion]](../../models/postcompaniescompanyuuidtimetrackingpayrollsyncsheaderxgustoapiversion.md)                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.PayrollSync](../../models/payrollsync.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_time_tracking_payroll_syncs_payroll_sync_uuid
+
+Fetch a payroll sync.
+
+A payroll sync represents the result of syncing approved time sheet data to payroll. Use this endpoint to check the status of a previously initiated sync.
+
+scope: `payroll_syncs:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-time_tracking-payroll_syncs-payroll_sync_uuid" method="get" path="/v1/time_tracking/payroll_syncs/{payroll_sync_uuid}" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
+
+    res = gai_client.time_tracking.get_time_tracking_payroll_syncs_payroll_sync_uuid(payroll_sync_uuid="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", x_gusto_api_version=gusto_app_integration.GetTimeTrackingPayrollSyncsPayrollSyncUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payroll_sync_uuid`                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll sync                                                                                                                                                                                                 | 7b1d0df1-6403-4a06-8768-c1dd7d24d27a                                                                                                                                                                                         |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetTimeTrackingPayrollSyncsPayrollSyncUUIDHeaderXGustoAPIVersion]](../../models/gettimetrackingpayrollsyncspayrollsyncuuidheaderxgustoapiversion.md)                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
+
+### Response
+
+**[models.PayrollSync](../../models/payrollsync.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## get_companies_company_uuid_time_tracking_time_sheets
 
@@ -48,7 +153,7 @@ with GustoAppIntegration(
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion]](../../models/getcompaniescompanyuuidtimetrackingtimesheetsheaderxgustoapiversion.md)                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `entity_uuids`                                                                                                                                                                                                               | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Entity UUIDs that reported time sheets                                                                                                                                                                                       |
 | `entity_type`                                                                                                                                                                                                                | [Optional[models.QueryParamEntityType]](../../models/queryparamentitytype.md)                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Type of entities to filter. One of: "Employee", "Contractor"                                                                                                                                                                 |
-| `status`                                                                                                                                                                                                                     | [Optional[models.QueryParamStatus]](../../models/queryparamstatus.md)                                                                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Status of time sheets. One of: "approved", "pending", "rejected"                                                                                                                                                             |
+| `status`                                                                                                                                                                                                                     | [Optional[models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsQueryParamStatus]](../../models/getcompaniescompanyuuidtimetrackingtimesheetsqueryparamstatus.md)                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Status of time sheets. One of: "approved", "pending", "rejected"                                                                                                                                                             |
 | `sort_by`                                                                                                                                                                                                                    | [Optional[models.SortBy]](../../models/sortby.md)                                                                                                                                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Field to sort by. One of: "created_at", "updated_at", "shift_started_at", "shift_ended_at"                                                                                                                                   |
 | `sort_order`                                                                                                                                                                                                                 | [Optional[models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsQueryParamSortOrder]](../../models/getcompaniescompanyuuidtimetrackingtimesheetsqueryparamsortorder.md)                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Sorting order. One of: "asc", "desc"                                                                                                                                                                                         |
 | `before`                                                                                                                                                                                                                     | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | time sheets that were created before ISO 8601 timestamp. Filtering by "created_at"                                                                                                                                           |
@@ -273,108 +378,3 @@ with GustoAppIntegration(
 | models.NotFoundErrorObject            | 404                                   | application/json                      |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
-
-## post_companies_company_uuid_time_tracking_payroll_syncs
-
-Initiate a payroll sync for a company.
-
-A payroll sync takes approved time sheet data and syncs it to the company's payroll.
-
-### Asynchronous processing
-This endpoint triggers an asynchronous operation — the response will return immediately with a status of `pending` while the sync processes in the background.
-
-**To track completion:**
-
-Subscribe (via [POST /v1/webhook_subscriptions](ref:post-v1-webhook-subscription)) to `PayrollSync` webhook events
-
-scope: `payroll_syncs:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="post-companies-company_uuid-time_tracking-payroll_syncs" method="post" path="/v1/companies/{company_id}/time_tracking/payroll_syncs" -->
-```python
-from datetime import date
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.time_tracking.post_companies_company_uuid_time_tracking_payroll_syncs(company_id="<id>", kind=gusto_app_integration.Kind.REGULAR, pay_schedule_uuid="123e4567-e89b-12d3-a456-426614174000", pay_period_start_date=date.fromisoformat("2025-01-01"), pay_period_end_date=date.fromisoformat("2025-01-15"), x_gusto_api_version=gusto_app_integration.PostCompaniesCompanyUUIDTimeTrackingPayrollSyncsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
-| `kind`                                                                                                                                                                                                                       | [models.Kind](../../models/kind.md)                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | The kind of payroll sync.<br/>- `regular`: A regular payroll sync<br/>                                                                                                                                                       | regular                                                                                                                                                                                                                      |
-| `pay_schedule_uuid`                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | Unique identifier of the pay schedule to sync time sheets for.                                                                                                                                                               | 123e4567-e89b-12d3-a456-426614174000                                                                                                                                                                                         |
-| `pay_period_start_date`                                                                                                                                                                                                      | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                           | The start date of the pay period per ISO 8601 format.                                                                                                                                                                        | 2025-01-01                                                                                                                                                                                                                   |
-| `pay_period_end_date`                                                                                                                                                                                                        | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                 | :heavy_check_mark:                                                                                                                                                                                                           | The end date of the pay period per ISO 8601 format.                                                                                                                                                                          | 2025-01-15                                                                                                                                                                                                                   |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostCompaniesCompanyUUIDTimeTrackingPayrollSyncsHeaderXGustoAPIVersion]](../../models/postcompaniescompanyuuidtimetrackingpayrollsyncsheaderxgustoapiversion.md)                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
-
-### Response
-
-**[models.PayrollSync](../../models/payrollsync.md)**
-
-### Errors
-
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.NotFoundErrorObject            | 404                                   | application/json                      |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
-
-## get_time_tracking_payroll_syncs_payroll_sync_uuid
-
-Fetch a payroll sync.
-
-A payroll sync represents the result of syncing approved time sheet data to payroll. Use this endpoint to check the status of a previously initiated sync.
-
-scope: `payroll_syncs:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-time_tracking-payroll_syncs-payroll_sync_uuid" method="get" path="/v1/time_tracking/payroll_syncs/{payroll_sync_uuid}" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.time_tracking.get_time_tracking_payroll_syncs_payroll_sync_uuid(payroll_sync_uuid="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", x_gusto_api_version=gusto_app_integration.GetTimeTrackingPayrollSyncsPayrollSyncUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `payroll_sync_uuid`                                                                                                                                                                                                          | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll sync                                                                                                                                                                                                 | 7b1d0df1-6403-4a06-8768-c1dd7d24d27a                                                                                                                                                                                         |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetTimeTrackingPayrollSyncsPayrollSyncUUIDHeaderXGustoAPIVersion]](../../models/gettimetrackingpayrollsyncspayrollsyncuuidheaderxgustoapiversion.md)                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
-
-### Response
-
-**[models.PayrollSync](../../models/payrollsync.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |

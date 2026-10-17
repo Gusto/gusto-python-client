@@ -35,6 +35,7 @@ class SubscriptionTypes(str, Enum, metaclass=utils.OpenEnumMeta):
     PAYROLL_SYNC = "PayrollSync"
     PAY_SCHEDULE = "PaySchedule"
     SIGNATORY = "Signatory"
+    TIME_OFF_REQUEST = "TimeOffRequest"
 
 
 class WebhookSubscriptionTypedDict(TypedDict):

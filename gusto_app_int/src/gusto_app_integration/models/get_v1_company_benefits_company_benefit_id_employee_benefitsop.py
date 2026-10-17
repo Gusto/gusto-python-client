@@ -23,7 +23,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsHeaderXGustoAPIVersion
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude(str, Enum):
+class QueryParamInclude(str, Enum):
     r"""Available options:
     - all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -42,9 +42,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequestTypedDict(Typed
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    include: NotRequired[
-        GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude
-    ]
+    include: NotRequired[QueryParamInclude]
     r"""Available options:
     - all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -78,7 +76,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(BaseModel):
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
     include: Annotated[
-        Optional[GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude],
+        Optional[QueryParamInclude],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Available options:
