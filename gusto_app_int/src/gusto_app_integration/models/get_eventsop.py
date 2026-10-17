@@ -39,7 +39,7 @@ class GetEventsHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class QueryParamSortOrder(str, Enum):
+class SortOrder(str, Enum):
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     ASC = "asc"
@@ -57,7 +57,7 @@ class GetEventsRequestTypedDict(TypedDict):
     r"""Limits the number of objects returned in a single response, between 1 and 100. The default is 25"""
     event_type: NotRequired[str]
     r"""A string containing the exact event name (e.g. `employee.created`), or use a wildcard match to filter for a group of events (e.g. `employee.*`, `*.created`, `notification.*.created` etc.)"""
-    sort_order: NotRequired[QueryParamSortOrder]
+    sort_order: NotRequired[SortOrder]
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
 
@@ -94,7 +94,7 @@ class GetEventsRequest(BaseModel):
     r"""A string containing the exact event name (e.g. `employee.created`), or use a wildcard match to filter for a group of events (e.g. `employee.*`, `*.created`, `notification.*.created` etc.)"""
 
     sort_order: Annotated[
-        Optional[QueryParamSortOrder],
+        Optional[SortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""

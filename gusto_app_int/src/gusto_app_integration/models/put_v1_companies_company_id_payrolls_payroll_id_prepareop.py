@@ -30,12 +30,22 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion(str,
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBodyTypedDict(TypedDict):
     employee_uuids: NotRequired[Nullable[List[str]]]
-    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
+    r"""The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+    **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+    **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
+    """
 
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(BaseModel):
     employee_uuids: OptionalNullable[List[str]] = UNSET
-    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
+    r"""The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+    **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+    **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
+    """
 
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):

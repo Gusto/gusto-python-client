@@ -35,7 +35,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gai_client:
 
-    res = gai_client.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_app_integration.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, annual_net_revenue=500000)
+    res = gai_client.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_app_integration.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, annual_net_revenue=500000.0)
 
     # Handle response
     print(res)
@@ -136,7 +136,7 @@ with GustoAppIntegration(
             "time_percentage": "0.6",
             "primary": True,
         },
-    ], x_gusto_api_version=gusto_app_integration.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, annual_net_revenue=600000)
+    ], x_gusto_api_version=gusto_app_integration.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, annual_net_revenue=600000.0)
 
     # Handle response
     print(res)

@@ -9,7 +9,7 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class ContractorPaymentPaymentMethod(str, Enum):
+class PaymentMethod(str, Enum):
     r"""The payment method."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
@@ -25,7 +25,7 @@ class ContractorPaymentStatus(str, Enum):
     UNFUNDED = "Unfunded"
 
 
-class ContractorPaymentWageType(str, Enum):
+class WageType(str, Enum):
     r"""The wage type for the payment."""
 
     HOURLY = "Hourly"
@@ -45,7 +45,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""The payment date."""
     hours: NotRequired[str]
     r"""The number of hours worked for the payment."""
-    payment_method: NotRequired[ContractorPaymentPaymentMethod]
+    payment_method: NotRequired[PaymentMethod]
     r"""The payment method."""
     reimbursement: NotRequired[str]
     r"""The reimbursement amount in the payment."""
@@ -57,7 +57,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""Determine if the contractor payment can be cancelled."""
     wage: NotRequired[str]
     r"""The fixed wage of the payment, regardless of hours worked."""
-    wage_type: NotRequired[ContractorPaymentWageType]
+    wage_type: NotRequired[WageType]
     r"""The wage type for the payment."""
     wage_total: NotRequired[str]
     r"""(hours * hourly_rate) + wage + bonus"""
@@ -81,7 +81,7 @@ class ContractorPayment(BaseModel):
     hours: Optional[str] = None
     r"""The number of hours worked for the payment."""
 
-    payment_method: Optional[ContractorPaymentPaymentMethod] = None
+    payment_method: Optional[PaymentMethod] = None
     r"""The payment method."""
 
     reimbursement: Optional[str] = None
@@ -99,7 +99,7 @@ class ContractorPayment(BaseModel):
     wage: Optional[str] = None
     r"""The fixed wage of the payment, regardless of hours worked."""
 
-    wage_type: Optional[ContractorPaymentWageType] = None
+    wage_type: Optional[WageType] = None
     r"""The wage type for the payment."""
 
     wage_total: Optional[str] = None

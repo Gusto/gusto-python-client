@@ -22,7 +22,7 @@ from typing import List
 from typing_extensions import NotRequired, TypedDict
 
 
-class Type(str, Enum):
+class PayScheduleAssignmentType(str, Enum):
     SINGLE = "single"
     HOURLY_SALARIED = "hourly_salaried"
     BY_EMPLOYEE = "by_employee"
@@ -32,7 +32,7 @@ class Type(str, Enum):
 class PayScheduleAssignmentTypedDict(TypedDict):
     r"""The representation of a pay schedule assignment."""
 
-    type: NotRequired[Nullable[Type]]
+    type: NotRequired[Nullable[PayScheduleAssignmentType]]
     r"""The pay schedule assignment type."""
     hourly_pay_schedule_uuid: NotRequired[Nullable[str]]
     r"""Pay schedule for hourly employees."""
@@ -49,7 +49,7 @@ class PayScheduleAssignmentTypedDict(TypedDict):
 class PayScheduleAssignment(BaseModel):
     r"""The representation of a pay schedule assignment."""
 
-    type: OptionalNullable[Type] = UNSET
+    type: OptionalNullable[PayScheduleAssignmentType] = UNSET
     r"""The pay schedule assignment type."""
 
     hourly_pay_schedule_uuid: OptionalNullable[str] = UNSET

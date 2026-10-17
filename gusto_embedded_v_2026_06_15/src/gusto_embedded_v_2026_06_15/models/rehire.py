@@ -9,7 +9,7 @@ from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class EmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
+class RehireEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     PART_TIME = "part_time"
@@ -29,7 +29,7 @@ class RehireTypedDict(TypedDict):
     r"""The boolean flag indicating whether Gusto will file a new hire report for the employee."""
     work_location_uuid: NotRequired[str]
     r"""The uuid of the employee's work location."""
-    employment_status: NotRequired[EmploymentStatus]
+    employment_status: NotRequired[RehireEmploymentStatus]
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
@@ -52,7 +52,7 @@ class Rehire(BaseModel):
     work_location_uuid: Optional[str] = None
     r"""The uuid of the employee's work location."""
 
-    employment_status: Optional[EmploymentStatus] = None
+    employment_status: Optional[RehireEmploymentStatus] = None
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     two_percent_shareholder: Optional[bool] = None
@@ -68,7 +68,7 @@ class Rehire(BaseModel):
     def serialize_employment_status(self, value):
         if isinstance(value, str):
             try:
-                return models.EmploymentStatus(value)
+                return models.RehireEmploymentStatus(value)
             except ValueError:
                 return value
         return value

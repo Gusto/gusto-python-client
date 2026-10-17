@@ -6,13 +6,13 @@
 
 * [get](#get) - Get external payrolls for a company
 * [create](#create) - Create an external payroll for a company
+* [list_tax_liabilities](#list_tax_liabilities) - Get tax liabilities
+* [update_tax_liabilities](#update_tax_liabilities) - Update tax liabilities
+* [finalize_tax_liabilities](#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 * [retrieve](#retrieve) - Get an external payroll
 * [update](#update) - Update an external payroll
 * [delete](#delete) - Delete an external payroll
 * [calculate_taxes](#calculate_taxes) - Get tax suggestions for an external payroll
-* [list_tax_liabilities](#list_tax_liabilities) - Get tax liabilities
-* [update_tax_liabilities](#update_tax_liabilities) - Update tax liabilities
-* [finalize_tax_liabilities](#finalize_tax_liabilities) - Finalize tax liabilities options and convert into processed payrolls
 
 ## get
 
@@ -102,6 +102,141 @@ with Gusto(
 ### Response
 
 **[models.ExternalPayroll](../../models/externalpayroll.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## list_tax_liabilities
+
+Get tax liabilities from aggregate external payrolls for a company.
+
+scope: `external_payrolls:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-tax-liabilities" method="get" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.external_payrolls.list_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1TaxLiabilitiesHeaderXGustoAPIVersion]](../../models/getv1taxliabilitiesheaderxgustoapiversion.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.TaxLiabilitiesSelections]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## update_tax_liabilities
+
+Update tax liabilities for a company.
+
+scope: `external_payrolls:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-tax-liabilities" method="put" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    res = gusto.external_payrolls.update_tax_liabilities(company_uuid="<id>", liability_selections=[], x_gusto_api_version=gusto_embedded.PutV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `liability_selections`                                                                                                                                                                                                       | List[[models.LiabilitySelections](../../models/liabilityselections.md)]                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | Tax liability selections to record for the company's external payrolls.                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1TaxLiabilitiesHeaderXGustoAPIVersion]](../../models/putv1taxliabilitiesheaderxgustoapiversion.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.TaxLiabilitiesSelections]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## finalize_tax_liabilities
+
+Finalizes tax liabilities for a company. All external payrolls edit action will be disabled.
+
+### Asynchronous processing
+This endpoint triggers an asynchronous operation. The external payrolls will be processed in the background after finalization.
+
+scope: `external_payrolls:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-tax-liabilities-finish" method="put" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities/finish" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+) as gusto:
+
+    gusto.external_payrolls.finalize_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded.PutV1TaxLiabilitiesFinishHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1TaxLiabilitiesFinishHeaderXGustoAPIVersion]](../../models/putv1taxliabilitiesfinishheaderxgustoapiversion.md)                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Errors
 
@@ -311,141 +446,6 @@ with Gusto(
 ### Response
 
 **[List[models.ExternalPayrollTaxSuggestions]](../../models/.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## list_tax_liabilities
-
-Get tax liabilities from aggregate external payrolls for a company.
-
-scope: `external_payrolls:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-tax-liabilities" method="get" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.external_payrolls.list_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1TaxLiabilitiesHeaderXGustoAPIVersion]](../../models/getv1taxliabilitiesheaderxgustoapiversion.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.TaxLiabilitiesSelections]](../../models/.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## update_tax_liabilities
-
-Update tax liabilities for a company.
-
-scope: `external_payrolls:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-tax-liabilities" method="put" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.external_payrolls.update_tax_liabilities(company_uuid="<id>", liability_selections=[], x_gusto_api_version=gusto_embedded.PutV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `liability_selections`                                                                                                                                                                                                       | List[[models.LiabilitySelections](../../models/liabilityselections.md)]                                                                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | Tax liability selections to record for the company's external payrolls.                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1TaxLiabilitiesHeaderXGustoAPIVersion]](../../models/putv1taxliabilitiesheaderxgustoapiversion.md)                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.TaxLiabilitiesSelections]](../../models/.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## finalize_tax_liabilities
-
-Finalizes tax liabilities for a company. All external payrolls edit action will be disabled.
-
-### Asynchronous processing
-This endpoint triggers an asynchronous operation. The external payrolls will be processed in the background after finalization.
-
-scope: `external_payrolls:write`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-tax-liabilities-finish" method="put" path="/v1/companies/{company_uuid}/external_payrolls/tax_liabilities/finish" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.external_payrolls.finalize_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded.PutV1TaxLiabilitiesFinishHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1TaxLiabilitiesFinishHeaderXGustoAPIVersion]](../../models/putv1taxliabilitiesfinishheaderxgustoapiversion.md)                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Errors
 

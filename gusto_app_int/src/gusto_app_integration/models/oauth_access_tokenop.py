@@ -15,7 +15,7 @@ from typing import Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
 
 
-class HeaderXGustoAPIVersion(str, Enum):
+class OauthAccessTokenHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
@@ -114,7 +114,7 @@ OauthAccessTokenRequestBody = Annotated[
 
 class OauthAccessTokenRequestTypedDict(TypedDict):
     request_body: OauthAccessTokenRequestBodyTypedDict
-    x_gusto_api_version: NotRequired[HeaderXGustoAPIVersion]
+    x_gusto_api_version: NotRequired[OauthAccessTokenHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -125,10 +125,10 @@ class OauthAccessTokenRequest(BaseModel):
     ]
 
     x_gusto_api_version: Annotated[
-        Optional[HeaderXGustoAPIVersion],
+        Optional[OauthAccessTokenHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    ] = OauthAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")

@@ -24,10 +24,10 @@ class GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion(str, Enum):
 class GetV1CompanyOnboardingStatusRequestTypedDict(TypedDict):
     company_uuid: str
     r"""The UUID of the company"""
-    additional_steps: NotRequired[str]
-    r"""Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\"."""
     x_gusto_api_version: NotRequired[GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    additional_steps: NotRequired[str]
+    r"""Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\"."""
 
 
 class GetV1CompanyOnboardingStatusRequest(BaseModel):
@@ -36,12 +36,6 @@ class GetV1CompanyOnboardingStatusRequest(BaseModel):
     ]
     r"""The UUID of the company"""
 
-    additional_steps: Annotated[
-        Optional[str],
-        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
-    ] = None
-    r"""Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\"."""
-
     x_gusto_api_version: Annotated[
         Optional[GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
@@ -49,9 +43,15 @@ class GetV1CompanyOnboardingStatusRequest(BaseModel):
     ] = GetV1CompanyOnboardingStatusHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
+    additional_steps: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Comma-delimited string of additional onboarding steps to include. Currently only supports the value \"external_payroll\"."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["additional_steps", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "additional_steps"])
         serialized = handler(self)
         m = {}
 
