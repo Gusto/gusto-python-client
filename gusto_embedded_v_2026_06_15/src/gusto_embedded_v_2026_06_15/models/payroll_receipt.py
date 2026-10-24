@@ -105,7 +105,7 @@ class PayrollReceiptPaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
     CHECK = "Check"
 
 
-class PayrollReceiptEmployeeCompensationsTypedDict(TypedDict):
+class EmployeeCompensationsTypedDict(TypedDict):
     employee_uuid: NotRequired[str]
     r"""The UUID of the employee."""
     employee_first_name: NotRequired[str]
@@ -126,7 +126,7 @@ class PayrollReceiptEmployeeCompensationsTypedDict(TypedDict):
     r"""The total reimbursement for the pay period."""
 
 
-class PayrollReceiptEmployeeCompensations(BaseModel):
+class EmployeeCompensations(BaseModel):
     employee_uuid: Optional[str] = None
     r"""The UUID of the employee."""
 
@@ -272,9 +272,7 @@ class PayrollReceiptTypedDict(TypedDict):
     r"""The subtotals for the payroll."""
     taxes: NotRequired[List[TaxesTypedDict]]
     r"""An array of totaled employer and employee taxes for the pay period."""
-    employee_compensations: NotRequired[
-        List[PayrollReceiptEmployeeCompensationsTypedDict]
-    ]
+    employee_compensations: NotRequired[List[EmployeeCompensationsTypedDict]]
     r"""An array of employee compensations and withholdings for this payroll"""
     licensee: NotRequired[PayrollReceiptLicenseeTypedDict]
     r"""The licensed payroll processor"""
@@ -315,7 +313,7 @@ class PayrollReceipt(BaseModel):
     taxes: Optional[List[Taxes]] = None
     r"""An array of totaled employer and employee taxes for the pay period."""
 
-    employee_compensations: Optional[List[PayrollReceiptEmployeeCompensations]] = None
+    employee_compensations: Optional[List[EmployeeCompensations]] = None
     r"""An array of employee compensations and withholdings for this payroll"""
 
     licensee: Optional[PayrollReceiptLicensee] = None

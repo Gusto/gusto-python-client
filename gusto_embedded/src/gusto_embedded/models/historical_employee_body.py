@@ -29,7 +29,7 @@ class WorkAddress(BaseModel):
     r"""UUID of a company work location from the company locations response."""
 
 
-class HistoricalEmployeeBodyHomeAddressTypedDict(TypedDict):
+class HomeAddressTypedDict(TypedDict):
     r"""Residential address on file for tax withholding and compliance mail."""
 
     street_1: str
@@ -44,7 +44,7 @@ class HistoricalEmployeeBodyHomeAddressTypedDict(TypedDict):
     r"""Apartment, suite, unit, or building (optional)."""
 
 
-class HistoricalEmployeeBodyHomeAddress(BaseModel):
+class HomeAddress(BaseModel):
     r"""Residential address on file for tax withholding and compliance mail."""
 
     street_1: str
@@ -170,7 +170,7 @@ class HistoricalEmployeeBodyTypedDict(TypedDict):
     """
     work_address: WorkAddressTypedDict
     r"""Primary work location for this historical employment row."""
-    home_address: HistoricalEmployeeBodyHomeAddressTypedDict
+    home_address: HomeAddressTypedDict
     r"""Residential address on file for tax withholding and compliance mail."""
     termination: HistoricalEmployeeBodyTerminationTypedDict
     r"""End of the historical employment period."""
@@ -210,7 +210,7 @@ class HistoricalEmployeeBody(BaseModel):
     work_address: WorkAddress
     r"""Primary work location for this historical employment row."""
 
-    home_address: HistoricalEmployeeBodyHomeAddress
+    home_address: HomeAddress
     r"""Residential address on file for tax withholding and compliance mail."""
 
     termination: HistoricalEmployeeBodyTermination
@@ -251,6 +251,6 @@ class HistoricalEmployeeBody(BaseModel):
 
 
 try:
-    HistoricalEmployeeBodyHomeAddress.model_rebuild()
+    HomeAddress.model_rebuild()
 except NameError:
     pass

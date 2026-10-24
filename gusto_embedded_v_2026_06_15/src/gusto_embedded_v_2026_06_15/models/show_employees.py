@@ -181,7 +181,7 @@ class ShowEmployeesMemberPortalInvitationStatus(BaseModel):
 
 
 class ShowEmployeesTypedDict(TypedDict):
-    r"""The representation of an employee in Gusto."""
+    r"""An employee, with additional fields that are only ever returned on GET requests gated behind the `include` query parameter."""
 
     uuid: str
     r"""The UUID of the employee in Gusto."""
@@ -249,12 +249,15 @@ class ShowEmployeesTypedDict(TypedDict):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
     partner_portal_invitation_sent: NotRequired[Nullable[bool]]
     r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
+    company_name: NotRequired[str]
+    r"""The name of the company the employee is associated with. Only included when the include param has the company_name value set."""
     current_home_address: NotRequired[EmployeeHomeAddressTypedDict]
     all_home_addresses: NotRequired[List[EmployeeHomeAddressHistoryEntryTypedDict]]
+    r"""All of the employee's home addresses, past and present. Only included when the include param has the all_home_addresses value set."""
 
 
 class ShowEmployees(BaseModel):
-    r"""The representation of an employee in Gusto."""
+    r"""An employee, with additional fields that are only ever returned on GET requests gated behind the `include` query parameter."""
 
     model_config = ConfigDict(
         populate_by_name=True, arbitrary_types_allowed=True, extra="allow"
@@ -364,9 +367,13 @@ class ShowEmployees(BaseModel):
     partner_portal_invitation_sent: OptionalNullable[bool] = UNSET
     r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
 
+    company_name: Optional[str] = None
+    r"""The name of the company the employee is associated with. Only included when the include param has the company_name value set."""
+
     current_home_address: Optional[EmployeeHomeAddress] = None
 
     all_home_addresses: Optional[List[EmployeeHomeAddressHistoryEntry]] = None
+    r"""All of the employee's home addresses, past and present. Only included when the include param has the all_home_addresses value set."""
 
     @property
     def additional_properties(self):
@@ -450,6 +457,7 @@ class ShowEmployees(BaseModel):
                 "applicable_tax_ids",
                 "member_portal_invitation_status",
                 "partner_portal_invitation_sent",
+                "company_name",
                 "current_home_address",
                 "all_home_addresses",
             ]

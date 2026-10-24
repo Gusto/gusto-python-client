@@ -19,7 +19,7 @@ class PayScheduleAutoPayrollEnablementBlockerTypedDict(TypedDict):
     r"""A single blocker preventing Autopayroll enablement."""
 
     key: NotRequired[str]
-    r"""The blocker type (e.g. employees_not_on_direct_deposit, employees_not_salaried, missing_funding_method, missing_state_tax_requirements, one_day_ach_speed_not_supported, company_suspended, earned_fast_ach_not_met)."""
+    r"""The blocker type. Possible values: employees_not_on_direct_deposit, employees_not_salaried, missing_state_tax_requirements, missing_funding_method, one_day_ach_speed_not_supported, company_suspended, earned_fast_ach_not_met, hourly_employees_missing_default_hours."""
     metadata: NotRequired[PayScheduleAutoPayrollEnablementBlockerMetadataTypedDict]
     r"""Blocker-specific metadata (e.g. employee_uuids, states)."""
 
@@ -28,7 +28,7 @@ class PayScheduleAutoPayrollEnablementBlocker(BaseModel):
     r"""A single blocker preventing Autopayroll enablement."""
 
     key: Optional[str] = None
-    r"""The blocker type (e.g. employees_not_on_direct_deposit, employees_not_salaried, missing_funding_method, missing_state_tax_requirements, one_day_ach_speed_not_supported, company_suspended, earned_fast_ach_not_met)."""
+    r"""The blocker type. Possible values: employees_not_on_direct_deposit, employees_not_salaried, missing_state_tax_requirements, missing_funding_method, one_day_ach_speed_not_supported, company_suspended, earned_fast_ach_not_met, hourly_employees_missing_default_hours."""
 
     metadata: Optional[PayScheduleAutoPayrollEnablementBlockerMetadata] = None
     r"""Blocker-specific metadata (e.g. employee_uuids, states)."""

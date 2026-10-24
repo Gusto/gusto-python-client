@@ -31,7 +31,7 @@ class ContractorType(str, Enum, metaclass=utils.OpenEnumMeta):
     BUSINESS = "Business"
 
 
-class AddressTypedDict(TypedDict):
+class ContractorAddress1TypedDict(TypedDict):
     r"""The contractor’s home address."""
 
     street_1: NotRequired[str]
@@ -42,7 +42,7 @@ class AddressTypedDict(TypedDict):
     country: NotRequired[str]
 
 
-class Address(BaseModel):
+class ContractorAddress1(BaseModel):
     r"""The contractor’s home address."""
 
     street_1: Optional[str] = None
@@ -85,7 +85,7 @@ class Address(BaseModel):
         return m
 
 
-class OnboardingStatus(str, Enum, metaclass=utils.OpenEnumMeta):
+class ContractorOnboardingStatus1(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""One of the \"onboarding_status\" enum values."""
 
     ADMIN_ONBOARDING_INCOMPLETE = "admin_onboarding_incomplete"
@@ -102,7 +102,7 @@ class ContractorPaymentMethod1(str, Enum, metaclass=utils.OpenEnumMeta):
     CHECK = "Check"
 
 
-class UpcomingEmploymentTypedDict(TypedDict):
+class ContractorUpcomingEmploymentTypedDict(TypedDict):
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     start_date: NotRequired[str]
@@ -111,7 +111,7 @@ class UpcomingEmploymentTypedDict(TypedDict):
     r"""The setup status of the upcoming employment."""
 
 
-class UpcomingEmployment(BaseModel):
+class ContractorUpcomingEmployment(BaseModel):
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     start_date: Optional[str] = None
@@ -156,7 +156,7 @@ class ContractorStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     CANCELLED = "cancelled"
 
 
-class MemberPortalInvitationStatusTypedDict(TypedDict):
+class ContractorMemberPortalInvitationStatusTypedDict(TypedDict):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: NotRequired[ContractorStatus]
@@ -169,7 +169,7 @@ class MemberPortalInvitationStatusTypedDict(TypedDict):
     r"""The date and time when the password reset was last resent."""
 
 
-class MemberPortalInvitationStatus(BaseModel):
+class ContractorMemberPortalInvitationStatus(BaseModel):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     status: Optional[ContractorStatus] = None
@@ -257,9 +257,11 @@ class ContractorTypedDict(TypedDict):
     r"""Whether company's Employer Identification Number (EIN) is present"""
     email: NotRequired[Nullable[str]]
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     start_date: NotRequired[str]
     r"""The contractor's start date."""
-    address: NotRequired[Nullable[AddressTypedDict]]
+    address: NotRequired[Nullable[ContractorAddress1TypedDict]]
     r"""The contractor’s home address."""
     hourly_rate: NotRequired[str]
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
@@ -271,7 +273,7 @@ class ContractorTypedDict(TypedDict):
     """
     onboarded: NotRequired[bool]
     r"""The updated onboarding status for the contractor"""
-    onboarding_status: NotRequired[OnboardingStatus]
+    onboarding_status: NotRequired[ContractorOnboardingStatus1]
     r"""One of the \"onboarding_status\" enum values."""
     payment_method: NotRequired[Nullable[ContractorPaymentMethod1]]
     r"""The contractor's payment method."""
@@ -285,14 +287,14 @@ class ContractorTypedDict(TypedDict):
     r"""The title of the contractor's department."""
     dismissal_date: NotRequired[Nullable[str]]
     r"""The contractor's dismissal date."""
-    upcoming_employment: NotRequired[Nullable[UpcomingEmploymentTypedDict]]
+    upcoming_employment: NotRequired[Nullable[ContractorUpcomingEmploymentTypedDict]]
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
     dismissal_cancellation_eligible: NotRequired[bool]
     r"""Whether the contractor's pending dismissal can be cancelled."""
     rehire_cancellation_eligible: NotRequired[bool]
     r"""Whether the contractor's pending rehire can be cancelled."""
     member_portal_invitation_status: NotRequired[
-        Nullable[MemberPortalInvitationStatusTypedDict]
+        Nullable[ContractorMemberPortalInvitationStatusTypedDict]
     ]
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
     partner_portal_invitation_sent: NotRequired[Nullable[bool]]
@@ -341,10 +343,13 @@ class Contractor(BaseModel):
     email: OptionalNullable[str] = UNSET
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
 
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     start_date: Optional[str] = None
     r"""The contractor's start date."""
 
-    address: OptionalNullable[Address] = UNSET
+    address: OptionalNullable[ContractorAddress1] = UNSET
     r"""The contractor’s home address."""
 
     hourly_rate: Optional[str] = None
@@ -361,7 +366,7 @@ class Contractor(BaseModel):
     onboarded: Optional[bool] = None
     r"""The updated onboarding status for the contractor"""
 
-    onboarding_status: Optional[OnboardingStatus] = None
+    onboarding_status: Optional[ContractorOnboardingStatus1] = None
     r"""One of the \"onboarding_status\" enum values."""
 
     payment_method: OptionalNullable[ContractorPaymentMethod1] = UNSET
@@ -382,7 +387,7 @@ class Contractor(BaseModel):
     dismissal_date: OptionalNullable[str] = UNSET
     r"""The contractor's dismissal date."""
 
-    upcoming_employment: OptionalNullable[UpcomingEmployment] = UNSET
+    upcoming_employment: OptionalNullable[ContractorUpcomingEmployment] = UNSET
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     dismissal_cancellation_eligible: Optional[bool] = None
@@ -391,9 +396,9 @@ class Contractor(BaseModel):
     rehire_cancellation_eligible: Optional[bool] = None
     r"""Whether the contractor's pending rehire can be cancelled."""
 
-    member_portal_invitation_status: OptionalNullable[MemberPortalInvitationStatus] = (
-        UNSET
-    )
+    member_portal_invitation_status: OptionalNullable[
+        ContractorMemberPortalInvitationStatus
+    ] = UNSET
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
 
     partner_portal_invitation_sent: OptionalNullable[bool] = UNSET
@@ -421,7 +426,7 @@ class Contractor(BaseModel):
     def serialize_onboarding_status(self, value):
         if isinstance(value, str):
             try:
-                return models.OnboardingStatus(value)
+                return models.ContractorOnboardingStatus1(value)
             except ValueError:
                 return value
         return value
@@ -451,6 +456,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "start_date",
                 "address",
                 "hourly_rate",
@@ -480,6 +486,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "address",
                 "file_new_hire_report",
                 "work_state",
@@ -516,6 +523,6 @@ class Contractor(BaseModel):
 
 
 try:
-    Address.model_rebuild()
+    ContractorAddress1.model_rebuild()
 except NameError:
     pass

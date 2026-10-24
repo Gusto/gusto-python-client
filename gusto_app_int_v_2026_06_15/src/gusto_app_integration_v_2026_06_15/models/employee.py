@@ -33,7 +33,7 @@ class EmployeeOnboardingStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class OnboardingDocumentsConfigTypedDict(TypedDict):
+class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -42,7 +42,7 @@ class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class OnboardingDocumentsConfig(BaseModel):
+class EmployeeOnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -84,7 +84,7 @@ class EmployeePaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
     CHECK = "Check"
 
 
-class CurrentEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
+class EmployeeCurrentEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     FULL_TIME = "full_time"
     PART_TIME_UNDER_TWENTY_HOURS = "part_time_under_twenty_hours"
     PART_TIME_TWENTY_PLUS_HOURS = "part_time_twenty_plus_hours"
@@ -202,7 +202,7 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee has completed onboarding."""
     onboarding_status: NotRequired[Nullable[EmployeeOnboardingStatus]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[EmployeeOnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -219,7 +219,7 @@ class EmployeeTypedDict(TypedDict):
     preferred_first_name: NotRequired[Nullable[str]]
     payment_method: NotRequired[EmployeePaymentMethod]
     r"""The employee's payment method"""
-    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
+    current_employment_status: NotRequired[Nullable[EmployeeCurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
     historical: NotRequired[bool]
     employee_code: NotRequired[str]
@@ -283,7 +283,7 @@ class Employee(BaseModel):
     onboarding_status: OptionalNullable[EmployeeOnboardingStatus] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[EmployeeOnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -312,7 +312,7 @@ class Employee(BaseModel):
     payment_method: Optional[EmployeePaymentMethod] = EmployeePaymentMethod.CHECK
     r"""The employee's payment method"""
 
-    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[EmployeeCurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
     historical: Optional[bool] = None
@@ -365,7 +365,7 @@ class Employee(BaseModel):
     def serialize_current_employment_status(self, value):
         if isinstance(value, str):
             try:
-                return models.CurrentEmploymentStatus(value)
+                return models.EmployeeCurrentEmploymentStatus(value)
             except ValueError:
                 return value
         return value
