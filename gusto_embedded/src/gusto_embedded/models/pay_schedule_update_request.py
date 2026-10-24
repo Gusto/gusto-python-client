@@ -31,6 +31,18 @@ class PayScheduleUpdateRequestFrequency(str, Enum):
     MONTHLY = "Monthly"
 
 
+class PayScheduleUpdateRequestWorkweekStartDay(str, Enum):
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations."""
+
+    SUNDAY = "Sunday"
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
+
+
 class PayScheduleUpdateRequestTypedDict(TypedDict):
     r"""Request body for updating a pay schedule. Sent in the pay_schedule_update root key. Version is required for optimistic concurrency. Pay schedules may be automatically adjusted if an onboarded company misses their first pay date; see [Create a pay schedule](https://docs.gusto.com/embedded-payroll/docs/create-a-pay-schedule)."""
 
@@ -54,6 +66,7 @@ class PayScheduleUpdateRequestTypedDict(TypedDict):
     """
     custom_name: NotRequired[Nullable[str]]
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
+    workweek_start_day: NotRequired[PayScheduleUpdateRequestWorkweekStartDay]
 
 
 class PayScheduleUpdateRequest(BaseModel):
@@ -87,6 +100,8 @@ class PayScheduleUpdateRequest(BaseModel):
     custom_name: OptionalNullable[str] = UNSET
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
 
+    workweek_start_day: Optional[PayScheduleUpdateRequestWorkweekStartDay] = None
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
         optional_fields = set(
@@ -98,6 +113,7 @@ class PayScheduleUpdateRequest(BaseModel):
                 "day_1",
                 "day_2",
                 "custom_name",
+                "workweek_start_day",
             ]
         )
         nullable_fields = set(["day_1", "day_2", "custom_name"])

@@ -81,7 +81,7 @@ class PaymentConfigsTypedDict(TypedDict):
     partner_uuid: NotRequired[str]
     r"""Partner uuid"""
     fast_payment_limit: NotRequired[Nullable[str]]
-    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal)."""
+    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
     payment_speed: NotRequired[PaymentSpeed]
     r"""Payment speed. READ-ONLY.
     - `1-day`: Next-day ACH (only for partners that opt in).
@@ -103,7 +103,7 @@ class PaymentConfigs(BaseModel):
     r"""Partner uuid"""
 
     fast_payment_limit: OptionalNullable[str] = UNSET
-    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal)."""
+    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
 
     payment_speed: Optional[PaymentSpeed] = None
     r"""Payment speed. READ-ONLY.

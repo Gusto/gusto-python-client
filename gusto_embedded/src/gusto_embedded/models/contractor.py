@@ -16,7 +16,7 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class WageType(str, Enum):
+class ContractorWageType(str, Enum):
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     FIXED = "Fixed"
@@ -30,7 +30,7 @@ class ContractorType(str, Enum):
     BUSINESS = "Business"
 
 
-class AddressTypedDict(TypedDict):
+class ContractorAddress1TypedDict(TypedDict):
     r"""The contractor’s home address."""
 
     street_1: NotRequired[str]
@@ -41,7 +41,7 @@ class AddressTypedDict(TypedDict):
     country: NotRequired[str]
 
 
-class Address(BaseModel):
+class ContractorAddress1(BaseModel):
     r"""The contractor’s home address."""
 
     street_1: Optional[str] = None
@@ -101,7 +101,7 @@ class ContractorPaymentMethod1(str, Enum):
     CHECK = "Check"
 
 
-class UpcomingEmploymentTypedDict(TypedDict):
+class ContractorUpcomingEmploymentTypedDict(TypedDict):
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     start_date: NotRequired[str]
@@ -110,7 +110,7 @@ class UpcomingEmploymentTypedDict(TypedDict):
     r"""The setup status of the upcoming employment."""
 
 
-class UpcomingEmployment(BaseModel):
+class ContractorUpcomingEmployment(BaseModel):
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     start_date: Optional[str] = None
@@ -225,7 +225,7 @@ class ContractorTypedDict(TypedDict):
     r"""The UUID of the contractor in Gusto."""
     company_uuid: NotRequired[str]
     r"""The UUID of the company the contractor is employed by."""
-    wage_type: NotRequired[WageType]
+    wage_type: NotRequired[ContractorWageType]
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
     is_active: NotRequired[bool]
     r"""The status of the contractor with the company."""
@@ -247,9 +247,11 @@ class ContractorTypedDict(TypedDict):
     r"""Whether company's Employer Identification Number (EIN) is present"""
     email: NotRequired[Nullable[str]]
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
+    work_email: NotRequired[Nullable[str]]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     start_date: NotRequired[str]
     r"""The contractor's start date."""
-    address: NotRequired[Nullable[AddressTypedDict]]
+    address: NotRequired[Nullable[ContractorAddress1TypedDict]]
     r"""The contractor’s home address."""
     hourly_rate: NotRequired[str]
     r"""The contractor’s hourly rate. This attribute is required if the wage_type is “Hourly”."""
@@ -275,7 +277,7 @@ class ContractorTypedDict(TypedDict):
     r"""The title of the contractor's department."""
     dismissal_date: NotRequired[Nullable[str]]
     r"""The contractor's dismissal date."""
-    upcoming_employment: NotRequired[Nullable[UpcomingEmploymentTypedDict]]
+    upcoming_employment: NotRequired[Nullable[ContractorUpcomingEmploymentTypedDict]]
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
     dismissal_cancellation_eligible: NotRequired[bool]
     r"""Whether the contractor's pending dismissal can be cancelled."""
@@ -298,7 +300,7 @@ class Contractor(BaseModel):
     company_uuid: Optional[str] = None
     r"""The UUID of the company the contractor is employed by."""
 
-    wage_type: Optional[WageType] = None
+    wage_type: Optional[ContractorWageType] = None
     r"""The contractor's wage type, either \"Fixed\" or \"Hourly\"."""
 
     is_active: Optional[bool] = True
@@ -331,10 +333,13 @@ class Contractor(BaseModel):
     email: OptionalNullable[str] = UNSET
     r"""The contractor’s email address. This attribute is optional for “Individual” contractors and will be ignored for “Business” contractors."""
 
+    work_email: OptionalNullable[str] = UNSET
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     start_date: Optional[str] = None
     r"""The contractor's start date."""
 
-    address: OptionalNullable[Address] = UNSET
+    address: OptionalNullable[ContractorAddress1] = UNSET
     r"""The contractor’s home address."""
 
     hourly_rate: Optional[str] = None
@@ -372,7 +377,7 @@ class Contractor(BaseModel):
     dismissal_date: OptionalNullable[str] = UNSET
     r"""The contractor's dismissal date."""
 
-    upcoming_employment: OptionalNullable[UpcomingEmployment] = UNSET
+    upcoming_employment: OptionalNullable[ContractorUpcomingEmployment] = UNSET
     r"""The contractor's upcoming employment details, if a rehire is scheduled."""
 
     dismissal_cancellation_eligible: Optional[bool] = None
@@ -405,6 +410,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "start_date",
                 "address",
                 "hourly_rate",
@@ -434,6 +440,7 @@ class Contractor(BaseModel):
                 "ein",
                 "has_ein",
                 "email",
+                "work_email",
                 "address",
                 "file_new_hire_report",
                 "work_state",
@@ -470,6 +477,6 @@ class Contractor(BaseModel):
 
 
 try:
-    Address.model_rebuild()
+    ContractorAddress1.model_rebuild()
 except NameError:
     pass

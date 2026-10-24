@@ -13,7 +13,7 @@ from pydantic import model_serializer
 from typing_extensions import NotRequired, TypedDict
 
 
-class Aggregation(str, Enum):
+class GeneralLedgerReportBodyAggregation(str, Enum):
     r"""The breakdown of the report. Use 'default' for no split."""
 
     DEFAULT = "default"
@@ -30,7 +30,7 @@ class IntegrationType(str, Enum):
 class GeneralLedgerReportBodyTypedDict(TypedDict):
     r"""Request body for generating a general ledger report. The report can be aggregated by different dimensions such as job or department."""
 
-    aggregation: Aggregation
+    aggregation: GeneralLedgerReportBodyAggregation
     r"""The breakdown of the report. Use 'default' for no split."""
     integration_type: NotRequired[Nullable[IntegrationType]]
     r"""The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'."""
@@ -39,7 +39,7 @@ class GeneralLedgerReportBodyTypedDict(TypedDict):
 class GeneralLedgerReportBody(BaseModel):
     r"""Request body for generating a general ledger report. The report can be aggregated by different dimensions such as job or department."""
 
-    aggregation: Aggregation
+    aggregation: GeneralLedgerReportBodyAggregation
     r"""The breakdown of the report. Use 'default' for no split."""
 
     integration_type: OptionalNullable[IntegrationType] = UNSET

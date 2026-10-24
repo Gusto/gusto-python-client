@@ -21,18 +21,38 @@ class PostV1CompaniesCompanyIDEarningTypesHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
+class PostV1CompaniesCompanyIDEarningTypesCategory(str, Enum):
+    r"""The earning type category. Only settable when the company has access to categorized custom bonus earning types."""
+
+    COMMISSION = "Commission"
+    DISCRETIONARY_BONUS = "DiscretionaryBonus"
+    SERVICE_CHARGES = "ServiceCharges"
+    ON_CALL_PAY = "OnCallPay"
+    OTHER = "Other"
+
+
 class PostV1CompaniesCompanyIDEarningTypesRequestBodyTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the custom earning type."""
+    category: NotRequired[PostV1CompaniesCompanyIDEarningTypesCategory]
+    r"""The earning type category. Only settable when the company has access to categorized custom bonus earning types."""
+    included_in_overtime_pay: NotRequired[bool]
+    r"""Whether earnings of this type are included when calculating an employee's regular rate of pay for overtime purposes. Only settable when `category` is `Other`."""
 
 
 class PostV1CompaniesCompanyIDEarningTypesRequestBody(BaseModel):
     name: Optional[str] = "Gym Membership"
     r"""The name of the custom earning type."""
 
+    category: Optional[PostV1CompaniesCompanyIDEarningTypesCategory] = None
+    r"""The earning type category. Only settable when the company has access to categorized custom bonus earning types."""
+
+    included_in_overtime_pay: Optional[bool] = None
+    r"""Whether earnings of this type are included when calculating an employee's regular rate of pay for overtime purposes. Only settable when `category` is `Other`."""
+
     @model_serializer(mode="wrap")
     def serialize_model(self, handler):
-        optional_fields = set(["name"])
+        optional_fields = set(["name", "category", "included_in_overtime_pay"])
         serialized = handler(self)
         m = {}
 

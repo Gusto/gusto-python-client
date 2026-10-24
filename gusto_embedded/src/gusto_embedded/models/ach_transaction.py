@@ -21,7 +21,7 @@ class PaymentEventType(str, Enum):
     CONTRACTOR_PAYMENT = "ContractorPayment"
 
 
-class AchTransactionRecipientType(str, Enum):
+class RecipientType(str, Enum):
     EMPLOYEE = "Employee"
     CONTRACTOR = "Contractor"
 
@@ -53,7 +53,7 @@ class AchTransactionTypedDict(TypedDict):
     r"""The type of payment event associated with the ACH transaction"""
     payment_event_uuid: NotRequired[str]
     r"""Unique identifier for the payment event associated with the ACH transaction"""
-    recipient_type: NotRequired[Nullable[AchTransactionRecipientType]]
+    recipient_type: NotRequired[Nullable[RecipientType]]
     r"""The type of recipient associated with the ACH transaction"""
     recipient_uuid: NotRequired[str]
     r"""Unique identifier for the recipient associated with the ACH transaction"""
@@ -90,7 +90,7 @@ class AchTransaction(BaseModel):
     payment_event_uuid: Optional[str] = None
     r"""Unique identifier for the payment event associated with the ACH transaction"""
 
-    recipient_type: OptionalNullable[AchTransactionRecipientType] = UNSET
+    recipient_type: OptionalNullable[RecipientType] = UNSET
     r"""The type of recipient associated with the ACH transaction"""
 
     recipient_uuid: Optional[str] = None

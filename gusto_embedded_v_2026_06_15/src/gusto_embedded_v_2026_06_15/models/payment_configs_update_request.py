@@ -26,7 +26,7 @@ class PaymentConfigsUpdateRequestPaymentConfigsTypedDict(TypedDict):
     payment_speed: NotRequired[PaymentConfigsUpdateRequestPaymentSpeed]
     r"""Desired payment speed. 1-day is only applicable to partners that opt in."""
     fast_payment_limit: NotRequired[Nullable[float]]
-    r"""Payment limit for 1-day or 2-day payroll (in dollars)."""
+    r"""Payment limit for 1-day or 2-day payroll (in dollars). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
     partner_owned_disbursement: NotRequired[bool]
     r"""Whether to use the partner-owned disbursement payment rail."""
 
@@ -36,7 +36,7 @@ class PaymentConfigsUpdateRequestPaymentConfigs(BaseModel):
     r"""Desired payment speed. 1-day is only applicable to partners that opt in."""
 
     fast_payment_limit: OptionalNullable[float] = UNSET
-    r"""Payment limit for 1-day or 2-day payroll (in dollars)."""
+    r"""Payment limit for 1-day or 2-day payroll (in dollars). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
 
     partner_owned_disbursement: Optional[bool] = None
     r"""Whether to use the partner-owned disbursement payment rail."""

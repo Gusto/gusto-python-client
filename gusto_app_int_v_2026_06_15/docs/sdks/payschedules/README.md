@@ -147,7 +147,7 @@ with GustoAppIntegration(
 
 ### Response
 
-**[List[models.PayScheduleShow]](../../models/.md)**
+**[List[models.PayScheduleListItem]](../../models/.md)**
 
 ### Errors
 

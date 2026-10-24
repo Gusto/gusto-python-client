@@ -24,15 +24,13 @@ class ContractorPaymentsPreviewBodyContractorPaymentsTypedDict(TypedDict):
     r"""Date of the contractor payment (check date)."""
     payment_method: NotRequired[ContractorPaymentsPreviewBodyPaymentMethod]
     r"""The payment method."""
-    wage: NotRequired[int]
+    wage: NotRequired[str]
     r"""Fixed wage amount for the payment."""
-    hours: NotRequired[int]
+    hours: NotRequired[str]
     r"""Number of hours worked for the payment."""
-    hourly_rate: NotRequired[int]
-    r"""Hourly rate for the payment."""
-    bonus: NotRequired[int]
+    bonus: NotRequired[str]
     r"""Bonus amount for the payment."""
-    reimbursement: NotRequired[int]
+    reimbursement: NotRequired[str]
     r"""Reimbursement amount for the payment."""
 
 
@@ -46,19 +44,16 @@ class ContractorPaymentsPreviewBodyContractorPayments(BaseModel):
     payment_method: Optional[ContractorPaymentsPreviewBodyPaymentMethod] = None
     r"""The payment method."""
 
-    wage: Optional[int] = None
+    wage: Optional[str] = None
     r"""Fixed wage amount for the payment."""
 
-    hours: Optional[int] = None
+    hours: Optional[str] = None
     r"""Number of hours worked for the payment."""
 
-    hourly_rate: Optional[int] = None
-    r"""Hourly rate for the payment."""
-
-    bonus: Optional[int] = None
+    bonus: Optional[str] = None
     r"""Bonus amount for the payment."""
 
-    reimbursement: Optional[int] = None
+    reimbursement: Optional[str] = None
     r"""Reimbursement amount for the payment."""
 
     @model_serializer(mode="wrap")
@@ -70,7 +65,6 @@ class ContractorPaymentsPreviewBodyContractorPayments(BaseModel):
                 "payment_method",
                 "wage",
                 "hours",
-                "hourly_rate",
                 "bonus",
                 "reimbursement",
             ]
