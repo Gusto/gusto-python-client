@@ -30,7 +30,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompanyExternalPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -78,7 +78,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.create(company_uuid="<id>", check_date=date.fromisoformat("2022-06-03"), payment_period_start_date=date.fromisoformat("2022-05-15"), payment_period_end_date=date.fromisoformat("2022-05-30"), x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1ExternalPayrollHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -127,7 +127,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.list_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -172,7 +172,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.update_tax_liabilities(company_uuid="<id>", liability_selections=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TaxLiabilitiesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -221,7 +221,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.external_payrolls.finalize_tax_liabilities(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TaxLiabilitiesFinishHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -262,7 +262,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.retrieve(company_uuid="<id>", external_payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ExternalPayrollHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -308,7 +308,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.update(company_uuid="<id>", external_payroll_id="<id>", external_payroll_items=[
@@ -382,7 +382,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.external_payrolls.delete(company_uuid="<id>", external_payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1ExternalPayrollHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -424,7 +424,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.external_payrolls.calculate_taxes(company_uuid="<id>", external_payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ExternalPayrollCalculateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

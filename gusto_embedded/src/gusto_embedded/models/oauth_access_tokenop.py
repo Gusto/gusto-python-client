@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -15,7 +20,7 @@ from typing import Optional, Union
 from typing_extensions import Annotated, NotRequired, TypeAliasType, TypedDict
 
 
-class HeaderXGustoAPIVersion(str, Enum):
+class OauthAccessTokenHeaderXGustoAPIVersion(str, Enum):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
@@ -81,13 +86,19 @@ class RefreshTokenRequest(BaseModel):
     r"""The redirect URI you set up via the Developer Portal"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["redirect_uri"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -114,7 +125,7 @@ OauthAccessTokenRequestBody = Annotated[
 
 class OauthAccessTokenRequestTypedDict(TypedDict):
     request_body: OauthAccessTokenRequestBodyTypedDict
-    x_gusto_api_version: NotRequired[HeaderXGustoAPIVersion]
+    x_gusto_api_version: NotRequired[OauthAccessTokenHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
@@ -125,20 +136,26 @@ class OauthAccessTokenRequest(BaseModel):
     ]
 
     x_gusto_api_version: Annotated[
-        Optional[HeaderXGustoAPIVersion],
+        Optional[OauthAccessTokenHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
         FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    ] = OauthAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

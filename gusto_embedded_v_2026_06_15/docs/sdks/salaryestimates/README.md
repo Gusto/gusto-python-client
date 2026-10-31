@@ -33,10 +33,10 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
-    res = gusto.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=500000)
+    res = gusto.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=500000.0)
 
     # Handle response
     print(res)
@@ -82,7 +82,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.salary_estimates.get_v1_salary_estimates_id(uuid="3c9d1f7e-adda-44fb-ba0e-7e5843661514", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -129,7 +129,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.salary_estimates.put_v1_salary_estimates_id(uuid="969f5dac-57dd-4091-b195-2546171d3a76", zip_code="94107", occupations=[
@@ -139,7 +139,7 @@ with Gusto(
             "time_percentage": "0.6",
             "primary": True,
         },
-    ], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=600000)
+    ], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=600000.0)
 
     # Handle response
     print(res)
@@ -187,7 +187,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.salary_estimates.post_v1_salary_estimates_uuid_accept(uuid="22c00075-fa4c-4bdc-91e3-f72ab8ec7a1d", employee_job_uuid="7f5d3d93-6d6f-48c0-9f4e-cd12c2d3e4b2", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1SalaryEstimatesUUIDAcceptHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

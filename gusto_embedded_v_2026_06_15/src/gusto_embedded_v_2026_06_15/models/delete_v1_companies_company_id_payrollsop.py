@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -26,12 +31,12 @@ class DeleteV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
     r"""The UUID of the company"""
     payroll_id: str
     r"""The UUID of the payroll"""
-    async_: NotRequired[bool]
-    r"""When true, request an asynchronous delete of the payroll."""
     x_gusto_api_version: NotRequired[
         DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion
     ]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    async_: NotRequired[bool]
+    r"""When true, request an asynchronous delete of the payroll."""
 
 
 class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
@@ -45,13 +50,6 @@ class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     ]
     r"""The UUID of the payroll"""
 
-    async_: Annotated[
-        Optional[bool],
-        pydantic.Field(alias="async"),
-        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
-    ] = None
-    r"""When true, request an asynchronous delete of the payroll."""
-
     x_gusto_api_version: Annotated[
         Optional[DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion],
         pydantic.Field(alias="X-Gusto-API-Version"),
@@ -59,14 +57,27 @@ class DeleteV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     ] = DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
+    async_: Annotated[
+        Optional[bool],
+        pydantic.Field(alias="async"),
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""When true, request an asynchronous delete of the payroll."""
+
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
-        optional_fields = set(["async", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "async"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

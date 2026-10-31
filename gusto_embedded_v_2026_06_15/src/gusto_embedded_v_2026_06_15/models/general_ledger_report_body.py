@@ -8,12 +8,14 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing_extensions import NotRequired, TypedDict
 
 
-class Aggregation(str, Enum):
+class GeneralLedgerReportBodyAggregation(str, Enum):
     r"""The breakdown of the report. Use 'default' for no split."""
 
     DEFAULT = "default"
@@ -30,7 +32,7 @@ class IntegrationType(str, Enum):
 class GeneralLedgerReportBodyTypedDict(TypedDict):
     r"""Request body for generating a general ledger report. The report can be aggregated by different dimensions such as job or department."""
 
-    aggregation: Aggregation
+    aggregation: GeneralLedgerReportBodyAggregation
     r"""The breakdown of the report. Use 'default' for no split."""
     integration_type: NotRequired[Nullable[IntegrationType]]
     r"""The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'."""
@@ -39,21 +41,27 @@ class GeneralLedgerReportBodyTypedDict(TypedDict):
 class GeneralLedgerReportBody(BaseModel):
     r"""Request body for generating a general ledger report. The report can be aggregated by different dimensions such as job or department."""
 
-    aggregation: Aggregation
+    aggregation: GeneralLedgerReportBodyAggregation
     r"""The breakdown of the report. Use 'default' for no split."""
 
     integration_type: OptionalNullable[IntegrationType] = UNSET
     r"""The kind of integration set up for the company. Required when `aggregation` is 'integration'. Must be null if `aggregation` is not 'integration'."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["integration_type"])
         nullable_fields = set(["integration_type"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

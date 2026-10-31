@@ -26,7 +26,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.locations.get_minimum_wages(location_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1LocationsLocationUUIDMinimumWagesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, effective_date="2020-01-31")
@@ -72,7 +72,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.locations.retrieve(location_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1LocationsLocationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -117,7 +117,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.locations.update(location_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1LocationsLocationIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, phone_number="8009360383", street_1="300 3rd Street", street_2="Apartment 318", city="San Francisco", zip_code="94107")
@@ -177,7 +177,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.locations.get(company_id="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDLocationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -228,7 +228,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.locations.create(company_id="<id>", street_1="300 3rd Street", city="San Francisco", state="CA", zip_code="94107", phone_number="8009360383", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDLocationsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, street_2="Apartment 318", country="USA")

@@ -9,6 +9,8 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import Optional
@@ -29,6 +31,18 @@ class PayScheduleUpdateRequestFrequency(str, Enum):
     EVERY_OTHER_WEEK = "Every other week"
     TWICE_PER_MONTH = "Twice per month"
     MONTHLY = "Monthly"
+
+
+class PayScheduleUpdateRequestWorkweekStartDay(str, Enum):
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations."""
+
+    SUNDAY = "Sunday"
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
 
 
 class PayScheduleUpdateRequestTypedDict(TypedDict):
@@ -54,6 +68,7 @@ class PayScheduleUpdateRequestTypedDict(TypedDict):
     """
     custom_name: NotRequired[Nullable[str]]
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
+    workweek_start_day: NotRequired[PayScheduleUpdateRequestWorkweekStartDay]
 
 
 class PayScheduleUpdateRequest(BaseModel):
@@ -87,7 +102,12 @@ class PayScheduleUpdateRequest(BaseModel):
     custom_name: OptionalNullable[str] = UNSET
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
 
+    workweek_start_day: Optional[PayScheduleUpdateRequestWorkweekStartDay] = None
+
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -98,14 +118,18 @@ class PayScheduleUpdateRequest(BaseModel):
                 "day_1",
                 "day_2",
                 "custom_name",
+                "workweek_start_day",
             ]
         )
         nullable_fields = set(["day_1", "day_2", "custom_name"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

@@ -9,6 +9,8 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
@@ -95,6 +97,9 @@ class Person(BaseModel):
     r"""Whether the employee will complete their own onboarding"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -118,11 +123,14 @@ class Person(BaseModel):
                 "self_onboarding",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -184,13 +192,19 @@ class PostV1CompaniesCompanyIDPeopleBatchesHomeAddress(BaseModel):
     r"""If true, a company work address will be created based on this home address and the `work_address` property is not allowed."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["street_2", "country", "work_from_home"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -248,16 +262,22 @@ class PostV1CompaniesCompanyIDPeopleBatchesJob(BaseModel):
     r"""The risk class code for workers' compensation in Washington state. Please visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["two_percent_shareholder", "state_wc_covered", "state_wc_class_code"]
         )
         nullable_fields = set(["state_wc_covered", "state_wc_class_code"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -394,14 +414,20 @@ class PostV1CompaniesCompanyIDPeopleBatchesBankAccounts(BaseModel):
     r"""Split amount in percentage or CENTS (`null` for remainder account)"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["name", "split_amount"])
         nullable_fields = set(["name", "split_amount"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -419,7 +445,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesBankAccounts(BaseModel):
         return m
 
 
-class BatchTypedDict(TypedDict):
+class PostV1CompaniesCompanyIDPeopleBatchesBatchTypedDict(TypedDict):
     entity_type: PostV1CompaniesCompanyIDPeopleBatchesEntityType
     r"""The type of entity to create"""
     person: PersonTypedDict
@@ -443,7 +469,7 @@ class BatchTypedDict(TypedDict):
     """
 
 
-class Batch(BaseModel):
+class PostV1CompaniesCompanyIDPeopleBatchesBatch(BaseModel):
     entity_type: PostV1CompaniesCompanyIDPeopleBatchesEntityType
     r"""The type of entity to create"""
 
@@ -472,6 +498,9 @@ class Batch(BaseModel):
     """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -483,11 +512,14 @@ class Batch(BaseModel):
                 "bank_accounts",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -502,7 +534,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesRequestBodyTypedDict(TypedDict):
     r"""A unique identifier to ensure idempotency of the batch request"""
     batch_action: PostV1CompaniesCompanyIDPeopleBatchesBatchAction
     r"""The action to perform on the batch"""
-    batch: List[BatchTypedDict]
+    batch: List[PostV1CompaniesCompanyIDPeopleBatchesBatchTypedDict]
     r"""Array of people to create"""
 
 
@@ -513,7 +545,7 @@ class PostV1CompaniesCompanyIDPeopleBatchesRequestBody(BaseModel):
     batch_action: PostV1CompaniesCompanyIDPeopleBatchesBatchAction
     r"""The action to perform on the batch"""
 
-    batch: List[Batch]
+    batch: List[PostV1CompaniesCompanyIDPeopleBatchesBatch]
     r"""Array of people to create"""
 
 
@@ -546,13 +578,19 @@ class PostV1CompaniesCompanyIDPeopleBatchesRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

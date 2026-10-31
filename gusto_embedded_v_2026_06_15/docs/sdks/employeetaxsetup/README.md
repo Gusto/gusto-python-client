@@ -25,7 +25,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_tax_setup.get_federal_taxes(employee_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -70,7 +70,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_tax_setup.update_federal_taxes(employee_uuid="<id>", version="56a489ce86ed6c1b0f0cecc4050a0b01", w4_data_type=gusto_embedded_v_2026_06_15.PutV1EmployeesEmployeeIDFederalTaxesW4DataType.REV_2020_W4, filing_status=gusto_embedded_v_2026_06_15.FilingStatus.SINGLE, x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1EmployeesEmployeeIDFederalTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -137,7 +137,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_tax_setup.get_state_taxes(employee_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -184,7 +184,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_tax_setup.update_state_taxes(employee_uuid="<id>", states=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1EmployeesEmployeeIDStateTaxesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

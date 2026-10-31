@@ -23,7 +23,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.federal_tax_details.get(company_id="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", x_gusto_api_version=gusto_embedded.GetV1CompaniesCompanyIDFederalTaxDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -77,7 +77,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.federal_tax_details.update(company_id="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", version="6cb95e00540706ca48d4577b3c839fbe", x_gusto_api_version=gusto_embedded.PutV1CompaniesCompanyIDFederalTaxDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, legal_name="Acme Corp.", ein="123456789", tax_payer_type=gusto_embedded.FederalTaxDetailsUpdateTaxPayerType.LLP, filing_form=gusto_embedded.FederalTaxDetailsUpdateFilingForm.NINE_HUNDRED_AND_FORTY_FOUR, taxable_as_scorp=False)
@@ -109,6 +109,7 @@ with Gusto(
 
 | Error Type                       | Status Code                      | Content Type                     |
 | -------------------------------- | -------------------------------- | -------------------------------- |
+| models.ForbiddenErrorObject      | 403                              | application/json                 |
 | models.NotFoundErrorObject       | 404                              | application/json                 |
 | models.UnprocessableEntityError1 | 409, 422                         | application/json                 |
 | models.APIError                  | 4XX, 5XX                         | \*/\*                            |

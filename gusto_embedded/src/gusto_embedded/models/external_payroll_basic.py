@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class Status(str, Enum):
+class ExternalPayrollBasicStatus(str, Enum):
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
     UNPROCESSED = "unprocessed"
@@ -28,7 +33,7 @@ class ExternalPayrollBasicTypedDict(TypedDict):
     r"""External payroll's pay period start date."""
     payment_period_end_date: NotRequired[str]
     r"""External payroll's pay period end date."""
-    status: NotRequired[Status]
+    status: NotRequired[ExternalPayrollBasicStatus]
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
 
@@ -50,10 +55,13 @@ class ExternalPayrollBasic(BaseModel):
     payment_period_end_date: Optional[str] = None
     r"""External payroll's pay period end date."""
 
-    status: Optional[Status] = None
+    status: Optional[ExternalPayrollBasicStatus] = None
     r"""The status of the external payroll. The status will be `unprocessed` when the external payroll is created and transition to `processed` once tax liabilities are entered and finalized.  Once in the `processed` status all actions that can edit an external payroll will be disabled."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -64,11 +72,14 @@ class ExternalPayrollBasic(BaseModel):
                 "status",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import List, Optional
@@ -49,13 +51,19 @@ class EarnedFastAchBlockers(BaseModel):
     r"""The threshold needed to unblock"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["blocker_type", "threshold"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -71,7 +79,7 @@ class PaymentConfigsTypedDict(TypedDict):
     partner_uuid: NotRequired[str]
     r"""Partner uuid"""
     fast_payment_limit: NotRequired[Nullable[str]]
-    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal)."""
+    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
     payment_speed: NotRequired[PaymentSpeed]
     r"""Payment speed. READ-ONLY.
     - `1-day`: Next-day ACH (only for partners that opt in).
@@ -93,7 +101,7 @@ class PaymentConfigs(BaseModel):
     r"""Partner uuid"""
 
     fast_payment_limit: OptionalNullable[str] = UNSET
-    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal)."""
+    r"""Payment limit for 1-day or 2-day payroll (string representation of decimal). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
 
     payment_speed: Optional[PaymentSpeed] = None
     r"""Payment speed. READ-ONLY.
@@ -110,6 +118,9 @@ class PaymentConfigs(BaseModel):
     r"""Blockers preventing the company from earning fast ACH payments"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -122,11 +133,14 @@ class PaymentConfigs(BaseModel):
             ]
         )
         nullable_fields = set(["fast_payment_limit"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

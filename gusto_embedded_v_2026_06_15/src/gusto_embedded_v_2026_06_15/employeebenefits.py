@@ -106,6 +106,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -222,6 +227,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -397,6 +407,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -577,6 +592,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -684,6 +704,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -786,6 +811,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -961,6 +991,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1141,6 +1176,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1248,6 +1288,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1355,6 +1400,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1466,6 +1516,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1574,6 +1629,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1699,6 +1759,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1827,6 +1892,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1896,8 +1966,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request(
@@ -1935,6 +2005,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2001,8 +2076,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
         )
 
         req = self._build_request_async(
@@ -2040,6 +2115,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2110,8 +2190,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             body=models.EmployeeSection603HighEarnerStatusCreateRequest(
                 effective_year=effective_year,
                 is_high_earner=is_high_earner,
@@ -2160,6 +2240,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2235,8 +2320,8 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesRequest(
-            employee_uuid=employee_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            employee_uuid=employee_uuid,
             body=models.EmployeeSection603HighEarnerStatusCreateRequest(
                 effective_year=effective_year,
                 is_high_earner=is_high_earner,
@@ -2285,6 +2370,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2358,9 +2448,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -2398,6 +2488,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2471,9 +2566,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -2511,6 +2606,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2586,9 +2686,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
             body=models.EmployeeSection603HighEarnerStatusUpdateRequest(
                 is_high_earner=is_high_earner,
             ),
@@ -2636,6 +2736,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2711,9 +2816,9 @@ class EmployeeBenefits(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearRequest(
+            x_gusto_api_version=x_gusto_api_version,
             employee_uuid=employee_uuid,
             effective_year=effective_year,
-            x_gusto_api_version=x_gusto_api_version,
             body=models.EmployeeSection603HighEarnerStatusUpdateRequest(
                 is_high_earner=is_high_earner,
             ),
@@ -2761,6 +2866,11 @@ class EmployeeBenefits(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Employee Benefits"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

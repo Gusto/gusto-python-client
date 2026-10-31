@@ -3,7 +3,12 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from gusto_app_integration.models import GustoAppIntegrationError
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 import httpx
 from pydantic import model_serializer
 from typing import List, Optional
@@ -30,13 +35,19 @@ class Errors(BaseModel):
     r"""Provides details about the error - generally this message can be surfaced to an end user."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["message"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

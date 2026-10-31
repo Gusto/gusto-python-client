@@ -6,9 +6,9 @@
 
 * [list](#list) - Get garnishments for an employee
 * [create](#create) - Create a garnishment
+* [get_child_support_data](#get_child_support_data) - Get child support garnishment data
 * [get](#get) - Get a garnishment
 * [update](#update) - Update a garnishment
-* [get_child_support_data](#get_child_support_data) - Get child support garnishment data
 
 ## list
 
@@ -26,7 +26,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.list(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -73,7 +73,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.create(employee_id="<id>", amount="<value>", court_ordered=False, x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
@@ -115,6 +115,49 @@ with Gusto(
 | models.UnprocessableEntityError1 | 422                              | application/json                 |
 | models.APIError                  | 4XX, 5XX                         | \*/\*                            |
 
+## get_child_support_data
+
+Agency data and requirements to be used for creating child support garnishments
+
+scope: `garnishments:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-garnishments-child_support" method="get" path="/v1/garnishments/child_support" -->
+```python
+import gusto_embedded
+from gusto_embedded import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.garnishments.get_child_support_data(x_gusto_api_version=gusto_embedded.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion]](../../models/getv1garnishmentschildsupportheaderxgustoapiversion.md)                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.ChildSupportData](../../models/childsupportdata.md)**
+
+### Errors
+
+| Error Type      | Status Code     | Content Type    |
+| --------------- | --------------- | --------------- |
+| models.APIError | 4XX, 5XX        | \*/\*           |
+
 ## get
 
 Garnishments, or employee deductions, are fixed amounts or percentages deducted from an employee’s pay. They can be deducted a specific number of times or on a recurring basis. Garnishments can also have maximum deductions on a yearly or per-pay-period bases. Common uses for garnishments are court-ordered payments for child support or back taxes. Some companies provide loans to their employees that are repaid via garnishments.
@@ -131,7 +174,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.get(garnishment_id="<id>", x_gusto_api_version=gusto_embedded.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -176,7 +219,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.update(garnishment_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
@@ -218,46 +261,3 @@ with Gusto(
 | models.NotFoundErrorObject       | 404                              | application/json                 |
 | models.UnprocessableEntityError1 | 422                              | application/json                 |
 | models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## get_child_support_data
-
-Agency data and requirements to be used for creating child support garnishments
-
-scope: `garnishments:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-garnishments-child_support" method="get" path="/v1/garnishments/child_support" -->
-```python
-import gusto_embedded
-from gusto_embedded import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.garnishments.get_child_support_data(x_gusto_api_version=gusto_embedded.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion]](../../models/getv1garnishmentschildsupportheaderxgustoapiversion.md)                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.ChildSupportData](../../models/childsupportdata.md)**
-
-### Errors
-
-| Error Type      | Status Code     | Content Type    |
-| --------------- | --------------- | --------------- |
-| models.APIError | 4XX, 5XX        | \*/\*           |

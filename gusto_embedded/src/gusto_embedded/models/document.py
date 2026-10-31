@@ -8,13 +8,15 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class RecipientType(str, Enum):
+class DocumentRecipientType(str, Enum):
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
 
     COMPANY = "Company"
@@ -37,13 +39,19 @@ class Pages(BaseModel):
     r"""Page number"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["image_url", "page_number"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -103,6 +111,9 @@ class Fields(BaseModel):
     r"""Whether the field is required"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -120,11 +131,14 @@ class Fields(BaseModel):
         nullable_fields = set(
             ["key", "value", "x", "y", "width", "height", "page_number"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -149,7 +163,7 @@ class DocumentTypedDict(TypedDict):
     r"""The title of the document"""
     name: NotRequired[str]
     r"""The type identifier of the document"""
-    recipient_type: NotRequired[RecipientType]
+    recipient_type: NotRequired[DocumentRecipientType]
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
     recipient_uuid: NotRequired[str]
     r"""Unique identifier for the recipient associated with the document"""
@@ -181,7 +195,7 @@ class Document(BaseModel):
     name: Optional[str] = None
     r"""The type identifier of the document"""
 
-    recipient_type: Optional[RecipientType] = None
+    recipient_type: Optional[DocumentRecipientType] = None
     r"""The type of recipient associated with the document (will be `Contractor` for Contractor Documents)"""
 
     recipient_uuid: Optional[str] = None
@@ -212,6 +226,9 @@ class Document(BaseModel):
     r"""The quarter of this document. This value is nullable and will not be present on all documents."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -231,11 +248,14 @@ class Document(BaseModel):
             ]
         )
         nullable_fields = set(["signed_at", "year", "quarter"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

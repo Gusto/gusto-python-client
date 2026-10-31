@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_app_integration.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -26,20 +31,36 @@ class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDHeaderXGustoAPIVersion(
 class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBodyTypedDict(TypedDict):
     name: NotRequired[str]
     r"""The name of the custom earning type."""
+    category: NotRequired[str]
+    r"""The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+    included_in_overtime_pay: NotRequired[bool]
+    r"""Whether earnings of this type are included in overtime pay calculations. Editable only when the category is `Other`; otherwise immutable — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
 
 
 class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequestBody(BaseModel):
     name: Optional[str] = None
     r"""The name of the custom earning type."""
 
+    category: Optional[str] = None
+    r"""The earning type category. Set at creation and immutable afterward — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+
+    included_in_overtime_pay: Optional[bool] = None
+    r"""Whether earnings of this type are included in overtime pay calculations. Editable only when the category is `Other`; otherwise immutable — submitting a value that differs from the current one returns a 422. Submitting the current value (e.g. when echoing back the full resource) is allowed."""
+
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
-        optional_fields = set(["name"])
+        optional_fields = set(["name", "category", "included_in_overtime_pay"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -87,13 +108,19 @@ class PutV1CompaniesCompanyIDEarningTypesEarningTypeUUIDRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

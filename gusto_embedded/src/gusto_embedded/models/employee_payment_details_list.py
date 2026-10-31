@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import List, Optional
@@ -21,12 +23,12 @@ class EmployeePaymentDetailsListPaymentMethod(str, Enum):
     CHECK = "Check"
 
 
-class SplitBy(str, Enum):
+class EmployeePaymentDetailsListSplitBy(str, Enum):
     AMOUNT = "Amount"
     PERCENTAGE = "Percentage"
 
 
-class SplitsTypedDict(TypedDict):
+class EmployeePaymentDetailsListSplitsTypedDict(TypedDict):
     bank_account_uuid: NotRequired[str]
     r"""The UUID of the bank account."""
     name: NotRequired[str]
@@ -45,7 +47,7 @@ class SplitsTypedDict(TypedDict):
     r"""If `split_by` is 'Amount', this is in cents (e.g., 500 for $5.00) and exactly one account must have a `split_amount` of `null` to capture the remainder. If `split_by` is 'Percentage', this is the percentage value (e.g., 60 for 60%)."""
 
 
-class Splits(BaseModel):
+class EmployeePaymentDetailsListSplits(BaseModel):
     bank_account_uuid: Optional[str] = None
     r"""The UUID of the bank account."""
 
@@ -71,6 +73,9 @@ class Splits(BaseModel):
     r"""If `split_by` is 'Amount', this is in cents (e.g., 500 for $5.00) and exactly one account must have a `split_amount` of `null` to capture the remainder. If `split_by` is 'Percentage', this is the percentage value (e.g., 60 for 60%)."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -85,11 +90,14 @@ class Splits(BaseModel):
             ]
         )
         nullable_fields = set(["encrypted_account_number", "split_amount"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -116,9 +124,9 @@ class EmployeePaymentDetailsListTypedDict(TypedDict):
     r"""The last name of the employee."""
     payment_method: NotRequired[EmployeePaymentDetailsListPaymentMethod]
     r"""The type of payment method."""
-    split_by: NotRequired[Nullable[SplitBy]]
+    split_by: NotRequired[Nullable[EmployeePaymentDetailsListSplitBy]]
     r"""How the payment is split. This field is applicable when `payment_method` is \"Direct Deposit\". If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, the last split amount must be `null` to capture the remainder."""
-    splits: NotRequired[Nullable[List[SplitsTypedDict]]]
+    splits: NotRequired[Nullable[List[EmployeePaymentDetailsListSplitsTypedDict]]]
     r"""An array of payment splits. This field is applicable when `payment_method` is \"Direct Deposit\"."""
 
 
@@ -135,13 +143,16 @@ class EmployeePaymentDetailsList(BaseModel):
     payment_method: Optional[EmployeePaymentDetailsListPaymentMethod] = None
     r"""The type of payment method."""
 
-    split_by: OptionalNullable[SplitBy] = UNSET
+    split_by: OptionalNullable[EmployeePaymentDetailsListSplitBy] = UNSET
     r"""How the payment is split. This field is applicable when `payment_method` is \"Direct Deposit\". If `split_by` is Percentage, then the split amounts must add up to exactly 100. If `split_by` is Amount, the last split amount must be `null` to capture the remainder."""
 
-    splits: OptionalNullable[List[Splits]] = UNSET
+    splits: OptionalNullable[List[EmployeePaymentDetailsListSplits]] = UNSET
     r"""An array of payment splits. This field is applicable when `payment_method` is \"Direct Deposit\"."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -154,11 +165,14 @@ class EmployeePaymentDetailsList(BaseModel):
             ]
         )
         nullable_fields = set(["split_by", "splits"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

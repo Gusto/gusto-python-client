@@ -27,7 +27,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.companies.suspensions.get(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -72,7 +72,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.companies.suspensions.suspend(company_uuid="<id>", file_quarterly_forms=True, file_yearly_forms=False, reconcile_tax_method=gusto_embedded_v_2026_06_15.PostCompaniesCompanyUUIDSuspensionsReconcileTaxMethod.PAY_TAXES, reason=gusto_embedded_v_2026_06_15.Reason.ACQUIRED, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostCompaniesCompanyUUIDSuspensionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

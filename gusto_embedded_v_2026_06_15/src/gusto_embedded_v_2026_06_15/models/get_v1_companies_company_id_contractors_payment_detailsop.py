@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -24,14 +29,14 @@ class GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion(str
 class GetV1CompaniesCompanyIDContractorsPaymentDetailsRequestTypedDict(TypedDict):
     company_id: str
     r"""The UUID of the company. This identifies the company whose contractor payment details you want to retrieve."""
-    contractor_uuid: NotRequired[str]
-    r"""Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor."""
-    contractor_payment_group_uuid: NotRequired[str]
-    r"""Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group."""
     x_gusto_api_version: NotRequired[
         GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
     ]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+    contractor_uuid: NotRequired[str]
+    r"""Optional filter to get payment details for a specific contractor. When provided, the response will only include payment details for this contractor."""
+    contractor_payment_group_uuid: NotRequired[str]
+    r"""Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group."""
 
 
 class GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(BaseModel):
@@ -39,6 +44,15 @@ class GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the company. This identifies the company whose contractor payment details you want to retrieve."""
+
+    x_gusto_api_version: Annotated[
+        Optional[
+            GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
+        ],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     contractor_uuid: Annotated[
         Optional[str],
@@ -52,25 +66,22 @@ class GetV1CompaniesCompanyIDContractorsPaymentDetailsRequest(BaseModel):
     ] = None
     r"""Optional filter to get payment details for contractors in a specific payment group. When provided, the response will only include payment details for contractors in this group."""
 
-    x_gusto_api_version: Annotated[
-        Optional[
-            GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion
-        ],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1CompaniesCompanyIDContractorsPaymentDetailsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
-            ["contractor_uuid", "contractor_payment_group_uuid", "X-Gusto-API-Version"]
+            ["X-Gusto-API-Version", "contractor_uuid", "contractor_payment_group_uuid"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

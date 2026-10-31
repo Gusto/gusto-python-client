@@ -26,7 +26,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.bank_accounts.get(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDBankAccountsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -68,6 +68,8 @@ After successful verification, the bank account's verification_status is 'verifi
 >🚧 Warning
 >
 > If a default bank account exists, it will be disabled and the new bank account will replace it as the company's default funding method.
+>
+> A new bank account cannot replace the default if the current default has unprocessed payments. In that case, a 422 `invalid_operation` error is returned. To resolve, fund or cancel the pending payments first.
 
 scope: `company_bank_accounts:write`
 
@@ -81,7 +83,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.bank_accounts.create(company_id="<id>", routing_number="<value>", account_number="<value>", account_type=gusto_embedded_v_2026_06_15.CompanyBankAccountRequestAccountType.SAVINGS, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDBankAccountsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -143,7 +145,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.bank_accounts.verify(company_id="<id>", bank_account_uuid="<id>", deposit_1=8299.3, deposit_2=7367.9, x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDBankAccountsVerifyHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -199,7 +201,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.bank_accounts.create_from_plaid_token(owner_type=gusto_embedded_v_2026_06_15.OwnerType.COMPANY, owner_id="<id>", processor_token="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1PlaidProcessorTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -249,7 +251,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.bank_accounts.delete_v1_companies_company_id_bank_accounts_bank_account_id(company_id="<id>", bank_account_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1CompaniesCompanyIDBankAccountsBankAccountIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

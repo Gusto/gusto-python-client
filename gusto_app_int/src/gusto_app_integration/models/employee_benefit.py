@@ -9,6 +9,8 @@ from gusto_app_integration.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 import pydantic
 from pydantic import ConfigDict, model_serializer
@@ -58,13 +60,19 @@ class Tiers(BaseModel):
     r"""The step up difference between this tier's threshold and the previous tier's threshold. In the first tier, this is equivalent to threshold."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["rate", "threshold", "threshold_delta"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -82,13 +90,19 @@ class Two(BaseModel):
     tiers: Optional[List[Tiers]] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["tiers"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -112,7 +126,7 @@ For the `tiered` contribution type, an array of tiers.
 """
 
 
-class ContributionTypedDict(TypedDict):
+class EmployeeBenefitContributionTypedDict(TypedDict):
     r"""An object representing the type and value of the company contribution."""
 
     type: NotRequired[str]
@@ -131,7 +145,7 @@ class ContributionTypedDict(TypedDict):
     """
 
 
-class Contribution(BaseModel):
+class EmployeeBenefitContribution(BaseModel):
     r"""An object representing the type and value of the company contribution."""
 
     type: Optional[str] = None
@@ -151,13 +165,19 @@ class Contribution(BaseModel):
     """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["type", "value"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -188,7 +208,7 @@ class EmployeeBenefitTypedDict(TypedDict):
     r"""Whether the employee deduction amount should be treated as a percentage to be deducted from each payroll."""
     employee_deduction_annual_maximum: NotRequired[Nullable[str]]
     r"""The maximum employee deduction amount per year. A null value signifies no limit."""
-    contribution: NotRequired[ContributionTypedDict]
+    contribution: NotRequired[EmployeeBenefitContributionTypedDict]
     r"""An object representing the type and value of the company contribution."""
     elective: NotRequired[bool]
     r"""Whether the company contribution is elective (aka matching). For \"tiered\" contribution types, this is always true."""
@@ -253,7 +273,7 @@ class EmployeeBenefit(BaseModel):
     employee_deduction_annual_maximum: OptionalNullable[str] = UNSET
     r"""The maximum employee deduction amount per year. A null value signifies no limit."""
 
-    contribution: Optional[Contribution] = None
+    contribution: Optional[EmployeeBenefitContribution] = None
     r"""An object representing the type and value of the company contribution."""
 
     elective: Optional[bool] = False
@@ -324,6 +344,9 @@ class EmployeeBenefit(BaseModel):
         self.__pydantic_extra__ = value  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -362,11 +385,14 @@ class EmployeeBenefit(BaseModel):
                 "expiration_date",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             serialized.pop(k, serialized.pop(n, None))
             is_nullable_and_explicitly_set = (

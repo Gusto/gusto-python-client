@@ -2,14 +2,19 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 import pydantic
 from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class ContractorPaymentPaymentMethod(str, Enum):
+class PaymentMethod(str, Enum):
     r"""The payment method."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
@@ -25,7 +30,7 @@ class ContractorPaymentStatus(str, Enum):
     UNFUNDED = "Unfunded"
 
 
-class ContractorPaymentWageType(str, Enum):
+class WageType(str, Enum):
     r"""The wage type for the payment."""
 
     HOURLY = "Hourly"
@@ -45,7 +50,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""The payment date."""
     hours: NotRequired[str]
     r"""The number of hours worked for the payment."""
-    payment_method: NotRequired[ContractorPaymentPaymentMethod]
+    payment_method: NotRequired[PaymentMethod]
     r"""The payment method."""
     reimbursement: NotRequired[str]
     r"""The reimbursement amount in the payment."""
@@ -57,7 +62,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""Determine if the contractor payment can be cancelled."""
     wage: NotRequired[str]
     r"""The fixed wage of the payment, regardless of hours worked."""
-    wage_type: NotRequired[ContractorPaymentWageType]
+    wage_type: NotRequired[WageType]
     r"""The wage type for the payment."""
     wage_total: NotRequired[str]
     r"""(hours * hourly_rate) + wage + bonus"""
@@ -81,7 +86,7 @@ class ContractorPayment(BaseModel):
     hours: Optional[str] = None
     r"""The number of hours worked for the payment."""
 
-    payment_method: Optional[ContractorPaymentPaymentMethod] = None
+    payment_method: Optional[PaymentMethod] = None
     r"""The payment method."""
 
     reimbursement: Optional[str] = None
@@ -99,13 +104,16 @@ class ContractorPayment(BaseModel):
     wage: Optional[str] = None
     r"""The fixed wage of the payment, regardless of hours worked."""
 
-    wage_type: Optional[ContractorPaymentWageType] = None
+    wage_type: Optional[WageType] = None
     r"""The wage type for the payment."""
 
     wage_total: Optional[str] = None
     r"""(hours * hourly_rate) + wage + bonus"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -123,11 +131,14 @@ class ContractorPayment(BaseModel):
                 "wage_total",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

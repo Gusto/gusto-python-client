@@ -9,7 +9,12 @@ from .metadata_with_one_entity import (
     MetadataWithOneEntity,
     MetadataWithOneEntityTypedDict,
 )
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from pydantic import model_serializer
 from typing import List, Optional, Union
 from typing_extensions import NotRequired, TypeAliasType, TypedDict
@@ -58,13 +63,19 @@ class EntityErrorObject(BaseModel):
     r"""Will only exist if category is `nested_errors`. It is possible to have multiple levels of nested errors."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["message", "metadata", "errors"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -39,7 +39,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.calculate_accruing_time_off_hours(payroll_id="<id>", employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1PayrollsPayrollIDCalculateAccruingTimeOffHoursHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -91,7 +91,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.get_all(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -136,7 +136,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.create(company_uuid="<id>", name="Vacation Policy", policy_type=gusto_embedded_v_2026_06_15.TimeOffPolicyRequestPolicyType.VACATION, accrual_method=gusto_embedded_v_2026_06_15.AccrualMethod.PER_PAY_PERIOD, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyUUIDTimeOffPoliciesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -194,7 +194,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.get(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -239,7 +239,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.update(time_off_policy_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffPoliciesTimeOffPolicyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, name="Vacation Policy")
@@ -298,7 +298,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.deactivate(time_off_policy_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffPoliciesTimeOffPolicyUUIDDeactivateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -344,7 +344,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.add_employees(time_off_policy_uuid="<id>", employees=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -391,7 +391,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.remove_employees(time_off_policy_uuid="<id>", employees=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffPoliciesTimeOffPolicyUUIDRemoveEmployeesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -438,7 +438,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_policies.update_balance(time_off_policy_uuid="<id>", employees=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffPoliciesTimeOffPolicyUUIDBalanceHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

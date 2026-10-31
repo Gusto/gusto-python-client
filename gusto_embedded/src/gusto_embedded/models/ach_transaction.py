@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import Optional
@@ -21,7 +23,7 @@ class PaymentEventType(str, Enum):
     CONTRACTOR_PAYMENT = "ContractorPayment"
 
 
-class AchTransactionRecipientType(str, Enum):
+class RecipientType(str, Enum):
     EMPLOYEE = "Employee"
     CONTRACTOR = "Contractor"
 
@@ -53,7 +55,7 @@ class AchTransactionTypedDict(TypedDict):
     r"""The type of payment event associated with the ACH transaction"""
     payment_event_uuid: NotRequired[str]
     r"""Unique identifier for the payment event associated with the ACH transaction"""
-    recipient_type: NotRequired[Nullable[AchTransactionRecipientType]]
+    recipient_type: NotRequired[Nullable[RecipientType]]
     r"""The type of recipient associated with the ACH transaction"""
     recipient_uuid: NotRequired[str]
     r"""Unique identifier for the recipient associated with the ACH transaction"""
@@ -90,7 +92,7 @@ class AchTransaction(BaseModel):
     payment_event_uuid: Optional[str] = None
     r"""Unique identifier for the payment event associated with the ACH transaction"""
 
-    recipient_type: OptionalNullable[AchTransactionRecipientType] = UNSET
+    recipient_type: OptionalNullable[RecipientType] = UNSET
     r"""The type of recipient associated with the ACH transaction"""
 
     recipient_uuid: Optional[str] = None
@@ -121,6 +123,9 @@ class AchTransaction(BaseModel):
     r"""The description of the ACH transaction. Can be used to identify the ACH transaction on the recipient's bank statement."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -140,11 +145,14 @@ class AchTransaction(BaseModel):
             ]
         )
         nullable_fields = set(["recipient_type", "error_code"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
