@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 import pydantic
 from pydantic import model_serializer
 from typing import List, Optional
@@ -24,15 +29,13 @@ class ContractorPaymentsPreviewBodyContractorPaymentsTypedDict(TypedDict):
     r"""Date of the contractor payment (check date)."""
     payment_method: NotRequired[ContractorPaymentsPreviewBodyPaymentMethod]
     r"""The payment method."""
-    wage: NotRequired[int]
+    wage: NotRequired[str]
     r"""Fixed wage amount for the payment."""
-    hours: NotRequired[int]
+    hours: NotRequired[str]
     r"""Number of hours worked for the payment."""
-    hourly_rate: NotRequired[int]
-    r"""Hourly rate for the payment."""
-    bonus: NotRequired[int]
+    bonus: NotRequired[str]
     r"""Bonus amount for the payment."""
-    reimbursement: NotRequired[int]
+    reimbursement: NotRequired[str]
     r"""Reimbursement amount for the payment."""
 
 
@@ -46,22 +49,22 @@ class ContractorPaymentsPreviewBodyContractorPayments(BaseModel):
     payment_method: Optional[ContractorPaymentsPreviewBodyPaymentMethod] = None
     r"""The payment method."""
 
-    wage: Optional[int] = None
+    wage: Optional[str] = None
     r"""Fixed wage amount for the payment."""
 
-    hours: Optional[int] = None
+    hours: Optional[str] = None
     r"""Number of hours worked for the payment."""
 
-    hourly_rate: Optional[int] = None
-    r"""Hourly rate for the payment."""
-
-    bonus: Optional[int] = None
+    bonus: Optional[str] = None
     r"""Bonus amount for the payment."""
 
-    reimbursement: Optional[int] = None
+    reimbursement: Optional[str] = None
     r"""Reimbursement amount for the payment."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -70,16 +73,18 @@ class ContractorPaymentsPreviewBodyContractorPayments(BaseModel):
                 "payment_method",
                 "wage",
                 "hours",
-                "hourly_rate",
                 "bonus",
                 "reimbursement",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

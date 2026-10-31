@@ -7,6 +7,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import Optional
@@ -36,21 +38,27 @@ class CreateTokenAuthentication(BaseModel):
     token_type: Optional[str] = "Bearer"
     r"""The literal string 'Bearer'"""
 
-    expires_in: Optional[float] = 7200
+    expires_in: Optional[float] = 7200.0
     r"""The TTL of this token. After this amount of time, you must hit the refresh token endpoint to continue making authenticated requests."""
 
     refresh_token: OptionalNullable[str] = UNSET
     r"""A token that must be passed to the refresh token endpoint to get a new authenticated token. Only present when refresh token is provided."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["token_type", "expires_in", "refresh_token"])
         nullable_fields = set(["refresh_token"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

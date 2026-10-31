@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_app_integration.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -46,7 +51,7 @@ class DateFilterBy(str, Enum):
     CHECK_DATE = "check_date"
 
 
-class SortOrder(str, Enum):
+class QueryParamSortOrder(str, Enum):
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     ASC = "asc"
@@ -80,7 +85,7 @@ class GetV1CompaniesCompanyIDPayrollsRequestTypedDict(TypedDict):
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    sort_order: NotRequired[SortOrder]
+    sort_order: NotRequired[QueryParamSortOrder]
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
 
@@ -158,12 +163,15 @@ class GetV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
     sort_order: Annotated[
-        Optional[SortOrder],
+        Optional[QueryParamSortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -181,11 +189,14 @@ class GetV1CompaniesCompanyIDPayrollsRequest(BaseModel):
                 "sort_order",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class TotalsTypedDict(TypedDict):
+class PayrollReceiptTotalsTypedDict(TypedDict):
     r"""The subtotals for the payroll."""
 
     company_debit: NotRequired[str]
@@ -23,7 +28,7 @@ class TotalsTypedDict(TypedDict):
     r"""The total tax debit for the payroll."""
 
 
-class Totals(BaseModel):
+class PayrollReceiptTotals(BaseModel):
     r"""The subtotals for the payroll."""
 
     company_debit: Optional[str] = None
@@ -42,6 +47,9 @@ class Totals(BaseModel):
     r"""The total tax debit for the payroll."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -52,11 +60,14 @@ class Totals(BaseModel):
                 "tax_debit",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -81,13 +92,19 @@ class Taxes(BaseModel):
     r"""The total amount paid by both employer and employee for this tax."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["name", "amount"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -154,6 +171,9 @@ class PayrollReceiptEmployeeCompensations(BaseModel):
     r"""The total reimbursement for the pay period."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -168,11 +188,14 @@ class PayrollReceiptEmployeeCompensations(BaseModel):
                 "total_reimbursement",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -182,7 +205,7 @@ class PayrollReceiptEmployeeCompensations(BaseModel):
         return m
 
 
-class LicenseeTypedDict(TypedDict):
+class PayrollReceiptLicenseeTypedDict(TypedDict):
     r"""The licensed payroll processor"""
 
     name: NotRequired[str]
@@ -199,7 +222,7 @@ class LicenseeTypedDict(TypedDict):
     r"""Always the fixed string \"4157778888\" """
 
 
-class Licensee(BaseModel):
+class PayrollReceiptLicensee(BaseModel):
     r"""The licensed payroll processor"""
 
     name: Optional[str] = None
@@ -221,15 +244,21 @@ class Licensee(BaseModel):
     r"""Always the fixed string \"4157778888\" """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["name", "address", "city", "state", "postal_code", "phone_number"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -258,7 +287,7 @@ class PayrollReceiptTypedDict(TypedDict):
     r"""URL for the license information for the licensed payroll processor. Always the fixed string \"https://gusto.com/about/licenses\" """
     right_to_refund: NotRequired[str]
     liability_of_licensee: NotRequired[str]
-    totals: NotRequired[TotalsTypedDict]
+    totals: NotRequired[PayrollReceiptTotalsTypedDict]
     r"""The subtotals for the payroll."""
     taxes: NotRequired[List[TaxesTypedDict]]
     r"""An array of totaled employer and employee taxes for the pay period."""
@@ -266,7 +295,7 @@ class PayrollReceiptTypedDict(TypedDict):
         List[PayrollReceiptEmployeeCompensationsTypedDict]
     ]
     r"""An array of employee compensations and withholdings for this payroll"""
-    licensee: NotRequired[LicenseeTypedDict]
+    licensee: NotRequired[PayrollReceiptLicenseeTypedDict]
     r"""The licensed payroll processor"""
 
 
@@ -299,7 +328,7 @@ class PayrollReceipt(BaseModel):
 
     liability_of_licensee: Optional[str] = None
 
-    totals: Optional[Totals] = None
+    totals: Optional[PayrollReceiptTotals] = None
     r"""The subtotals for the payroll."""
 
     taxes: Optional[List[Taxes]] = None
@@ -308,10 +337,13 @@ class PayrollReceipt(BaseModel):
     employee_compensations: Optional[List[PayrollReceiptEmployeeCompensations]] = None
     r"""An array of employee compensations and withholdings for this payroll"""
 
-    licensee: Optional[Licensee] = None
+    licensee: Optional[PayrollReceiptLicensee] = None
     r"""The licensed payroll processor"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -331,11 +363,14 @@ class PayrollReceipt(BaseModel):
                 "licensee",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

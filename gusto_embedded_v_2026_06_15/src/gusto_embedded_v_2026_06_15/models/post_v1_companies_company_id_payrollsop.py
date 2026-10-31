@@ -5,10 +5,9 @@ from datetime import date
 from enum import Enum
 from gusto_embedded_v_2026_06_15.types import (
     BaseModel,
-    Nullable,
-    OptionalNullable,
-    UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
@@ -61,8 +60,8 @@ class PostV1CompaniesCompanyIDPayrollsRequestBodyTypedDict(TypedDict):
     r"""Pay period end date."""
     pay_schedule_uuid: NotRequired[str]
     r"""A pay schedule is required for transition from old pay schedule payroll to identify the matching transition pay period."""
-    employee_uuids: NotRequired[Nullable[List[str]]]
-    r"""A list of employee uuids to include on the payroll."""
+    employee_uuids: NotRequired[List[str]]
+    r"""A list of employee UUIDs to include on the payroll. At least one UUID is required for non-termination off-cycle payrolls."""
     check_date: NotRequired[date]
     r"""Payment date."""
     withholding_pay_period: NotRequired[
@@ -93,8 +92,8 @@ class PostV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
     pay_schedule_uuid: Optional[str] = None
     r"""A pay schedule is required for transition from old pay schedule payroll to identify the matching transition pay period."""
 
-    employee_uuids: OptionalNullable[List[str]] = UNSET
-    r"""A list of employee uuids to include on the payroll."""
+    employee_uuids: Optional[List[str]] = None
+    r"""A list of employee UUIDs to include on the payroll. At least one UUID is required for non-termination off-cycle payrolls."""
 
     check_date: Optional[date] = None
     r"""Payment date."""
@@ -114,6 +113,9 @@ class PostV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
     r"""When true, all employees in the payroll will be paid by check and the check date can be set to today or any future business day (rather than requiring ACH lead time). Payment methods cannot be changed on check-only payrolls."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -126,24 +128,18 @@ class PostV1CompaniesCompanyIDPayrollsRequestBody(BaseModel):
                 "is_check_only_payroll",
             ]
         )
-        nullable_fields = set(["employee_uuids"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
-            is_nullable_and_explicitly_set = (
-                k in nullable_fields
-                and (self.__pydantic_fields_set__.intersection({n}))  # pylint: disable=no-member
-            )
 
             if val != UNSET_SENTINEL:
-                if (
-                    val is not None
-                    or k not in optional_fields
-                    or is_nullable_and_explicitly_set
-                ):
+                if val is not None or k not in optional_fields:
                     m[k] = val
 
         return m
@@ -178,13 +174,19 @@ class PostV1CompaniesCompanyIDPayrollsRequest(BaseModel):
     ] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version", "body"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

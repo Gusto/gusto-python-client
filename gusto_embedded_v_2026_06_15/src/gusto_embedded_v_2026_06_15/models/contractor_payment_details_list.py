@@ -9,13 +9,17 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import field_serializer, model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class PaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
+class ContractorPaymentDetailsListPaymentMethod(
+    str, Enum, metaclass=utils.OpenEnumMeta
+):
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
 
@@ -62,6 +66,9 @@ class Splits(BaseModel):
     account_type: Optional[str] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -76,11 +83,14 @@ class Splits(BaseModel):
             ]
         )
         nullable_fields = set(["encrypted_account_number", "split_amount"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -100,7 +110,7 @@ class Splits(BaseModel):
 
 class ContractorPaymentDetailsListTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
-    payment_method: NotRequired[PaymentMethod]
+    payment_method: NotRequired[ContractorPaymentDetailsListPaymentMethod]
     first_name: NotRequired[str]
     last_name: NotRequired[str]
     split_by: NotRequired[Nullable[SplitBy]]
@@ -111,7 +121,7 @@ class ContractorPaymentDetailsListTypedDict(TypedDict):
 class ContractorPaymentDetailsList(BaseModel):
     contractor_uuid: Optional[str] = None
 
-    payment_method: Optional[PaymentMethod] = None
+    payment_method: Optional[ContractorPaymentDetailsListPaymentMethod] = None
 
     first_name: Optional[str] = None
 
@@ -126,7 +136,7 @@ class ContractorPaymentDetailsList(BaseModel):
     def serialize_payment_method(self, value):
         if isinstance(value, str):
             try:
-                return models.PaymentMethod(value)
+                return models.ContractorPaymentDetailsListPaymentMethod(value)
             except ValueError:
                 return value
         return value
@@ -141,6 +151,9 @@ class ContractorPaymentDetailsList(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -153,11 +166,14 @@ class ContractorPaymentDetailsList(BaseModel):
             ]
         )
         nullable_fields = set(["split_by", "splits"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

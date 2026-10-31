@@ -9,6 +9,8 @@ from gusto_app_integration_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import List, Optional
@@ -34,8 +36,8 @@ class JobTypedDict(TypedDict):
     r"""The employee's pay rate for this job (e.g., hourly wage or annual salary). This is sensitive compensation data and requires the `compensations:read` scope."""
     payment_unit: NotRequired[Nullable[str]]
     r"""How the employee is paid for this job (e.g., Hour, Week, Month, Year, Paycheck). This is sensitive compensation data and requires the `compensations:read` scope."""
-    current_compensation_uuid: NotRequired[str]
-    r"""The UUID of the current active compensation record for this job. Requires the `compensations:read` scope."""
+    current_compensation_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the current active compensation record for this job. Null when the job has no current compensation. Requires the `compensations:read` scope."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee owns at least 2% of the company."""
     state_wc_covered: NotRequired[Nullable[bool]]
@@ -77,8 +79,8 @@ class Job(BaseModel):
     payment_unit: OptionalNullable[str] = UNSET
     r"""How the employee is paid for this job (e.g., Hour, Week, Month, Year, Paycheck). This is sensitive compensation data and requires the `compensations:read` scope."""
 
-    current_compensation_uuid: Optional[str] = None
-    r"""The UUID of the current active compensation record for this job. Requires the `compensations:read` scope."""
+    current_compensation_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the current active compensation record for this job. Null when the job has no current compensation. Requires the `compensations:read` scope."""
 
     two_percent_shareholder: Optional[bool] = None
     r"""Whether the employee owns at least 2% of the company."""
@@ -99,6 +101,9 @@ class Job(BaseModel):
     r"""The representation of an address in Gusto."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -119,14 +124,23 @@ class Job(BaseModel):
             ]
         )
         nullable_fields = set(
-            ["title", "payment_unit", "state_wc_covered", "state_wc_class_code"]
+            [
+                "title",
+                "payment_unit",
+                "current_compensation_uuid",
+                "state_wc_covered",
+                "state_wc_class_code",
+            ]
         )
         null_default_fields = set(["title"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

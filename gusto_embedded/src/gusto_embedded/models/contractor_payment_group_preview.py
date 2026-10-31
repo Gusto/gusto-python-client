@@ -20,6 +20,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import List, Optional
@@ -33,7 +35,7 @@ class ContractorPaymentGroupPreviewStatus(str, Enum):
     FUNDED = "Funded"
 
 
-class ContractorPaymentGroupPreviewTotalsTypedDict(TypedDict):
+class TotalsTypedDict(TypedDict):
     amount: NotRequired[str]
     r"""The total amount for the group of contractor payments."""
     debit_amount: NotRequired[str]
@@ -46,7 +48,7 @@ class ContractorPaymentGroupPreviewTotalsTypedDict(TypedDict):
     r"""The total check amount for the group of contractor payments."""
 
 
-class ContractorPaymentGroupPreviewTotals(BaseModel):
+class Totals(BaseModel):
     amount: Optional[str] = None
     r"""The total amount for the group of contractor payments."""
 
@@ -63,6 +65,9 @@ class ContractorPaymentGroupPreviewTotals(BaseModel):
     r"""The total check amount for the group of contractor payments."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -73,11 +78,14 @@ class ContractorPaymentGroupPreviewTotals(BaseModel):
                 "check_amount",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -108,7 +116,7 @@ class ContractorPaymentGroupPreviewTypedDict(TypedDict):
     r"""List of submission blockers for the contractor payment group."""
     credit_blockers: NotRequired[List[PayrollCreditBlockerTypeTypedDict]]
     r"""List of credit blockers for the contractor payment group."""
-    totals: NotRequired[ContractorPaymentGroupPreviewTotalsTypedDict]
+    totals: NotRequired[TotalsTypedDict]
     contractor_payments: NotRequired[List[ContractorPaymentForGroupPreviewTypedDict]]
 
 
@@ -142,11 +150,14 @@ class ContractorPaymentGroupPreview(BaseModel):
     credit_blockers: Optional[List[PayrollCreditBlockerType]] = None
     r"""List of credit blockers for the contractor payment group."""
 
-    totals: Optional[ContractorPaymentGroupPreviewTotals] = None
+    totals: Optional[Totals] = None
 
     contractor_payments: Optional[List[ContractorPaymentForGroupPreview]] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -164,11 +175,14 @@ class ContractorPaymentGroupPreview(BaseModel):
             ]
         )
         nullable_fields = set(["uuid", "creation_token", "partner_owned_disbursement"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

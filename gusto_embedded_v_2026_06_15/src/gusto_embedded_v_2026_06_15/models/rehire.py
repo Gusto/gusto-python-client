@@ -3,13 +3,18 @@
 from __future__ import annotations
 from enum import Enum
 from gusto_embedded_v_2026_06_15 import models, utils
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from pydantic import field_serializer, model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class EmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
+class RehireEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     PART_TIME = "part_time"
@@ -29,7 +34,7 @@ class RehireTypedDict(TypedDict):
     r"""The boolean flag indicating whether Gusto will file a new hire report for the employee."""
     work_location_uuid: NotRequired[str]
     r"""The uuid of the employee's work location."""
-    employment_status: NotRequired[EmploymentStatus]
+    employment_status: NotRequired[RehireEmploymentStatus]
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee is a two percent shareholder of the company. This field only applies to companies with an S-Corp entity type."""
@@ -52,7 +57,7 @@ class Rehire(BaseModel):
     work_location_uuid: Optional[str] = None
     r"""The uuid of the employee's work location."""
 
-    employment_status: Optional[EmploymentStatus] = None
+    employment_status: Optional[RehireEmploymentStatus] = None
     r"""The employee's employment status. Supplying an invalid option will set the employment_status to *not_set*."""
 
     two_percent_shareholder: Optional[bool] = None
@@ -68,12 +73,15 @@ class Rehire(BaseModel):
     def serialize_employment_status(self, value):
         if isinstance(value, str):
             try:
-                return models.EmploymentStatus(value)
+                return models.RehireEmploymentStatus(value)
             except ValueError:
                 return value
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -87,11 +95,14 @@ class Rehire(BaseModel):
                 "active",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

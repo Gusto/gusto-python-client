@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 import pydantic
 from pydantic import model_serializer
@@ -29,7 +31,7 @@ class WorkAddress(BaseModel):
     r"""UUID of a company work location from the company locations response."""
 
 
-class HistoricalEmployeeBodyHomeAddressTypedDict(TypedDict):
+class HomeAddressTypedDict(TypedDict):
     r"""Residential address on file for tax withholding and compliance mail."""
 
     street_1: str
@@ -44,7 +46,7 @@ class HistoricalEmployeeBodyHomeAddressTypedDict(TypedDict):
     r"""Apartment, suite, unit, or building (optional)."""
 
 
-class HistoricalEmployeeBodyHomeAddress(BaseModel):
+class HomeAddress(BaseModel):
     r"""Residential address on file for tax withholding and compliance mail."""
 
     street_1: str
@@ -63,14 +65,20 @@ class HistoricalEmployeeBodyHomeAddress(BaseModel):
     r"""Apartment, suite, unit, or building (optional)."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["street_2"])
         nullable_fields = set(["street_2"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -135,13 +143,19 @@ class EmployeeStateTaxes(BaseModel):
     r"""The risk class code for workers' compensation in Washington or Wyoming state. For Washington, visit [Washington state's Risk Class page](https://www.lni.wa.gov/insurance/rates-risk-classes/risk-classes-for-workers-compensation/risk-class-lookup#/) to learn more. For Wyoming you can search for the code online using [WY Workforce Services website](https://dws.wyo.gov/dws-division/workers-compensation/) or call the agency at (307) 235-3217."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["wc_covered", "wc_class_code"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -170,7 +184,7 @@ class HistoricalEmployeeBodyTypedDict(TypedDict):
     """
     work_address: WorkAddressTypedDict
     r"""Primary work location for this historical employment row."""
-    home_address: HistoricalEmployeeBodyHomeAddressTypedDict
+    home_address: HomeAddressTypedDict
     r"""Residential address on file for tax withholding and compliance mail."""
     termination: HistoricalEmployeeBodyTerminationTypedDict
     r"""End of the historical employment period."""
@@ -210,7 +224,7 @@ class HistoricalEmployeeBody(BaseModel):
     work_address: WorkAddress
     r"""Primary work location for this historical employment row."""
 
-    home_address: HistoricalEmployeeBodyHomeAddress
+    home_address: HomeAddress
     r"""Residential address on file for tax withholding and compliance mail."""
 
     termination: HistoricalEmployeeBodyTermination
@@ -232,15 +246,21 @@ class HistoricalEmployeeBody(BaseModel):
     r"""Workers' compensation fields for Washington (WA) or Wyoming (WY) when the work address is in those states; omit when not applicable."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["middle_initial", "preferred_first_name", "email", "employee_state_taxes"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -251,6 +271,6 @@ class HistoricalEmployeeBody(BaseModel):
 
 
 try:
-    HistoricalEmployeeBodyHomeAddress.model_rebuild()
+    HomeAddress.model_rebuild()
 except NameError:
     pass

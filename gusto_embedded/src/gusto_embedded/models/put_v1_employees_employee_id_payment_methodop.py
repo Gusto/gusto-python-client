@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from gusto_embedded.utils import (
     FieldMetadata,
@@ -47,7 +49,7 @@ class PutV1EmployeesEmployeeIDPaymentMethodSplitsTypedDict(TypedDict):
     priority: NotRequired[int]
     r"""Order of priority for each payment split; priority 1 is the first account paid. Must be unique and sequential."""
     split_amount: NotRequired[Nullable[float]]
-    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
+    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. Amount must be less than or equal to 2147483647. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
 
 
 class PutV1EmployeesEmployeeIDPaymentMethodSplits(BaseModel):
@@ -61,17 +63,23 @@ class PutV1EmployeesEmployeeIDPaymentMethodSplits(BaseModel):
     r"""Order of priority for each payment split; priority 1 is the first account paid. Must be unique and sequential."""
 
     split_amount: OptionalNullable[float] = UNSET
-    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
+    r"""If split_by is Amount, value is in cents (e.g., 500 for $5.00) and exactly one account must have null to capture the remainder. Amount must be less than or equal to 2147483647. If split_by is Percentage, value is the percentage (e.g., 60 for 60%)."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["uuid", "name", "priority", "split_amount"])
         nullable_fields = set(["split_amount"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -116,14 +124,20 @@ class PutV1EmployeesEmployeeIDPaymentMethodRequestBody(BaseModel):
     r"""Array of payment splits. Required when type is Direct Deposit."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["split_by", "splits"])
         nullable_fields = set(["split_by", "splits"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -170,13 +184,19 @@ class PutV1EmployeesEmployeeIDPaymentMethodRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -8,6 +8,8 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import Optional
@@ -26,7 +28,7 @@ class PaymentConfigsUpdateRequestPaymentConfigsTypedDict(TypedDict):
     payment_speed: NotRequired[PaymentConfigsUpdateRequestPaymentSpeed]
     r"""Desired payment speed. 1-day is only applicable to partners that opt in."""
     fast_payment_limit: NotRequired[Nullable[float]]
-    r"""Payment limit for 1-day or 2-day payroll (in dollars)."""
+    r"""Payment limit for 1-day or 2-day payroll (in dollars). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
     partner_owned_disbursement: NotRequired[bool]
     r"""Whether to use the partner-owned disbursement payment rail."""
 
@@ -36,22 +38,28 @@ class PaymentConfigsUpdateRequestPaymentConfigs(BaseModel):
     r"""Desired payment speed. 1-day is only applicable to partners that opt in."""
 
     fast_payment_limit: OptionalNullable[float] = UNSET
-    r"""Payment limit for 1-day or 2-day payroll (in dollars)."""
+    r"""Payment limit for 1-day or 2-day payroll (in dollars). Applies to the 24-hour aggregate of all payments; a payment that exceeds it moves to 4-day."""
 
     partner_owned_disbursement: Optional[bool] = None
     r"""Whether to use the partner-owned disbursement payment rail."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["payment_speed", "fast_payment_limit", "partner_owned_disbursement"]
         )
         nullable_fields = set(["fast_payment_limit"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -81,13 +89,19 @@ class PaymentConfigsUpdateRequest(BaseModel):
     payment_configs: Optional[PaymentConfigsUpdateRequestPaymentConfigs] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["payment_configs"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

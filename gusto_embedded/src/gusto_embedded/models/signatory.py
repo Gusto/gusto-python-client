@@ -8,6 +8,8 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 import pydantic
 from pydantic import model_serializer
@@ -21,7 +23,7 @@ class IdentityVerificationStatus(str, Enum):
     SKIPPED = "Skipped"
 
 
-class HomeAddressTypedDict(TypedDict):
+class SignatoryHomeAddressTypedDict(TypedDict):
     street_1: NotRequired[str]
     street_2: NotRequired[str]
     city: NotRequired[str]
@@ -30,7 +32,7 @@ class HomeAddressTypedDict(TypedDict):
     country: NotRequired[str]
 
 
-class HomeAddress(BaseModel):
+class SignatoryHomeAddress(BaseModel):
     street_1: Optional[str] = None
 
     street_2: Optional[str] = None
@@ -44,15 +46,21 @@ class HomeAddress(BaseModel):
     country: Optional[str] = "USA"
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["street_1", "street_2", "city", "state", "zip_code", "country"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -87,7 +95,7 @@ class SignatoryTypedDict(TypedDict):
     | Skipped | Signatory cannot sign Form 8655 until the form is manually uploaded as wet-signed |
     | null | Identity verification process has not been completed |
     """
-    home_address: NotRequired[Nullable[HomeAddressTypedDict]]
+    home_address: NotRequired[Nullable[SignatoryHomeAddressTypedDict]]
 
 
 class Signatory(BaseModel):
@@ -126,9 +134,12 @@ class Signatory(BaseModel):
     | null | Identity verification process has not been completed |
     """
 
-    home_address: OptionalNullable[HomeAddress] = UNSET
+    home_address: OptionalNullable[SignatoryHomeAddress] = UNSET
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -156,11 +167,14 @@ class Signatory(BaseModel):
                 "home_address",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -179,6 +193,6 @@ class Signatory(BaseModel):
 
 
 try:
-    HomeAddress.model_rebuild()
+    SignatoryHomeAddress.model_rebuild()
 except NameError:
     pass

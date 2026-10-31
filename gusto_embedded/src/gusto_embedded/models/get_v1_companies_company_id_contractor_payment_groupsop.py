@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -24,6 +29,10 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion(str, 
 class GetV1CompaniesCompanyIDContractorPaymentGroupsRequestTypedDict(TypedDict):
     company_id: str
     r"""The UUID of the company"""
+    x_gusto_api_version: NotRequired[
+        GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
+    ]
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     start_date: NotRequired[str]
     r"""The time period for which to retrieve contractor payment groups. Defaults to 6 months ago."""
     end_date: NotRequired[str]
@@ -32,10 +41,6 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequestTypedDict(TypedDict):
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    x_gusto_api_version: NotRequired[
-        GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion
-    ]
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
@@ -43,6 +48,13 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the company"""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     start_date: Annotated[
         Optional[str],
@@ -68,23 +80,22 @@ class GetV1CompaniesCompanyIDContractorPaymentGroupsRequest(BaseModel):
     ] = None
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
-    x_gusto_api_version: Annotated[
-        Optional[GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
-            ["start_date", "end_date", "page", "per", "X-Gusto-API-Version"]
+            ["X-Gusto-API-Version", "start_date", "end_date", "page", "per"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

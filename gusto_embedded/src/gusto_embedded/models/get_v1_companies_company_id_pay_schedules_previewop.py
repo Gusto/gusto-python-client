@@ -3,7 +3,12 @@
 from __future__ import annotations
 from datetime import date
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -50,6 +55,8 @@ class GetV1CompaniesCompanyIDPaySchedulesPreviewRequestTypedDict(TypedDict):
     r"""An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies."""
     end_date: NotRequired[date]
     r"""End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today."""
+    pay_schedule_uuid: NotRequired[str]
+    r"""Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule."""
 
 
 class GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(BaseModel):
@@ -99,14 +106,28 @@ class GetV1CompaniesCompanyIDPaySchedulesPreviewRequest(BaseModel):
     ] = None
     r"""End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today."""
 
+    pay_schedule_uuid: Annotated[
+        Optional[str],
+        FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
+    ] = None
+    r"""Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule."""
+
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
-        optional_fields = set(["X-Gusto-API-Version", "day_1", "day_2", "end_date"])
+        optional_fields = set(
+            ["X-Gusto-API-Version", "day_1", "day_2", "end_date", "pay_schedule_uuid"]
+        )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

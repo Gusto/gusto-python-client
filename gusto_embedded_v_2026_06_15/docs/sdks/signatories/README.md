@@ -29,7 +29,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.signatories.list(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyUUIDSignatoriesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -83,7 +83,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.signatories.create(company_uuid="<id>", first_name="Ed", last_name="Reichert", title="<value>", phone="914.468.8146 x29683", birthday=date.fromisoformat("2026-11-04"), email="Mariah_Huel64@gmail.com", ssn="<value>", home_address={
@@ -146,7 +146,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.signatories.invite(company_uuid="<id>", first_name="Madelyn", last_name="Littel", email="Harmon_Heidenreich@yahoo.com", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyUUIDSignatoriesInviteHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -204,7 +204,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.signatories.update(company_uuid="<id>", signatory_uuid="<id>", version="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -263,7 +263,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.signatories.delete(company_uuid="<id>", signatory_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

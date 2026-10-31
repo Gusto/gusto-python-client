@@ -24,7 +24,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.wire_in_requests.get(wire_in_request_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetWireInRequestsWireInRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -69,7 +69,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.wire_in_requests.submit(wire_in_request_uuid="<id>", date_sent="2024-06-10", bank_name="Chase", amount_sent="314500.00", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutWireInRequestsWireInRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, additional_notes="Wire for 2024-06-15 payroll.")
@@ -119,7 +119,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.wire_in_requests.list(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetCompaniesCompanyUUIDWireInRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

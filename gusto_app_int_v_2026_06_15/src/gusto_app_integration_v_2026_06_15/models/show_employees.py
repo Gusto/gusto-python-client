@@ -21,6 +21,8 @@ from gusto_app_integration_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 import pydantic
 from pydantic import ConfigDict, field_serializer, model_serializer
@@ -58,14 +60,20 @@ class ShowEmployeesOnboardingDocumentsConfig(BaseModel):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["uuid", "i9_document"])
         nullable_fields = set(["uuid"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -146,6 +154,9 @@ class ShowEmployeesMemberPortalInvitationStatus(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -158,11 +169,14 @@ class ShowEmployeesMemberPortalInvitationStatus(BaseModel):
         nullable_fields = set(
             ["token_expired", "welcome_email_sent_at", "last_password_resent_at"]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -181,7 +195,7 @@ class ShowEmployeesMemberPortalInvitationStatus(BaseModel):
 
 
 class ShowEmployeesTypedDict(TypedDict):
-    r"""The representation of an employee in Gusto."""
+    r"""An employee, with additional fields that are only ever returned on GET requests gated behind the `include` query parameter."""
 
     uuid: str
     r"""The UUID of the employee in Gusto."""
@@ -249,12 +263,15 @@ class ShowEmployeesTypedDict(TypedDict):
     r"""Member portal invitation status information. Only included when the include param has the portal_invitations value set."""
     partner_portal_invitation_sent: NotRequired[Nullable[bool]]
     r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
+    company_name: NotRequired[str]
+    r"""The name of the company the employee is associated with. Only included when the include param has the company_name value set."""
     current_home_address: NotRequired[EmployeeHomeAddressTypedDict]
     all_home_addresses: NotRequired[List[EmployeeHomeAddressHistoryEntryTypedDict]]
+    r"""All of the employee's home addresses, past and present. Only included when the include param has the all_home_addresses value set."""
 
 
 class ShowEmployees(BaseModel):
-    r"""The representation of an employee in Gusto."""
+    r"""An employee, with additional fields that are only ever returned on GET requests gated behind the `include` query parameter."""
 
     model_config = ConfigDict(
         populate_by_name=True, arbitrary_types_allowed=True, extra="allow"
@@ -364,9 +381,13 @@ class ShowEmployees(BaseModel):
     partner_portal_invitation_sent: OptionalNullable[bool] = UNSET
     r"""Whether an external partner portal invitation webhook has been sent for this employee. Only included when the include param has the portal_invitations value set."""
 
+    company_name: Optional[str] = None
+    r"""The name of the company the employee is associated with. Only included when the include param has the company_name value set."""
+
     current_home_address: Optional[EmployeeHomeAddress] = None
 
     all_home_addresses: Optional[List[EmployeeHomeAddressHistoryEntry]] = None
+    r"""All of the employee's home addresses, past and present. Only included when the include param has the all_home_addresses value set."""
 
     @property
     def additional_properties(self):
@@ -413,6 +434,9 @@ class ShowEmployees(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -450,6 +474,7 @@ class ShowEmployees(BaseModel):
                 "applicable_tax_ids",
                 "member_portal_invitation_status",
                 "partner_portal_invitation_sent",
+                "company_name",
                 "current_home_address",
                 "all_home_addresses",
             ]
@@ -472,11 +497,14 @@ class ShowEmployees(BaseModel):
                 "partner_portal_invitation_sent",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             serialized.pop(k, serialized.pop(n, None))
             is_nullable_and_explicitly_set = (

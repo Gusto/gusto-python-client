@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -15,6 +20,12 @@ from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
+class GetV1JobsJobIDHeaderXGustoAPIVersion(str, Enum):
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
+
+    TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15 = "2026-06-15"
+
+
 class GetV1JobsJobIDQueryParamInclude(str, Enum):
     r"""Available options:
     - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
@@ -24,22 +35,16 @@ class GetV1JobsJobIDQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
 
 
-class GetV1JobsJobIDHeaderXGustoAPIVersion(str, Enum):
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
-    TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15 = "2026-06-15"
-
-
 class GetV1JobsJobIDRequestTypedDict(TypedDict):
     job_id: str
     r"""The UUID of the job"""
+    x_gusto_api_version: NotRequired[GetV1JobsJobIDHeaderXGustoAPIVersion]
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
     include: NotRequired[GetV1JobsJobIDQueryParamInclude]
     r"""Available options:
     - all_compensations: Include all effective dated compensations for each job instead of only the current compensation
 
     """
-    x_gusto_api_version: NotRequired[GetV1JobsJobIDHeaderXGustoAPIVersion]
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
 
 class GetV1JobsJobIDRequest(BaseModel):
@@ -47,6 +52,13 @@ class GetV1JobsJobIDRequest(BaseModel):
         str, FieldMetadata(path=PathParamMetadata(style="simple", explode=False))
     ]
     r"""The UUID of the job"""
+
+    x_gusto_api_version: Annotated[
+        Optional[GetV1JobsJobIDHeaderXGustoAPIVersion],
+        pydantic.Field(alias="X-Gusto-API-Version"),
+        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
+    ] = GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
+    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     include: Annotated[
         Optional[GetV1JobsJobIDQueryParamInclude],
@@ -57,21 +69,20 @@ class GetV1JobsJobIDRequest(BaseModel):
 
     """
 
-    x_gusto_api_version: Annotated[
-        Optional[GetV1JobsJobIDHeaderXGustoAPIVersion],
-        pydantic.Field(alias="X-Gusto-API-Version"),
-        FieldMetadata(header=HeaderMetadata(style="simple", explode=False)),
-    ] = GetV1JobsJobIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15
-    r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
-        optional_fields = set(["include", "X-Gusto-API-Version"])
+        optional_fields = set(["X-Gusto-API-Version", "include"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

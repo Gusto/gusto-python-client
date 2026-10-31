@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -39,7 +44,7 @@ class GetEventsHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class QueryParamSortOrder(str, Enum):
+class SortOrder(str, Enum):
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     ASC = "asc"
@@ -57,7 +62,7 @@ class GetEventsRequestTypedDict(TypedDict):
     r"""Limits the number of objects returned in a single response, between 1 and 100. The default is 25"""
     event_type: NotRequired[str]
     r"""A string containing the exact event name (e.g. `employee.created`), or use a wildcard match to filter for a group of events (e.g. `employee.*`, `*.created`, `notification.*.created` etc.)"""
-    sort_order: NotRequired[QueryParamSortOrder]
+    sort_order: NotRequired[SortOrder]
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
 
@@ -94,12 +99,15 @@ class GetEventsRequest(BaseModel):
     r"""A string containing the exact event name (e.g. `employee.created`), or use a wildcard match to filter for a group of events (e.g. `employee.*`, `*.created`, `notification.*.created` etc.)"""
 
     sort_order: Annotated[
-        Optional[QueryParamSortOrder],
+        Optional[SortOrder],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""A string indicating whether to sort resulting events in ascending (asc) or descending (desc) chronological order. Events are sorted by their `timestamp`. Defaults to asc if left empty."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -111,11 +119,14 @@ class GetEventsRequest(BaseModel):
                 "sort_order",
             ]
         )
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

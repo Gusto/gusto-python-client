@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -23,7 +28,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsHeaderXGustoAPIVersion
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude(str, Enum):
+class QueryParamInclude(str, Enum):
     r"""Available options:
     - all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -42,9 +47,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequestTypedDict(Typed
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
     r"""Number of objects per page. For majority of endpoints will default to 25"""
-    include: NotRequired[
-        GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude
-    ]
+    include: NotRequired[QueryParamInclude]
     r"""Available options:
     - all_benefits: Include all effective dated benefits for each employee instead of only the current benefits.
     """
@@ -78,7 +81,7 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(BaseModel):
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
     include: Annotated[
-        Optional[GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsQueryParamInclude],
+        Optional[QueryParamInclude],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=True)),
     ] = None
     r"""Available options:
@@ -86,13 +89,19 @@ class GetV1CompanyBenefitsCompanyBenefitIDEmployeeBenefitsRequest(BaseModel):
     """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version", "page", "per", "include"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

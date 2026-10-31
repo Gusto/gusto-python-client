@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from gusto_embedded_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -28,6 +33,8 @@ class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsPaymentMethod(str, Enu
 
     DIRECT_DEPOSIT = "Direct Deposit"
     CHECK = "Check"
+    HISTORICAL_PAYMENT = "Historical Payment"
+    CORRECTION_PAYMENT = "Correction Payment"
 
 
 class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsPaymentStatus(str, Enum):
@@ -69,13 +76,19 @@ class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsDisbursements(BaseMode
     r"""Status of the payment disbursement"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["payment_method", "payment_status"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -132,13 +145,19 @@ class PatchV1ContractorPaymentGroupsIDPartnerDisbursementsRequest(BaseModel):
     ] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version", "body"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

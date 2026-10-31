@@ -205,7 +205,7 @@ with GustoAppIntegration() as gusto_app_integration:
         "email": "Fred_Durgan@yahoo.com",
     }, company={
         "name": "<value>",
-    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    }, x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -254,7 +254,6 @@ with GustoAppIntegration() as gusto_app_integration:
 
 ### [Contractors](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/contractors/README.md)
 
-* [get_v1_companies_company_id_contractors_payment_details](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/contractors/README.md#get_v1_companies_company_id_contractors_payment_details) - List contractor payment details
 * [get_by_id](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/contractors/README.md#get_by_id) - Get a contractor
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/contractors/README.md#update) - Update a contractor
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/contractors/README.md#get) - Get contractors of a company
@@ -370,10 +369,10 @@ with GustoAppIntegration() as gusto_app_integration:
 
 ### [Payrolls](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md)
 
+* [prepare](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
 * [get](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md#get) - Get a single payroll
 * [update](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md#update) - Update a payroll by ID
 * [get_for_company](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md#get_for_company) - Get all payrolls for a company
-* [prepare](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payrolls/README.md#prepare) - Prepare a payroll for update
 
 ### [PaySchedules](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/payschedules/README.md)
 
@@ -393,7 +392,6 @@ with GustoAppIntegration() as gusto_app_integration:
 
 ### [Reports](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/reports/README.md)
 
-* [post_v1_companies_company_id_reports_employees_annual_fica_wage](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/reports/README.md#post_v1_companies_company_id_reports_employees_annual_fica_wage) - Create an employees annual FICA wage report
 * [post_payrolls_payroll_uuid_reports_general_ledger](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/reports/README.md#post_payrolls_payroll_uuid_reports_general_ledger) - Create a general ledger report
 * [get_reports_request_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/reports/README.md#get_reports_request_uuid) - Get a report
 
@@ -413,6 +411,8 @@ with GustoAppIntegration() as gusto_app_integration:
 
 * [post_companies_company_uuid_time_tracking_payroll_syncs](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_payroll_syncs) - Create a payroll sync
 * [get_time_tracking_payroll_syncs_payroll_sync_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#get_time_tracking_payroll_syncs_payroll_sync_uuid) - Get a payroll sync
+* [post_companies_company_uuid_time_tracking_time_sheets_batches](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_time_sheets_batches) - Create a batch of time sheets
+* [get_time_tracking_time_sheets_batches_time_sheets_batch_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#get_time_tracking_time_sheets_batches_time_sheets_batch_uuid) - Get a batch of time sheets
 * [get_companies_company_uuid_time_tracking_time_sheets](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#get_companies_company_uuid_time_tracking_time_sheets) - Get all time sheets for a company
 * [post_companies_company_uuid_time_tracking_time_sheets](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#post_companies_company_uuid_time_tracking_time_sheets) - Create a time sheet
 * [get_time_tracking_time_sheets_time_sheet_uuid](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/docs/sdks/timetracking/README.md#get_time_tracking_time_sheets_time_sheet_uuid) - Get a time sheet
@@ -546,7 +546,7 @@ with GustoAppIntegration(
 
 **Inherit from [`GustoAppIntegrationError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/./src/gusto_app_integration_v_2026_06_15/models/gustoappintegrationerror.py)**:
 * [`UnprocessableEntityErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/./src/gusto_app_integration_v_2026_06_15/models/unprocessableentityerrorobject.py): Unprocessable Entity    This may happen when the body of your request contains errors such as `invalid_attribute_value`, or the request fails due to an `invalid_operation`. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Applicable to 65 of 137 methods.*
-* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/./src/gusto_app_integration_v_2026_06_15/models/conflicterrorobject.py): Conflict    This error occurs when the resource version provided does not match the current version. Retrieve the latest version and retry. Status code `409`. Applicable to 1 of 137 methods.*
+* [`ConflictErrorObject`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/./src/gusto_app_integration_v_2026_06_15/models/conflicterrorobject.py): Conflict    This may happen when the resource version provided does not match the current version — retrieve the latest version and retry — or when the request conflicts with another in-progress operation on the same resource. See the [Errors Categories](https://docs.gusto.com/embedded-payroll/docs/error-categories) guide for more details. Status code `409`. Applicable to 2 of 137 methods.*
 * [`ResponseValidationError`](https://github.com/Gusto/gusto-python-client/blob/master/gusto_app_int_v_2026_06_15/./src/gusto_app_integration_v_2026_06_15/models/responsevalidationerror.py): Type mismatch between the response data and the expected Pydantic model. Provides access to the Pydantic validation error via the `cause` attribute.
 
 </details>
@@ -685,6 +685,20 @@ class CustomClient(AsyncHttpClient):
 
 s = GustoAppIntegration(async_client=CustomClient(httpx.AsyncClient()))
 ```
+### httpx2 (Pydantic's httpx fork)
+
+[httpx2](https://httpx2.pydantic.dev/) is Pydantic's maintained fork of `httpx`. To run this SDK on httpx2, call `alias_httpx()` at your program's entry point, before importing the SDK, so every `import httpx` — including the ones inside the SDK — resolves to `httpx2`:
+```python
+import httpx2
+
+httpx2.alias_httpx()
+
+from gusto_app_integration_v_2026_06_15 import GustoAppIntegration
+
+s = GustoAppIntegration()
+```
+
+An SDK can also be generated against httpx2 directly, so it depends on the fork instead of `httpx`, by setting `python.httpClientLibrary: httpx2` in `gen.yaml`.
 <!-- End Custom HTTP Client [http-client] -->
 
 <!-- Start Resource Management [resource-management] -->
@@ -702,6 +716,7 @@ def main():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gusto_app_integration:
         # Rest of application here...
+        pass
 
 
 # Or when using async:
@@ -711,6 +726,7 @@ async def amain():
         company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
     ) as gusto_app_integration:
         # Rest of application here...
+        pass
 ```
 <!-- End Resource Management [resource-management] -->
 

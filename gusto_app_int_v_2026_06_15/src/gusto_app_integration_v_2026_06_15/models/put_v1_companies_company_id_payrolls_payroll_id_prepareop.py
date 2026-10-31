@@ -8,6 +8,8 @@ from gusto_app_integration_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from gusto_app_integration_v_2026_06_15.utils import (
     FieldMetadata,
@@ -30,22 +32,38 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion(str,
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBodyTypedDict(TypedDict):
     employee_uuids: NotRequired[Nullable[List[str]]]
-    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
+    r"""The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+    **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+    **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
+    """
 
 
 class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequestBody(BaseModel):
     employee_uuids: OptionalNullable[List[str]] = UNSET
-    r"""An array of employee UUIDs. If passed, only those employees payroll items will be prepared."""
+    r"""The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.
+
+    **Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.
+
+    **All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422.
+    """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["employee_uuids"])
         nullable_fields = set(["employee_uuids"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -125,13 +143,19 @@ class PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareRequest(BaseModel):
     ] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version", "page", "per", "sort_by", "body"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

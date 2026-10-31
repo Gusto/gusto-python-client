@@ -23,7 +23,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.historical_employees.update(company_uuid="7b1d0df1-6403-4a06-8768-c1dd7d24d27a", historical_employee_uuid="a2b3c4d-5e6f-7890-abcd-ef1234567890", version="56d00c178bc7393b2a206ed6a86afcb4", first_name="Soren", last_name="Kierkegaard", date_of_birth=date.fromisoformat("1995-05-05"), ssn="123456294", work_address={

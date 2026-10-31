@@ -26,7 +26,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.list(employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -73,7 +73,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.create(employee_id="<id>", amount="<value>", court_ordered=False, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeIDGarnishmentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)
@@ -131,7 +131,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.get_child_support_data(x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -174,7 +174,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.get(garnishment_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -219,7 +219,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.garnishments.update(garnishment_id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1GarnishmentsGarnishmentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, active=True, times=None, recurring=False, annual_maximum=None, pay_period_maximum=None, deduct_as_percentage=False)

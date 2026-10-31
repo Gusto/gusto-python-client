@@ -8,6 +8,8 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
 from pydantic import model_serializer
 from typing import Optional
@@ -52,6 +54,8 @@ class ContractorUpdateRequestBodyTypedDict(TypedDict):
     """
     email: NotRequired[str]
     r"""The contractor’s email address."""
+    work_email: NotRequired[str]
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
     first_name: NotRequired[str]
     r"""The contractor’s first name.
     This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
@@ -120,6 +124,9 @@ class ContractorUpdateRequestBody(BaseModel):
     email: Optional[str] = None
     r"""The contractor’s email address."""
 
+    work_email: Optional[str] = None
+    r"""The work email address of the contractor. This is provided to support syncing users between our system and yours. You may not use this email address for any other purpose (e.g. marketing)."""
+
     first_name: Optional[str] = None
     r"""The contractor’s first name.
     This attribute is required for `Individual` contractors and will be ignored for `Business` contractors.
@@ -163,6 +170,9 @@ class ContractorUpdateRequestBody(BaseModel):
     r"""The status of the contractor. If the contractor's start date is in the future, updating this field to true means we are setting the start date to today. Attempting to deactivate a contractor while a dismissal is already scheduled, or reactivate while a rehire is already scheduled, will return a 422 error. Cancel the pending transition first using the appropriate cancel endpoint."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -172,6 +182,7 @@ class ContractorUpdateRequestBody(BaseModel):
                 "hourly_rate",
                 "self_onboarding",
                 "email",
+                "work_email",
                 "first_name",
                 "last_name",
                 "middle_initial",
@@ -184,11 +195,14 @@ class ContractorUpdateRequestBody(BaseModel):
             ]
         )
         nullable_fields = set(["work_state"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

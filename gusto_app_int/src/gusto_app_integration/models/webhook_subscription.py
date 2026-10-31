@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
 
 
-class Status(str, Enum):
+class WebhookSubscriptionStatus(str, Enum):
     r"""The status of the webhook subscription."""
 
     PENDING = "pending"
@@ -34,6 +39,8 @@ class SubscriptionTypes(str, Enum):
     PAYROLL_SYNC = "PayrollSync"
     PAY_SCHEDULE = "PaySchedule"
     SIGNATORY = "Signatory"
+    TIME_OFF_REQUEST = "TimeOffRequest"
+    TIME_SHEETS_BATCH = "TimeSheetsBatch"
 
 
 class WebhookSubscriptionTypedDict(TypedDict):
@@ -43,7 +50,7 @@ class WebhookSubscriptionTypedDict(TypedDict):
     r"""The UUID of the webhook subscription."""
     url: NotRequired[str]
     r"""The webhook subscriber URL. Updates will be POSTed to this URL."""
-    status: NotRequired[Status]
+    status: NotRequired[WebhookSubscriptionStatus]
     r"""The status of the webhook subscription."""
     subscription_types: NotRequired[List[SubscriptionTypes]]
     r"""Receive updates for these types."""
@@ -58,20 +65,26 @@ class WebhookSubscription(BaseModel):
     url: Optional[str] = None
     r"""The webhook subscriber URL. Updates will be POSTed to this URL."""
 
-    status: Optional[Status] = None
+    status: Optional[WebhookSubscriptionStatus] = None
     r"""The status of the webhook subscription."""
 
     subscription_types: Optional[List[SubscriptionTypes]] = None
     r"""Receive updates for these types."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["url", "status", "subscription_types"])
+        exclude_none = current_exclude_none()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and exclude_none is False:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

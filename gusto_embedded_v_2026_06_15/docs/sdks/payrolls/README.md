@@ -10,11 +10,6 @@
 * [get_v1_companies_company_id_payrolls_id_partner_disbursements](#get_v1_companies_company_id_payrolls_id_partner_disbursements) - Get partner disbursements for a payroll
 * [patch_v1_companies_company_id_payrolls_id_partner_disbursements](#patch_v1_companies_company_id_payrolls_id_partner_disbursements) - Update partner disbursements for a payroll
 * [get_approved_reversals](#get_approved_reversals) - Get approved payroll reversals
-* [get](#get) - Get a single payroll
-* [update](#update) - Update a payroll by ID
-* [delete](#delete) - Delete a payroll
-* [list](#list) - Get all payrolls for a company
-* [create_off_cycle](#create_off_cycle) - Create an off-cycle payroll
 * [get_receipt](#get_receipt) - Get a single payroll receipt
 * [cancel](#cancel) - Cancel a payroll
 * [prepare](#prepare) - Prepare a payroll for update
@@ -23,6 +18,11 @@
 * [skip](#skip) - Skip a payroll
 * [submit](#submit) - Submit payroll
 * [calculate_gross_up](#calculate_gross_up) - Calculate gross up for a payroll
+* [get](#get) - Get a single payroll
+* [update](#update) - Update a payroll by ID
+* [delete](#delete) - Delete a payroll
+* [list](#list) - Get all payrolls for a company
+* [create_off_cycle](#create_off_cycle) - Create an off-cycle payroll
 
 ## generate_printable_checks
 
@@ -40,7 +40,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.generate_printable_checks(payroll_uuid="<id>", printing_format=gusto_embedded_v_2026_06_15.PrintingFormat.TOP, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1PayrollsPayrollUUIDGeneratedDocumentsPrintablePayrollChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -90,7 +90,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.get_pay_stubs(employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeUUIDPayStubsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -137,7 +137,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.get_pay_stub(payroll_id="<id>", employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1PayrollsPayrollUUIDEmployeesEmployeeUUIDPayStubHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -183,7 +183,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.get_v1_companies_company_id_payrolls_id_partner_disbursements(company_id="<id>", id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDPayrollsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -229,7 +229,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.patch_v1_companies_company_id_payrolls_id_partner_disbursements(company_id="<id>", id="<id>", disbursements=[
@@ -281,10 +281,10 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
-    res = gusto.payrolls.get_approved_reversals(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    res = gusto.payrolls.get_approved_reversals(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -296,9 +296,9 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDPayrollReversalsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidpayrollreversalsheaderxgustoapiversion.md)                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
@@ -311,6 +311,408 @@ with Gusto(
 | -------------------------- | -------------------------- | -------------------------- |
 | models.NotFoundErrorObject | 404                        | application/json           |
 | models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## get_receipt
+
+Returns a payroll receipt.
+
+Notes:
+* Hour and dollar amounts are returned as string representations of numeric decimals.
+* Dollar amounts are represented to the cent.
+* If no data has yet be inserted for a given field, it defaults to "0.00" (for fixed amounts).
+* Employee compensations are always paginated. Maximum page size is 100 employee compensations per request.
+* Responses include the `X-Page`, `X-Total-Count`, `X-Total-Pages`, and `X-Per-Page` pagination headers.
+
+scope: `payrolls:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-payment-receipts-payrolls-payroll_uuid" method="get" path="/v1/payrolls/{payroll_uuid}/receipt" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.payrolls.get_receipt(payroll_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion]](../../models/getv1paymentreceiptspayrollspayrolluuidheaderxgustoapiversion.md)                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.PayrollReceipt](../../models/payrollreceipt.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## cancel
+
+Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
+
+- `processed` is `true`
+- Current time is earlier than 4pm PT on the `payroll_deadline`
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-api-v1-companies-company_id-payrolls-payroll_id-cancel" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.payrolls.cancel(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion]](../../models/putapiv1companiescompanyidpayrollspayrollidcancelheaderxgustoapiversion.md)                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.UnprocessedPayroll](../../models/unprocessedpayroll.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## prepare
+
+Prepares an unprocessed payroll for update, including: adding eligible employees to off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, and `Adhoc`),
+and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
+
+Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
+
+### Notes
+
+* Nullifies `calculated_at` and `totals` if the payroll was previously calculated
+* Returns the `version` parameter required for [updating the payroll](ref:put-v1-companies-company_id-payrolls)
+* `employees:read` scope is required to include employee compensations data in the response.
+* Results are paginated, with a maximum page size of 100 employee compensations.
+
+scope: `payrolls:write employees:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-prepare" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/prepare" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.payrolls.prepare(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, sort_by="first_name:asc")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Required                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Example                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | *str*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | The UUID of the company                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `payroll_id`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | *str*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | The UUID of the payroll                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidprepareheaderxgustoapiversion.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `page`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | *Optional[int]*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `per`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | *Optional[int]*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `sort_by`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | *Optional[str]*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | first_name:asc                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `employee_uuids`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | List[*str*]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | The employees to prepare, identified by UUID. If omitted, every employee currently on the payroll is prepared.<br/><br/>**Off-cycle payrolls that support multiple employees (`Bonus`, `Correction`, `Adhoc`):** passing `employee_uuids` also adds eligible employees who aren't yet on the payroll - a listed employee not on the payroll is added, while one already on it is simply prepared. A request may include up to 100 UUIDs, of which at most 25 may be employees not already on the payroll; an ineligible or unknown UUID, or more than 25 new employees, is rejected with a 422.<br/><br/>**All other payrolls:** `employee_uuids` selects which of the payroll's existing employees to prepare; a UUID for an employee not on the payroll is rejected with a 422. |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `retries`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+
+### Response
+
+**[models.PayrollPrepared](../../models/payrollprepared.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## calculate
+
+Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
+
+This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
+
+If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-calculate" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    gusto.payrolls.calculate(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidcalculateheaderxgustoapiversion.md)                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## get_blockers
+
+Returns a list of reasons that prevent the company from running payrolls. See the [Payroll Blockers guide](doc:payroll-blockers) for a complete list of reasons. The list is empty if there are no payroll blockers.
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-v1-companies-payroll-blockers-company_uuid" method="get" path="/v1/companies/{company_uuid}/payrolls/blockers" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.payrolls.get_blockers(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesPayrollBlockersCompanyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesPayrollBlockersCompanyUUIDHeaderXGustoAPIVersion]](../../models/getv1companiespayrollblockerscompanyuuidheaderxgustoapiversion.md)                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[List[models.PayrollBlocker]](../../models/.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## skip
+
+Submits a $0 payroll for employees associated with the pay schedule to skip payroll. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, the payroll is transitioned to the `processed` state.
+
+If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-companies-payroll-skip-company_uuid" method="post" path="/v1/companies/{company_uuid}/payrolls/skip" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    gusto.payrolls.skip(company_uuid="<id>", payroll_type=gusto_embedded_v_2026_06_15.PostCompaniesPayrollSkipCompanyUUIDPayrollType.TRANSITION_FROM_OLD_PAY_SCHEDULE, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostCompaniesPayrollSkipCompanyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `payroll_type`                                                                                                                                                                                                               | [models.PostCompaniesPayrollSkipCompanyUUIDPayrollType](../../models/postcompaniespayrollskipcompanyuuidpayrolltype.md)                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | Payroll type                                                                                                                                                                                                                 |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostCompaniesPayrollSkipCompanyUUIDHeaderXGustoAPIVersion]](../../models/postcompaniespayrollskipcompanyuuidheaderxgustoapiversion.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Pay period start date                                                                                                                                                                                                        |
+| `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Pay period end date. If left empty, defaults to today's date. Required when skipping a termination payroll (`payroll_type` = `Dismissed employee`).                                                                          |
+| `pay_schedule_uuid`                                                                                                                                                                                                          | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The UUID of the pay schedule. Required when skipping a termination payroll (`payroll_type` = `Dismissed employee`).                                                                                                          |
+| `employee_uuids`                                                                                                                                                                                                             | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | An array of employees. This field is only applicable to new hire payroll and termination payroll                                                                                                                             |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                  | Status Code                 | Content Type                |
+| --------------------------- | --------------------------- | --------------------------- |
+| models.NotFoundErrorObject  | 404                         | application/json            |
+| models.ConflictErrorObject  | 409                         | application/json            |
+| models.PayrollBlockersError | 422                         | application/json            |
+| models.APIError             | 4XX, 5XX                    | \*/\*                       |
+
+## submit
+
+Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
+
+You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
+
+If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-submit" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    gusto.payrolls.submit(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Use the SDK ...
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidsubmitheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `submission_blockers`                                                                                                                                                                                                        | List[[models.PayrollSubmissionBlockerRequestType](../../models/payrollsubmissionblockerrequesttype.md)]                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | An array of submission_blockers, each with a selected unblock option.                                                                                                                                                        |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## calculate_gross_up
+
+Calculates gross up earnings for an employee's payroll, given net earnings. This endpoint is only applicable to off-cycle unprocessed payrolls.
+
+The gross up amount must then be mapped to the corresponding fixed compensation earning type to get the correct payroll amount. For example, for bonus off-cycles, the gross up amount should be set with the Bonus earning type in the payroll `fixed_compensations` field.
+
+scope: `payrolls:run`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-payrolls-gross-up-payroll_uuid" method="post" path="/v1/payrolls/{payroll_uuid}/gross_up" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.payrolls.calculate_gross_up(payroll_uuid="<id>", employee_uuid="<id>", net_pay="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostPayrollsGrossUpPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
+| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
+| `net_pay`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | Employee net earnings                                                                                                                                                                                                        |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostPayrollsGrossUpPayrollUUIDHeaderXGustoAPIVersion]](../../models/postpayrollsgrossuppayrolluuidheaderxgustoapiversion.md)                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.PayrollGrossUpResponse](../../models/payrollgrossupresponse.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
 
 ## get
 
@@ -337,7 +739,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.get(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDPayrollsPayrollIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, sort_by="first_name:asc")
@@ -391,7 +793,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.update(company_id="<id>", payroll_id="<id>", employee_compensations=[
@@ -425,7 +827,8 @@ with Gusto(
 | Error Type                       | Status Code                      | Content Type                     |
 | -------------------------------- | -------------------------------- | -------------------------------- |
 | models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 409, 422                         | application/json                 |
+| models.ConflictErrorObject       | 409                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
 | models.APIError                  | 4XX, 5XX                         | \*/\*                            |
 
 ## delete
@@ -446,7 +849,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.payrolls.delete(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -461,8 +864,8 @@ with Gusto(
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
 | `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `async_`                                                                                                                                                                                                                     | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | When true, request an asynchronous delete of the payroll.                                                                                                                                                                    |
 | `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.DeleteV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion]](../../models/deletev1companiescompanyidpayrollsheaderxgustoapiversion.md)                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `async_`                                                                                                                                                                                                                     | *Optional[bool]*                                                                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | When true, request an asynchronous delete of the payroll.                                                                                                                                                                    |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Errors
@@ -495,7 +898,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.list(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, start_date="2020-01-31", end_date="2020-01-31", date_filter_by=gusto_embedded_v_2026_06_15.DateFilterBy.CHECK_DATE, sort_order=gusto_embedded_v_2026_06_15.QueryParamSortOrder.ASC)
@@ -559,7 +962,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.payrolls.create_off_cycle(company_id="<id>", off_cycle=False, off_cycle_reason=gusto_embedded_v_2026_06_15.OffCycleReason.CORRECTION, start_date=date.fromisoformat("2026-06-14"), end_date=date.fromisoformat("2026-07-23"), x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -580,7 +983,7 @@ with Gusto(
 | `end_date`                                                                                                                                                                                                                                                                                      | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                                                                                              | Pay period end date.                                                                                                                                                                                                                                                                            |
 | `x_gusto_api_version`                                                                                                                                                                                                                                                                           | [Optional[models.PostV1CompaniesCompanyIDPayrollsHeaderXGustoAPIVersion]](../../models/postv1companiescompanyidpayrollsheaderxgustoapiversion.md)                                                                                                                                               | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                    |
 | `pay_schedule_uuid`                                                                                                                                                                                                                                                                             | *Optional[str]*                                                                                                                                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | A pay schedule is required for transition from old pay schedule payroll to identify the matching transition pay period.                                                                                                                                                                         |
-| `employee_uuids`                                                                                                                                                                                                                                                                                | List[*str*]                                                                                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | A list of employee uuids to include on the payroll.                                                                                                                                                                                                                                             |
+| `employee_uuids`                                                                                                                                                                                                                                                                                | List[*str*]                                                                                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | A list of employee UUIDs to include on the payroll. At least one UUID is required for non-termination off-cycle payrolls.                                                                                                                                                                       |
 | `check_date`                                                                                                                                                                                                                                                                                    | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | Payment date.                                                                                                                                                                                                                                                                                   |
 | `withholding_pay_period`                                                                                                                                                                                                                                                                        | [Optional[models.PostV1CompaniesCompanyIDPayrollsWithholdingPayPeriod]](../../models/postv1companiescompanyidpayrollswithholdingpayperiod.md)                                                                                                                                                   | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | The payment schedule tax rate the payroll is based on.                                                                                                                                                                                                                                          |
 | `skip_regular_deductions`                                                                                                                                                                                                                                                                       | *Optional[bool]*                                                                                                                                                                                                                                                                                | :heavy_minus_sign:                                                                                                                                                                                                                                                                              | Block regular deductions and contributions for this payroll.                                                                                                                                                                                                                                    |
@@ -591,403 +994,6 @@ with Gusto(
 ### Response
 
 **[models.PayrollUnprocessed](../../models/payrollunprocessed.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## get_receipt
-
-Returns a payroll receipt.
-
-Notes:
-* Hour and dollar amounts are returned as string representations of numeric decimals.
-* Dollar amounts are represented to the cent.
-* If no data has yet be inserted for a given field, it defaults to "0.00" (for fixed amounts).
-
-scope: `payrolls:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-payment-receipts-payrolls-payroll_uuid" method="get" path="/v1/payrolls/{payroll_uuid}/receipt" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payrolls.get_receipt(payroll_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1PaymentReceiptsPayrollsPayrollUUIDHeaderXGustoAPIVersion]](../../models/getv1paymentreceiptspayrollspayrolluuidheaderxgustoapiversion.md)                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.PayrollReceipt](../../models/payrollreceipt.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## cancel
-
-Transitions a `processed` payroll back to the `unprocessed` state. A payroll can be canceled if it meets both criteria:
-
-- `processed` is `true`
-- Current time is earlier than 4pm PT on the `payroll_deadline`
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-api-v1-companies-company_id-payrolls-payroll_id-cancel" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/cancel" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payrolls.cancel(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutAPIV1CompaniesCompanyIDPayrollsPayrollIDCancelHeaderXGustoAPIVersion]](../../models/putapiv1companiescompanyidpayrollspayrollidcancelheaderxgustoapiversion.md)                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.UnprocessedPayroll](../../models/unprocessedpayroll.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## prepare
-
-Prepares an unprocessed payroll for update, including: adding or removing eligible employees from the payroll,
-and updating `check_date`, `payroll_deadline`, and `payroll_status_meta` dates and times.
-
-Use this endpoint before calling [PUT /v1/companies/{company_id}/payrolls/{payroll_id}](ref:put-v1-companies-company_id-payrolls).
-
-### Notes
-
-* Nullifies `calculated_at` and `totals` if the payroll was previously calculated
-* Returns the `version` parameter required for [updating the payroll](ref:put-v1-companies-company_id-payrolls)
-* `employees:read` scope is required to include employee compensations data in the response.
-* Results are paginated, with a maximum page size of 100 employee compensations.
-
-scope: `payrolls:write employees:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-prepare" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/prepare" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payrolls.prepare(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, sort_by="first_name:asc")
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
-| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDPrepareHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidprepareheaderxgustoapiversion.md)                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
-| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |                                                                                                                                                                                                                              |
-| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |                                                                                                                                                                                                                              |
-| `sort_by`                                                                                                                                                                                                                    | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending.           | first_name:asc                                                                                                                                                                                                               |
-| `employee_uuids`                                                                                                                                                                                                             | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | An array of employee UUIDs. If passed, only those employees payroll items will be prepared.                                                                                                                                  |                                                                                                                                                                                                                              |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
-
-### Response
-
-**[models.PayrollPrepared](../../models/payrollprepared.md)**
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## calculate
-
-Performs calculations for taxes, benefits, and deductions for an unprocessed payroll. The calculated payroll details provide a preview of the actual values that will be used when the payroll is run.
-
-This calculation is asynchronous and a successful request responds with a 202 HTTP status. To view the details of the calculated payroll, use the GET /v1/companies/{company_id}/payrolls/{payroll_id} endpoint with *include=taxes,benefits,deductions* params.
-
-If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-calculate" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/calculate" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.payrolls.calculate(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDCalculateHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidcalculateheaderxgustoapiversion.md)                                          | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## get_blockers
-
-Returns a list of reasons that prevent the company from running payrolls. See the [Payroll Blockers guide](doc:payroll-blockers) for a complete list of reasons. The list is empty if there are no payroll blockers.
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-companies-payroll-blockers-company_uuid" method="get" path="/v1/companies/{company_uuid}/payrolls/blockers" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payrolls.get_blockers(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesPayrollBlockersCompanyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesPayrollBlockersCompanyUUIDHeaderXGustoAPIVersion]](../../models/getv1companiespayrollblockerscompanyuuidheaderxgustoapiversion.md)                                                            | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.PayrollBlocker]](../../models/.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
-## skip
-
-Submits a $0 payroll for employees associated with the pay schedule to skip payroll. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, the payroll is transitioned to the `processed` state.
-
-If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="post-companies-payroll-skip-company_uuid" method="post" path="/v1/companies/{company_uuid}/payrolls/skip" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.payrolls.skip(company_uuid="<id>", payroll_type=gusto_embedded_v_2026_06_15.PostCompaniesPayrollSkipCompanyUUIDPayrollType.TRANSITION_FROM_OLD_PAY_SCHEDULE, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostCompaniesPayrollSkipCompanyUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `payroll_type`                                                                                                                                                                                                               | [models.PostCompaniesPayrollSkipCompanyUUIDPayrollType](../../models/postcompaniespayrollskipcompanyuuidpayrolltype.md)                                                                                                      | :heavy_check_mark:                                                                                                                                                                                                           | Payroll type                                                                                                                                                                                                                 |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostCompaniesPayrollSkipCompanyUUIDHeaderXGustoAPIVersion]](../../models/postcompaniespayrollskipcompanyuuidheaderxgustoapiversion.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Pay period start date                                                                                                                                                                                                        |
-| `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Pay period end date. If left empty, defaults to today's date. Required when skipping a termination payroll (`payroll_type` = `Dismissed employee`).                                                                          |
-| `pay_schedule_uuid`                                                                                                                                                                                                          | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The UUID of the pay schedule. Required when skipping a termination payroll (`payroll_type` = `Dismissed employee`).                                                                                                          |
-| `employee_uuids`                                                                                                                                                                                                             | List[*str*]                                                                                                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | An array of employees. This field is only applicable to new hire payroll and termination payroll                                                                                                                             |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type                  | Status Code                 | Content Type                |
-| --------------------------- | --------------------------- | --------------------------- |
-| models.NotFoundErrorObject  | 404                         | application/json            |
-| models.PayrollBlockersError | 422                         | application/json            |
-| models.APIError             | 4XX, 5XX                    | \*/\*                       |
-
-## submit
-
-Submits an unprocessed payroll to be calculated and run. This submission is asynchronous and a successful request responds with a 202 HTTP status. Upon success, transitions the payroll to the `processed` state.
-
-You should poll to ensure that payroll is processed successfully, as async errors only occur after async processing is complete.
-
-If the company is blocked from running payroll due to issues like incomplete setup, missing information or other compliance issues, the response will be 422 Unprocessable Entity with a categorization of the blockers as described in the error responses.
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="put-v1-companies-company_id-payrolls-payroll_id-submit" method="put" path="/v1/companies/{company_id}/payrolls/{payroll_id}/submit" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    gusto.payrolls.submit(company_id="<id>", payroll_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Use the SDK ...
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `payroll_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PutV1CompaniesCompanyIDPayrollsPayrollIDSubmitHeaderXGustoAPIVersion]](../../models/putv1companiescompanyidpayrollspayrollidsubmitheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `submission_blockers`                                                                                                                                                                                                        | List[[models.PayrollSubmissionBlockerRequestType](../../models/payrollsubmissionblockerrequesttype.md)]                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                           | An array of submission_blockers, each with a selected unblock option.                                                                                                                                                        |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Errors
-
-| Error Type                       | Status Code                      | Content Type                     |
-| -------------------------------- | -------------------------------- | -------------------------------- |
-| models.NotFoundErrorObject       | 404                              | application/json                 |
-| models.UnprocessableEntityError1 | 422                              | application/json                 |
-| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
-
-## calculate_gross_up
-
-Calculates gross up earnings for an employee's payroll, given net earnings. This endpoint is only applicable to off-cycle unprocessed payrolls.
-
-The gross up amount must then be mapped to the corresponding fixed compensation earning type to get the correct payroll amount. For example, for bonus off-cycles, the gross up amount should be set with the Bonus earning type in the payroll `fixed_compensations` field.
-
-scope: `payrolls:run`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="post-payrolls-gross-up-payroll_uuid" method="post" path="/v1/payrolls/{payroll_uuid}/gross_up" -->
-```python
-import gusto_embedded_v_2026_06_15
-from gusto_embedded_v_2026_06_15 import Gusto
-import os
-
-
-with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
-) as gusto:
-
-    res = gusto.payrolls.calculate_gross_up(payroll_uuid="<id>", employee_uuid="<id>", net_pay="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostPayrollsGrossUpPayrollUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `payroll_uuid`                                                                                                                                                                                                               | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the payroll                                                                                                                                                                                                      |
-| `employee_uuid`                                                                                                                                                                                                              | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the employee                                                                                                                                                                                                     |
-| `net_pay`                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | Employee net earnings                                                                                                                                                                                                        |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostPayrollsGrossUpPayrollUUIDHeaderXGustoAPIVersion]](../../models/postpayrollsgrossuppayrolluuidheaderxgustoapiversion.md)                                                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[models.PayrollGrossUpResponse](../../models/payrollgrossupresponse.md)**
 
 ### Errors
 
