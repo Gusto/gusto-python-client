@@ -3,7 +3,13 @@
 from __future__ import annotations
 from datetime import date
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
+from gusto_embedded.types.basemodel import current_filtered_dump
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -23,13 +29,20 @@ class ContractorPaymentReceiptTotals(BaseModel):
     r"""The total company debit for the contractor payment."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["company_debit"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -48,7 +61,7 @@ class ContractorPaymentReceiptPaymentMethod(str, Enum):
     CORRECTION_PAYMENT = "Correction Payment"
 
 
-class ContractorPaymentsModelTypedDict(TypedDict):
+class ContractorPaymentReceiptContractorPaymentsTypedDict(TypedDict):
     contractor_uuid: NotRequired[str]
     r"""The UUID of the contractor."""
     contractor_first_name: NotRequired[str]
@@ -72,7 +85,7 @@ class ContractorPaymentsModelTypedDict(TypedDict):
     r"""The reimbursement amount in the payment."""
 
 
-class ContractorPaymentsModel(BaseModel):
+class ContractorPaymentReceiptContractorPayments(BaseModel):
     contractor_uuid: Optional[str] = None
     r"""The UUID of the contractor."""
 
@@ -104,6 +117,9 @@ class ContractorPaymentsModel(BaseModel):
     r"""The reimbursement amount in the payment."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -118,11 +134,15 @@ class ContractorPaymentsModel(BaseModel):
                 "reimbursement",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -132,7 +152,7 @@ class ContractorPaymentsModel(BaseModel):
         return m
 
 
-class ContractorPaymentReceiptLicenseeTypedDict(TypedDict):
+class LicenseeTypedDict(TypedDict):
     r"""The licensed payroll processor"""
 
     name: NotRequired[str]
@@ -149,7 +169,7 @@ class ContractorPaymentReceiptLicenseeTypedDict(TypedDict):
     r"""Always the fixed string \"4157778888\" """
 
 
-class ContractorPaymentReceiptLicensee(BaseModel):
+class Licensee(BaseModel):
     r"""The licensed payroll processor"""
 
     name: Optional[str] = None
@@ -171,15 +191,22 @@ class ContractorPaymentReceiptLicensee(BaseModel):
     r"""Always the fixed string \"4157778888\" """
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["name", "address", "city", "state", "postal_code", "phone_number"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -210,9 +237,11 @@ class ContractorPaymentReceiptTypedDict(TypedDict):
     r"""URL for information related to right to liability of licensee. Always the fixed string \"https://gusto.com/about/licenses\" """
     totals: NotRequired[ContractorPaymentReceiptTotalsTypedDict]
     r"""The subtotals for the contractor payment."""
-    contractor_payments: NotRequired[List[ContractorPaymentsModelTypedDict]]
+    contractor_payments: NotRequired[
+        List[ContractorPaymentReceiptContractorPaymentsTypedDict]
+    ]
     r"""An array of contractor payments for this contractor payment."""
-    licensee: NotRequired[ContractorPaymentReceiptLicenseeTypedDict]
+    licensee: NotRequired[LicenseeTypedDict]
     r"""The licensed payroll processor"""
 
 
@@ -247,13 +276,18 @@ class ContractorPaymentReceipt(BaseModel):
     totals: Optional[ContractorPaymentReceiptTotals] = None
     r"""The subtotals for the contractor payment."""
 
-    contractor_payments: Optional[List[ContractorPaymentsModel]] = None
+    contractor_payments: Optional[List[ContractorPaymentReceiptContractorPayments]] = (
+        None
+    )
     r"""An array of contractor payments for this contractor payment."""
 
-    licensee: Optional[ContractorPaymentReceiptLicensee] = None
+    licensee: Optional[Licensee] = None
     r"""The licensed payroll processor"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -271,11 +305,15 @@ class ContractorPaymentReceipt(BaseModel):
                 "licensee",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -16,7 +16,10 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded_v_2026_06_15.types.basemodel import current_filtered_dump
 from pydantic import field_serializer, model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -33,7 +36,7 @@ class EmployeeOnboardingStatus1(str, Enum, metaclass=utils.OpenEnumMeta):
     SELF_ONBOARDING_AWAITING_ADMIN_REVIEW = "self_onboarding_awaiting_admin_review"
 
 
-class OnboardingDocumentsConfigTypedDict(TypedDict):
+class EmployeeOnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: NotRequired[Nullable[str]]
@@ -42,7 +45,7 @@ class OnboardingDocumentsConfigTypedDict(TypedDict):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
 
-class OnboardingDocumentsConfig(BaseModel):
+class EmployeeOnboardingDocumentsConfig(BaseModel):
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     uuid: OptionalNullable[str] = UNSET
@@ -52,14 +55,21 @@ class OnboardingDocumentsConfig(BaseModel):
     r"""Whether to include Form I-9 for an employee during onboarding"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["uuid", "i9_document"])
         nullable_fields = set(["uuid"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -84,7 +94,7 @@ class EmployeePaymentMethod1(str, Enum, metaclass=utils.OpenEnumMeta):
     CHECK = "Check"
 
 
-class CurrentEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
+class EmployeeCurrentEmploymentStatus(str, Enum, metaclass=utils.OpenEnumMeta):
     FULL_TIME = "full_time"
     PART_TIME_UNDER_TWENTY_HOURS = "part_time_under_twenty_hours"
     PART_TIME_TWENTY_PLUS_HOURS = "part_time_twenty_plus_hours"
@@ -140,6 +150,9 @@ class EmployeeMemberPortalInvitationStatus(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -152,11 +165,15 @@ class EmployeeMemberPortalInvitationStatus(BaseModel):
         nullable_fields = set(
             ["token_expired", "welcome_email_sent_at", "last_password_resent_at"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -202,7 +219,7 @@ class EmployeeTypedDict(TypedDict):
     r"""Whether the employee has completed onboarding."""
     onboarding_status: NotRequired[Nullable[EmployeeOnboardingStatus1]]
     r"""The current onboarding status of the employee"""
-    onboarding_documents_config: NotRequired[OnboardingDocumentsConfigTypedDict]
+    onboarding_documents_config: NotRequired[EmployeeOnboardingDocumentsConfigTypedDict]
     r"""Configuration for an employee onboarding documents during onboarding"""
     jobs: NotRequired[List[JobTypedDict]]
     eligible_paid_time_off: NotRequired[List[PaidTimeOffTypedDict]]
@@ -219,7 +236,7 @@ class EmployeeTypedDict(TypedDict):
     preferred_first_name: NotRequired[Nullable[str]]
     payment_method: NotRequired[EmployeePaymentMethod1]
     r"""The employee's payment method"""
-    current_employment_status: NotRequired[Nullable[CurrentEmploymentStatus]]
+    current_employment_status: NotRequired[Nullable[EmployeeCurrentEmploymentStatus]]
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
     historical: NotRequired[bool]
     employee_code: NotRequired[str]
@@ -283,7 +300,7 @@ class Employee(BaseModel):
     onboarding_status: OptionalNullable[EmployeeOnboardingStatus1] = UNSET
     r"""The current onboarding status of the employee"""
 
-    onboarding_documents_config: Optional[OnboardingDocumentsConfig] = None
+    onboarding_documents_config: Optional[EmployeeOnboardingDocumentsConfig] = None
     r"""Configuration for an employee onboarding documents during onboarding"""
 
     jobs: Optional[List[Job]] = None
@@ -312,7 +329,7 @@ class Employee(BaseModel):
     payment_method: Optional[EmployeePaymentMethod1] = EmployeePaymentMethod1.CHECK
     r"""The employee's payment method"""
 
-    current_employment_status: OptionalNullable[CurrentEmploymentStatus] = UNSET
+    current_employment_status: OptionalNullable[EmployeeCurrentEmploymentStatus] = UNSET
     r"""The current employment status of the employee. Full-time employees work 30+ hours per week. Part-time employees are split into two groups: those that work 20-29 hours a week, and those that work under 20 hours a week. Variable employees have hours that vary each week. Seasonal employees are hired for 6 months of the year or less."""
 
     historical: Optional[bool] = None
@@ -365,7 +382,7 @@ class Employee(BaseModel):
     def serialize_current_employment_status(self, value):
         if isinstance(value, str):
             try:
-                return models.CurrentEmploymentStatus(value)
+                return models.EmployeeCurrentEmploymentStatus(value)
             except ValueError:
                 return value
         return value
@@ -380,6 +397,9 @@ class Employee(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -437,11 +457,15 @@ class Employee(BaseModel):
                 "partner_portal_invitation_sent",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

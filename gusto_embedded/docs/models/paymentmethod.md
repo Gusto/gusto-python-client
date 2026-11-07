@@ -1,13 +1,13 @@
 # PaymentMethod
 
-The employee's payment method
+Payment method to filter by.
 
 ## Example Usage
 
 ```python
 from gusto_embedded.models import PaymentMethod
 
-value = PaymentMethod.DIRECT_DEPOSIT
+value = PaymentMethod.CHECK
 ```
 
 
@@ -15,5 +15,5 @@ value = PaymentMethod.DIRECT_DEPOSIT
 
 | Name             | Value            |
 | ---------------- | ---------------- |
-| `DIRECT_DEPOSIT` | Direct Deposit   |
-| `CHECK`          | Check            |
+| `CHECK`          | check            |
+| `DIRECT_DEPOSIT` | direct_deposit   |

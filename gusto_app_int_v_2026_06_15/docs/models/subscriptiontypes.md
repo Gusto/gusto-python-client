@@ -31,3 +31,5 @@ value = SubscriptionTypes.BANK_ACCOUNT
 | `PAYROLL_SYNC`              | PayrollSync                 |
 | `PAY_SCHEDULE`              | PaySchedule                 |
 | `SIGNATORY`                 | Signatory                   |
+| `TIME_OFF_REQUEST`          | TimeOffRequest              |
+| `TIME_SHEETS_BATCH`         | TimeSheetsBatch             |

@@ -8,7 +8,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, Dict, List, Mapping, Optional, Union
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Union
 
 
 class TimeTracking(BaseSDK):
@@ -119,6 +119,11 @@ class TimeTracking(BaseSDK):
                 operation_id="post-companies-company_uuid-time_tracking-payroll_syncs",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -254,6 +259,11 @@ class TimeTracking(BaseSDK):
                 operation_id="post-companies-company_uuid-time_tracking-payroll_syncs",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -359,6 +369,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-time_tracking-payroll_syncs-payroll_sync_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -459,6 +474,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-time_tracking-payroll_syncs-payroll_sync_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -482,6 +502,502 @@ class TimeTracking(BaseSDK):
 
         raise models.APIError("Unexpected response received", http_res)
 
+    def post_companies_company_uuid_time_tracking_time_sheets_batches(
+        self,
+        *,
+        company_uuid: str,
+        idempotency_key: str,
+        time_sheets: Union[
+            Iterable[models.TimeSheets], Iterable[models.TimeSheetsTypedDict]
+        ],
+        x_gusto_api_version: Optional[
+            models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        batch_action: Optional[models.BatchAction] = models.BatchAction.CREATE,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeSheetsBatch:
+        r"""Create a batch of time sheets
+
+        Create or update up to 500 time sheets for a company in one request.
+
+        Set `batch_action` to `create` to create new time sheets, or to `update` to update existing time sheets. One action applies to the whole batch.
+
+        Gusto validates every time sheet when it receives the request. If one time sheet is invalid, Gusto rejects the whole batch with a 422 response and processes no time sheets.
+        Gusto also rejects the batch if two time sheets for the same employee or contractor have overlapping shifts.
+
+        ### Asynchronous processing
+        This endpoint triggers an asynchronous operation—the response will return immediately with a status of `pending` while the batch processes in the background.
+
+        **To track completion:**
+
+        Subscribe (via [POST /v1/webhook_subscriptions](ref:post-v1-webhook-subscription)) to `TimeSheetsBatch` webhook events
+
+        Use the returned batch UUID when calling [Get a batch of time sheets](ref:get-time_tracking-time_sheets_batches-time_sheets_batch_uuid).
+
+        scope: `time_sheet:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param idempotency_key: A unique key for this batch, generated by the partner. It must be unique per company for your application. A request that reuses a key is rejected, so a batch is never processed twice.
+        :param time_sheets: The time sheets to create or update. Each `external_id` must be unique in the batch. For each employee or contractor, the shifts in the batch must not overlap.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param batch_action: The action to apply to every time sheet in the batch. One batch has only one action.
+            - `create`: Create new time sheets. Each item takes the same fields as [POST /v1/companies/{company_uuid}/time_tracking/time_sheets](ref:post-companies-company_uuid-time_tracking-time_sheets), plus `external_id`.
+            - `update`: Update existing time sheets. Each item requires `external_id`, `uuid` and `version`. All other fields are optional, and only the fields you send are changed.
+
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            body=models.TimeSheetsBatchCreateBody(
+                idempotency_key=idempotency_key,
+                batch_action=batch_action,
+                time_sheets=utils.get_pydantic_model(
+                    time_sheets, List[models.TimeSheets]
+                ),
+            ),
+        )
+
+        req = self._build_request(
+            method="POST",
+            path="/v1/companies/{company_uuid}/time_tracking/time_sheets_batches",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.body, False, False, "json", models.TimeSheetsBatchCreateBody
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-companies-company_uuid-time_tracking-time_sheets_batches",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "202", "application/json"):
+            return unmarshal_json_response(models.TimeSheetsBatch, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def post_companies_company_uuid_time_tracking_time_sheets_batches_async(
+        self,
+        *,
+        company_uuid: str,
+        idempotency_key: str,
+        time_sheets: Union[
+            Iterable[models.TimeSheets], Iterable[models.TimeSheetsTypedDict]
+        ],
+        x_gusto_api_version: Optional[
+            models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion
+        ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        batch_action: Optional[models.BatchAction] = models.BatchAction.CREATE,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeSheetsBatch:
+        r"""Create a batch of time sheets
+
+        Create or update up to 500 time sheets for a company in one request.
+
+        Set `batch_action` to `create` to create new time sheets, or to `update` to update existing time sheets. One action applies to the whole batch.
+
+        Gusto validates every time sheet when it receives the request. If one time sheet is invalid, Gusto rejects the whole batch with a 422 response and processes no time sheets.
+        Gusto also rejects the batch if two time sheets for the same employee or contractor have overlapping shifts.
+
+        ### Asynchronous processing
+        This endpoint triggers an asynchronous operation—the response will return immediately with a status of `pending` while the batch processes in the background.
+
+        **To track completion:**
+
+        Subscribe (via [POST /v1/webhook_subscriptions](ref:post-v1-webhook-subscription)) to `TimeSheetsBatch` webhook events
+
+        Use the returned batch UUID when calling [Get a batch of time sheets](ref:get-time_tracking-time_sheets_batches-time_sheets_batch_uuid).
+
+        scope: `time_sheet:write`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param company_uuid: The UUID of the company
+        :param idempotency_key: A unique key for this batch, generated by the partner. It must be unique per company for your application. A request that reuses a key is rejected, so a batch is never processed twice.
+        :param time_sheets: The time sheets to create or update. Each `external_id` must be unique in the batch. For each employee or contractor, the shifts in the batch must not overlap.
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param batch_action: The action to apply to every time sheet in the batch. One batch has only one action.
+            - `create`: Create new time sheets. Each item takes the same fields as [POST /v1/companies/{company_uuid}/time_tracking/time_sheets](ref:post-companies-company_uuid-time_tracking-time_sheets), plus `external_id`.
+            - `update`: Update existing time sheets. Each item requires `external_id`, `uuid` and `version`. All other fields are optional, and only the fields you send are changed.
+
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
+            body=models.TimeSheetsBatchCreateBody(
+                idempotency_key=idempotency_key,
+                batch_action=batch_action,
+                time_sheets=utils.get_pydantic_model(
+                    time_sheets, List[models.TimeSheets]
+                ),
+            ),
+        )
+
+        req = self._build_request_async(
+            method="POST",
+            path="/v1/companies/{company_uuid}/time_tracking/time_sheets_batches",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=True,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            get_serialized_body=lambda: utils.serialize_request_body(
+                request.body, False, False, "json", models.TimeSheetsBatchCreateBody
+            ),
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="post-companies-company_uuid-time_tracking-time_sheets_batches",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "202", "application/json"):
+            return unmarshal_json_response(models.TimeSheetsBatch, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "422", "application/json"):
+            response_data = unmarshal_json_response(
+                models.UnprocessableEntityErrorObjectData, http_res
+            )
+            raise models.UnprocessableEntityErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_time_tracking_time_sheets_batches_time_sheets_batch_uuid(
+        self,
+        *,
+        time_sheets_batch_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion
+        ] = models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeSheetsBatch:
+        r"""Get a batch of time sheets
+
+        Fetch a batch of up to 500 time sheets.
+
+        When the batch is completed, `results` contains the outcome of each time sheet, matched by `external_id`.
+
+        scope: `time_sheet:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param time_sheets_batch_uuid: The UUID of the time sheets batch
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_sheets_batch_uuid=time_sheets_batch_uuid,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/time_tracking/time_sheets_batches/{time_sheets_batch_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-time_tracking-time_sheets_batches-time_sheets_batch_uuid",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.TimeSheetsBatch, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_time_tracking_time_sheets_batches_time_sheets_batch_uuid_async(
+        self,
+        *,
+        time_sheets_batch_uuid: str,
+        x_gusto_api_version: Optional[
+            models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion
+        ] = models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.TimeSheetsBatch:
+        r"""Get a batch of time sheets
+
+        Fetch a batch of up to 500 time sheets.
+
+        When the batch is completed, `results` contains the outcome of each time sheet, matched by `external_id`.
+
+        scope: `time_sheet:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param time_sheets_batch_uuid: The UUID of the time sheets batch
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
+            time_sheets_batch_uuid=time_sheets_batch_uuid,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/time_tracking/time_sheets_batches/{time_sheets_batch_uuid}",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=True,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-time_tracking-time_sheets_batches-time_sheets_batch_uuid",
+                oauth2_scopes=None,
+                security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        response_data: Any = None
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.TimeSheetsBatch, http_res)
+        if utils.match_response(http_res, "404", "application/json"):
+            response_data = unmarshal_json_response(
+                models.NotFoundErrorObjectData, http_res
+            )
+            raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
     def get_companies_company_uuid_time_tracking_time_sheets(
         self,
         *,
@@ -489,7 +1005,7 @@ class TimeTracking(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion
         ] = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        entity_uuids: Optional[List[str]] = None,
+        entity_uuids: Optional[Iterable[str]] = None,
         entity_type: Optional[models.QueryParamEntityType] = None,
         status: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsQueryParamStatus
@@ -547,7 +1063,7 @@ class TimeTracking(BaseSDK):
         request = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
-            entity_uuids=entity_uuids,
+            entity_uuids=utils.unmarshal(entity_uuids, Optional[List[str]]),
             entity_type=entity_type,
             status=status,
             sort_by=sort_by,
@@ -591,6 +1107,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -621,7 +1142,7 @@ class TimeTracking(BaseSDK):
         x_gusto_api_version: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion
         ] = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
-        entity_uuids: Optional[List[str]] = None,
+        entity_uuids: Optional[Iterable[str]] = None,
         entity_type: Optional[models.QueryParamEntityType] = None,
         status: Optional[
             models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsQueryParamStatus
@@ -679,7 +1200,7 @@ class TimeTracking(BaseSDK):
         request = models.GetCompaniesCompanyUUIDTimeTrackingTimeSheetsRequest(
             x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
-            entity_uuids=entity_uuids,
+            entity_uuids=utils.unmarshal(entity_uuids, Optional[List[str]]),
             entity_type=entity_type,
             status=status,
             sort_by=sort_by,
@@ -723,6 +1244,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -759,11 +1285,11 @@ class TimeTracking(BaseSDK):
         ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         job_uuid: Optional[str] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetCreateBodyEntries],
-                List[models.TimeSheetCreateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetCreateBodyEntries],
+                Iterable[models.TimeSheetCreateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -817,7 +1343,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetCreateBodyEntries]]
                 ),
@@ -860,6 +1386,11 @@ class TimeTracking(BaseSDK):
                 operation_id="post-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -901,11 +1432,11 @@ class TimeTracking(BaseSDK):
         ] = models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         job_uuid: Optional[str] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetCreateBodyEntries],
-                List[models.TimeSheetCreateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetCreateBodyEntries],
+                Iterable[models.TimeSheetCreateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -959,7 +1490,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetCreateBodyEntries]]
                 ),
@@ -1002,6 +1533,11 @@ class TimeTracking(BaseSDK):
                 operation_id="post-companies-company_uuid-time_tracking-time_sheets",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1108,6 +1644,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1209,6 +1750,11 @@ class TimeTracking(BaseSDK):
                 operation_id="get-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1246,11 +1792,11 @@ class TimeTracking(BaseSDK):
         time_zone: Optional[str] = None,
         shift_started_at: Optional[datetime] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetUpdateBodyEntries],
-                List[models.TimeSheetUpdateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetUpdateBodyEntries],
+                Iterable[models.TimeSheetUpdateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1306,7 +1852,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetUpdateBodyEntries]]
                 ),
@@ -1349,6 +1895,11 @@ class TimeTracking(BaseSDK):
                 operation_id="put-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1391,11 +1942,11 @@ class TimeTracking(BaseSDK):
         time_zone: Optional[str] = None,
         shift_started_at: Optional[datetime] = None,
         shift_ended_at: Optional[datetime] = None,
-        metadata: Optional[Dict[str, str]] = None,
+        metadata: Optional[Mapping[str, str]] = None,
         entries: Optional[
             Union[
-                List[models.TimeSheetUpdateBodyEntries],
-                List[models.TimeSheetUpdateBodyEntriesTypedDict],
+                Iterable[models.TimeSheetUpdateBodyEntries],
+                Iterable[models.TimeSheetUpdateBodyEntriesTypedDict],
             ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
@@ -1451,7 +2002,7 @@ class TimeTracking(BaseSDK):
                 time_zone=time_zone,
                 shift_started_at=shift_started_at,
                 shift_ended_at=shift_ended_at,
-                metadata=metadata,
+                metadata=utils.unmarshal(metadata, Optional[Dict[str, str]]),
                 entries=utils.get_pydantic_model(
                     entries, Optional[List[models.TimeSheetUpdateBodyEntries]]
                 ),
@@ -1494,6 +2045,11 @@ class TimeTracking(BaseSDK):
                 operation_id="put-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1603,6 +2159,11 @@ class TimeTracking(BaseSDK):
                 operation_id="delete-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1712,6 +2273,11 @@ class TimeTracking(BaseSDK):
                 operation_id="delete-time_tracking-time_sheets-time_sheet_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Tracking"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
