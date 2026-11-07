@@ -200,5 +200,6 @@ with GustoAppIntegration(
 | Error Type                            | Status Code                           | Content Type                          |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 | models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.ConflictErrorObject            | 409                                   | application/json                      |
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

@@ -31,7 +31,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.preview(company_id="<id>", contractor_payments=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -82,7 +82,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.fund(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -128,10 +128,10 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.get_list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    res = gusto.contractor_payment_groups.get_list(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, start_date="2020-01-01", end_date="2020-12-31")
 
     # Handle response
     print(res)
@@ -143,11 +143,11 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorpaymentgroupsheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
 | `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The time period for which to retrieve contractor payment groups. Defaults to 6 months ago.                                                                                                                                   | 2020-01-01                                                                                                                                                                                                                   |
 | `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The time period for which to retrieve contractor payment groups. Defaults to today's date.                                                                                                                                   | 2020-12-31                                                                                                                                                                                                                   |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |                                                                                                                                                                                                                              |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |                                                                                                                                                                                                                              |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorpaymentgroupsheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
@@ -178,7 +178,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", contractor_payments=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -228,7 +228,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.get(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ContractorPaymentGroupsContractorPaymentGroupIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -273,7 +273,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.contractor_payment_groups.delete(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -314,7 +314,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.get_v1_contractor_payment_groups_id_partner_disbursements(id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ContractorPaymentGroupsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -359,7 +359,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.patch_v1_contractor_payment_groups_id_partner_disbursements(id="<id>", disbursements=[

@@ -6,7 +6,7 @@ READ-ONLY in responses. Possible values:
 
 - `Every week`: Employees are paid weekly.
 - `Every other week`: Employees are paid bi-weekly (every two weeks).
-- `Twice per month`: Employees are paid on two fixed days each month (e.g. 1st and 15th); use day_1 and day_2.
+- `Twice per month`: Employees are paid twice per month. The explicit pay-day fields always represent pay days; explicit period-end fields are populated only for flexible schedules. Legacy day_1/day_2 retain their historical values.
 - `Monthly`: Employees are paid once per month; use day_1 for the pay day.
 - `Quarterly`: Employees are paid every three months.
 - `Annually`: Employees are paid once per year.

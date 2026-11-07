@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_embedded.types import BaseModel, UNSET_SENTINEL
+from gusto_embedded.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
+from gusto_embedded.types.basemodel import current_filtered_dump
 from gusto_embedded.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -29,13 +35,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyNewYearsDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -53,13 +66,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyMlkDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -77,13 +97,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyPresidentsDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -101,13 +128,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyMemorialDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -125,13 +159,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyJuneteenth(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -149,13 +190,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyIndependenceDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -173,13 +221,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyLaborDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -197,13 +252,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyColumbusDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -221,13 +283,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyVeteransDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -245,13 +314,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyThanksgiving(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -269,13 +345,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyChristmasDay(BaseModel):
     selected: Optional[bool] = None
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["selected"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -351,6 +434,9 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyFederalHolidays(BaseModel):
     )
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -367,11 +453,15 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyFederalHolidays(BaseModel):
                 "christmas_day",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -404,13 +494,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyRequestBody(BaseModel):
     r"""An object containing federal holiday objects, each containing a boolean selected property."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["federal_holidays"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -449,13 +546,20 @@ class PutV1CompaniesCompanyUUIDHolidayPayPolicyRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

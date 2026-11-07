@@ -4,51 +4,31 @@
 
 ### Available Operations
 
-* [provision](#provision) - Create a company
+* [get_admins](#get_admins) - Get all the admins at a company
 * [get](#get) - Get a company
 * [update](#update) - Update a company
-* [get_admins](#get_admins) - Get all the admins at a company
 * [get_custom_fields](#get_custom_fields) - Get the custom fields of a company
+* [provision](#provision) - Create a company
 
-## provision
+## get_admins
 
-### Overview
-The company provisioning API provides a way to create a Gusto company as part of your integration. When you successfully call the API, the API does the following:
-* Creates a new company in Gusto.
-* Creates a new user in Gusto.
-* Makes the new user the primary payroll administrator of the new company.
-* Sends a welcome email to the new user.
-In the response, you will receive an account claim URL. Redirect the user to this URL to complete their account setup inside of Gusto
+Returns a list of all the admins at a company
 
-> 📘 System Access Authentication
->
-> This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
-
-📘 System Access Authentication
-
-This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
-
-scope: `accounts:write`
+scope: `company_admin:read`
 
 ### Example Usage
 
-<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" -->
+<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-admins" method="get" path="/v1/companies/{company_id}/admins" -->
 ```python
 import gusto_app_integration
 from gusto_app_integration import GustoAppIntegration
 
 
-with GustoAppIntegration() as gai_client:
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gai_client:
 
-    res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
-        system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-    ), user={
-        "first_name": "Julianne",
-        "last_name": "Bailey",
-        "email": "Fred_Durgan@yahoo.com",
-    }, company={
-        "name": "<value>",
-    }, x_gusto_api_version=gusto_app_integration.VersionHeader.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+    res = gai_client.companies.get_admins(company_id="<id>", x_gusto_api_version=gusto_app_integration.XGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
 
     # Handle response
     print(res)
@@ -59,22 +39,22 @@ with GustoAppIntegration() as gai_client:
 
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `security`                                                                                                                                                                                                                   | [models.PostV1ProvisionSecurity](../../models/postv1provisionsecurity.md)                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `user`                                                                                                                                                                                                                       | [models.User](../../models/user.md)                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | Information for the user who will be the primary payroll administrator for the new company.                                                                                                                                  |
-| `company`                                                                                                                                                                                                                    | [models.ProvisionCreateRequestBodyCompany](../../models/provisioncreaterequestbodycompany.md)                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.VersionHeader]](../../models/versionheader.md)                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.XGustoAPIVersion]](../../models/xgustoapiversion.md)                                                                                                                                                        | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
+| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
 
 ### Response
 
-**[models.ProvisionCreated](../../models/provisioncreated.md)**
+**[List[models.Admin]](../../models/.md)**
 
 ### Errors
 
-| Error Type                            | Status Code                           | Content Type                          |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
-| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
-| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
 
 ## get
 
@@ -170,52 +150,6 @@ with GustoAppIntegration(
 | models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
 | models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
 
-## get_admins
-
-Returns a list of all the admins at a company
-
-scope: `company_admin:read`
-
-### Example Usage
-
-<!-- UsageSnippet language="python" operationID="get-v1-companies-company_id-admins" method="get" path="/v1/companies/{company_id}/admins" -->
-```python
-import gusto_app_integration
-from gusto_app_integration import GustoAppIntegration
-
-
-with GustoAppIntegration(
-    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
-) as gai_client:
-
-    res = gai_client.companies.get_admins(company_id="<id>", x_gusto_api_version=gusto_app_integration.GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
-
-    # Handle response
-    print(res)
-
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDAdminsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidadminsheaderxgustoapiversion.md)                                                                                  | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
-| `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |
-| `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |
-| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
-
-### Response
-
-**[List[models.Admin]](../../models/.md)**
-
-### Errors
-
-| Error Type                 | Status Code                | Content Type               |
-| -------------------------- | -------------------------- | -------------------------- |
-| models.NotFoundErrorObject | 404                        | application/json           |
-| models.APIError            | 4XX, 5XX                   | \*/\*                      |
-
 ## get_custom_fields
 
 Returns a list of the custom fields of the company. Useful when you need to know the schema of custom fields for an entire company.
@@ -261,3 +195,69 @@ with GustoAppIntegration(
 | -------------------------- | -------------------------- | -------------------------- |
 | models.NotFoundErrorObject | 404                        | application/json           |
 | models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## provision
+
+### Overview
+The company provisioning API provides a way to create a Gusto company as part of your integration. When you successfully call the API, the API does the following:
+* Creates a new company in Gusto.
+* Creates a new user in Gusto.
+* Makes the new user the primary payroll administrator of the new company.
+* Sends a welcome email to the new user.
+In the response, you will receive an account claim URL. Redirect the user to this URL to complete their account setup inside of Gusto
+
+> 📘 System Access Authentication
+>
+> This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access).
+
+📘 System Access Authentication
+
+This endpoint uses the [Bearer Auth scheme with the system-level access token in the HTTP Authorization header](https://docs.gusto.com/embedded-payroll/docs/system-access)
+
+scope: `accounts:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-provision" method="post" path="/v1/provision" -->
+```python
+import gusto_app_integration
+from gusto_app_integration import GustoAppIntegration
+
+
+with GustoAppIntegration() as gai_client:
+
+    res = gai_client.companies.provision(security=gusto_app_integration.PostV1ProvisionSecurity(
+        system_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+    ), user={
+        "first_name": "Julianne",
+        "last_name": "Bailey",
+        "email": "Fred_Durgan@yahoo.com",
+    }, company={
+        "name": "<value>",
+    }, x_gusto_api_version=gusto_app_integration.PostV1ProvisionHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `security`                                                                                                                                                                                                                   | [models.PostV1ProvisionSecurity](../../models/postv1provisionsecurity.md)                                                                                                                                                    | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `user`                                                                                                                                                                                                                       | [models.User](../../models/user.md)                                                                                                                                                                                          | :heavy_check_mark:                                                                                                                                                                                                           | Information for the user who will be the primary payroll administrator for the new company.                                                                                                                                  |
+| `company`                                                                                                                                                                                                                    | [models.ProvisionCreateRequestBodyCompany](../../models/provisioncreaterequestbodycompany.md)                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                           | N/A                                                                                                                                                                                                                          |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.PostV1ProvisionHeaderXGustoAPIVersion]](../../models/postv1provisionheaderxgustoapiversion.md)                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.ProvisionCreated](../../models/provisioncreated.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |

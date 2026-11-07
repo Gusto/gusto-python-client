@@ -52,8 +52,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -89,6 +89,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-employees-employee_id-home_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -152,8 +157,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -189,6 +194,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-employees-employee_id-home_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -266,8 +276,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDHomeAddressesRequestBody(
                 street_1=street_1,
                 street_2=street_2,
@@ -319,6 +329,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="post-v1-employees-employee_id-home_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -401,8 +416,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDHomeAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDHomeAddressesRequestBody(
                 street_1=street_1,
                 street_2=street_2,
@@ -454,6 +469,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="post-v1-employees-employee_id-home_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -522,8 +542,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1HomeAddressesHomeAddressUUIDRequest(
-            home_address_uuid=home_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            home_address_uuid=home_address_uuid,
         )
 
         req = self._build_request(
@@ -559,6 +579,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -622,8 +647,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1HomeAddressesHomeAddressUUIDRequest(
-            home_address_uuid=home_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            home_address_uuid=home_address_uuid,
         )
 
         req = self._build_request_async(
@@ -659,6 +684,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -792,6 +822,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="put-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -930,6 +965,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="put-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1033,6 +1073,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="delete-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1136,6 +1181,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="delete-v1-home_addresses-home_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1203,8 +1253,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request(
@@ -1240,6 +1290,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-employees-employee_id-work_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1302,8 +1357,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
         )
 
         req = self._build_request_async(
@@ -1339,6 +1394,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-employees-employee_id-work_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1404,8 +1464,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDWorkAddressesRequestBody(
                 location_uuid=location_uuid,
                 effective_date=effective_date,
@@ -1452,6 +1512,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="post-v1-employees-employee_id-work_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1522,8 +1587,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1EmployeesEmployeeIDWorkAddressesRequest(
-            employee_id=employee_id,
             x_gusto_api_version=x_gusto_api_version,
+            employee_id=employee_id,
             body=models.PostV1EmployeesEmployeeIDWorkAddressesRequestBody(
                 location_uuid=location_uuid,
                 effective_date=effective_date,
@@ -1570,6 +1635,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="post-v1-employees-employee_id-work_addresses",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1636,8 +1706,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request(
@@ -1673,6 +1743,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1734,8 +1809,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request_async(
@@ -1771,6 +1846,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="get-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1838,8 +1918,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
             body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
                 version=version,
                 location_uuid=location_uuid,
@@ -1887,6 +1967,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="put-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1959,8 +2044,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
             body=models.PutV1WorkAddressesWorkAddressUUIDRequestBody(
                 version=version,
                 location_uuid=location_uuid,
@@ -2008,6 +2093,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="put-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2074,8 +2164,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request(
@@ -2111,6 +2201,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="delete-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2177,8 +2272,8 @@ class EmployeeAddresses(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1WorkAddressesWorkAddressUUIDRequest(
-            work_address_uuid=work_address_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            work_address_uuid=work_address_uuid,
         )
 
         req = self._build_request_async(
@@ -2214,6 +2309,11 @@ class EmployeeAddresses(BaseSDK):
                 operation_id="delete-v1-work_addresses-work_address_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Employee Addresses"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

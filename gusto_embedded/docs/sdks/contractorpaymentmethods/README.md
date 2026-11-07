@@ -24,7 +24,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_methods.create_bank_account(contractor_uuid="<id>", name="<value>", routing_number="<value>", account_number="<value>", account_type=gusto_embedded.ContractorBankAccountCreateRequestBodyAccountType.SAVINGS, x_gusto_api_version=gusto_embedded.PostV1ContractorsContractorUUIDBankAccountsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)

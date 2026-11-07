@@ -33,7 +33,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.get(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDHomeAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -81,7 +81,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.create(employee_id="<id>", x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeIDHomeAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, street_1="300 3rd Street", city="San Francisco", state="CA", zip_code="94107", effective_date=date.fromisoformat("2022-01-31"))
@@ -136,7 +136,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.retrieve_home_address(home_address_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1HomeAddressesHomeAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -183,7 +183,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.update(home_address_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1HomeAddressesHomeAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -237,7 +237,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.employee_addresses.delete(home_address_uuid="<id>", x_gusto_api_version=gusto_embedded.DeleteV1HomeAddressesHomeAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -279,7 +279,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.get_work_addresses(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -325,7 +325,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.create_work_address(employee_id="<id>", x_gusto_api_version=gusto_embedded.PostV1EmployeesEmployeeIDWorkAddressesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=date.fromisoformat("2023-05-15"))
@@ -373,7 +373,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.retrieve_work_address(work_address_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -419,7 +419,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_addresses.update_work_address(work_address_uuid="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded.PutV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15, location_uuid="6a119be7-b4b0-4e27-aaa0-89d5f2524635", effective_date=date.fromisoformat("2023-05-15"))
@@ -468,7 +468,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.employee_addresses.delete_work_address(work_address_uuid="<id>", x_gusto_api_version=gusto_embedded.DeleteV1WorkAddressesWorkAddressUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)

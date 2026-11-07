@@ -1,0 +1,12 @@
+# Federal
+
+Federal one-time custom withholding override applied to this payroll.
+
+
+## Fields
+
+| Field                                                                                                                  | Type                                                                                                                   | Required                                                                                                               | Description                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `override_type`                                                                                                        | [Optional[models.OverrideType]](../models/overridetype.md)                                                             | :heavy_minus_sign:                                                                                                     | Override mode. Only `one_time` is currently exposed.                                                                   |
+| `amount`                                                                                                               | *Optional[str]*                                                                                                        | :heavy_minus_sign:                                                                                                     | The amount that was withheld for this payroll.                                                                         |
+| `amount_type`                                                                                                          | [Optional[models.PayrollEmployeeCompensationsTypeAmountType]](../models/payrollemployeecompensationstypeamounttype.md) | :heavy_minus_sign:                                                                                                     | How to interpret the amount.                                                                                           |

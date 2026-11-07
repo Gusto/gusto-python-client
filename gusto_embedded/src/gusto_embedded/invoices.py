@@ -31,7 +31,7 @@ class Invoices(BaseSDK):
     ) -> models.InvoiceData:
         r"""Retrieve invoicing data for companies
 
-        Retrieve data for active companies used to calculate invoices for Gusto Embedded Payroll. A company is considered active for an invoice period if they are an active partner managed company, have run payroll or created contractor payments since becoming a partner managed company, and are not suspended at any point during the invoice period.  This endpoint forces pagination, with 100 results returned at a time. You can learn more about our pagination here: [pagination guide](https://docs.gusto.com/embedded-payroll/docs/pagination)
+        Retrieve data for active companies used to calculate invoices for Gusto Embedded Payroll. A company is considered active for an invoice period if they are an active partner managed company and have run payroll or created contractor payments since becoming a partner managed company. Companies suspended before the invoice period begins are excluded. A company suspended during an invoice period is still included in that period's response, because it was active for part of the period. This endpoint forces pagination, with 100 results returned at a time. You can learn more about our pagination here: [pagination guide](https://docs.gusto.com/embedded-payroll/docs/pagination)
 
         📘 System Access Authentication
 
@@ -102,6 +102,11 @@ class Invoices(BaseSDK):
                 operation_id="get-invoices-invoice-period",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Invoices"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -146,7 +151,7 @@ class Invoices(BaseSDK):
     ) -> models.InvoiceData:
         r"""Retrieve invoicing data for companies
 
-        Retrieve data for active companies used to calculate invoices for Gusto Embedded Payroll. A company is considered active for an invoice period if they are an active partner managed company, have run payroll or created contractor payments since becoming a partner managed company, and are not suspended at any point during the invoice period.  This endpoint forces pagination, with 100 results returned at a time. You can learn more about our pagination here: [pagination guide](https://docs.gusto.com/embedded-payroll/docs/pagination)
+        Retrieve data for active companies used to calculate invoices for Gusto Embedded Payroll. A company is considered active for an invoice period if they are an active partner managed company and have run payroll or created contractor payments since becoming a partner managed company. Companies suspended before the invoice period begins are excluded. A company suspended during an invoice period is still included in that period's response, because it was active for part of the period. This endpoint forces pagination, with 100 results returned at a time. You can learn more about our pagination here: [pagination guide](https://docs.gusto.com/embedded-payroll/docs/pagination)
 
         📘 System Access Authentication
 
@@ -217,6 +222,11 @@ class Invoices(BaseSDK):
                 operation_id="get-invoices-invoice-period",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Invoices"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
