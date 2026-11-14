@@ -31,7 +31,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.post_v1_companies_company_uuid_time_off_admin_approved_requests(company_uuid="<id>", employee_uuid="<id>", policy_uuid="<id>", start_date="<value>", end_date="<value>", days={
@@ -87,7 +87,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.get_v1_companies_company_uuid_time_off_balances(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyUUIDTimeOffBalancesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -144,7 +144,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.get_v1_companies_company_uuid_time_off_requests(company_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyUUIDTimeOffRequestsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -197,7 +197,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.post_v1_companies_company_uuid_time_off_requests(company_uuid="<id>", employee_uuid="<id>", policy_uuid="<id>", start_date="<value>", end_date="<value>", days={
@@ -252,7 +252,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.post_v1_companies_company_uuid_time_off_requests_preview(company_uuid="<id>", employee_uuid="<id>", policy_uuid="<id>", start_date="<value>", end_date="<value>", days={
@@ -307,7 +307,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.get_v1_time_off_requests_time_off_request_uuid(time_off_request_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1TimeOffRequestsTimeOffRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -352,7 +352,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.time_off_requests.delete_v1_time_off_requests_time_off_request_uuid(time_off_request_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1TimeOffRequestsTimeOffRequestUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -395,7 +395,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.put_v1_time_off_requests_time_off_request_uuid_approve(time_off_request_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffRequestsTimeOffRequestUUIDApproveHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -444,7 +444,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.time_off_requests.put_v1_time_off_requests_time_off_request_uuid_decline(time_off_request_uuid="<id>", employer_note="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1TimeOffRequestsTimeOffRequestUUIDDeclineHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

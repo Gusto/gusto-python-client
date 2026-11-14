@@ -6,7 +6,7 @@ from gusto_embedded._hooks import HookContext
 from gusto_embedded.types import OptionalNullable, UNSET
 from gusto_embedded.utils import get_security_from_env
 from gusto_embedded.utils.unmarshal_json_response import unmarshal_json_response
-from typing import Any, List, Mapping, Optional
+from typing import Any, Iterable, List, Mapping, Optional
 
 
 class IndustrySelection(BaseSDK):
@@ -48,8 +48,8 @@ class IndustrySelection(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyIndustryRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request(
@@ -87,6 +87,11 @@ class IndustrySelection(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Industry Selection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -148,8 +153,8 @@ class IndustrySelection(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompanyIndustryRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
         )
 
         req = self._build_request_async(
@@ -187,6 +192,11 @@ class IndustrySelection(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Industry Selection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -219,7 +229,7 @@ class IndustrySelection(BaseSDK):
             models.PutV1CompanyIndustryHeaderXGustoAPIVersion
         ] = models.PutV1CompanyIndustryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         title: OptionalNullable[str] = UNSET,
-        sic_codes: Optional[List[str]] = None,
+        sic_codes: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -260,12 +270,12 @@ class IndustrySelection(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyIndustryRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             company_industry_selection_required_body=models.CompanyIndustrySelectionRequiredBody(
                 title=title,
                 naics_code=naics_code,
-                sic_codes=sic_codes,
+                sic_codes=utils.unmarshal(sic_codes, Optional[List[str]]),
             ),
         )
 
@@ -311,6 +321,11 @@ class IndustrySelection(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Industry Selection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -348,7 +363,7 @@ class IndustrySelection(BaseSDK):
             models.PutV1CompanyIndustryHeaderXGustoAPIVersion
         ] = models.PutV1CompanyIndustryHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
         title: OptionalNullable[str] = UNSET,
-        sic_codes: Optional[List[str]] = None,
+        sic_codes: Optional[Iterable[str]] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -389,12 +404,12 @@ class IndustrySelection(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompanyIndustryRequest(
-            company_id=company_id,
             x_gusto_api_version=x_gusto_api_version,
+            company_id=company_id,
             company_industry_selection_required_body=models.CompanyIndustrySelectionRequiredBody(
                 title=title,
                 naics_code=naics_code,
-                sic_codes=sic_codes,
+                sic_codes=utils.unmarshal(sic_codes, Optional[List[str]]),
             ),
         )
 
@@ -440,6 +455,11 @@ class IndustrySelection(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Industry Selection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

@@ -52,8 +52,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request(
@@ -91,6 +91,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -155,8 +160,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1CompaniesCompanyUUIDSignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
         )
 
         req = self._build_request_async(
@@ -194,6 +199,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -284,8 +294,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             signatory_create_request=models.SignatoryCreateRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -343,6 +353,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -438,8 +453,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompanySignatoriesRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             signatory_create_request=models.SignatoryCreateRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -497,6 +512,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -589,8 +609,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             signatory_invite_request=models.SignatoryInviteRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -648,6 +668,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -740,8 +765,8 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PostV1CompaniesCompanyUUIDSignatoriesInviteRequest(
-            company_uuid=company_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            company_uuid=company_uuid,
             signatory_invite_request=models.SignatoryInviteRequest(
                 first_name=first_name,
                 middle_initial=middle_initial,
@@ -799,6 +824,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -893,9 +923,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
             signatory_update_request=models.SignatoryUpdateRequest(
                 version=version,
                 first_name=first_name,
@@ -953,6 +983,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1047,9 +1082,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.PutV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
             signatory_update_request=models.SignatoryUpdateRequest(
                 version=version,
                 first_name=first_name,
@@ -1107,6 +1142,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1178,9 +1218,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request(
@@ -1218,6 +1258,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1284,9 +1329,9 @@ class Signatories(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.DeleteV1CompaniesCompanyUUIDSignatoriesSignatoryUUIDRequest(
+            x_gusto_api_version=x_gusto_api_version,
             company_uuid=company_uuid,
             signatory_uuid=signatory_uuid,
-            x_gusto_api_version=x_gusto_api_version,
         )
 
         req = self._build_request_async(
@@ -1324,6 +1369,11 @@ class Signatories(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Signatories"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

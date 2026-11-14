@@ -10,7 +10,10 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded_v_2026_06_15.types.basemodel import current_filtered_dump
 from pydantic import field_serializer, model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -39,14 +42,14 @@ class PayrollDigestResultsResultsStatus(str, Enum, metaclass=utils.OpenEnumMeta)
     FAILED = "failed"
 
 
-class BlockersTypedDict(TypedDict):
+class PayrollDigestResultsBlockersTypedDict(TypedDict):
     type: NotRequired[str]
     r"""A machine-readable blocker key (e.g. `missing_bank_account`)."""
     description: NotRequired[str]
     r"""Human-readable description of the blocker."""
 
 
-class Blockers(BaseModel):
+class PayrollDigestResultsBlockers(BaseModel):
     type: Optional[str] = None
     r"""A machine-readable blocker key (e.g. `missing_bank_account`)."""
 
@@ -54,13 +57,20 @@ class Blockers(BaseModel):
     r"""Human-readable description of the blocker."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["type", "description"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -95,6 +105,9 @@ class PayrollDigestResultsPayPeriod(BaseModel):
     r"""The deadline to run payroll for this pay period."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["start_date", "end_date", "check_date", "run_payroll_by"]
@@ -102,11 +115,15 @@ class PayrollDigestResultsPayPeriod(BaseModel):
         nullable_fields = set(
             ["start_date", "end_date", "check_date", "run_payroll_by"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -144,14 +161,21 @@ class PaySchedule(BaseModel):
     r"""Custom name for the pay schedule, when set."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["uuid", "frequency", "custom_name"])
         nullable_fields = set(["custom_name"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -193,13 +217,20 @@ class PayrollDigestResultsTotals(BaseModel):
     r"""Total employer cost including taxes and benefits (string-formatted decimal)."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["total_debit_amount", "net_pay", "total_employer_cost"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -250,6 +281,9 @@ class PayrollsModel(BaseModel):
     r"""Pay totals. `null` when the payroll has not been calculated, or when the calculation is stale (the partner edited hours/earnings after the last calculation)."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -264,11 +298,15 @@ class PayrollsModel(BaseModel):
             ]
         )
         nullable_fields = set(["payroll_uuid", "pay_schedule", "totals"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -297,7 +335,7 @@ class PayrollDigestResultsResultsTypedDict(TypedDict):
     r"""The legal/display name of the company."""
     status: NotRequired[PayrollDigestResultsResultsStatus]
     r"""The status of this company's digest computation."""
-    blockers: NotRequired[List[BlockersTypedDict]]
+    blockers: NotRequired[List[PayrollDigestResultsBlockersTypedDict]]
     r"""Reasons the company cannot currently run payroll. Applies to every payroll in this company's `payrolls` array — blockers are evaluated at the company level, not per payroll. Empty when there are no blockers."""
     payrolls: NotRequired[List[PayrollsModelTypedDict]]
     r"""Payrolls for this company within the digest date window (7 days past, 30–60 days future). May be empty."""
@@ -319,7 +357,7 @@ class PayrollDigestResultsResults(BaseModel):
     status: Optional[PayrollDigestResultsResultsStatus] = None
     r"""The status of this company's digest computation."""
 
-    blockers: Optional[List[Blockers]] = None
+    blockers: Optional[List[PayrollDigestResultsBlockers]] = None
     r"""Reasons the company cannot currently run payroll. Applies to every payroll in this company's `payrolls` array — blockers are evaluated at the company level, not per payroll. Empty when there are no blockers."""
 
     payrolls: Optional[List[PayrollsModel]] = None
@@ -335,15 +373,22 @@ class PayrollDigestResultsResults(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["idx", "entity_type", "uuid", "name", "status", "blockers", "payrolls"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -418,15 +463,22 @@ class PayrollDigestResultsExclusions(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["idx", "entity_type", "uuid", "status", "category", "message"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -504,6 +556,9 @@ class PayrollDigestResults(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -516,11 +571,15 @@ class PayrollDigestResults(BaseModel):
             ]
         )
         nullable_fields = set(["completed_at", "submitted_items"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

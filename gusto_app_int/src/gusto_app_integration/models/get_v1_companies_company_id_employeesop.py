@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
+from gusto_app_integration.types.basemodel import current_filtered_dump
 from gusto_app_integration.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -21,7 +27,7 @@ class GetV1CompaniesCompanyIDEmployeesHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class Include(str, Enum):
+class GetV1CompaniesCompanyIDEmployeesQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
     ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
@@ -45,7 +51,7 @@ class GetV1CompaniesCompanyIDEmployeesRequestTypedDict(TypedDict):
     r"""A string to search for in the object's names"""
     sort_by: NotRequired[str]
     r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
-    include: NotRequired[List[Include]]
+    include: NotRequired[List[GetV1CompaniesCompanyIDEmployeesQueryParamInclude]]
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
     onboarded: NotRequired[bool]
     r"""Filters employees by those who have completed onboarding"""
@@ -101,7 +107,7 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
     r"""Sort employees by a given field. Cannot be used with search_term. Append `:asc` or `:desc` to specify direction (e.g., `name:desc`). Defaults to ascending."""
 
     include: Annotated[
-        Optional[List[Include]],
+        Optional[List[GetV1CompaniesCompanyIDEmployeesQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
@@ -149,6 +155,9 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
     r"""Number of objects per page. For majority of endpoints will default to 25"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -167,11 +176,15 @@ class GetV1CompaniesCompanyIDEmployeesRequest(BaseModel):
                 "per",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

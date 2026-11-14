@@ -9,14 +9,17 @@ from gusto_app_integration_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_app_integration_v_2026_06_15.types.basemodel import current_filtered_dump
 import pydantic
 from pydantic import field_serializer, model_serializer
 from typing import Optional
 from typing_extensions import Annotated, NotRequired, TypedDict
 
 
-class ContractorPaymentPaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
+class PaymentMethod(str, Enum, metaclass=utils.OpenEnumMeta):
     r"""The payment method."""
 
     DIRECT_DEPOSIT = "Direct Deposit"
@@ -52,7 +55,7 @@ class ContractorPaymentTypedDict(TypedDict):
     r"""The payment date."""
     hours: NotRequired[str]
     r"""The number of hours worked for the payment."""
-    payment_method: NotRequired[ContractorPaymentPaymentMethod]
+    payment_method: NotRequired[PaymentMethod]
     r"""The payment method."""
     reimbursement: NotRequired[str]
     r"""The reimbursement amount in the payment."""
@@ -92,7 +95,7 @@ class ContractorPayment(BaseModel):
     hours: Optional[str] = None
     r"""The number of hours worked for the payment."""
 
-    payment_method: Optional[ContractorPaymentPaymentMethod] = None
+    payment_method: Optional[PaymentMethod] = None
     r"""The payment method."""
 
     reimbursement: Optional[str] = None
@@ -126,7 +129,7 @@ class ContractorPayment(BaseModel):
     def serialize_payment_method(self, value):
         if isinstance(value, str):
             try:
-                return models.ContractorPaymentPaymentMethod(value)
+                return models.PaymentMethod(value)
             except ValueError:
                 return value
         return value
@@ -150,6 +153,9 @@ class ContractorPayment(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -170,11 +176,15 @@ class ContractorPayment(BaseModel):
             ]
         )
         nullable_fields = set(["invoice_number", "memo"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

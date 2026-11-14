@@ -6,6 +6,8 @@
 
 * [post_companies_company_uuid_time_tracking_payroll_syncs](#post_companies_company_uuid_time_tracking_payroll_syncs) - Create a payroll sync
 * [get_time_tracking_payroll_syncs_payroll_sync_uuid](#get_time_tracking_payroll_syncs_payroll_sync_uuid) - Get a payroll sync
+* [post_companies_company_uuid_time_tracking_time_sheets_batches](#post_companies_company_uuid_time_tracking_time_sheets_batches) - Create a batch of time sheets
+* [get_time_tracking_time_sheets_batches_time_sheets_batch_uuid](#get_time_tracking_time_sheets_batches_time_sheets_batch_uuid) - Get a batch of time sheets
 * [get_companies_company_uuid_time_tracking_time_sheets](#get_companies_company_uuid_time_tracking_time_sheets) - Get all time sheets for a company
 * [post_companies_company_uuid_time_tracking_time_sheets](#post_companies_company_uuid_time_tracking_time_sheets) - Create a time sheet
 * [get_time_tracking_time_sheets_time_sheet_uuid](#get_time_tracking_time_sheets_time_sheet_uuid) - Get a time sheet
@@ -109,6 +111,146 @@ with GustoAppIntegration(
 ### Response
 
 **[models.PayrollSync](../../models/payrollsync.md)**
+
+### Errors
+
+| Error Type                 | Status Code                | Content Type               |
+| -------------------------- | -------------------------- | -------------------------- |
+| models.NotFoundErrorObject | 404                        | application/json           |
+| models.APIError            | 4XX, 5XX                   | \*/\*                      |
+
+## post_companies_company_uuid_time_tracking_time_sheets_batches
+
+Create or update up to 500 time sheets for a company in one request.
+
+Set `batch_action` to `create` to create new time sheets, or to `update` to update existing time sheets. One action applies to the whole batch.
+
+Gusto validates every time sheet when it receives the request. If one time sheet is invalid, Gusto rejects the whole batch with a 422 response and processes no time sheets.
+Gusto also rejects the batch if two time sheets for the same employee or contractor have overlapping shifts.
+
+### Asynchronous processing
+This endpoint triggers an asynchronous operation—the response will return immediately with a status of `pending` while the batch processes in the background.
+
+**To track completion:**
+
+Subscribe (via [POST /v1/webhook_subscriptions](ref:post-v1-webhook-subscription)) to `TimeSheetsBatch` webhook events
+
+Use the returned batch UUID when calling [Get a batch of time sheets](ref:get-time_tracking-time_sheets_batches-time_sheets_batch_uuid).
+
+scope: `time_sheet:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-companies-company_uuid-time_tracking-time_sheets_batches" method="post" path="/v1/companies/{company_uuid}/time_tracking/time_sheets_batches" -->
+```python
+import gusto_app_integration_v_2026_06_15
+from gusto_app_integration_v_2026_06_15 import GustoAppIntegration
+from gusto_app_integration_v_2026_06_15.utils import parse_datetime
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gusto_app_integration:
+
+    res = gusto_app_integration.time_tracking.post_companies_company_uuid_time_tracking_time_sheets_batches(company_uuid="<id>", idempotency_key="2f0c6a4e-8f3b-4d0e-9a51-6f1d2c7b9e10", time_sheets=[
+        {
+            "external_id": "shift-1001",
+            "entity_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "entity_type": gusto_app_integration_v_2026_06_15.TimeSheetsBatchCreateBodyEntityType.EMPLOYEE,
+            "job_uuid": "123e4567-e89b-12d3-a456-426614174001",
+            "time_zone": "America/Los_Angeles",
+            "shift_started_at": parse_datetime("2024-06-10T16:00:00Z"),
+            "shift_ended_at": parse_datetime("2024-06-10T19:00:00Z"),
+            "entries": [
+                {
+                    "hours_worked": 3.0,
+                    "pay_classification": gusto_app_integration_v_2026_06_15.TimeSheetsBatchCreateBodyPayClassification.REGULAR,
+                },
+            ],
+        },
+        {
+            "external_id": "shift-1002",
+            "entity_uuid": "123e4567-e89b-12d3-a456-426614174000",
+            "entity_type": gusto_app_integration_v_2026_06_15.TimeSheetsBatchCreateBodyEntityType.EMPLOYEE,
+            "job_uuid": "123e4567-e89b-12d3-a456-426614174001",
+            "time_zone": "America/Los_Angeles",
+            "shift_started_at": parse_datetime("2024-06-10T20:00:00Z"),
+            "shift_ended_at": parse_datetime("2024-06-10T23:00:00Z"),
+            "entries": [
+                {
+                    "hours_worked": 3.0,
+                    "pay_classification": gusto_app_integration_v_2026_06_15.TimeSheetsBatchCreateBodyPayClassification.REGULAR,
+                },
+            ],
+        },
+    ], x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, batch_action=gusto_app_integration_v_2026_06_15.BatchAction.CREATE)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Required                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `company_uuid`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | *str*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | The UUID of the company                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `idempotency_key`                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | *str*                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | A unique key for this batch, generated by the partner. It must be unique per company for your application. A request that reuses a key is rejected, so a batch is never processed twice.                                                                                                                                                                                                                                                                                             |
+| `time_sheets`                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | List[[models.TimeSheets](../../models/timesheets.md)]                                                                                                                                                                                                                                                                                                                                                                                                                                | :heavy_check_mark:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | The time sheets to create or update. Each `external_id` must be unique in the batch. For each employee or contractor, the shifts in the batch must not overlap.                                                                                                                                                                                                                                                                                                                      |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                                                                                                                                                                                                                | [Optional[models.PostCompaniesCompanyUUIDTimeTrackingTimeSheetsBatchesHeaderXGustoAPIVersion]](../../models/postcompaniescompanyuuidtimetrackingtimesheetsbatchesheaderxgustoapiversion.md)                                                                                                                                                                                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                                                                                                                                                                                                         |
+| `batch_action`                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | [Optional[models.BatchAction]](../../models/batchaction.md)                                                                                                                                                                                                                                                                                                                                                                                                                          | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | The action to apply to every time sheet in the batch. One batch has only one action.<br/>- `create`: Create new time sheets. Each item takes the same fields as [POST /v1/companies/{company_uuid}/time_tracking/time_sheets](ref:post-companies-company_uuid-time_tracking-time_sheets), plus `external_id`.<br/>- `update`: Update existing time sheets. Each item requires `external_id`, `uuid` and `version`. All other fields are optional, and only the fields you send are changed.<br/> |
+| `retries`                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+
+### Response
+
+**[models.TimeSheetsBatch](../../models/timesheetsbatch.md)**
+
+### Errors
+
+| Error Type                            | Status Code                           | Content Type                          |
+| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| models.NotFoundErrorObject            | 404                                   | application/json                      |
+| models.UnprocessableEntityErrorObject | 422                                   | application/json                      |
+| models.APIError                       | 4XX, 5XX                              | \*/\*                                 |
+
+## get_time_tracking_time_sheets_batches_time_sheets_batch_uuid
+
+Fetch a batch of up to 500 time sheets.
+
+When the batch is completed, `results` contains the outcome of each time sheet, matched by `external_id`.
+
+scope: `time_sheet:read`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="get-time_tracking-time_sheets_batches-time_sheets_batch_uuid" method="get" path="/v1/time_tracking/time_sheets_batches/{time_sheets_batch_uuid}" -->
+```python
+import gusto_app_integration_v_2026_06_15
+from gusto_app_integration_v_2026_06_15 import GustoAppIntegration
+
+
+with GustoAppIntegration(
+    company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
+) as gusto_app_integration:
+
+    res = gusto_app_integration.time_tracking.get_time_tracking_time_sheets_batches_time_sheets_batch_uuid(time_sheets_batch_uuid="<id>", x_gusto_api_version=gusto_app_integration_v_2026_06_15.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `time_sheets_batch_uuid`                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the time sheets batch                                                                                                                                                                                            |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetTimeTrackingTimeSheetsBatchesTimeSheetsBatchUUIDHeaderXGustoAPIVersion]](../../models/gettimetrackingtimesheetsbatchestimesheetsbatchuuidheaderxgustoapiversion.md)                                      | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |
+| `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |
+
+### Response
+
+**[models.TimeSheetsBatch](../../models/timesheetsbatch.md)**
 
 ### Errors
 
