@@ -25,7 +25,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.company_attachment.get_download_url(company_id="<id>", company_attachment_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1CompaniesAttachmentURLHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)

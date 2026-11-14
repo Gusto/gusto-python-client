@@ -10,7 +10,10 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded_v_2026_06_15.types.basemodel import current_filtered_dump
 from pydantic import field_serializer, model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -73,14 +76,21 @@ class PeopleBatchResultsErrors(BaseModel):
     r"""Nested errors for sub-operations."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["error_key", "category", "message", "errors"])
         nullable_fields = set(["message", "errors"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -98,7 +108,7 @@ class PeopleBatchResultsErrors(BaseModel):
         return m
 
 
-class ResultsTypedDict(TypedDict):
+class PeopleBatchResultsResultsTypedDict(TypedDict):
     external_id: NotRequired[str]
     r"""The external ID provided in the batch request."""
     role: NotRequired[Role]
@@ -115,7 +125,7 @@ class ResultsTypedDict(TypedDict):
     r"""Errors encountered while processing this batch item."""
 
 
-class Results(BaseModel):
+class PeopleBatchResultsResults(BaseModel):
     external_id: Optional[str] = None
     r"""The external ID provided in the batch request."""
 
@@ -147,16 +157,23 @@ class Results(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["external_id", "role", "status", "idx", "uuid", "employee_uuid", "errors"]
         )
         nullable_fields = set(["errors"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields
@@ -174,7 +191,7 @@ class Results(BaseModel):
         return m
 
 
-class ExclusionsTypedDict(TypedDict):
+class PeopleBatchResultsExclusionsTypedDict(TypedDict):
     external_id: NotRequired[str]
     r"""The external ID of the excluded item(s)."""
     category: NotRequired[str]
@@ -185,7 +202,7 @@ class ExclusionsTypedDict(TypedDict):
     r"""Number of items affected by this exclusion."""
 
 
-class Exclusions(BaseModel):
+class PeopleBatchResultsExclusions(BaseModel):
     external_id: Optional[str] = None
     r"""The external ID of the excluded item(s)."""
 
@@ -199,13 +216,20 @@ class Exclusions(BaseModel):
     r"""Number of items affected by this exclusion."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["external_id", "category", "message", "item_count"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:
@@ -234,9 +258,9 @@ class PeopleBatchResultsTypedDict(TypedDict):
     r"""The number of items successfully processed."""
     excluded_items: NotRequired[int]
     r"""The number of items excluded from processing."""
-    results: NotRequired[List[ResultsTypedDict]]
+    results: NotRequired[List[PeopleBatchResultsResultsTypedDict]]
     r"""The results for each batch item."""
-    exclusions: NotRequired[Nullable[List[ExclusionsTypedDict]]]
+    exclusions: NotRequired[Nullable[List[PeopleBatchResultsExclusionsTypedDict]]]
     r"""Items excluded from processing due to validation errors."""
 
 
@@ -267,10 +291,10 @@ class PeopleBatchResults(BaseModel):
     excluded_items: Optional[int] = None
     r"""The number of items excluded from processing."""
 
-    results: Optional[List[Results]] = None
+    results: Optional[List[PeopleBatchResultsResults]] = None
     r"""The results for each batch item."""
 
-    exclusions: OptionalNullable[List[Exclusions]] = UNSET
+    exclusions: OptionalNullable[List[PeopleBatchResultsExclusions]] = UNSET
     r"""Items excluded from processing due to validation errors."""
 
     @field_serializer("status")
@@ -283,6 +307,9 @@ class PeopleBatchResults(BaseModel):
         return value
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -296,11 +323,15 @@ class PeopleBatchResults(BaseModel):
             ]
         )
         nullable_fields = set(["completed_at", "submitted_items", "exclusions"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

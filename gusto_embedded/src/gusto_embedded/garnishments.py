@@ -93,6 +93,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -199,6 +204,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -261,13 +271,13 @@ class Garnishments(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param description: The description of the garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -352,6 +362,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -419,13 +434,13 @@ class Garnishments(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param description: The description of the garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -510,6 +525,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -529,6 +549,198 @@ class Garnishments(BaseSDK):
                 models.UnprocessableEntityError1Data, http_res
             )
             raise models.UnprocessableEntityError1(response_data, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = await utils.stream_to_text_async(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    def get_child_support_data(
+        self,
+        *,
+        x_gusto_api_version: Optional[
+            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.ChildSupportData:
+        r"""Get child support garnishment data
+
+        Agency data and requirements to be used for creating child support garnishments
+
+        scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1GarnishmentsChildSupportRequest(
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request(
+            method="GET",
+            path="/v1/garnishments/child_support",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = self.do_request(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-garnishments-child_support",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.ChildSupportData, http_res)
+        if utils.match_response(http_res, "4XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+        if utils.match_response(http_res, "5XX", "*"):
+            http_res_text = utils.stream_to_text(http_res)
+            raise models.APIError("API error occurred", http_res, http_res_text)
+
+        raise models.APIError("Unexpected response received", http_res)
+
+    async def get_child_support_data_async(
+        self,
+        *,
+        x_gusto_api_version: Optional[
+            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
+        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
+        retries: OptionalNullable[utils.RetryConfig] = UNSET,
+        server_url: Optional[str] = None,
+        timeout_ms: Optional[int] = None,
+        http_headers: Optional[Mapping[str, str]] = None,
+    ) -> models.ChildSupportData:
+        r"""Get child support garnishment data
+
+        Agency data and requirements to be used for creating child support garnishments
+
+        scope: `garnishments:read`
+
+        If set, this operation will use `company_access_auth` from the global security.
+
+        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
+        :param retries: Override the default retry configuration for this method
+        :param server_url: Override the default server URL for this method
+        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
+        :param http_headers: Additional headers to set or replace on requests.
+        """
+        base_url = None
+        url_variables = None
+        if timeout_ms is None:
+            timeout_ms = self.sdk_configuration.timeout_ms
+
+        if server_url is not None:
+            base_url = server_url
+        else:
+            base_url = self._get_url(base_url, url_variables)
+
+        request = models.GetV1GarnishmentsChildSupportRequest(
+            x_gusto_api_version=x_gusto_api_version,
+        )
+
+        req = self._build_request_async(
+            method="GET",
+            path="/v1/garnishments/child_support",
+            base_url=base_url,
+            url_variables=url_variables,
+            request=request,
+            request_body_required=False,
+            request_has_path_params=False,
+            request_has_query_params=True,
+            user_agent_header="user-agent",
+            accept_header_value="application/json",
+            http_headers=http_headers,
+            security=self.sdk_configuration.security,
+            allow_empty_value=None,
+            allowed_fields=["company_access_auth"],
+            timeout_ms=timeout_ms,
+        )
+
+        if retries == UNSET:
+            if self.sdk_configuration.retry_config is not UNSET:
+                retries = self.sdk_configuration.retry_config
+
+        retry_config = None
+        if isinstance(retries, utils.RetryConfig):
+            retry_config = (retries, ["429", "500", "502", "503", "504"])
+
+        http_res = await self.do_request_async(
+            hook_ctx=HookContext(
+                config=self.sdk_configuration,
+                base_url=base_url or "",
+                operation_id="get-v1-garnishments-child_support",
+                oauth2_scopes=None,
+                security_source=get_security_from_env(
+                    self.sdk_configuration.security, models.Security
+                ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
+            ),
+            request=req,
+            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
+            retry_config=retry_config,
+        )
+
+        if utils.match_response(http_res, "200", "application/json"):
+            return unmarshal_json_response(models.ChildSupportData, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)
@@ -615,6 +827,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -715,6 +932,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -781,11 +1003,11 @@ class Garnishments(BaseSDK):
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
         :param description: The description of the garnishment.
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -871,6 +1093,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -942,11 +1169,11 @@ class Garnishments(BaseSDK):
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
         :param description: The description of the garnishment.
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -1032,6 +1259,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1051,188 +1283,6 @@ class Garnishments(BaseSDK):
                 models.UnprocessableEntityError1Data, http_res
             )
             raise models.UnprocessableEntityError1(response_data, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = await utils.stream_to_text_async(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    def get_child_support_data(
-        self,
-        *,
-        x_gusto_api_version: Optional[
-            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
-        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ChildSupportData:
-        r"""Get child support garnishment data
-
-        Agency data and requirements to be used for creating child support garnishments
-
-        scope: `garnishments:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1GarnishmentsChildSupportRequest(
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request(
-            method="GET",
-            path="/v1/garnishments/child_support",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=False,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = self.do_request(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-garnishments-child_support",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ChildSupportData, http_res)
-        if utils.match_response(http_res, "4XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-        if utils.match_response(http_res, "5XX", "*"):
-            http_res_text = utils.stream_to_text(http_res)
-            raise models.APIError("API error occurred", http_res, http_res_text)
-
-        raise models.APIError("Unexpected response received", http_res)
-
-    async def get_child_support_data_async(
-        self,
-        *,
-        x_gusto_api_version: Optional[
-            models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion
-        ] = models.GetV1GarnishmentsChildSupportHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15,
-        retries: OptionalNullable[utils.RetryConfig] = UNSET,
-        server_url: Optional[str] = None,
-        timeout_ms: Optional[int] = None,
-        http_headers: Optional[Mapping[str, str]] = None,
-    ) -> models.ChildSupportData:
-        r"""Get child support garnishment data
-
-        Agency data and requirements to be used for creating child support garnishments
-
-        scope: `garnishments:read`
-
-        If set, this operation will use `company_access_auth` from the global security.
-
-        :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param retries: Override the default retry configuration for this method
-        :param server_url: Override the default server URL for this method
-        :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
-        :param http_headers: Additional headers to set or replace on requests.
-        """
-        base_url = None
-        url_variables = None
-        if timeout_ms is None:
-            timeout_ms = self.sdk_configuration.timeout_ms
-
-        if server_url is not None:
-            base_url = server_url
-        else:
-            base_url = self._get_url(base_url, url_variables)
-
-        request = models.GetV1GarnishmentsChildSupportRequest(
-            x_gusto_api_version=x_gusto_api_version,
-        )
-
-        req = self._build_request_async(
-            method="GET",
-            path="/v1/garnishments/child_support",
-            base_url=base_url,
-            url_variables=url_variables,
-            request=request,
-            request_body_required=False,
-            request_has_path_params=False,
-            request_has_query_params=True,
-            user_agent_header="user-agent",
-            accept_header_value="application/json",
-            http_headers=http_headers,
-            security=self.sdk_configuration.security,
-            allow_empty_value=None,
-            allowed_fields=["company_access_auth"],
-            timeout_ms=timeout_ms,
-        )
-
-        if retries == UNSET:
-            if self.sdk_configuration.retry_config is not UNSET:
-                retries = self.sdk_configuration.retry_config
-
-        retry_config = None
-        if isinstance(retries, utils.RetryConfig):
-            retry_config = (retries, ["429", "500", "502", "503", "504"])
-
-        http_res = await self.do_request_async(
-            hook_ctx=HookContext(
-                config=self.sdk_configuration,
-                base_url=base_url or "",
-                operation_id="get-v1-garnishments-child_support",
-                oauth2_scopes=None,
-                security_source=get_security_from_env(
-                    self.sdk_configuration.security, models.Security
-                ),
-            ),
-            request=req,
-            is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
-            retry_config=retry_config,
-        )
-
-        if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(models.ChildSupportData, http_res)
         if utils.match_response(http_res, "4XX", "*"):
             http_res_text = await utils.stream_to_text_async(http_res)
             raise models.APIError("API error occurred", http_res, http_res_text)

@@ -22,12 +22,12 @@ if TYPE_CHECKING:
     from gusto_embedded.companyattachments import CompanyAttachments
     from gusto_embedded.companybenefits import CompanyBenefits
     from gusto_embedded.companyforms import CompanyForms
+    from gusto_embedded.contractor_payments import ContractorPayments
     from gusto_embedded.contractordocuments import ContractorDocuments
     from gusto_embedded.contractorforms import ContractorForms
     from gusto_embedded.contractorpaymentgroups import ContractorPaymentGroups
     from gusto_embedded.contractorpaymentmethod_sdk import ContractorPaymentMethodSDK
     from gusto_embedded.contractorpaymentmethods import ContractorPaymentMethods
-    from gusto_embedded.contractorpayments import ContractorPayments
     from gusto_embedded.contractors import Contractors
     from gusto_embedded.departments import Departments
     from gusto_embedded.earningtypes import EarningTypes
@@ -54,8 +54,10 @@ if TYPE_CHECKING:
     from gusto_embedded.invoices import Invoices
     from gusto_embedded.jobsandcompensations import JobsAndCompensations
     from gusto_embedded.locations import Locations
+    from gusto_embedded.member_portal_invitations import MemberPortalInvitations
     from gusto_embedded.notifications import Notifications
     from gusto_embedded.paymentconfigs_sdk import PaymentConfigsSDK
+    from gusto_embedded.payroll_cancellations import PayrollCancellations
     from gusto_embedded.payroll_digests import PayrollDigests
     from gusto_embedded.payrolls import Payrolls
     from gusto_embedded.payschedules import PaySchedules
@@ -63,8 +65,10 @@ if TYPE_CHECKING:
     from gusto_embedded.recoverycases import RecoveryCases
     from gusto_embedded.reimbursements import Reimbursements
     from gusto_embedded.reports import Reports
+    from gusto_embedded.reverse_wire_transactions import ReverseWireTransactions
     from gusto_embedded.salary_estimates import SalaryEstimates
     from gusto_embedded.signatories import Signatories
+    from gusto_embedded.tax_payments import TaxPayments
     from gusto_embedded.taxrequirements import TaxRequirements
     from gusto_embedded.time_off_requests import TimeOffRequests
     from gusto_embedded.timeoffpolicies import TimeOffPolicies
@@ -75,65 +79,70 @@ if TYPE_CHECKING:
 class Gusto(BaseSDK):
     r"""Gusto API: Welcome to Gusto's Embedded Payroll API documentation!"""
 
-    introspection: "Introspection"
+    ach_transactions: "AchTransactions"
     companies: "Companies"
-    invoices: "Invoices"
+    company_benefits: "CompanyBenefits"
+    reports: "Reports"
     company_attachments: "CompanyAttachments"
     company_attachment: "CompanyAttachmentSDK"
-    federal_tax_details: "FederalTaxDetailsSDK"
-    industry_selection: "IndustrySelection"
-    signatories: "Signatories"
-    flows: "Flows"
-    locations: "Locations"
     bank_accounts: "BankAccounts"
-    external_payrolls: "ExternalPayrolls"
+    company_forms: "CompanyForms"
+    industry_selection: "IndustrySelection"
+    notifications: "Notifications"
     payment_configs: "PaymentConfigsSDK"
-    pay_schedules: "PaySchedules"
-    employees: "Employees"
-    historical_employees: "HistoricalEmployees"
-    departments: "Departments"
-    employee_employments: "EmployeeEmployments"
-    employee_addresses: "EmployeeAddresses"
-    employee_tax_setup: "EmployeeTaxSetup"
-    employee_payment_methods: "EmployeePaymentMethods"
-    employee_payment_method: "EmployeePaymentMethodSDK"
+    tax_requirements: "TaxRequirements"
+    federal_tax_details: "FederalTaxDetailsSDK"
     jobs_and_compensations: "JobsAndCompensations"
-    earning_types: "EarningTypes"
-    contractors: "Contractors"
     contractor_payment_method: "ContractorPaymentMethodSDK"
     contractor_payment_methods: "ContractorPaymentMethods"
-    webhooks: "Webhooks"
     contractor_forms: "ContractorForms"
-    contractor_documents: "ContractorDocuments"
-    employee_forms: "EmployeeForms"
-    payrolls: "Payrolls"
-    time_off_policies: "TimeOffPolicies"
-    contractor_payments: "ContractorPayments"
+    contractors: "Contractors"
     contractor_payment_groups: "ContractorPaymentGroups"
-    company_forms: "CompanyForms"
-    generated_documents: "GeneratedDocuments"
-    reports: "Reports"
-    company_benefits: "CompanyBenefits"
+    contractor_payments: "ContractorPayments"
+    departments: "Departments"
+    contractor_documents: "ContractorDocuments"
+    earning_types: "EarningTypes"
+    employee_payment_methods: "EmployeePaymentMethods"
+    employee_payment_method: "EmployeePaymentMethodSDK"
     employee_benefits: "EmployeeBenefits"
-    garnishments: "Garnishments"
-    i9_verification: "I9Verification"
-    tax_requirements: "TaxRequirements"
-    holiday_pay_policies: "HolidayPayPolicies"
-    notifications: "Notifications"
+    employees: "Employees"
+    employee_tax_setup: "EmployeeTaxSetup"
+    employee_forms: "EmployeeForms"
+    employee_employments: "EmployeeEmployments"
     events: "Events"
+    external_payrolls: "ExternalPayrolls"
+    flows: "Flows"
+    garnishments: "Garnishments"
+    payrolls: "Payrolls"
+    generated_documents: "GeneratedDocuments"
+    historical_employees: "HistoricalEmployees"
+    holiday_pay_policies: "HolidayPayPolicies"
+    employee_addresses: "EmployeeAddresses"
+    i9_verification: "I9Verification"
     information_requests: "InformationRequests"
-    recovery_cases: "RecoveryCases"
-    ach_transactions: "AchTransactions"
-    wire_in_requests: "WireInRequests"
-    salary_estimates: "SalaryEstimates"
-    reimbursements: "Reimbursements"
-    people_batches: "PeopleBatches"
-    time_off_requests: "TimeOffRequests"
+    invoices: "Invoices"
+    locations: "Locations"
+    member_portal_invitations: "MemberPortalInvitations"
+    pay_schedules: "PaySchedules"
+    payroll_cancellations: "PayrollCancellations"
     payroll_digests: "PayrollDigests"
+    time_off_policies: "TimeOffPolicies"
+    people_batches: "PeopleBatches"
+    recovery_cases: "RecoveryCases"
+    reimbursements: "Reimbursements"
+    reverse_wire_transactions: "ReverseWireTransactions"
+    salary_estimates: "SalaryEstimates"
+    signatories: "Signatories"
+    tax_payments: "TaxPayments"
+    time_off_requests: "TimeOffRequests"
+    introspection: "Introspection"
+    webhooks: "Webhooks"
+    wire_in_requests: "WireInRequests"
     _sub_sdk_map = {
-        "introspection": ("gusto_embedded.introspection", "Introspection"),
+        "ach_transactions": ("gusto_embedded.achtransactions", "AchTransactions"),
         "companies": ("gusto_embedded.companies", "Companies"),
-        "invoices": ("gusto_embedded.invoices", "Invoices"),
+        "company_benefits": ("gusto_embedded.companybenefits", "CompanyBenefits"),
+        "reports": ("gusto_embedded.reports", "Reports"),
         "company_attachments": (
             "gusto_embedded.companyattachments",
             "CompanyAttachments",
@@ -142,44 +151,20 @@ class Gusto(BaseSDK):
             "gusto_embedded.companyattachment_sdk",
             "CompanyAttachmentSDK",
         ),
+        "bank_accounts": ("gusto_embedded.bankaccounts", "BankAccounts"),
+        "company_forms": ("gusto_embedded.companyforms", "CompanyForms"),
+        "industry_selection": ("gusto_embedded.industryselection", "IndustrySelection"),
+        "notifications": ("gusto_embedded.notifications", "Notifications"),
+        "payment_configs": ("gusto_embedded.paymentconfigs_sdk", "PaymentConfigsSDK"),
+        "tax_requirements": ("gusto_embedded.taxrequirements", "TaxRequirements"),
         "federal_tax_details": (
             "gusto_embedded.federaltaxdetails_sdk",
             "FederalTaxDetailsSDK",
-        ),
-        "industry_selection": ("gusto_embedded.industryselection", "IndustrySelection"),
-        "signatories": ("gusto_embedded.signatories", "Signatories"),
-        "flows": ("gusto_embedded.flows", "Flows"),
-        "locations": ("gusto_embedded.locations", "Locations"),
-        "bank_accounts": ("gusto_embedded.bankaccounts", "BankAccounts"),
-        "external_payrolls": ("gusto_embedded.externalpayrolls", "ExternalPayrolls"),
-        "payment_configs": ("gusto_embedded.paymentconfigs_sdk", "PaymentConfigsSDK"),
-        "pay_schedules": ("gusto_embedded.payschedules", "PaySchedules"),
-        "employees": ("gusto_embedded.employees", "Employees"),
-        "historical_employees": (
-            "gusto_embedded.historicalemployees",
-            "HistoricalEmployees",
-        ),
-        "departments": ("gusto_embedded.departments", "Departments"),
-        "employee_employments": (
-            "gusto_embedded.employeeemployments",
-            "EmployeeEmployments",
-        ),
-        "employee_addresses": ("gusto_embedded.employeeaddresses", "EmployeeAddresses"),
-        "employee_tax_setup": ("gusto_embedded.employeetaxsetup", "EmployeeTaxSetup"),
-        "employee_payment_methods": (
-            "gusto_embedded.employeepaymentmethods",
-            "EmployeePaymentMethods",
-        ),
-        "employee_payment_method": (
-            "gusto_embedded.employeepaymentmethod_sdk",
-            "EmployeePaymentMethodSDK",
         ),
         "jobs_and_compensations": (
             "gusto_embedded.jobsandcompensations",
             "JobsAndCompensations",
         ),
-        "earning_types": ("gusto_embedded.earningtypes", "EarningTypes"),
-        "contractors": ("gusto_embedded.contractors", "Contractors"),
         "contractor_payment_method": (
             "gusto_embedded.contractorpaymentmethod_sdk",
             "ContractorPaymentMethodSDK",
@@ -188,52 +173,88 @@ class Gusto(BaseSDK):
             "gusto_embedded.contractorpaymentmethods",
             "ContractorPaymentMethods",
         ),
-        "webhooks": ("gusto_embedded.webhooks", "Webhooks"),
         "contractor_forms": ("gusto_embedded.contractorforms", "ContractorForms"),
-        "contractor_documents": (
-            "gusto_embedded.contractordocuments",
-            "ContractorDocuments",
-        ),
-        "employee_forms": ("gusto_embedded.employeeforms", "EmployeeForms"),
-        "payrolls": ("gusto_embedded.payrolls", "Payrolls"),
-        "time_off_policies": ("gusto_embedded.timeoffpolicies", "TimeOffPolicies"),
-        "contractor_payments": (
-            "gusto_embedded.contractorpayments",
-            "ContractorPayments",
-        ),
+        "contractors": ("gusto_embedded.contractors", "Contractors"),
         "contractor_payment_groups": (
             "gusto_embedded.contractorpaymentgroups",
             "ContractorPaymentGroups",
         ),
-        "company_forms": ("gusto_embedded.companyforms", "CompanyForms"),
+        "contractor_payments": (
+            "gusto_embedded.contractor_payments",
+            "ContractorPayments",
+        ),
+        "departments": ("gusto_embedded.departments", "Departments"),
+        "contractor_documents": (
+            "gusto_embedded.contractordocuments",
+            "ContractorDocuments",
+        ),
+        "earning_types": ("gusto_embedded.earningtypes", "EarningTypes"),
+        "employee_payment_methods": (
+            "gusto_embedded.employeepaymentmethods",
+            "EmployeePaymentMethods",
+        ),
+        "employee_payment_method": (
+            "gusto_embedded.employeepaymentmethod_sdk",
+            "EmployeePaymentMethodSDK",
+        ),
+        "employee_benefits": ("gusto_embedded.employeebenefits", "EmployeeBenefits"),
+        "employees": ("gusto_embedded.employees", "Employees"),
+        "employee_tax_setup": ("gusto_embedded.employeetaxsetup", "EmployeeTaxSetup"),
+        "employee_forms": ("gusto_embedded.employeeforms", "EmployeeForms"),
+        "employee_employments": (
+            "gusto_embedded.employeeemployments",
+            "EmployeeEmployments",
+        ),
+        "events": ("gusto_embedded.events", "Events"),
+        "external_payrolls": ("gusto_embedded.externalpayrolls", "ExternalPayrolls"),
+        "flows": ("gusto_embedded.flows", "Flows"),
+        "garnishments": ("gusto_embedded.garnishments", "Garnishments"),
+        "payrolls": ("gusto_embedded.payrolls", "Payrolls"),
         "generated_documents": (
             "gusto_embedded.generateddocuments",
             "GeneratedDocuments",
         ),
-        "reports": ("gusto_embedded.reports", "Reports"),
-        "company_benefits": ("gusto_embedded.companybenefits", "CompanyBenefits"),
-        "employee_benefits": ("gusto_embedded.employeebenefits", "EmployeeBenefits"),
-        "garnishments": ("gusto_embedded.garnishments", "Garnishments"),
-        "i9_verification": ("gusto_embedded.i9verification", "I9Verification"),
-        "tax_requirements": ("gusto_embedded.taxrequirements", "TaxRequirements"),
+        "historical_employees": (
+            "gusto_embedded.historicalemployees",
+            "HistoricalEmployees",
+        ),
         "holiday_pay_policies": (
             "gusto_embedded.holidaypaypolicies",
             "HolidayPayPolicies",
         ),
-        "notifications": ("gusto_embedded.notifications", "Notifications"),
-        "events": ("gusto_embedded.events", "Events"),
+        "employee_addresses": ("gusto_embedded.employeeaddresses", "EmployeeAddresses"),
+        "i9_verification": ("gusto_embedded.i9verification", "I9Verification"),
         "information_requests": (
             "gusto_embedded.information_requests",
             "InformationRequests",
         ),
-        "recovery_cases": ("gusto_embedded.recoverycases", "RecoveryCases"),
-        "ach_transactions": ("gusto_embedded.achtransactions", "AchTransactions"),
-        "wire_in_requests": ("gusto_embedded.wireinrequests", "WireInRequests"),
-        "salary_estimates": ("gusto_embedded.salary_estimates", "SalaryEstimates"),
-        "reimbursements": ("gusto_embedded.reimbursements", "Reimbursements"),
-        "people_batches": ("gusto_embedded.people_batches", "PeopleBatches"),
-        "time_off_requests": ("gusto_embedded.time_off_requests", "TimeOffRequests"),
+        "invoices": ("gusto_embedded.invoices", "Invoices"),
+        "locations": ("gusto_embedded.locations", "Locations"),
+        "member_portal_invitations": (
+            "gusto_embedded.member_portal_invitations",
+            "MemberPortalInvitations",
+        ),
+        "pay_schedules": ("gusto_embedded.payschedules", "PaySchedules"),
+        "payroll_cancellations": (
+            "gusto_embedded.payroll_cancellations",
+            "PayrollCancellations",
+        ),
         "payroll_digests": ("gusto_embedded.payroll_digests", "PayrollDigests"),
+        "time_off_policies": ("gusto_embedded.timeoffpolicies", "TimeOffPolicies"),
+        "people_batches": ("gusto_embedded.people_batches", "PeopleBatches"),
+        "recovery_cases": ("gusto_embedded.recoverycases", "RecoveryCases"),
+        "reimbursements": ("gusto_embedded.reimbursements", "Reimbursements"),
+        "reverse_wire_transactions": (
+            "gusto_embedded.reverse_wire_transactions",
+            "ReverseWireTransactions",
+        ),
+        "salary_estimates": ("gusto_embedded.salary_estimates", "SalaryEstimates"),
+        "signatories": ("gusto_embedded.signatories", "Signatories"),
+        "tax_payments": ("gusto_embedded.tax_payments", "TaxPayments"),
+        "time_off_requests": ("gusto_embedded.time_off_requests", "TimeOffRequests"),
+        "introspection": ("gusto_embedded.introspection", "Introspection"),
+        "webhooks": ("gusto_embedded.webhooks", "Webhooks"),
+        "wire_in_requests": ("gusto_embedded.wireinrequests", "WireInRequests"),
     }
 
     def __init__(

@@ -102,6 +102,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_periods",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -220,6 +225,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_periods",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -325,6 +335,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-unprocessed_termination_pay_periods",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -427,6 +442,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-unprocessed_termination_pay_periods",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -465,7 +485,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayScheduleShow]:
+    ) -> List[models.PayScheduleListItem]:
         r"""Get the pay schedules for a company
 
         Returns all pay schedules for a company. The pay schedule object captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -533,6 +553,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -541,7 +566,7 @@ class PaySchedules(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayScheduleShow], http_res)
+            return unmarshal_json_response(List[models.PayScheduleListItem], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -569,7 +594,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayScheduleShow]:
+    ) -> List[models.PayScheduleListItem]:
         r"""Get the pay schedules for a company
 
         Returns all pay schedules for a company. The pay schedule object captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -637,6 +662,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -645,7 +675,7 @@ class PaySchedules(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayScheduleShow], http_res)
+            return unmarshal_json_response(List[models.PayScheduleListItem], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -738,6 +768,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules-pay_schedule_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -839,6 +874,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules-pay_schedule_id",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -937,6 +977,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules-assignments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1035,6 +1080,11 @@ class PaySchedules(BaseSDK):
                 operation_id="get-v1-companies-company_id-pay_schedules-assignments",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
