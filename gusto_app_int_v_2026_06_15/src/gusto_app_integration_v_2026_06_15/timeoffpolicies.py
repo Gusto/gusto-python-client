@@ -7,7 +7,7 @@ from gusto_app_integration_v_2026_06_15.types import OptionalNullable, UNSET
 from gusto_app_integration_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class TimeOffPolicies(BaseSDK):
@@ -122,6 +122,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -263,6 +268,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="post-v1-payrolls-payroll_id-calculate_accruing_time_off_hours",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -368,6 +378,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="get-v1-companies-company_uuid-time_off_policies",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -466,6 +481,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="get-v1-companies-company_uuid-time_off_policies",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -564,6 +584,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="get-v1-time_off_policies-time_off_policy_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -662,6 +687,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="get-v1-time_off_policies-time_off_policy_uuid",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -690,8 +720,8 @@ class TimeOffPolicies(BaseSDK):
         *,
         time_off_policy_uuid: str,
         employees: Union[
-            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
-            List[
+            Iterable[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            Iterable[
                 models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
             ],
         ],
@@ -782,6 +812,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="put-v1-time_off_policies-time_off_policy_uuid-add_employees",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -796,6 +831,11 @@ class TimeOffPolicies(BaseSDK):
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "409", "application/json"):
+            response_data = unmarshal_json_response(
+                models.ConflictErrorObjectData, http_res
+            )
+            raise models.ConflictErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
                 models.UnprocessableEntityErrorObjectData, http_res
@@ -815,8 +855,8 @@ class TimeOffPolicies(BaseSDK):
         *,
         time_off_policy_uuid: str,
         employees: Union[
-            List[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
-            List[
+            Iterable[models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployees],
+            Iterable[
                 models.PutV1TimeOffPoliciesTimeOffPolicyUUIDAddEmployeesEmployeesTypedDict
             ],
         ],
@@ -907,6 +947,11 @@ class TimeOffPolicies(BaseSDK):
                 operation_id="put-v1-time_off_policies-time_off_policy_uuid-add_employees",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Time Off Policies"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -921,6 +966,11 @@ class TimeOffPolicies(BaseSDK):
                 models.NotFoundErrorObjectData, http_res
             )
             raise models.NotFoundErrorObject(response_data, http_res)
+        if utils.match_response(http_res, "409", "application/json"):
+            response_data = unmarshal_json_response(
+                models.ConflictErrorObjectData, http_res
+            )
+            raise models.ConflictErrorObject(response_data, http_res)
         if utils.match_response(http_res, "422", "application/json"):
             response_data = unmarshal_json_response(
                 models.UnprocessableEntityErrorObjectData, http_res

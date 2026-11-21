@@ -9,7 +9,10 @@ from gusto_app_integration.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_app_integration.types.basemodel import current_filtered_dump
 from pydantic import model_serializer
 from typing import List, Optional
 from typing_extensions import NotRequired, TypedDict
@@ -34,8 +37,8 @@ class JobTypedDict(TypedDict):
     r"""The current compensation rate of the job."""
     payment_unit: NotRequired[Nullable[str]]
     r"""The payment unit of the current compensation for the job."""
-    current_compensation_uuid: NotRequired[str]
-    r"""The UUID of the current compensation of the job."""
+    current_compensation_uuid: NotRequired[Nullable[str]]
+    r"""The UUID of the current compensation of the job. Null when the job has no current compensation."""
     two_percent_shareholder: NotRequired[bool]
     r"""Whether the employee owns at least 2% of the company."""
     state_wc_covered: NotRequired[Nullable[bool]]
@@ -76,8 +79,8 @@ class Job(BaseModel):
     payment_unit: OptionalNullable[str] = UNSET
     r"""The payment unit of the current compensation for the job."""
 
-    current_compensation_uuid: Optional[str] = None
-    r"""The UUID of the current compensation of the job."""
+    current_compensation_uuid: OptionalNullable[str] = UNSET
+    r"""The UUID of the current compensation of the job. Null when the job has no current compensation."""
 
     two_percent_shareholder: Optional[bool] = None
     r"""Whether the employee owns at least 2% of the company."""
@@ -97,6 +100,9 @@ class Job(BaseModel):
     r"""The representation of an address in Gusto."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -117,14 +123,24 @@ class Job(BaseModel):
             ]
         )
         nullable_fields = set(
-            ["title", "payment_unit", "state_wc_covered", "state_wc_class_code"]
+            [
+                "title",
+                "payment_unit",
+                "current_compensation_uuid",
+                "state_wc_covered",
+                "state_wc_class_code",
+            ]
         )
         null_default_fields = set(["title"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

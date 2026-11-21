@@ -9,10 +9,14 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded.types.basemodel import current_filtered_dump
+import pydantic
 from pydantic import model_serializer
 from typing import Optional
-from typing_extensions import NotRequired, TypedDict
+from typing_extensions import Annotated, NotRequired, TypedDict
 
 
 class PayScheduleUpdateRequestFrequency(str, Enum):
@@ -20,7 +24,7 @@ class PayScheduleUpdateRequestFrequency(str, Enum):
 
     - `Every week`: Weekly pay.
     - `Every other week`: Biweekly pay.
-    - `Twice per month`: Two pay dates per month; require day_1 and day_2 (use 31 for last day of month).
+    - `Twice per month`: Two pay dates per month. Provide first_pay_period_pay_day and second_pay_period_pay_day for a regular schedule, and add first_pay_period_end_day and second_pay_period_end_day for a flexible schedule. Legacy day_1/day_2 are still accepted separately. Use 31 for the last day of the month.
     - `Monthly`: One pay date per month; require day_1 (1-31).
 
     """
@@ -31,8 +35,24 @@ class PayScheduleUpdateRequestFrequency(str, Enum):
     MONTHLY = "Monthly"
 
 
+class PayScheduleUpdateRequestWorkweekStartDay(str, Enum):
+    r"""The day of the week that this pay schedule's workweeks start on, used for regular rate of pay overtime calculations."""
+
+    SUNDAY = "Sunday"
+    MONDAY = "Monday"
+    TUESDAY = "Tuesday"
+    WEDNESDAY = "Wednesday"
+    THURSDAY = "Thursday"
+    FRIDAY = "Friday"
+    SATURDAY = "Saturday"
+
+
 class PayScheduleUpdateRequestTypedDict(TypedDict):
-    r"""Request body for updating a pay schedule. Sent in the pay_schedule_update root key. Version is required for optimistic concurrency. Pay schedules may be automatically adjusted if an onboarded company misses their first pay date; see [Create a pay schedule](https://docs.gusto.com/embedded-payroll/docs/create-a-pay-schedule)."""
+    r"""Request body for updating a pay schedule. Sent in the pay_schedule_update root key. Version is required for optimistic concurrency. Pay schedules may be automatically adjusted if an onboarded company misses their first pay date; see [Create a pay schedule](https://docs.gusto.com/embedded-payroll/docs/create-a-pay-schedule).
+
+    When changing a flexible Twice per month schedule to Monthly, the first pay day is retained unless replaced; the second pay day and both explicit period-end days become null. Changing to Every week or Every other week clears all day fields.
+
+    """
 
     version: str
     r"""Current version of the pay schedule from the GET response; required for optimistic concurrency. Mismatch returns 409 Conflict."""
@@ -45,19 +65,40 @@ class PayScheduleUpdateRequestTypedDict(TypedDict):
     anchor_pay_date: NotRequired[date]
     anchor_end_of_pay_period: NotRequired[date]
     day_1: NotRequired[Nullable[int]]
-    r"""An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+    r"""Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
     """
     day_2: NotRequired[Nullable[int]]
-    r"""An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+    r"""Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+
+    """
+    first_pay_period_pay_day: NotRequired[Nullable[int]]
+    r"""The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+
+    """
+    second_pay_period_pay_day: NotRequired[Nullable[int]]
+    r"""The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+    """
+    first_pay_period_end_day: NotRequired[Nullable[int]]
+    r"""The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+    """
+    second_pay_period_end_day: NotRequired[Nullable[int]]
+    r"""The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
     """
     custom_name: NotRequired[Nullable[str]]
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
+    workweek_start_day: NotRequired[PayScheduleUpdateRequestWorkweekStartDay]
 
 
 class PayScheduleUpdateRequest(BaseModel):
-    r"""Request body for updating a pay schedule. Sent in the pay_schedule_update root key. Version is required for optimistic concurrency. Pay schedules may be automatically adjusted if an onboarded company misses their first pay date; see [Create a pay schedule](https://docs.gusto.com/embedded-payroll/docs/create-a-pay-schedule)."""
+    r"""Request body for updating a pay schedule. Sent in the pay_schedule_update root key. Version is required for optimistic concurrency. Pay schedules may be automatically adjusted if an onboarded company misses their first pay date; see [Create a pay schedule](https://docs.gusto.com/embedded-payroll/docs/create-a-pay-schedule).
+
+    When changing a flexible Twice per month schedule to Monthly, the first pay day is retained unless replaced; the second pay day and both explicit period-end days become null. Changing to Every week or Every other week clears all day fields.
+
+    """
 
     version: str
     r"""Current version of the pay schedule from the GET response; required for optimistic concurrency. Mismatch returns 409 Conflict."""
@@ -74,20 +115,55 @@ class PayScheduleUpdateRequest(BaseModel):
 
     anchor_end_of_pay_period: Optional[date] = None
 
-    day_1: OptionalNullable[int] = UNSET
-    r"""An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+    day_1: Annotated[
+        OptionalNullable[int],
+        pydantic.Field(
+            deprecated="warning: ** DEPRECATED ** - This will be removed in a future release, please migrate away from it as soon as possible."
+        ),
+    ] = UNSET
+    r"""Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
     """
 
-    day_2: OptionalNullable[int] = UNSET
-    r"""An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+    day_2: Annotated[
+        OptionalNullable[int],
+        pydantic.Field(
+            deprecated="warning: ** DEPRECATED ** - This will be removed in a future release, please migrate away from it as soon as possible."
+        ),
+    ] = UNSET
+    r"""Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+
+    """
+
+    first_pay_period_pay_day: OptionalNullable[int] = UNSET
+    r"""The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+
+    """
+
+    second_pay_period_pay_day: OptionalNullable[int] = UNSET
+    r"""The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+    """
+
+    first_pay_period_end_day: OptionalNullable[int] = UNSET
+    r"""The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+    """
+
+    second_pay_period_end_day: OptionalNullable[int] = UNSET
+    r"""The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
     """
 
     custom_name: OptionalNullable[str] = UNSET
     r"""A custom pay schedule name; null clears any custom name so the default frequency description applies."""
 
+    workweek_start_day: Optional[PayScheduleUpdateRequestWorkweekStartDay] = None
+
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -97,15 +173,34 @@ class PayScheduleUpdateRequest(BaseModel):
                 "anchor_end_of_pay_period",
                 "day_1",
                 "day_2",
+                "first_pay_period_pay_day",
+                "second_pay_period_pay_day",
+                "first_pay_period_end_day",
+                "second_pay_period_end_day",
+                "custom_name",
+                "workweek_start_day",
+            ]
+        )
+        nullable_fields = set(
+            [
+                "day_1",
+                "day_2",
+                "first_pay_period_pay_day",
+                "second_pay_period_pay_day",
+                "first_pay_period_end_day",
+                "second_pay_period_end_day",
                 "custom_name",
             ]
         )
-        nullable_fields = set(["day_1", "day_2", "custom_name"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

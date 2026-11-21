@@ -33,7 +33,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.get_authorization(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -97,7 +97,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.update(employee_id="<id>", authorization_status=gusto_embedded.I9AuthorizationRequestBodyAuthorizationStatus.ALIEN, x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -152,7 +152,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.get_document_options(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDI9AuthorizationDocumentOptionsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -200,7 +200,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.get_documents(employee_id="<id>", x_gusto_api_version=gusto_embedded.GetV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -254,7 +254,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.create_documents(employee_id="<id>", documents=[], x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationDocumentsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -304,7 +304,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.i9_verification.delete_document(employee_id="<id>", document_id="<id>", x_gusto_api_version=gusto_embedded.DeleteV1EmployeesEmployeeIDI9AuthorizationDocumentsDocumentIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -355,7 +355,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.i9_verification.employer_sign(employee_id="<id>", signature_text="<value>", signer_title="<value>", agree=False, x_gusto_api_version=gusto_embedded.PutV1EmployeesEmployeeIDI9AuthorizationEmployerSignHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)

@@ -25,7 +25,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_forms.list(contractor_uuid="<id>", x_gusto_api_version=gusto_embedded.GetV1ContractorFormsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -70,7 +70,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_forms.get(contractor_uuid="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.GetV1ContractorFormHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -116,7 +116,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_forms.get_pdf(contractor_uuid="<id>", form_id="<id>", x_gusto_api_version=gusto_embedded.GetV1ContractorFormPdfHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)
@@ -166,7 +166,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_forms.generate1099(contractor_id="<id>", x_gusto_api_version=gusto_embedded.PostV1SandboxGenerate1099HeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15)

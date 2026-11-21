@@ -94,6 +94,11 @@ class Introspection(BaseSDK):
                 operation_id="post-v1-disconnect-app-integration",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -200,6 +205,11 @@ class Introspection(BaseSDK):
                 operation_id="post-v1-disconnect-app-integration",
                 oauth2_scopes=None,
                 security_source=security,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -230,8 +240,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.RevokeAccessTokenHeaderXGustoAPIVersion
+        ] = models.RevokeAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -303,6 +313,11 @@ class Introspection(BaseSDK):
                 operation_id="revoke-access-token",
                 oauth2_scopes=None,
                 security_source=None,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -327,8 +342,8 @@ class Introspection(BaseSDK):
         client_secret: str,
         token: str,
         x_gusto_api_version: Optional[
-            models.VersionHeader
-        ] = models.VersionHeader.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
+            models.RevokeAccessTokenHeaderXGustoAPIVersion
+        ] = models.RevokeAccessTokenHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -400,6 +415,11 @@ class Introspection(BaseSDK):
                 operation_id="revoke-access-token",
                 oauth2_scopes=None,
                 security_source=None,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -492,6 +512,11 @@ class Introspection(BaseSDK):
                 operation_id="oauth-access-token",
                 oauth2_scopes=None,
                 security_source=None,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -584,6 +609,11 @@ class Introspection(BaseSDK):
                 operation_id="oauth-access-token",
                 oauth2_scopes=None,
                 security_source=None,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -673,6 +703,11 @@ class Introspection(BaseSDK):
                 operation_id="get-v1-token-info",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -762,6 +797,11 @@ class Introspection(BaseSDK):
                 operation_id="get-v1-token-info",
                 oauth2_scopes=None,
                 security_source=self.sdk_configuration.security,
+                tags=["Introspection"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
