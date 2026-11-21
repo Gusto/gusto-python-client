@@ -95,6 +95,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -201,6 +206,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -263,13 +273,13 @@ class Garnishments(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param description: The description of the garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -350,6 +360,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -417,13 +432,13 @@ class Garnishments(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param employee_id: The UUID of the employee
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
         :param description: The description of the garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -504,6 +519,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -606,6 +626,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -697,6 +722,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -791,6 +821,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -891,6 +926,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -957,11 +997,11 @@ class Garnishments(BaseSDK):
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
         :param description: The description of the garnishment.
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -1043,6 +1083,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1114,11 +1159,11 @@ class Garnishments(BaseSDK):
         :param version: The current version of the object. See the [versioning guide](https://docs.gusto.com/embedded-payroll/docs/idempotency) for information on how to use this field.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param active: Whether or not this garnishment is currently active.
-        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\".
+        :param amount: The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit.
         :param description: The description of the garnishment.
-        :param court_ordered: Whether the garnishment is court ordered.
+        :param court_ordered: Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment.
         :param garnishment_type: The specific type of garnishment for court ordered garnishments.
-        :param times: The number of times to apply the garnishment. Ignored if recurring is true.
+        :param times: The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions.
         :param recurring: Whether the garnishment should recur indefinitely.
         :param annual_maximum: The maximum deduction per annum. A null value indicates no maximum. Represented as a float, e.g. \"200.00\".
         :param pay_period_maximum: The maximum deduction per pay period. A null value indicates no maximum. Represented as a float, e.g. \"16.00\".
@@ -1200,6 +1245,11 @@ class Garnishments(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Garnishments"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

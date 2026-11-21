@@ -8,7 +8,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class PayrollDigests(BaseSDK):
@@ -22,8 +22,8 @@ class PayrollDigests(BaseSDK):
         idempotency_key: str,
         batch_action: models.PostV1PayrollDigestsBatchAction,
         batch: Union[
-            List[models.PostV1PayrollDigestsBatch],
-            List[models.PostV1PayrollDigestsBatchTypedDict],
+            Iterable[models.PostV1PayrollDigestsBatch],
+            Iterable[models.PostV1PayrollDigestsBatchTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PostV1PayrollDigestsHeaderXGustoAPIVersion
@@ -119,6 +119,11 @@ class PayrollDigests(BaseSDK):
                 operation_id="post-v1-payroll_digests",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Payroll Digests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -157,8 +162,8 @@ class PayrollDigests(BaseSDK):
         idempotency_key: str,
         batch_action: models.PostV1PayrollDigestsBatchAction,
         batch: Union[
-            List[models.PostV1PayrollDigestsBatch],
-            List[models.PostV1PayrollDigestsBatchTypedDict],
+            Iterable[models.PostV1PayrollDigestsBatch],
+            Iterable[models.PostV1PayrollDigestsBatchTypedDict],
         ],
         x_gusto_api_version: Optional[
             models.PostV1PayrollDigestsHeaderXGustoAPIVersion
@@ -254,6 +259,11 @@ class PayrollDigests(BaseSDK):
                 operation_id="post-v1-payroll_digests",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Payroll Digests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -333,8 +343,8 @@ class PayrollDigests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollDigestsPayrollDigestUUIDRequest(
-            payroll_digest_uuid=payroll_digest_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            payroll_digest_uuid=payroll_digest_uuid,
         )
 
         req = self._build_request(
@@ -371,6 +381,11 @@ class PayrollDigests(BaseSDK):
                 operation_id="get-v1-payroll_digests-payroll_digest_uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Payroll Digests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -445,8 +460,8 @@ class PayrollDigests(BaseSDK):
             base_url = self._get_url(base_url, url_variables)
 
         request = models.GetV1PayrollDigestsPayrollDigestUUIDRequest(
-            payroll_digest_uuid=payroll_digest_uuid,
             x_gusto_api_version=x_gusto_api_version,
+            payroll_digest_uuid=payroll_digest_uuid,
         )
 
         req = self._build_request_async(
@@ -483,6 +498,11 @@ class PayrollDigests(BaseSDK):
                 operation_id="get-v1-payroll_digests-payroll_digest_uuid",
                 oauth2_scopes=None,
                 security_source=get_security_from_env(security, models.Security),
+                tags=["Payroll Digests"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

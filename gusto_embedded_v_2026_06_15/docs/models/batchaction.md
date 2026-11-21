@@ -7,7 +7,7 @@ The action being performed on the batch.
 ```python
 from gusto_embedded_v_2026_06_15.models import BatchAction
 
-value = BatchAction.CREATE
+value = BatchAction.CANCEL
 ```
 
 
@@ -15,4 +15,4 @@ value = BatchAction.CREATE
 
 | Name     | Value    |
 | -------- | -------- |
-| `CREATE` | create   |
+| `CANCEL` | cancel   |

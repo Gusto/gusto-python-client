@@ -1,6 +1,6 @@
 # EmploymentType
 
-Employee employment type to filter by
+Employee employment type to filter by.
 
 ## Example Usage
 

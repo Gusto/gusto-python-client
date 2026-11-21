@@ -35,6 +35,7 @@ value = LeavingFor.ACCOUNTANT
 | `NAMELY`                        | namely                          |
 | `ONPAY`                         | onpay                           |
 | `OTHER`                         | other                           |
+| `OTHER_PEO`                     | other_peo                       |
 | `OYSTER`                        | oyster                          |
 | `PATRIOT`                       | patriot                         |
 | `PAYCHEX`                       | paychex                         |
@@ -42,8 +43,11 @@ value = LeavingFor.ACCOUNTANT
 | `PAYLOCITY`                     | paylocity                       |
 | `REMOTE`                        | remote                          |
 | `RIPPLING`                      | rippling                        |
+| `RIPPLING_PEO`                  | rippling_peo                    |
+| `SEQUOIA_ONE`                   | sequoia_one                     |
 | `SQUARE`                        | square                          |
 | `SUREPAYROLL`                   | surepayroll                     |
+| `TOAST`                         | toast                           |
 | `TRINET`                        | trinet                          |
 | `VELOCITY_GLOBAL`               | velocity_global                 |
 | `ZENEFITS`                      | zenefits                        |
