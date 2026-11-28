@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
+from gusto_app_integration.types.basemodel import current_filtered_dump
 from gusto_app_integration.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -21,7 +27,7 @@ class GetV1EmployeesHeaderXGustoAPIVersion(str, Enum):
     TWO_THOUSAND_AND_TWENTY_FIVE_MINUS_06_MINUS_15 = "2025-06-15"
 
 
-class QueryParamInclude(str, Enum):
+class GetV1EmployeesQueryParamInclude(str, Enum):
     ALL_COMPENSATIONS = "all_compensations"
     ALL_HOME_ADDRESSES = "all_home_addresses"
     COMPANY_NAME = "company_name"
@@ -35,7 +41,7 @@ class GetV1EmployeesRequestTypedDict(TypedDict):
     r"""The UUID of the employee"""
     x_gusto_api_version: NotRequired[GetV1EmployeesHeaderXGustoAPIVersion]
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
-    include: NotRequired[List[QueryParamInclude]]
+    include: NotRequired[List[GetV1EmployeesQueryParamInclude]]
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
 
@@ -53,19 +59,26 @@ class GetV1EmployeesRequest(BaseModel):
     r"""Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used."""
 
     include: Annotated[
-        Optional[List[QueryParamInclude]],
+        Optional[List[GetV1EmployeesQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
     r"""Include the requested attribute(s) in each employee response. Multiple options are comma separated."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(["X-Gusto-API-Version", "include"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

@@ -12,7 +12,10 @@ from gusto_embedded_v_2026_06_15.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded_v_2026_06_15.types.basemodel import current_filtered_dump
 from pydantic import model_serializer
 from typing import Optional
 from typing_extensions import NotRequired, TypedDict
@@ -36,15 +39,15 @@ class UpdateGarnishmentRequestTypedDict(TypedDict):
     active: NotRequired[bool]
     r"""Whether or not this garnishment is currently active."""
     amount: NotRequired[str]
-    r"""The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\"."""
+    r"""The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit."""
     description: NotRequired[str]
     r"""The description of the garnishment."""
     court_ordered: NotRequired[bool]
-    r"""Whether the garnishment is court ordered."""
+    r"""Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment."""
     garnishment_type: NotRequired[Nullable[UpdateGarnishmentRequestGarnishmentType]]
     r"""The specific type of garnishment for court ordered garnishments."""
     times: NotRequired[Nullable[int]]
-    r"""The number of times to apply the garnishment. Ignored if recurring is true."""
+    r"""The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions."""
     recurring: NotRequired[bool]
     r"""Whether the garnishment should recur indefinitely."""
     annual_maximum: NotRequired[Nullable[str]]
@@ -69,19 +72,19 @@ class UpdateGarnishmentRequest(BaseModel):
     r"""Whether or not this garnishment is currently active."""
 
     amount: Optional[str] = None
-    r"""The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\"."""
+    r"""The amount of the garnishment. Either a percentage or a fixed dollar amount. Represented as a float, e.g. \"8.00\". Child-support percentages cannot exceed 65; applicable federal or state rules may require a lower limit."""
 
     description: Optional[str] = None
     r"""The description of the garnishment."""
 
     court_ordered: Optional[bool] = None
-    r"""Whether the garnishment is court ordered."""
+    r"""Whether the garnishment is court ordered. Must remain true for specific garnishment types other than other_garnishment."""
 
     garnishment_type: OptionalNullable[UpdateGarnishmentRequestGarnishmentType] = UNSET
     r"""The specific type of garnishment for court ordered garnishments."""
 
     times: OptionalNullable[int] = None
-    r"""The number of times to apply the garnishment. Ignored if recurring is true."""
+    r"""The number of times to apply the garnishment. Must be a positive integer when creating or changing a non-recurring count. Updates may echo an unchanged legacy zero. Ignored if recurring is true; use recurring rather than a negative count for indefinite deductions."""
 
     recurring: Optional[bool] = False
     r"""Whether the garnishment should recur indefinitely."""
@@ -102,6 +105,9 @@ class UpdateGarnishmentRequest(BaseModel):
     r"""Additional child support order details"""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -130,11 +136,15 @@ class UpdateGarnishmentRequest(BaseModel):
             ]
         )
         null_default_fields = set(["times", "annual_maximum", "pay_period_maximum"])
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

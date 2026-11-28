@@ -16,13 +16,16 @@ from gusto_embedded.types import (
     OptionalNullable,
     UNSET,
     UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
 )
+from gusto_embedded.types.basemodel import current_filtered_dump
 from pydantic import model_serializer
 from typing import List
 from typing_extensions import NotRequired, TypedDict
 
 
-class Type(str, Enum):
+class PayScheduleAssignmentType(str, Enum):
     SINGLE = "single"
     HOURLY_SALARIED = "hourly_salaried"
     BY_EMPLOYEE = "by_employee"
@@ -32,7 +35,7 @@ class Type(str, Enum):
 class PayScheduleAssignmentTypedDict(TypedDict):
     r"""The representation of a pay schedule assignment."""
 
-    type: NotRequired[Nullable[Type]]
+    type: NotRequired[Nullable[PayScheduleAssignmentType]]
     r"""The pay schedule assignment type."""
     hourly_pay_schedule_uuid: NotRequired[Nullable[str]]
     r"""Pay schedule for hourly employees."""
@@ -49,7 +52,7 @@ class PayScheduleAssignmentTypedDict(TypedDict):
 class PayScheduleAssignment(BaseModel):
     r"""The representation of a pay schedule assignment."""
 
-    type: OptionalNullable[Type] = UNSET
+    type: OptionalNullable[PayScheduleAssignmentType] = UNSET
     r"""The pay schedule assignment type."""
 
     hourly_pay_schedule_uuid: OptionalNullable[str] = UNSET
@@ -68,6 +71,9 @@ class PayScheduleAssignment(BaseModel):
     r"""List of departments and their pay schedules."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             [
@@ -89,11 +95,15 @@ class PayScheduleAssignment(BaseModel):
                 "departments",
             ]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
             is_nullable_and_explicitly_set = (
                 k in nullable_fields

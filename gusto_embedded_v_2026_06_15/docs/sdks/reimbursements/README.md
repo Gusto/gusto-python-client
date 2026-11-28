@@ -26,7 +26,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.reimbursements.get_v1_employees_employee_id_recurring_reimbursements(employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeIDRecurringReimbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -73,7 +73,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.reimbursements.post_v1_employees_employee_id_recurring_reimbursements(employee_id="<id>", description="as procrastinate produce provided gracefully huzzah likewise when", amount=2610.77, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeIDRecurringReimbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -120,7 +120,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.reimbursements.get_v1_recurring_reimbursements(id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1RecurringReimbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -165,7 +165,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.reimbursements.put_v1_recurring_reimbursements(id="<id>", version="56d00c178bc7393b2a206ed6a86afcb4", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1RecurringReimbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -213,7 +213,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.reimbursements.delete_v1_recurring_reimbursements(id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1RecurringReimbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
