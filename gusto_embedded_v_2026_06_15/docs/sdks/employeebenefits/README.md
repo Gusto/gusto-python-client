@@ -36,7 +36,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.get(employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeIDEmployeeBenefitsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -87,7 +87,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.create(employee_id="<id>", company_benefit_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeIDEmployeeBenefitsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, active=True, employee_deduction="0.00", deduct_as_percentage=False, elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False, effective_date=date.fromisoformat("1970-01-01"), expiration_date=None)
@@ -116,8 +116,8 @@ with Gusto(
 | `coverage_amount`                                                                                                                                                                                                                    | *OptionalNullable[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                   | The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.                                                                                                                 |
 | `coverage_salary_multiplier`                                                                                                                                                                                                         | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | The coverage amount as a multiple of the employee's salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.                                                                        |
 | `deduction_reduces_taxable_income`                                                                                                                                                                                                   | [OptionalNullable[models.EmployeeBenefitCreateRequestDeductionReducesTaxableIncome]](../../models/employeebenefitcreaterequestdeductionreducestaxableincome.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not "unset", coverage amount and coverage salary multiplier are ignored.                              |
-| `company_contribution`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>The amount to be paid, per pay period, by the company.                                              |
-| `contribute_as_percentage`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>Whether the company contribution amount should be treated as a percentage to be deducted from each payroll. |
+| `company_contribution`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>The amount to be paid, per pay period, by the company.                                                 |
+| `contribute_as_percentage`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>Whether the company contribution amount should be treated as a percentage to be deducted from each payroll. |
 | `effective_date`                                                                                                                                                                                                                     | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will start. If not provided, the benefit will be effective from 1970-01-01 (unix epoch).                                                                                                               |
 | `expiration_date`                                                                                                                                                                                                                    | [datetime](https://docs.python.org/3/library/datetime.html#datetime-objects)                                                                                                                                                         | :heavy_minus_sign:                                                                                                                                                                                                                   | The date the employee benefit will expire. A null value indicates the benefit will not expire.                                                                                                                                       |
 | `retries`                                                                                                                                                                                                                            | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | Configuration to override the default retry behavior of the client.                                                                                                                                                                  |
@@ -152,7 +152,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.retrieve(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeeBenefitsEmployeeBenefitIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -199,7 +199,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.update(employee_benefit_id="<id>", version="<value>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1EmployeeBenefitsEmployeeBenefitIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, employee_deduction="0.00", elective=False, catch_up=False, coverage_salary_multiplier="0.00", company_contribution="0.00", contribute_as_percentage=False)
@@ -230,8 +230,8 @@ with Gusto(
 | `coverage_amount`                                                                                                                                                                                                                    | *OptionalNullable[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                                   | The amount that the employee is insured for. Note: company contribution cannot be present if coverage amount is set.                                                                                                                 |
 | `deduction_reduces_taxable_income`                                                                                                                                                                                                   | [OptionalNullable[models.EmployeeBenefitUpdateRequestDeductionReducesTaxableIncome]](../../models/employeebenefitupdaterequestdeductionreducestaxableincome.md)                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | Whether the employee deduction reduces taxable income or not. Only valid for Group Term Life benefits. Note: when the value is not "unset", coverage amount and coverage salary multiplier are ignored.                              |
 | `coverage_salary_multiplier`                                                                                                                                                                                                         | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | The coverage amount as a multiple of the employee's salary. Only applicable for Group Term Life benefits. Note: cannot be set if coverage amount is also set.                                                                        |
-| `company_contribution`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>The amount to be paid, per pay period, by the company.                                              |
-| `contribute_as_percentage`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | : warning: ** DEPRECATED **: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>Whether the company contribution amount should be treated as a percentage to be deducted from each payroll. |
+| `company_contribution`                                                                                                                                                                                                               | *Optional[str]*                                                                                                                                                                                                                      | :heavy_minus_sign:                                                                                                                                                                                                                   | :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>The amount to be paid, per pay period, by the company.                                                 |
+| `contribute_as_percentage`                                                                                                                                                                                                           | *Optional[bool]*                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.<br/><br/>Whether the company contribution amount should be treated as a percentage to be deducted from each payroll. |
 | `retries`                                                                                                                                                                                                                            | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                   | Configuration to override the default retry behavior of the client.                                                                                                                                                                  |
 
 ### Response
@@ -264,7 +264,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.employee_benefits.delete(employee_benefit_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1EmployeeBenefitsEmployeeBenefitIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -308,7 +308,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.get_ytd_benefit_amounts_from_different_company(employee_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetEmployeeYtdBenefitAmountsFromDifferentCompanyHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, tax_year=2024)
@@ -356,7 +356,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.employee_benefits.create_ytd_benefit_amounts_from_different_company(employee_id="<id>", benefit_type=182856, tax_year=6006.73, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostEmployeeYtdBenefitAmountsFromDifferentCompanyHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, ytd_employee_deduction_amount="0.00", ytd_company_contribution_amount="0.00")
@@ -404,7 +404,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -452,7 +452,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.post_v1_employees_employee_uuid_section603_high_earner_statuses(employee_uuid="<id>", effective_year=2026, is_high_earner=True, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1EmployeesEmployeeUUIDSection603HighEarnerStatusesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -503,7 +503,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.get_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=857230, x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -553,7 +553,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.employee_benefits.patch_v1_employees_employee_uuid_section603_high_earner_statuses_effective_year(employee_uuid="<id>", effective_year=152322, is_high_earner=True, x_gusto_api_version=gusto_embedded_v_2026_06_15.PatchV1EmployeesEmployeeUUIDSection603HighEarnerStatusesEffectiveYearHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)

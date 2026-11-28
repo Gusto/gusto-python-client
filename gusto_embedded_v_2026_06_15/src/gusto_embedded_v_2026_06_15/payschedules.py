@@ -9,7 +9,7 @@ from gusto_embedded_v_2026_06_15.utils import get_security_from_env
 from gusto_embedded_v_2026_06_15.utils.unmarshal_json_response import (
     unmarshal_json_response,
 )
-from typing import Any, List, Mapping, Optional, Union
+from typing import Any, Iterable, List, Mapping, Optional, Union
 
 
 class PaySchedules(BaseSDK):
@@ -105,6 +105,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -225,6 +230,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Payrolls"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -332,6 +342,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -436,6 +451,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -474,7 +494,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayScheduleShow]:
+    ) -> List[models.PayScheduleListItem]:
         r"""Get the pay schedules for a company
 
         Returns all pay schedules for a company. The pay schedule object captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -544,6 +564,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -552,7 +577,7 @@ class PaySchedules(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayScheduleShow], http_res)
+            return unmarshal_json_response(List[models.PayScheduleListItem], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -580,7 +605,7 @@ class PaySchedules(BaseSDK):
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
         http_headers: Optional[Mapping[str, str]] = None,
-    ) -> List[models.PayScheduleShow]:
+    ) -> List[models.PayScheduleListItem]:
         r"""Get the pay schedules for a company
 
         Returns all pay schedules for a company. The pay schedule object captures the details of when employees work and when they should be paid. A company can have multiple pay schedules.
@@ -650,6 +675,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -658,7 +688,7 @@ class PaySchedules(BaseSDK):
 
         response_data: Any = None
         if utils.match_response(http_res, "200", "application/json"):
-            return unmarshal_json_response(List[models.PayScheduleShow], http_res)
+            return unmarshal_json_response(List[models.PayScheduleListItem], http_res)
         if utils.match_response(http_res, "404", "application/json"):
             response_data = unmarshal_json_response(
                 models.NotFoundErrorObjectData, http_res
@@ -685,7 +715,12 @@ class PaySchedules(BaseSDK):
         ] = models.PostV1CompaniesCompanyIDPaySchedulesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
+        first_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        second_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        first_pay_period_end_day: OptionalNullable[int] = UNSET,
+        second_pay_period_end_day: OptionalNullable[int] = UNSET,
         custom_name: OptionalNullable[str] = UNSET,
+        workweek_start_day: Optional[models.WorkweekStartDay] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -718,18 +753,23 @@ class PaySchedules(BaseSDK):
         :param anchor_pay_date:
         :param anchor_end_of_pay_period:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-            On create: required for Twice per month and Monthly; omit or null for Every week and Every other week.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
 
-            On create: only for Twice per month; omit or null for other frequencies.
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
         :param custom_name: A custom pay schedule name; defaults to the pay frequency description when null or omitted.
 
             When null or omitted, the system generates a description from the pay frequency and pay days (e.g. \"every 1st and 15th of the month\" for twice-monthly, \"every 11th of the month\" for monthly, \"every Friday\" for weekly). The response returns this generated value in `custom_name` when no custom name was set. When provided, the value you set is stored and returned.
 
+        :param workweek_start_day:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -754,7 +794,12 @@ class PaySchedules(BaseSDK):
                 anchor_end_of_pay_period=anchor_end_of_pay_period,
                 day_1=day_1,
                 day_2=day_2,
+                first_pay_period_pay_day=first_pay_period_pay_day,
+                second_pay_period_pay_day=second_pay_period_pay_day,
+                first_pay_period_end_day=first_pay_period_end_day,
+                second_pay_period_end_day=second_pay_period_end_day,
                 custom_name=custom_name,
+                workweek_start_day=workweek_start_day,
             ),
         )
 
@@ -796,6 +841,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -836,7 +886,12 @@ class PaySchedules(BaseSDK):
         ] = models.PostV1CompaniesCompanyIDPaySchedulesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
+        first_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        second_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        first_pay_period_end_day: OptionalNullable[int] = UNSET,
+        second_pay_period_end_day: OptionalNullable[int] = UNSET,
         custom_name: OptionalNullable[str] = UNSET,
+        workweek_start_day: Optional[models.WorkweekStartDay] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -869,18 +924,23 @@ class PaySchedules(BaseSDK):
         :param anchor_pay_date:
         :param anchor_end_of_pay_period:
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-            On create: required for Twice per month and Monthly; omit or null for Every week and Every other week.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
 
-            On create: only for Twice per month; omit or null for other frequencies.
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
         :param custom_name: A custom pay schedule name; defaults to the pay frequency description when null or omitted.
 
             When null or omitted, the system generates a description from the pay frequency and pay days (e.g. \"every 1st and 15th of the month\" for twice-monthly, \"every 11th of the month\" for monthly, \"every Friday\" for weekly). The response returns this generated value in `custom_name` when no custom name was set. When provided, the value you set is stored and returned.
 
+        :param workweek_start_day:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -905,7 +965,12 @@ class PaySchedules(BaseSDK):
                 anchor_end_of_pay_period=anchor_end_of_pay_period,
                 day_1=day_1,
                 day_2=day_2,
+                first_pay_period_pay_day=first_pay_period_pay_day,
+                second_pay_period_pay_day=second_pay_period_pay_day,
+                first_pay_period_end_day=first_pay_period_end_day,
+                second_pay_period_end_day=second_pay_period_end_day,
                 custom_name=custom_name,
+                workweek_start_day=workweek_start_day,
             ),
         )
 
@@ -947,6 +1012,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -987,7 +1057,12 @@ class PaySchedules(BaseSDK):
         ] = models.GetV1CompaniesCompanyIDPaySchedulesPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
+        first_pay_period_pay_day: Optional[int] = None,
+        second_pay_period_pay_day: Optional[int] = None,
+        first_pay_period_end_day: Optional[int] = None,
+        second_pay_period_end_day: Optional[int] = None,
         end_date: Optional[date] = None,
+        pay_schedule_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1010,9 +1085,14 @@ class PaySchedules(BaseSDK):
         :param anchor_pay_date: The first date that employees on this pay schedule are paid with Gusto.
         :param anchor_end_of_pay_period: The last date of the first pay period. This can be the same date as the anchor pay date.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
         :param end_date: End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today.
+        :param pay_schedule_uuid: Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1036,7 +1116,12 @@ class PaySchedules(BaseSDK):
             anchor_end_of_pay_period=anchor_end_of_pay_period,
             day_1=day_1,
             day_2=day_2,
+            first_pay_period_pay_day=first_pay_period_pay_day,
+            second_pay_period_pay_day=second_pay_period_pay_day,
+            first_pay_period_end_day=first_pay_period_end_day,
+            second_pay_period_end_day=second_pay_period_end_day,
             end_date=end_date,
+            pay_schedule_uuid=pay_schedule_uuid,
         )
 
         req = self._build_request(
@@ -1074,6 +1159,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1114,7 +1204,12 @@ class PaySchedules(BaseSDK):
         ] = models.GetV1CompaniesCompanyIDPaySchedulesPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15,
         day_1: Optional[int] = None,
         day_2: Optional[int] = None,
+        first_pay_period_pay_day: Optional[int] = None,
+        second_pay_period_pay_day: Optional[int] = None,
+        first_pay_period_end_day: Optional[int] = None,
+        second_pay_period_end_day: Optional[int] = None,
         end_date: Optional[date] = None,
+        pay_schedule_uuid: Optional[str] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1137,9 +1232,14 @@ class PaySchedules(BaseSDK):
         :param anchor_pay_date: The first date that employees on this pay schedule are paid with Gusto.
         :param anchor_end_of_pay_period: The last date of the first pay period. This can be the same date as the anchor pay date.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
         :param end_date: End date for the preview range. If given, this date must be in the future. When unspecified, defaults to 18 months from today.
+        :param pay_schedule_uuid: Optional UUID of an existing pay schedule. When supplied, the preview is seeded from the persisted schedule — including internal flags (such as arrears handling) that affect period boundaries but are not exposed as request parameters. Any other query parameters override individual attributes on top of the loaded schedule.
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1163,7 +1263,12 @@ class PaySchedules(BaseSDK):
             anchor_end_of_pay_period=anchor_end_of_pay_period,
             day_1=day_1,
             day_2=day_2,
+            first_pay_period_pay_day=first_pay_period_pay_day,
+            second_pay_period_pay_day=second_pay_period_pay_day,
+            first_pay_period_end_day=first_pay_period_end_day,
+            second_pay_period_end_day=second_pay_period_end_day,
             end_date=end_date,
+            pay_schedule_uuid=pay_schedule_uuid,
         )
 
         req = self._build_request_async(
@@ -1201,6 +1306,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1309,6 +1419,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1412,6 +1527,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1450,7 +1570,14 @@ class PaySchedules(BaseSDK):
         anchor_end_of_pay_period: Optional[date] = None,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
+        first_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        second_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        first_pay_period_end_day: OptionalNullable[int] = UNSET,
+        second_pay_period_end_day: OptionalNullable[int] = UNSET,
         custom_name: OptionalNullable[str] = UNSET,
+        workweek_start_day: Optional[
+            models.PayScheduleUpdateRequestWorkweekStartDay
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1487,11 +1614,20 @@ class PaySchedules(BaseSDK):
         :param frequency:
         :param anchor_pay_date:
         :param anchor_end_of_pay_period:
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
         :param custom_name: A custom pay schedule name; null clears any custom name so the default frequency description applies.
+        :param workweek_start_day:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1519,7 +1655,12 @@ class PaySchedules(BaseSDK):
                 anchor_end_of_pay_period=anchor_end_of_pay_period,
                 day_1=day_1,
                 day_2=day_2,
+                first_pay_period_pay_day=first_pay_period_pay_day,
+                second_pay_period_pay_day=second_pay_period_pay_day,
+                first_pay_period_end_day=first_pay_period_end_day,
+                second_pay_period_end_day=second_pay_period_end_day,
                 custom_name=custom_name,
+                workweek_start_day=workweek_start_day,
             ),
         )
 
@@ -1561,6 +1702,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1604,7 +1750,14 @@ class PaySchedules(BaseSDK):
         anchor_end_of_pay_period: Optional[date] = None,
         day_1: OptionalNullable[int] = UNSET,
         day_2: OptionalNullable[int] = UNSET,
+        first_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        second_pay_period_pay_day: OptionalNullable[int] = UNSET,
+        first_pay_period_end_day: OptionalNullable[int] = UNSET,
+        second_pay_period_end_day: OptionalNullable[int] = UNSET,
         custom_name: OptionalNullable[str] = UNSET,
+        workweek_start_day: Optional[
+            models.PayScheduleUpdateRequestWorkweekStartDay
+        ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
         timeout_ms: Optional[int] = None,
@@ -1641,11 +1794,20 @@ class PaySchedules(BaseSDK):
         :param frequency:
         :param anchor_pay_date:
         :param anchor_end_of_pay_period:
-        :param day_1: An integer between 1 and 31 indicating the first day of the month that employees are paid. This field is only relevant for pay schedules with the \"Twice per month\" and \"Monthly\" frequencies. It will be null for pay schedules with other frequencies.
+        :param day_1: Legacy field, retained unchanged for compatibility. The first pay day for Monthly and regular Twice per month schedules, or the first pay-period end day for flexible Twice per month schedules. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
 
-        :param day_2: An integer between 1 and 31 indicating the second day of the month that employees are paid. This field is the second pay date for pay schedules with the \"Twice per month\" frequency. For semi-monthly pay schedules, set this field to 31. For months shorter than 31 days, the second pay date is set to the last day of the month. It will be null for pay schedules with other frequencies.
+        :param day_2: Legacy field, retained unchanged for compatibility. The second pay day for regular Twice per month schedules, or the second pay-period end day for flexible Twice per month schedules. A value of 31 means the last day of the month. Prefer the explicit pay-period fields. Do not combine day_1/day_2 with explicit fields in a request.
+
+        :param first_pay_period_pay_day: The first pay day (1-31) for Monthly or Twice per month. For Twice per month, provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_pay_day: The second pay day (1-31) for Twice per month. Provide both pay-day fields together. Pay days alone configure a regular schedule; adding both explicit period-end days configures a flexible schedule. Omitted fields preserve existing values on update or persisted preview. Pay days on an existing flexible schedule cannot both be cleared. A pay day may fall in the following month. Do not mix explicit fields with day_1/day_2.
+
+        :param first_pay_period_end_day: The last day (1-31) of the first pay period for a flexible Twice per month schedule. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
+
+        :param second_pay_period_end_day: The last day (1-31) of the second pay period for a flexible Twice per month schedule. A value of 31 means the last day of the month. On create or conversion, both explicit period-end days are required. On an existing flexible schedule, omitted values are preserved and changing them requires a matching anchor_end_of_pay_period and anchor_pay_date. Do not mix explicit fields with day_1/day_2.
 
         :param custom_name: A custom pay schedule name; null clears any custom name so the default frequency description applies.
+        :param workweek_start_day:
         :param retries: Override the default retry configuration for this method
         :param server_url: Override the default server URL for this method
         :param timeout_ms: Override the default request timeout configuration for this method in milliseconds
@@ -1673,7 +1835,12 @@ class PaySchedules(BaseSDK):
                 anchor_end_of_pay_period=anchor_end_of_pay_period,
                 day_1=day_1,
                 day_2=day_2,
+                first_pay_period_pay_day=first_pay_period_pay_day,
+                second_pay_period_pay_day=second_pay_period_pay_day,
+                first_pay_period_end_day=first_pay_period_end_day,
+                second_pay_period_end_day=second_pay_period_end_day,
                 custom_name=custom_name,
+                workweek_start_day=workweek_start_day,
             ),
         )
 
@@ -1715,6 +1882,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1757,12 +1929,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1778,7 +1953,7 @@ class PaySchedules(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
-        :param type: The pay schedule assignment type.
+        :param type_: The pay schedule assignment type.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param hourly_pay_schedule_uuid: Pay schedule for hourly employees.
         :param salaried_pay_schedule_uuid: Pay schedule for salaried employees.
@@ -1857,6 +2032,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -1901,12 +2081,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -1922,7 +2105,7 @@ class PaySchedules(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
-        :param type: The pay schedule assignment type.
+        :param type_: The pay schedule assignment type.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param hourly_pay_schedule_uuid: Pay schedule for hourly employees.
         :param salaried_pay_schedule_uuid: Pay schedule for salaried employees.
@@ -2001,6 +2184,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2045,12 +2233,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2067,7 +2258,7 @@ class PaySchedules(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
-        :param type: The pay schedule assignment type.
+        :param type_: The pay schedule assignment type.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param hourly_pay_schedule_uuid: Pay schedule for hourly employees.
         :param salaried_pay_schedule_uuid: Pay schedule for salaried employees.
@@ -2146,6 +2337,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2188,12 +2384,15 @@ class PaySchedules(BaseSDK):
         partial_assignment: Optional[bool] = None,
         employees: Optional[
             Union[
-                List[models.PayScheduleAssignmentBodyEmployees],
-                List[models.PayScheduleAssignmentBodyEmployeesTypedDict],
+                Iterable[models.PayScheduleAssignmentBodyEmployees],
+                Iterable[models.PayScheduleAssignmentBodyEmployeesTypedDict],
             ]
         ] = None,
         departments: Optional[
-            Union[List[models.DepartmentsModel], List[models.DepartmentsModelTypedDict]]
+            Union[
+                Iterable[models.DepartmentsModel],
+                Iterable[models.DepartmentsModelTypedDict],
+            ]
         ] = None,
         retries: OptionalNullable[utils.RetryConfig] = UNSET,
         server_url: Optional[str] = None,
@@ -2210,7 +2409,7 @@ class PaySchedules(BaseSDK):
         If set, this operation will use `company_access_auth` from the global security.
 
         :param company_id: The UUID of the company
-        :param type: The pay schedule assignment type.
+        :param type_: The pay schedule assignment type.
         :param x_gusto_api_version: Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.
         :param hourly_pay_schedule_uuid: Pay schedule for hourly employees.
         :param salaried_pay_schedule_uuid: Pay schedule for salaried employees.
@@ -2289,6 +2488,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2394,6 +2598,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),
@@ -2494,6 +2703,11 @@ class PaySchedules(BaseSDK):
                 security_source=get_security_from_env(
                     self.sdk_configuration.security, models.Security
                 ),
+                tags=["Pay Schedules"],
+                extensions={
+                    "x-gusto-integration-type": ["embedded", "app-integrations"],
+                    "x-gusto-rswag": True,
+                },
             ),
             request=req,
             is_error_status_code=lambda c: utils.match_status_codes(["4XX", "5XX"], c),

@@ -12,6 +12,7 @@
 * [delete](#delete) - Cancel a contractor payment group
 * [get_v1_contractor_payment_groups_id_partner_disbursements](#get_v1_contractor_payment_groups_id_partner_disbursements) - Get partner disbursements for a contractor payment group
 * [patch_v1_contractor_payment_groups_id_partner_disbursements](#patch_v1_contractor_payment_groups_id_partner_disbursements) - Update partner disbursements for a contractor payment group
+* [post_v1_contractor_payment_groups_contractor_payment_group_uuid_generated_documents_printable_contractor_payment_checks](#post_v1_contractor_payment_groups_contractor_payment_group_uuid_generated_documents_printable_contractor_payment_checks) - Generate printable contractor payment checks (pdf)
 
 ## preview
 
@@ -31,7 +32,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.preview(company_id="<id>", contractor_payments=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDContractorPaymentGroupsPreviewHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -82,7 +83,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.fund(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.PutV1ContractorPaymentGroupsContractorPaymentGroupIDFundHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -128,10 +129,10 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
-    res = gusto.contractor_payment_groups.get_list(company_id="<id>", start_date="2020-01-01", end_date="2020-12-31", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+    res = gusto.contractor_payment_groups.get_list(company_id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, start_date="2020-01-01", end_date="2020-12-31")
 
     # Handle response
     print(res)
@@ -143,11 +144,11 @@ with Gusto(
 | Parameter                                                                                                                                                                                                                    | Type                                                                                                                                                                                                                         | Required                                                                                                                                                                                                                     | Description                                                                                                                                                                                                                  | Example                                                                                                                                                                                                                      |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `company_id`                                                                                                                                                                                                                 | *str*                                                                                                                                                                                                                        | :heavy_check_mark:                                                                                                                                                                                                           | The UUID of the company                                                                                                                                                                                                      |                                                                                                                                                                                                                              |
+| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorpaymentgroupsheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
 | `start_date`                                                                                                                                                                                                                 | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The time period for which to retrieve contractor payment groups. Defaults to 6 months ago.                                                                                                                                   | 2020-01-01                                                                                                                                                                                                                   |
 | `end_date`                                                                                                                                                                                                                   | *Optional[str]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The time period for which to retrieve contractor payment groups. Defaults to today's date.                                                                                                                                   | 2020-12-31                                                                                                                                                                                                                   |
 | `page`                                                                                                                                                                                                                       | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | The page that is requested. When unspecified, will load all objects unless endpoint forces pagination.                                                                                                                       |                                                                                                                                                                                                                              |
 | `per`                                                                                                                                                                                                                        | *Optional[int]*                                                                                                                                                                                                              | :heavy_minus_sign:                                                                                                                                                                                                           | Number of objects per page. For majority of endpoints will default to 25                                                                                                                                                     |                                                                                                                                                                                                                              |
-| `x_gusto_api_version`                                                                                                                                                                                                        | [Optional[models.GetV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion]](../../models/getv1companiescompanyidcontractorpaymentgroupsheaderxgustoapiversion.md)                                                | :heavy_minus_sign:                                                                                                                                                                                                           | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used. |                                                                                                                                                                                                                              |
 | `retries`                                                                                                                                                                                                                    | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                             | :heavy_minus_sign:                                                                                                                                                                                                           | Configuration to override the default retry behavior of the client.                                                                                                                                                          |                                                                                                                                                                                                                              |
 
 ### Response
@@ -178,7 +179,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.create(company_id="<id>", check_date=date.fromisoformat("2020-01-01"), creation_token="1d532d13-8f61-4a57-ad3c-b5fac1c6e05e", contractor_payments=[], x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1CompaniesCompanyIDContractorPaymentGroupsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -228,7 +229,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.get(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ContractorPaymentGroupsContractorPaymentGroupIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -273,7 +274,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     gusto.contractor_payment_groups.delete(contractor_payment_group_uuid="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.DeleteV1ContractorPaymentGroupsContractorPaymentGroupIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -314,7 +315,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.get_v1_contractor_payment_groups_id_partner_disbursements(id="<id>", x_gusto_api_version=gusto_embedded_v_2026_06_15.GetV1ContractorPaymentGroupsIDPartnerDisbursementsHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
@@ -359,7 +360,7 @@ import os
 
 
 with Gusto(
-    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH", ""),
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
 ) as gusto:
 
     res = gusto.contractor_payment_groups.patch_v1_contractor_payment_groups_id_partner_disbursements(id="<id>", disbursements=[
@@ -385,6 +386,54 @@ with Gusto(
 ### Response
 
 **[models.ContractorPaymentGroupPartnerDisbursements](../../models/contractorpaymentgrouppartnerdisbursements.md)**
+
+### Errors
+
+| Error Type                       | Status Code                      | Content Type                     |
+| -------------------------------- | -------------------------------- | -------------------------------- |
+| models.NotFoundErrorObject       | 404                              | application/json                 |
+| models.UnprocessableEntityError1 | 422                              | application/json                 |
+| models.APIError                  | 4XX, 5XX                         | \*/\*                            |
+
+## post_v1_contractor_payment_groups_contractor_payment_group_uuid_generated_documents_printable_contractor_payment_checks
+
+This endpoint initiates the generation of contractor checks for the contractor payment group specified by contractor_payment_group_uuid. A generation status and corresponding request_uuid will be returned. Use the generated document GET endpoint with document_type: `printable_contractor_payment_checks` and request_uuid to poll the check generation process and retrieve the generated check URL upon completion.
+
+scope: `generated_documents:write`
+
+### Example Usage
+
+<!-- UsageSnippet language="python" operationID="post-v1-contractor_payment_groups-contractor_payment_group_uuid-generated_documents-printable_contractor_payment_checks" method="post" path="/v1/contractor_payment_groups/{contractor_payment_group_uuid}/generated_documents/printable_contractor_payment_checks" -->
+```python
+import gusto_embedded_v_2026_06_15
+from gusto_embedded_v_2026_06_15 import Gusto
+import os
+
+
+with Gusto(
+    company_access_auth=os.getenv("GUSTO_COMPANY_ACCESS_AUTH"),
+) as gusto:
+
+    res = gusto.contractor_payment_groups.post_v1_contractor_payment_groups_contractor_payment_group_uuid_generated_documents_printable_contractor_payment_checks(contractor_payment_group_uuid="<id>", printing_format=gusto_embedded_v_2026_06_15.PrintableContractorPaymentChecksBodyPrintingFormat.TOP, x_gusto_api_version=gusto_embedded_v_2026_06_15.PostV1ContractorPaymentGroupsContractorPaymentGroupUUIDGeneratedDocumentsPrintableContractorPaymentChecksHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15)
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                                                                                                                                           | Type                                                                                                                                                                                                                                                                                                | Required                                                                                                                                                                                                                                                                                            | Description                                                                                                                                                                                                                                                                                         |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `contractor_payment_group_uuid`                                                                                                                                                                                                                                                                     | *str*                                                                                                                                                                                                                                                                                               | :heavy_check_mark:                                                                                                                                                                                                                                                                                  | The UUID of the contractor payment group                                                                                                                                                                                                                                                            |
+| `printing_format`                                                                                                                                                                                                                                                                                   | [models.PrintableContractorPaymentChecksBodyPrintingFormat](../../models/printablecontractorpaymentchecksbodyprintingformat.md)                                                                                                                                                                     | :heavy_check_mark:                                                                                                                                                                                                                                                                                  | The type of check stock being printed. Check the "Types of check stock" section in this [link](https://support.gusto.com/article/999877761000000/Pay-your-team-by-check) for more info on check types                                                                                               |
+| `x_gusto_api_version`                                                                                                                                                                                                                                                                               | [Optional[models.PostV1ContractorPaymentGroupsContractorPaymentGroupUUIDGeneratedDocumentsPrintableContractorPaymentChecksHeaderXGustoAPIVersion]](../../models/postv1contractorpaymentgroupscontractorpaymentgroupuuidgenerateddocumentsprintablecontractorpaymentchecksheaderxgustoapiversion.md) | :heavy_minus_sign:                                                                                                                                                                                                                                                                                  | Determines the date-based API version associated with your API call. If none is provided, your application's [minimum API version](https://docs.gusto.com/embedded-payroll/docs/api-versioning#minimum-api-version) is used.                                                                        |
+| `starting_check_number`                                                                                                                                                                                                                                                                             | *Optional[int]*                                                                                                                                                                                                                                                                                     | :heavy_minus_sign:                                                                                                                                                                                                                                                                                  | The starting check number we will start generating checks from. Use to override the sequence that will be used to generate check numbers. Only allowed when printing_format is bottom.                                                                                                              |
+| `retries`                                                                                                                                                                                                                                                                                           | [Optional[utils.RetryConfig]](../../models/utils/retryconfig.md)                                                                                                                                                                                                                                    | :heavy_minus_sign:                                                                                                                                                                                                                                                                                  | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                 |
+
+### Response
+
+**[models.ContractorPaymentGroupCheck](../../models/contractorpaymentgroupcheck.md)**
 
 ### Errors
 

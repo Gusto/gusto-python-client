@@ -13,6 +13,7 @@ value = PathParamDocumentType.PRINTABLE_PAYROLL_CHECKS
 
 ## Values
 
-| Name                       | Value                      |
-| -------------------------- | -------------------------- |
-| `PRINTABLE_PAYROLL_CHECKS` | printable_payroll_checks   |
+| Name                                  | Value                                 |
+| ------------------------------------- | ------------------------------------- |
+| `PRINTABLE_PAYROLL_CHECKS`            | printable_payroll_checks              |
+| `PRINTABLE_CONTRACTOR_PAYMENT_CHECKS` | printable_contractor_payment_checks   |

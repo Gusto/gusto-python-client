@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 from enum import Enum
-from gusto_app_integration_v_2026_06_15.types import BaseModel, UNSET_SENTINEL
+from gusto_app_integration_v_2026_06_15.types import (
+    BaseModel,
+    UNSET_SENTINEL,
+    current_exclude_none,
+    serialize_with_info,
+)
+from gusto_app_integration_v_2026_06_15.types.basemodel import current_filtered_dump
 from gusto_app_integration_v_2026_06_15.utils import (
     FieldMetadata,
     HeaderMetadata,
@@ -44,7 +50,7 @@ class GetV1CompaniesCompanyIDPayrollsPayrollIDRequestTypedDict(TypedDict):
     include: NotRequired[
         List[GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]
     ]
-    r"""Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`"""
+    r"""Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`. The include option `totals` is ignored and will be removed from the list of valid values in a future API version. `totals` are always included for calculated and processed payrolls."""
     page: NotRequired[int]
     r"""The page that is requested. When unspecified, will load all objects unless endpoint forces pagination."""
     per: NotRequired[int]
@@ -75,7 +81,7 @@ class GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(BaseModel):
         Optional[List[GetV1CompaniesCompanyIDPayrollsPayrollIDQueryParamInclude]],
         FieldMetadata(query=QueryParamMetadata(style="form", explode=False)),
     ] = None
-    r"""Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`"""
+    r"""Include the requested attribute in the response, for multiple attributes comma separate the values, i.e. `?include=benefits,deductions,taxes`. The include option `totals` is ignored and will be removed from the list of valid values in a future API version. `totals` are always included for calculated and processed payrolls."""
 
     page: Annotated[
         Optional[int],
@@ -96,15 +102,22 @@ class GetV1CompaniesCompanyIDPayrollsPayrollIDRequest(BaseModel):
     r"""Sort employee compensations by one or more fields. Options: first_name, last_name. Append `:asc` or `:desc` to specify direction (e.g., `last_name:asc` or `last_name:asc,first_name:asc`). Defaults to ascending."""
 
     @model_serializer(mode="wrap")
+    def _serialize_model_with_info(self, handler, info):
+        return serialize_with_info(self.serialize_model, handler, info)
+
     def serialize_model(self, handler):
         optional_fields = set(
             ["X-Gusto-API-Version", "include", "page", "per", "sort_by"]
         )
+        exclude_none = current_exclude_none()
+        skip_filtered = exclude_none is False or current_filtered_dump()
         serialized = handler(self)
         m = {}
 
         for n, f in type(self).model_fields.items():
-            k = f.alias or n
+            k = f.alias if f.alias is not None else n
+            if k not in serialized and n not in serialized and skip_filtered:
+                continue
             val = serialized.get(k, serialized.get(n))
 
             if val != UNSET_SENTINEL:

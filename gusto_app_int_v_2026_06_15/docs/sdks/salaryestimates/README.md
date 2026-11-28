@@ -35,7 +35,7 @@ with GustoAppIntegration(
     company_access_auth="<YOUR_BEARER_TOKEN_HERE>",
 ) as gusto_app_integration:
 
-    res = gusto_app_integration.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=500000)
+    res = gusto_app_integration.salary_estimates.post_v1_employees_employee_id_salary_estimates(employee_id="<id>", zip_code="94107", occupations=[], x_gusto_api_version=gusto_app_integration_v_2026_06_15.PostV1EmployeesEmployeeIDSalaryEstimatesHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=500000.0)
 
     # Handle response
     print(res)
@@ -136,7 +136,7 @@ with GustoAppIntegration(
             "time_percentage": "0.6",
             "primary": True,
         },
-    ], x_gusto_api_version=gusto_app_integration_v_2026_06_15.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=600000)
+    ], x_gusto_api_version=gusto_app_integration_v_2026_06_15.PutV1SalaryEstimatesIDHeaderXGustoAPIVersion.TWO_THOUSAND_AND_TWENTY_SIX_MINUS_06_MINUS_15, annual_net_revenue=600000.0)
 
     # Handle response
     print(res)
